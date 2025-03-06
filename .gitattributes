@@ -1,0 +1,19 @@
+# Normaliza arquivos de texto para LF no repositório, mas adapta ao SO local
+* text=auto
+
+# Força arquivos de script do Linux (Shell, Python, etc.) a sempre usarem LF
+*.sh text eol=lf
+*.py text eol=lf
+
+# Mantém arquivos do Windows (como .cmd e .bat) sempre com CRLF
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Mantém arquivos binários sem conversão de EOL
+*.jpg binary
+*.png binary
+*.gif binary
+*.exe binary
+*.dll binary
+*.zip binary
+
