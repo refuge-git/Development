@@ -57,6 +57,21 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuario.get());
     }
 
+    // Retorna usuários por gênero
+    @GetMapping("/genero")
+    public ResponseEntity<List<Usuario>> encontrarPorGenero(
+        @RequestParam("genero") String genero // Valor passado pela query da URL
+    ){
+        Genero generoEnum = Genero.valueOf(genero.toUpperCase()); // Convertendo para o tipo Enum
+        List<Usuario> usuarios = repository.findByGenero(generoEnum);
+
+        if(usuarios.isEmpty()){
+            return ResponseEntity.status(404).build();
+        }
+
+        return ResponseEntity.status(200).body(usuarios);
+    }
+
     // Deleta usuário por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Usuario> deletarUsuario(
