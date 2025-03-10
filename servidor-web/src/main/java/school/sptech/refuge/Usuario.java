@@ -11,7 +11,7 @@ public class Usuario {
     private String nome;
     private LocalDate dtNasc;
     private String cpf;
-    // Usado para que o valor passado seja a nomenclatura do ENUM (MASCULINO, FEMININO...)
+    // Usado para que o valor passado seja a nomenclatura do ENUM e não o seu indentificador numérico (MASCULINO, FEMININO...)
     @Enumerated(EnumType.STRING)
     private Genero genero;
     private String sexualidade;
