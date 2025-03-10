@@ -16,6 +16,13 @@ public class UsuarioController {
     UsuarioRepository repository;
 
 
+
+
+
+
+
+    ///  ENDPOINTS DO TIPO: POST
+
     // Cadastro de usuários
     @PostMapping
     public ResponseEntity<Usuario> cadastrar(
@@ -29,6 +36,13 @@ public class UsuarioController {
 
         return ResponseEntity.status(201).body(repository.save(userRecived)); // Código 201 sinaliza que um novo recurso foi criado
     }
+
+
+
+
+
+
+    /// ENDPOINTS DO TIPO: GET
 
     // Retornar todos os usuários cadastrados
     @GetMapping("/listar")
@@ -89,7 +103,6 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarios);
     }
 
-
     // Encontrar usuários por raça
     // Este endpoint segue o mesmo princípio do anterior!
     @GetMapping("/raca")
@@ -106,6 +119,13 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarios);
     }
 
+
+
+
+
+
+    ///  ENDPOINTS DO TIPO: DELETE
+
     // Deleta usuário por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Usuario> deletarUsuario(
@@ -120,6 +140,13 @@ public class UsuarioController {
         repository.deleteById(id);
         return ResponseEntity.status(200).body(usuario.get());
     }
+
+
+
+
+
+
+    ///  ENDPOINTS DO TIPO: PUT
 
     // Atualiza usuário por id
     @PutMapping("/{id}")
