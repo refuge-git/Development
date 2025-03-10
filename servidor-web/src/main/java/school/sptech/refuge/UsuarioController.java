@@ -51,7 +51,7 @@ public class UsuarioController {
         Optional<Usuario> usuario = repository.findById(id);
 
         if(usuario.isEmpty()){
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
         }
 
         return ResponseEntity.status(200).body(usuario.get());
@@ -62,6 +62,8 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> encontrarPorGenero(
         @RequestParam("genero") String genero // Valor passado pela query da URL
     ){
+        /* Essa conversão é necessária, pois o hibernate não converter uma String
+           para o tipo Enum automaticamente, que é o atributo da entidade usuário */
         Genero generoEnum = Genero.valueOf(genero.toUpperCase()); // Convertendo para o tipo Enum
         List<Usuario> usuarios = repository.findByGenero(generoEnum);
 
