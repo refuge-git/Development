@@ -68,7 +68,39 @@ public class UsuarioController {
         List<Usuario> usuarios = repository.findByGenero(generoEnum);
 
         if(usuarios.isEmpty()){
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
+        }
+
+        return ResponseEntity.status(200).body(usuarios);
+    }
+
+    // Encontrar usuários por nome
+    @GetMapping("/nome")
+    public ResponseEntity<List<Usuario>> encontrarPorNome(
+            @RequestParam("nome") String nome // Valor passado pela query da URL
+    ){
+        // Explicação da query em: UsuarioRepository
+        List<Usuario> usuarios = repository.findByNomeContainingIgnoreCase(nome);
+
+        if(usuarios.isEmpty()){
+            return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
+        }
+
+        return ResponseEntity.status(200).body(usuarios);
+    }
+
+
+    // Encontrar usuários por raça
+    // Este endpoint segue o mesmo princípio do anterior!
+    @GetMapping("/raca")
+    public ResponseEntity<List<Usuario>> encontrarPorRaca(
+            @RequestParam("raca") String raca // Valor passado pela query da URL
+    ){
+        // Explicação da query em: UsuarioRepository
+        List<Usuario> usuarios = repository.findByRacaContainingIgnoreCase(raca);
+
+        if(usuarios.isEmpty()){
+            return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
         }
 
         return ResponseEntity.status(200).body(usuarios);
@@ -82,7 +114,7 @@ public class UsuarioController {
         Optional<Usuario> usuario = repository.findById(id);
 
         if(usuario.isEmpty()){
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
         }
 
         repository.deleteById(id);
