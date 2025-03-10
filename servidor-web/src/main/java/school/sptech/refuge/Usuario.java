@@ -1,10 +1,6 @@
 package school.sptech.refuge;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -15,12 +11,15 @@ public class Usuario {
     private String nome;
     private LocalDate dtNasc;
     private String cpf;
+    // Usado para que o valor passado seja a nomenclatura do ENUM (MASCULINO, FEMININO...)
+    @Enumerated(EnumType.STRING)
     private Genero genero;
     private String sexualidade;
     private String raca;
     private String nomeMae;
     private String fotoPerfil;
     private String numeroCartao;
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     public Integer getId() {
