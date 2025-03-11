@@ -56,7 +56,6 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarios);
     }
 
-
     // Retorna o usuário pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> encontrarPorId(
@@ -131,14 +130,12 @@ public class UsuarioController {
     public ResponseEntity<Usuario> deletarUsuario(
             @PathVariable Integer id
     ){
-        Optional<Usuario> usuario = repository.findById(id);
-
-        if(usuario.isEmpty()){
-            return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+            return ResponseEntity.status(204).build();
         }
 
-        repository.deleteById(id);
-        return ResponseEntity.status(200).body(usuario.get());
+        return ResponseEntity.status(404).build();
     }
 
 
