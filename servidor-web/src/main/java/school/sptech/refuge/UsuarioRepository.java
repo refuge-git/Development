@@ -13,4 +13,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     List<Usuario> findByGenero (Genero genero); // Encontrar todos por genero
     List<Usuario> findByNomeContainingIgnoreCase (String nome); // Encontrar usuários que contenham esse nome, ignorando maiúsculas e minúsculas
     List<Usuario> findByRacaContainingIgnoreCase (String raca); // Encontrar usuários que contenham essa raça, ignorando maiúsculas e minúsculas
+    List<Usuario> findBySexualidadeContainingIgnoreCase (String sexo);
 }

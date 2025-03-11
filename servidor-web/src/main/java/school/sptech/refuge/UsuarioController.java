@@ -118,6 +118,19 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarios);
     }
 
+    @GetMapping("/sexualidade")
+    public ResponseEntity<List<Usuario>> encontrarPorSexualidade(
+            @RequestParam("sexualidade") String sexo
+            ){
+        List<Usuario> usuarios = repository.findBySexualidadeContainingIgnoreCase(sexo);
+
+        if(usuarios.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(usuarios);
+    }
+
 
 
 
