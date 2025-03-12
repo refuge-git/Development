@@ -4,6 +4,8 @@ package school.sptech.refuge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import school.sptech.refuge.entity.Genero;
+import school.sptech.refuge.entity.Usuario;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,7 @@
-package school.sptech.refuge;
+package school.sptech.refuge.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
