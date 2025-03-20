@@ -1,8 +1,8 @@
-package school.sptech.refuge;
+package school.sptech.refuge.usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import school.sptech.refuge.entity.Genero;
-import school.sptech.refuge.entity.Usuario;
+import school.sptech.refuge.usuario.entity.Genero;
+import school.sptech.refuge.usuario.entity.Usuario;
 
 import java.util.List;
 import java.util.Optional;

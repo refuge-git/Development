@@ -1,4 +1,4 @@
-package school.sptech.refuge.entity;
+package school.sptech.refuge.usuario.entity;
 
 public enum Genero {
     MASCULINO,
