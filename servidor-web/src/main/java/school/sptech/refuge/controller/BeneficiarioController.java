@@ -1,21 +1,23 @@
-package school.sptech.refuge.usuario;
+package school.sptech.refuge.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.usuario.entity.Genero;
-import school.sptech.refuge.usuario.entity.Usuario;
+import school.sptech.refuge.entity.Beneficiario;
+import school.sptech.refuge.entity.Genero;
+import school.sptech.refuge.repository.BeneficiarioRepository;
+
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios") // URI do servidor
-public class UsuarioController {
+public class BeneficiarioController {
 
     @Autowired // SpringBoot se responsabiliza por injetar UsuarioRepository em UsuarioController
-    UsuarioRepository repository;
+    BeneficiarioRepository repository;
 
 
 
@@ -27,11 +29,11 @@ public class UsuarioController {
 
     // Cadastro de usuários
     @PostMapping
-    public ResponseEntity<Usuario> cadastrar(
-            @RequestBody Usuario userRecived
+    public ResponseEntity<Beneficiario> cadastrar(
+            @RequestBody Beneficiario userRecived
     ){
         // O Optional é usado nesse caso, pois há a possibilidade de não ser encontrado nenhum usuário
-        Optional<Usuario> usuario = repository.findByCpf(userRecived.getCpf());
+        Optional<Beneficiario> usuario = repository.findByCpf(userRecived.getCpf());
         if(usuario.isPresent()){
             return ResponseEntity.status(409).build(); // O campo CPF deve ser único, se outro for encontrado na base deve retornar o código 409 (Conflito)
         }
@@ -46,41 +48,41 @@ public class UsuarioController {
 
     /// ENDPOINTS DO TIPO: GET
 
-    // Retornar todos os usuários cadastrados
+    // Retornar todos os beneficiarios cadastrados
     @GetMapping("/listar")
-    public ResponseEntity<List<Usuario>> listar(){
-        List<Usuario> usuarios = repository.findAll();
+    public ResponseEntity<List<Beneficiario>> listar(){
+        List<Beneficiario> beneficiarios = repository.findAll();
 
-        if (usuarios.isEmpty()) {
-            return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
+        if (beneficiarios.isEmpty()) {
+            return ResponseEntity.status(404).build(); // Nenhum beneficiario encontrado
         }
 
-        return ResponseEntity.status(200).body(usuarios);
+        return ResponseEntity.status(200).body(beneficiarios);
     }
 
     // Retorna o usuário pelo ID
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> encontrarPorId(
+    public ResponseEntity<Beneficiario> encontrarPorId(
             @PathVariable Integer id
     ){
-        Optional<Usuario> usuario = repository.findById(id);
+        Optional<Beneficiario> beneficiario = repository.findById(id);
 
-        if(usuario.isEmpty()){
+        if(beneficiario.isEmpty()){
             return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
         }
 
-        return ResponseEntity.status(200).body(usuario.get());
+        return ResponseEntity.status(200).body(beneficiario.get());
     }
 
     // Retorna usuários por gênero
     @GetMapping("/genero")
-    public ResponseEntity<List<Usuario>> encontrarPorGenero(
+    public ResponseEntity<List<Beneficiario>> encontrarPorGenero(
         @RequestParam("genero") String genero // Valor passado pela query da URL
     ){
         /* Essa conversão é necessária, pois o hibernate não converter uma String
            para o tipo Enum automaticamente, que é o atributo da entidade usuário */
         Genero generoEnum = Genero.valueOf(genero.toUpperCase()); // Convertendo para o tipo Enum
-        List<Usuario> usuarios = repository.findByGenero(generoEnum);
+        List<Beneficiario> usuarios = repository.findByGenero(generoEnum);
 
         if(usuarios.isEmpty()){
             return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
@@ -91,46 +93,46 @@ public class UsuarioController {
 
     // Encontrar usuários por nome
     @GetMapping("/nome")
-    public ResponseEntity<List<Usuario>> encontrarPorNome(
+    public ResponseEntity<List<Beneficiario>> encontrarPorNome(
             @RequestParam("nome") String nome // Valor passado pela query da URL
     ){
         // Explicação da query em: UsuarioRepository
-        List<Usuario> usuarios = repository.findByNomeContainingIgnoreCase(nome);
+        List<Beneficiario> beneficiarios = repository.findByNomeContainingIgnoreCase(nome);
 
-        if(usuarios.isEmpty()){
+        if(beneficiarios.isEmpty()){
             return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
         }
 
-        return ResponseEntity.status(200).body(usuarios);
+        return ResponseEntity.status(200).body(beneficiarios);
     }
 
     // Encontrar usuários por raça
     // Este endpoint segue o mesmo princípio do anterior!
     @GetMapping("/raca")
-    public ResponseEntity<List<Usuario>> encontrarPorRaca(
+    public ResponseEntity<List<Beneficiario>> encontrarPorRaca(
             @RequestParam("raca") String raca // Valor passado pela query da URL
     ){
         // Explicação da query em: UsuarioRepository
-        List<Usuario> usuarios = repository.findByRacaContainingIgnoreCase(raca);
+        List<Beneficiario> beneficiarios = repository.findByRacaContainingIgnoreCase(raca);
 
-        if(usuarios.isEmpty()){
+        if(beneficiarios.isEmpty()){
             return ResponseEntity.status(404).build(); // Nenhum usuário encontrado
         }
 
-        return ResponseEntity.status(200).body(usuarios);
+        return ResponseEntity.status(200).body(beneficiarios);
     }
 
     @GetMapping("/sexualidade")
-    public ResponseEntity<List<Usuario>> encontrarPorSexualidade(
+    public ResponseEntity<List<Beneficiario>> encontrarPorSexualidade(
             @RequestParam("sexualidade") String sexo
             ){
-        List<Usuario> usuarios = repository.findBySexualidadeContainingIgnoreCase(sexo);
+        List<Beneficiario> beneficiarios = repository.findBySexualidadeContainingIgnoreCase(sexo);
 
-        if(usuarios.isEmpty()){
+        if(beneficiarios.isEmpty()){
             return ResponseEntity.status(204).build();
         }
 
-        return ResponseEntity.status(200).body(usuarios);
+        return ResponseEntity.status(200).body(beneficiarios);
     }
 
 
@@ -142,7 +144,7 @@ public class UsuarioController {
 
     // Deleta usuário por ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Usuario> deletarUsuario(
+    public ResponseEntity<Beneficiario> deletarBeneficiario(
             @PathVariable Integer id
     ){
         if(repository.existsById(id)){
@@ -162,30 +164,30 @@ public class UsuarioController {
 
     // Atualiza usuário por id
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizarUsuario(
+    public ResponseEntity<Beneficiario> atualizarBeneficiario(
             @PathVariable Integer id,
-            @RequestBody Usuario novoUsuario
+            @RequestBody Beneficiario novoBeneficiario
     ){
         // Validações contra conflitos de registro único na base de dados
-        Optional<Usuario> usuario = repository.findByCpf(novoUsuario.getCpf());
-        if(usuario.isPresent() && !usuario.get().getId().equals(id)){
+        Optional<Beneficiario> beneficiario = repository.findByCpf(novoBeneficiario.getCpf());
+        if(beneficiario.isPresent() && !beneficiario.get().getId().equals(id)){
             return ResponseEntity.status(409).build();
         }
 
         // Verificando existência e atualizando usuário
-        Optional<Usuario> veriUser = repository.findById(id);
-        if(veriUser.isPresent()){
-            Usuario usuarioAtualizado = veriUser.get();
+        Optional<Beneficiario> veriBeneficiario = repository.findById(id);
+        if(veriBeneficiario.isPresent()){
+            Beneficiario beneficiarioAtualizado = veriBeneficiario.get();
 
             // Atualizando dados
-            usuarioAtualizado.setNome(novoUsuario.getNome());
-            usuarioAtualizado.setSexualidade(novoUsuario.getSexualidade());
-            usuarioAtualizado.setNomeMae(novoUsuario.getNomeMae());
-            usuarioAtualizado.setFotoPerfil(novoUsuario.getFotoPerfil());
-            usuarioAtualizado.setNumeroCartao(novoUsuario.getNumeroCartao());
-            usuarioAtualizado.setStatus(novoUsuario.getStatus());
+            beneficiarioAtualizado.setNome(novoBeneficiario.getNome());
+            beneficiarioAtualizado.setSexualidade(novoBeneficiario.getSexualidade());
+            beneficiarioAtualizado.setNomeMae(novoBeneficiario.getNomeMae());
+            beneficiarioAtualizado.setFotoPerfil(novoBeneficiario.getFotoPerfil());
+            beneficiarioAtualizado.setNumeroCartao(novoBeneficiario.getNumeroCartao());
+            beneficiarioAtualizado.setStatus(novoBeneficiario.getStatus());
 
-            return ResponseEntity.status(200).body(repository.save(usuarioAtualizado));
+            return ResponseEntity.status(200).body(repository.save(beneficiarioAtualizado));
         }
 
         return ResponseEntity.status(404).build();

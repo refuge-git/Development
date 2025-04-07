@@ -1,6 +1,7 @@
-package school.sptech.refuge.funcionario;
+package school.sptech.refuge.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import school.sptech.refuge.entity.Funcionario;
 
 import java.util.Optional;
 

@@ -1,11 +1,11 @@
-package school.sptech.refuge.usuario.entity;
+package school.sptech.refuge.entity;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
-public class Usuario {
+public class Beneficiario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

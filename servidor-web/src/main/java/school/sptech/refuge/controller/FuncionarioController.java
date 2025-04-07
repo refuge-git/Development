@@ -1,10 +1,12 @@
-package school.sptech.refuge.funcionario;
+package school.sptech.refuge.controller;
 
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.usuario.entity.Usuario;
+import school.sptech.refuge.entity.Funcionario;
+import school.sptech.refuge.repository.FuncionarioRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +30,7 @@ public class FuncionarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Funcionario> cadastrar(@RequestBody Funcionario funcionarioCad){
+    public ResponseEntity<Funcionario> cadastrar(@Valid @RequestBody Funcionario funcionarioCad){
         Optional<Funcionario> funcionarioCpf = repository.findByCpf(funcionarioCad.getCpf());
         Optional<Funcionario> funcionarioEmail = repository.findByEmail(funcionarioCad.getCpf());
 

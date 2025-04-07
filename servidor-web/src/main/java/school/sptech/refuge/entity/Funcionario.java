@@ -1,4 +1,4 @@
-package school.sptech.refuge.funcionario;
+package school.sptech.refuge.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
