@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.entity.Beneficiario;
-import school.sptech.refuge.entity.Genero;
+import school.sptech.refuge.entity.GeneroEnum;
 import school.sptech.refuge.repository.BeneficiarioRepository;
 
 
@@ -18,11 +18,6 @@ public class BeneficiarioController {
 
     @Autowired // SpringBoot se responsabiliza por injetar UsuarioRepository em UsuarioController
     BeneficiarioRepository repository;
-
-
-
-
-
 
 
     ///  ENDPOINTS DO TIPO: POST
@@ -42,10 +37,6 @@ public class BeneficiarioController {
     }
 
 
-
-
-
-
     /// ENDPOINTS DO TIPO: GET
 
     // Retornar todos os beneficiarios cadastrados
@@ -59,6 +50,7 @@ public class BeneficiarioController {
 
         return ResponseEntity.status(200).body(beneficiarios);
     }
+
 
     // Retorna o usuário pelo ID
     @GetMapping("/{id}")
@@ -74,6 +66,7 @@ public class BeneficiarioController {
         return ResponseEntity.status(200).body(beneficiario.get());
     }
 
+
     // Retorna usuários por gênero
     @GetMapping("/genero")
     public ResponseEntity<List<Beneficiario>> encontrarPorGenero(
@@ -81,7 +74,7 @@ public class BeneficiarioController {
     ){
         /* Essa conversão é necessária, pois o hibernate não converter uma String
            para o tipo Enum automaticamente, que é o atributo da entidade usuário */
-        Genero generoEnum = Genero.valueOf(genero.toUpperCase()); // Convertendo para o tipo Enum
+        GeneroEnum generoEnum = GeneroEnum.valueOf(genero.toUpperCase()); // Convertendo para o tipo Enum
         List<Beneficiario> usuarios = repository.findByGenero(generoEnum);
 
         if(usuarios.isEmpty()){
@@ -90,6 +83,7 @@ public class BeneficiarioController {
 
         return ResponseEntity.status(200).body(usuarios);
     }
+
 
     // Encontrar usuários por nome
     @GetMapping("/nome")
@@ -105,6 +99,7 @@ public class BeneficiarioController {
 
         return ResponseEntity.status(200).body(beneficiarios);
     }
+
 
     // Encontrar usuários por raça
     // Este endpoint segue o mesmo princípio do anterior!
@@ -136,10 +131,6 @@ public class BeneficiarioController {
     }
 
 
-
-
-
-
     ///  ENDPOINTS DO TIPO: DELETE
 
     // Deleta usuário por ID
@@ -156,10 +147,6 @@ public class BeneficiarioController {
     }
 
 
-
-
-
-
     ///  ENDPOINTS DO TIPO: PUT
 
     // Atualiza usuário por id
@@ -174,6 +161,7 @@ public class BeneficiarioController {
             return ResponseEntity.status(409).build();
         }
 
+
         // Verificando existência e atualizando usuário
         Optional<Beneficiario> veriBeneficiario = repository.findById(id);
         if(veriBeneficiario.isPresent()){
@@ -181,7 +169,7 @@ public class BeneficiarioController {
 
             // Atualizando dados
             beneficiarioAtualizado.setNome(novoBeneficiario.getNome());
-            beneficiarioAtualizado.setSexualidade(novoBeneficiario.getSexualidade());
+            beneficiarioAtualizado.setGenero(novoBeneficiario.getGenero());
             beneficiarioAtualizado.setNomeMae(novoBeneficiario.getNomeMae());
             beneficiarioAtualizado.setFotoPerfil(novoBeneficiario.getFotoPerfil());
             beneficiarioAtualizado.setNumeroCartao(novoBeneficiario.getNumeroCartao());

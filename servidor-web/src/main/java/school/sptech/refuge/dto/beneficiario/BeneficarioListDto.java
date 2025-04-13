@@ -1,7 +1,7 @@
 package school.sptech.refuge.dto.beneficiario;
 
-import school.sptech.refuge.entity.Genero;
-import school.sptech.refuge.entity.Status;
+import school.sptech.refuge.entity.GeneroEnum;
+import school.sptech.refuge.entity.StatusEnum;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,12 +12,12 @@ public class BeneficarioListDto {
     private String nome;
     private LocalDate dtNasc;
     private String cpf;
-    private Genero genero;
+    private GeneroEnum generoEnum;
     private String raca;
     private String nomeMae;
     private String fotoPerfil;
     private String sisa;
-    private Status status;
+    private StatusEnum statusEnum;
     private LocalDateTime data_ativacao;
 
     public Integer getId() {
@@ -52,12 +52,12 @@ public class BeneficarioListDto {
         this.cpf = cpf;
     }
 
-    public Genero getGenero() {
-        return genero;
+    public GeneroEnum getGenero() {
+        return generoEnum;
     }
 
-    public void setGenero(Genero genero) {
-        this.genero = genero;
+    public void setGenero(GeneroEnum generoEnum) {
+        this.generoEnum = generoEnum;
     }
 
     public String getRaca() {
@@ -92,12 +92,12 @@ public class BeneficarioListDto {
         this.sisa = numeroCartao;
     }
 
-    public Status getStatus() {
-        return status;
+    public StatusEnum getStatus() {
+        return statusEnum;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(StatusEnum statusEnum) {
+        this.statusEnum = statusEnum;
     }
 
     public LocalDateTime getData_ativacao() {

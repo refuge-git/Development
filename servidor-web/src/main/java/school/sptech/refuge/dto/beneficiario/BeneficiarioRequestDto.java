@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.br.CPF;
-import school.sptech.refuge.entity.Genero;
+import school.sptech.refuge.entity.GeneroEnum;
 
 import java.time.LocalDate;
 
@@ -25,7 +25,7 @@ public class BeneficiarioRequestDto {
 
     @NotNull
     @NotBlank
-    private Genero genero;
+    private GeneroEnum generoEnum;
 
     @NotNull
     @NotBlank
@@ -64,12 +64,12 @@ public class BeneficiarioRequestDto {
         this.cpf = cpf;
     }
 
-    public Genero getGenero() {
-        return genero;
+    public GeneroEnum getGenero() {
+        return generoEnum;
     }
 
-    public void setGenero(Genero genero) {
-        this.genero = genero;
+    public void setGenero(GeneroEnum generoEnum) {
+        this.generoEnum = generoEnum;
     }
 
     public String getRaca() {

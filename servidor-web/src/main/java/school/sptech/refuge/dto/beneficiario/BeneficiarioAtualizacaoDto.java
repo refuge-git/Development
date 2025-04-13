@@ -1,18 +1,15 @@
 package school.sptech.refuge.dto.beneficiario;
 
-import jakarta.persistence.*;
-import school.sptech.refuge.entity.Genero;
-import school.sptech.refuge.entity.Status;
+import school.sptech.refuge.entity.GeneroEnum;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class BeneficiarioAtualizacaoDto {
 
     private String nome;
     private LocalDate dtNasc;
     private String cpf;
-    private Genero genero;
+    private GeneroEnum generoEnum;
     private String raca;
     private String nomeMae;
     private String fotoPerfil;
@@ -43,12 +40,12 @@ public class BeneficiarioAtualizacaoDto {
         this.cpf = cpf;
     }
 
-    public Genero getGenero() {
-        return genero;
+    public GeneroEnum getGenero() {
+        return generoEnum;
     }
 
-    public void setGenero(Genero genero) {
-        this.genero = genero;
+    public void setGenero(GeneroEnum generoEnum) {
+        this.generoEnum = generoEnum;
     }
 
     public String getRaca() {

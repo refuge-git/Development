@@ -1,0 +1,27 @@
+package school.sptech.refuge.entity;
+
+import school.sptech.refuge.exeption.StatusInvalidoExeption;
+
+public enum StatusEnum {
+    ATIVO ("Usuário Ativo"),
+    INATIVO ("Usuário Ativo");
+
+    private final String descricaoStatus;
+
+    StatusEnum(String descricaoStatus) {
+        this.descricaoStatus = descricaoStatus;
+    }
+
+    public String getDescricaoStatus() {
+        return descricaoStatus;
+    }
+
+    public static StatusEnum fromString(String status){
+        for (StatusEnum statusEnum : StatusEnum.values()){
+            if(statusEnum.name().equalsIgnoreCase(status)){
+                return statusEnum;
+            }
+        }
+        throw new StatusInvalidoExeption("Tipo de Situação inválida: "+ status);
+    }
+}

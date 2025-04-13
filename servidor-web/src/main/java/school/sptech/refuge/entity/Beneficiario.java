@@ -15,7 +15,7 @@ public class Beneficiario {
     private String cpf;
     // Usado para que o valor passado seja a nomenclatura do ENUM e não o seu indentificador numérico (MASCULINO, FEMININO...)
     @Enumerated(EnumType.STRING)
-    private Genero genero;
+    private GeneroEnum generoEnum;
 
     @Enumerated(EnumType.STRING)
     private String raca;
@@ -23,7 +23,7 @@ public class Beneficiario {
     private String fotoPerfil;
     private String sisa;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private StatusEnum statusEnum;
     private LocalDateTime data_ativacao;
 
     public Integer getId() {
@@ -58,12 +58,12 @@ public class Beneficiario {
         this.cpf = cpf;
     }
 
-    public Genero getGenero() {
-        return genero;
+    public GeneroEnum getGenero() {
+        return generoEnum;
     }
 
-    public void setGenero(Genero genero) {
-        this.genero = genero;
+    public void setGenero(GeneroEnum generoEnum) {
+        this.generoEnum = generoEnum;
     }
 
     public String getRaca() {
@@ -98,12 +98,12 @@ public class Beneficiario {
         this.sisa = numeroCartao;
     }
 
-    public Status getStatus() {
-        return status;
+    public StatusEnum getStatus() {
+        return statusEnum;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(StatusEnum statusEnum) {
+        this.statusEnum = statusEnum;
     }
 
     public LocalDateTime getData_ativacao() {

@@ -1,32 +1,26 @@
 package school.sptech.refuge.dto.condicao.saude;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
-import org.aspectj.lang.annotation.Before;
 
 import java.time.LocalDateTime;
 
-public class CondicaoSaudeRequestDto {
+public class CondicaoSaudeListDto {
 
-    @NotNull
-    @NotBlank
+    private Integer id;
     private String descricao;
-
-    @NotNull
-    @NotBlank
-    @Past(message = "A data do diagnóstico deve estar no passado")
     private LocalDateTime dataDiagnostico;
-
-    @NotBlank
     private String tratamento;
-
-    @NotBlank
     private String observacoes;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getDescricao() {
         return descricao;
