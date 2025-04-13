@@ -1,28 +1,22 @@
-package school.sptech.refuge.entity;
+package school.sptech.refuge.dto.beneficiario;
 
-import jakarta.persistence.*;
+import school.sptech.refuge.entity.Genero;
+import school.sptech.refuge.entity.Status;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-public class Beneficiario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BeneficarioListDto {
+
     private Integer id;
     private String nome;
     private LocalDate dtNasc;
     private String cpf;
-    // Usado para que o valor passado seja a nomenclatura do ENUM e não o seu indentificador numérico (MASCULINO, FEMININO...)
-    @Enumerated(EnumType.STRING)
     private Genero genero;
-
-    @Enumerated(EnumType.STRING)
     private String raca;
     private String nomeMae;
     private String fotoPerfil;
     private String sisa;
-    @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDateTime data_ativacao;
 
@@ -112,5 +106,13 @@ public class Beneficiario {
 
     public void setData_ativacao(LocalDateTime data_ativacao) {
         this.data_ativacao = data_ativacao;
+    }
+
+    public String getSisa() {
+        return sisa;
+    }
+
+    public void setSisa(String sisa) {
+        this.sisa = sisa;
     }
 }

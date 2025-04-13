@@ -1,8 +1,10 @@
 package school.sptech.refuge.entity;
 
 public enum Genero {
-    MASCULINO,
-    FEMININO,
-    NAO_BINARIO,
+    MULHER_CIS,
+    HOMEM,CIS,
+    MULHER_TRANS,
+    HOMEM_TRANS,
+    NÃO_INFORMADO,
     OUTRO
 }

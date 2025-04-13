@@ -1,38 +1,44 @@
-package school.sptech.refuge.entity;
+package school.sptech.refuge.dto.beneficiario;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import org.hibernate.validator.constraints.br.CPF;
+import school.sptech.refuge.entity.Genero;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-@Entity
-public class Beneficiario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class BeneficiarioRequestDto {
+
+    @NotNull
+    @NotBlank
     private String nome;
+
+    @NotNull
+    @NotBlank
+    @Past
     private LocalDate dtNasc;
+
+    @CPF
     private String cpf;
     // Usado para que o valor passado seja a nomenclatura do ENUM e não o seu indentificador numérico (MASCULINO, FEMININO...)
-    @Enumerated(EnumType.STRING)
+
+    @NotNull
+    @NotBlank
     private Genero genero;
 
-    @Enumerated(EnumType.STRING)
+    @NotNull
+    @NotBlank
     private String raca;
+
+    @NotNull
+    @NotBlank
     private String nomeMae;
+
     private String fotoPerfil;
     private String sisa;
-    @Enumerated(EnumType.STRING)
-    private Status status;
-    private LocalDateTime data_ativacao;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
@@ -98,19 +104,4 @@ public class Beneficiario {
         this.sisa = numeroCartao;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getData_ativacao() {
-        return data_ativacao;
-    }
-
-    public void setData_ativacao(LocalDateTime data_ativacao) {
-        this.data_ativacao = data_ativacao;
-    }
 }
