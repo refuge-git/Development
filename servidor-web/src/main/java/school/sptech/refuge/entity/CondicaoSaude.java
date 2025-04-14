@@ -1,9 +1,6 @@
 package school.sptech.refuge.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -19,6 +16,10 @@ public class CondicaoSaude {
     private LocalDateTime dataDiagnostico;
     private String tratamento;
     private String observacoes;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_beneficiario", referencedColumnName = "id")
+    private Beneficiario beneficiario;
 
 
     public Integer getId() {

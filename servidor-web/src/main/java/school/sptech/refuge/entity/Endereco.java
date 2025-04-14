@@ -1,9 +1,6 @@
 package school.sptech.refuge.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -15,25 +12,10 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @NotNull
-    @NotBlank
     private String cep;
-
-    @NotNull
-    @NotBlank
     private String rua;
-
-    @NotNull
-    @NotBlank
     private String bairro;
-
-    @NotNull
-    @NotBlank
     private String logradouro;
-
-    @NotNull
-    @NotBlank
     private String numero;
 
     public Integer getId() {
@@ -44,43 +26,44 @@ public class Endereco {
         this.id = id;
     }
 
-    public @NotNull @NotBlank String getCep() {
+    public String getCep() {
         return cep;
     }
 
-    public void setCep(@NotNull @NotBlank String cep) {
+    public void setCep(String cep) {
         this.cep = cep;
     }
 
-    public @NotNull @NotBlank String getRua() {
+    public String getRua() {
         return rua;
     }
 
-    public void setRua(@NotNull @NotBlank String rua) {
+    public void setRua(String rua) {
         this.rua = rua;
     }
 
-    public @NotNull @NotBlank String getBairro() {
+    public String getBairro() {
         return bairro;
     }
 
-    public void setBairro(@NotNull @NotBlank String bairro) {
+    public void setBairro(String bairro) {
         this.bairro = bairro;
     }
 
-    public @NotNull @NotBlank String getLogradouro() {
+    public String getLogradouro() {
         return logradouro;
     }
 
-    public void setLogradouro(@NotNull @NotBlank String logradouro) {
+    public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
     }
 
-    public @NotNull @NotBlank String getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(@NotNull @NotBlank String numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 }
+

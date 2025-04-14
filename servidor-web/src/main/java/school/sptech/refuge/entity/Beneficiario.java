@@ -26,6 +26,15 @@ public class Beneficiario {
     private StatusEnum statusEnum;
     private LocalDateTime data_ativacao;
 
+    @OneToOne
+    @JoinColumn(name = "fk_endereco", referencedColumnName = "id")
+    private Endereco endereco;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_funcionario", referencedColumnName = "id")
+    private Funcionario funcionario;
+
+
     public Integer getId() {
         return id;
     }

@@ -1,13 +1,22 @@
 package school.sptech.refuge.entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
 public class TipoAtendimento {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String descricao;
     private LocalDate dtCriacao;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_funcionario", referencedColumnName = "id")
+    private Funcionario funcionario;
 
     public TipoAtendimento(Integer id, String nome, String descricao, LocalDate dtCriacao) {
         this.id = id;
