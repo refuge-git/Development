@@ -18,11 +18,22 @@ public class TipoAtendimento {
     @JoinColumn(name = "fk_funcionario", referencedColumnName = "id")
     private Funcionario funcionario;
 
-    public TipoAtendimento(Integer id, String nome, String descricao, LocalDate dtCriacao) {
+    public TipoAtendimento(Integer id, String nome, String descricao, LocalDate dtCriacao, Funcionario funcionario) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-        this.dtCriacao = dtCriacao;
+        this.dtCriacao = LocalDate.now();
+        this.funcionario = funcionario;
+    }
+
+    public TipoAtendimento(Integer id, String nome, String descricao, Funcionario funcionario) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.funcionario = funcionario;
+    }
+
+    public TipoAtendimento() {
     }
 
     public Integer getId() {
@@ -55,5 +66,13 @@ public class TipoAtendimento {
 
     public void setDtCriacao(LocalDate dtCriacao) {
         this.dtCriacao = dtCriacao;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 }

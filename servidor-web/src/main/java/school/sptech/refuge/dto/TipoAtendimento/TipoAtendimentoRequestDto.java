@@ -19,10 +19,17 @@ public class TipoAtendimentoRequestDto {
     @PastOrPresent
     private LocalDate dtCriacao;
 
-    public TipoAtendimentoRequestDto(String nome, String descricao, LocalDate dtCriacao) {
+    @NotNull
+    private Integer idFuncionario;
+
+    public TipoAtendimentoRequestDto(String nome, String descricao, LocalDate dtCriacao, Integer idFuncionario) {
         this.nome = nome;
         this.descricao = descricao;
         this.dtCriacao = dtCriacao;
+        this.idFuncionario = idFuncionario;
+    }
+
+    public TipoAtendimentoRequestDto() {
     }
 
     public String getNome() {
@@ -45,7 +52,13 @@ public class TipoAtendimentoRequestDto {
         return dtCriacao;
     }
 
-    public void setDtCriacao(LocalDate dtCriacao) {
-        this.dtCriacao = dtCriacao;
+
+    public Integer getIdFuncionario() {
+        return idFuncionario;
     }
+
+    public void setIdFuncionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
+
 }

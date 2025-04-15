@@ -1,38 +1,60 @@
 package school.sptech.refuge.dto.TipoAtendimento;
 
+import school.sptech.refuge.entity.Funcionario;
 import school.sptech.refuge.entity.TipoAtendimento;
+
+import java.util.List;
 
 public class TipoAtendimentoMapper {
 
 
-    public static TipoAtendimentoListDto toDTO(TipoAtendimento tipoAtendimento) {
+    public static TipoAtendimentoListDto toListagemDto(TipoAtendimento tipoAtendimento) {
         if (tipoAtendimento == null) {
             return null;
         }
+
         return new TipoAtendimentoListDto(
                 tipoAtendimento.getId(),
                 tipoAtendimento.getNome(),
                 tipoAtendimento.getDescricao(),
-                tipoAtendimento.getDtCriacao()
+                tipoAtendimento.getDtCriacao(),
+                tipoAtendimento.getFuncionario().getNome()
         );
     }
 
+    public static List<TipoAtendimentoListDto> toListagemDto(List<TipoAtendimento> tipos) {
+        if (tipos == null) {
+            return null;
+        }
 
-    public static TipoAtendimento toEntity(TipoAtendimentoRequestDto tipoAtendimentoRequestDto) {
+        return tipos.stream().map(TipoAtendimentoMapper::toListagemDto).toList();
+    }
+
+    public static TipoAtendimento toEntity(TipoAtendimentoRequestDto dto, Funcionario funcionario) {
+        if (dto == null || funcionario == null) {
+            return null;
+        }
+
         return new TipoAtendimento(
                 null,
-                tipoAtendimentoRequestDto.getNome(),
-                tipoAtendimentoRequestDto.getDescricao(),
-                tipoAtendimentoRequestDto.getDtCriacao()
+                dto.getNome(),
+                dto.getDescricao(),
+                dto.getDtCriacao(),
+                funcionario
         );
     }
 
-    public static TipoAtendimento toEntityUpdate(TipoAtendimento tipoAtendimento, TipoAtendimentoAtualizarDto tipoAtendimentoAtualizarDto) {
-        tipoAtendimento.setNome(tipoAtendimentoAtualizarDto.getNome());
-        tipoAtendimento.setDescricao(tipoAtendimentoAtualizarDto.getDescricao());
-        return tipoAtendimento;
+    public static TipoAtendimento toEntity(TipoAtendimentoAtualizarDto dto, Integer id, Funcionario funcionario) {
+        if (dto == null) {
+            return null;
+        }
+
+        return new TipoAtendimento(
+                id,
+                dto.getNome(),
+                dto.getDescricao(),
+                funcionario
+        );
     }
-
-
 }
 

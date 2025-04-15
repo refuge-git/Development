@@ -11,12 +11,17 @@ public class TipoAtendimentoListDto {
     private String nome;
     private String descricao;
     private LocalDate dtCriacao;
+    private String nomeFuncionario;
 
-    public TipoAtendimentoListDto(Integer id, String nome, String descricao, LocalDate dtCriacao) {
+    public TipoAtendimentoListDto(Integer id, String nome, String descricao, LocalDate dtCriacao, String nomeFuncionario) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.dtCriacao = dtCriacao;
+        this.nomeFuncionario = nomeFuncionario;
+    }
+
+    public TipoAtendimentoListDto() {
     }
 
     public Integer getId() {
@@ -49,5 +54,13 @@ public class TipoAtendimentoListDto {
 
     public void setDtCriacao(LocalDate dtCriacao) {
         this.dtCriacao = dtCriacao;
+    }
+
+    public String getNomeFuncionario() {
+        return nomeFuncionario;
+    }
+
+    public void setNomeFuncionario(String nomeFuncionario) {
+        this.nomeFuncionario = nomeFuncionario;
     }
 }
