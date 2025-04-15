@@ -18,13 +18,14 @@ public class Beneficiario {
     private GeneroEnum generoEnum;
 
     @Enumerated(EnumType.STRING)
-    private String raca;
+    private RacaEnum raca;
     private String nomeMae;
     private String fotoPerfil;
     private String sisa;
+
     @Enumerated(EnumType.STRING)
     private StatusEnum statusEnum;
-    private LocalDateTime data_ativacao;
+    private LocalDateTime dataAtivacao;
 
     @OneToOne
     @JoinColumn(name = "fk_endereco", referencedColumnName = "id")
@@ -34,6 +35,24 @@ public class Beneficiario {
     @JoinColumn(name = "fk_funcionario", referencedColumnName = "id")
     private Funcionario funcionario;
 
+    public Beneficiario(Integer id, String nome, LocalDate dtNasc, String cpf, GeneroEnum generoEnum, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime dataAtivacao, Endereco endereco, Funcionario funcionario) {
+        this.id = id;
+        this.nome = nome;
+        this.dtNasc = dtNasc;
+        this.cpf = cpf;
+        this.generoEnum = generoEnum;
+        this.raca = raca;
+        this.nomeMae = nomeMae;
+        this.fotoPerfil = fotoPerfil;
+        this.sisa = sisa;
+        this.statusEnum = statusEnum;
+        this.dataAtivacao = dataAtivacao;
+        this.endereco = endereco;
+        this.funcionario = funcionario;
+    }
+
+    public Beneficiario() {
+    }
 
     public Integer getId() {
         return id;
@@ -75,11 +94,11 @@ public class Beneficiario {
         this.generoEnum = generoEnum;
     }
 
-    public String getRaca() {
+    public RacaEnum getRaca() {
         return raca;
     }
 
-    public void setRaca(String raca) {
+    public void setRaca(RacaEnum raca) {
         this.raca = raca;
     }
 
@@ -116,10 +135,53 @@ public class Beneficiario {
     }
 
     public LocalDateTime getData_ativacao() {
-        return data_ativacao;
+        return dataAtivacao;
     }
 
     public void setData_ativacao(LocalDateTime data_ativacao) {
-        this.data_ativacao = data_ativacao;
+        this.dataAtivacao = data_ativacao;
     }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public StatusEnum getStatusEnum() {
+        return statusEnum;
+    }
+
+    public void setStatusEnum(StatusEnum statusEnum) {
+        this.statusEnum = statusEnum;
+    }
+
+    public String getSisa() {
+        return sisa;
+    }
+
+    public void setSisa(String sisa) {
+        this.sisa = sisa;
+    }
+
+    public GeneroEnum getGeneroEnum() {
+        return generoEnum;
+    }
+
+    public void setGeneroEnum(GeneroEnum generoEnum) {
+        this.generoEnum = generoEnum;
+    }
+
+
+
 }

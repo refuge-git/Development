@@ -1,6 +1,7 @@
 package school.sptech.refuge.dto.beneficiario;
 
 import school.sptech.refuge.entity.GeneroEnum;
+import school.sptech.refuge.entity.RacaEnum;
 import school.sptech.refuge.entity.StatusEnum;
 
 import java.time.LocalDate;
@@ -13,12 +14,32 @@ public class BeneficarioListDto {
     private LocalDate dtNasc;
     private String cpf;
     private GeneroEnum generoEnum;
-    private String raca;
+    private RacaEnum raca;
     private String nomeMae;
     private String fotoPerfil;
     private String sisa;
     private StatusEnum statusEnum;
     private LocalDateTime data_ativacao;
+    private String nomeFuncionario;
+
+
+    public BeneficarioListDto(Integer id, String nome, LocalDate dtNasc, String cpf, GeneroEnum generoEnum, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime data_ativacao, String nomeFuncionario) {
+        this.id = id;
+        this.nome = nome;
+        this.dtNasc = dtNasc;
+        this.cpf = cpf;
+        this.generoEnum = generoEnum;
+        this.raca = raca;
+        this.nomeMae = nomeMae;
+        this.fotoPerfil = fotoPerfil;
+        this.sisa = sisa;
+        this.statusEnum = statusEnum;
+        this.data_ativacao = data_ativacao;
+        this.nomeFuncionario = nomeFuncionario;
+    }
+
+    public BeneficarioListDto() {
+    }
 
     public Integer getId() {
         return id;
@@ -60,11 +81,11 @@ public class BeneficarioListDto {
         this.generoEnum = generoEnum;
     }
 
-    public String getRaca() {
+    public RacaEnum getRaca() {
         return raca;
     }
 
-    public void setRaca(String raca) {
+    public void setRaca(RacaEnum raca) {
         this.raca = raca;
     }
 
@@ -114,5 +135,29 @@ public class BeneficarioListDto {
 
     public void setSisa(String sisa) {
         this.sisa = sisa;
+    }
+
+    public GeneroEnum getGeneroEnum() {
+        return generoEnum;
+    }
+
+    public void setGeneroEnum(GeneroEnum generoEnum) {
+        this.generoEnum = generoEnum;
+    }
+
+    public StatusEnum getStatusEnum() {
+        return statusEnum;
+    }
+
+    public void setStatusEnum(StatusEnum statusEnum) {
+        this.statusEnum = statusEnum;
+    }
+
+    public String getNomeFuncionario() {
+        return nomeFuncionario;
+    }
+
+    public void setNomeFuncionario(String nomeFuncionario) {
+        this.nomeFuncionario = nomeFuncionario;
     }
 }
