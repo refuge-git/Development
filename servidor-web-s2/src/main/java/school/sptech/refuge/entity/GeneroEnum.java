@@ -1,7 +1,6 @@
 package school.sptech.refuge.entity;
 
-import school.sptech.refuge.exeption.GeneroInvalidoExeption;
-import school.sptech.refuge.exeption.StatusInvalidoExeption;
+import school.sptech.refuge.exception.GeneroInvalidoExeption;
 
 public enum GeneroEnum {
     MULHER_CIS("Mulher Cisgênero"),

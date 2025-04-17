@@ -2,12 +2,9 @@ package school.sptech.refuge.service;
 
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.entity.Beneficiario;
-import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.exeption.BeneficiarioNaoEncontradaException;
-import school.sptech.refuge.exeption.EntidadeNaoEncontradaException;
-import school.sptech.refuge.exeption.FuncionarioNaoEncontradaException;
+import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
+import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.repository.BeneficiarioRepository;
-import school.sptech.refuge.repository.FuncionarioRepository;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package school.sptech.refuge.exeption;
+package school.sptech.refuge.exception;
 
 public class FuncionarioNaoEncontradaException extends RuntimeException {
 

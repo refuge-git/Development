@@ -12,12 +12,11 @@ import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.dto.funcionario.FuncionarioMapper;
 import school.sptech.refuge.dto.funcionario.FuncionarioTokenDto;
 import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.exeption.EntidadeNaoEncontradaException;
-import school.sptech.refuge.exeption.FuncionarioNaoEncontradaException;
+import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
+import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.repository.FuncionarioRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FuncionarioService {
@@ -49,7 +48,7 @@ public class FuncionarioService {
 
         final Authentication authentication = this.authenticationManager.authenticate(credetials);
 
-        Funcionario funcionarioAutenticado = funcionarioRepository.findByEmail(funcionario.getEmail()).orElseThrow(() -> new ResponseStatusException(404, "Emial dousuário não cadastrado", null));
+        Funcionario funcionarioAutenticado = funcionarioRepository.findByEmail(funcionario.getEmail()).orElseThrow(() -> new ResponseStatusException(404, "Emial do usuário não cadastrado", null));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
