@@ -1,5 +1,6 @@
 package school.sptech.refuge.dto.funcionario;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -7,6 +8,8 @@ public class FuncionarioRequestDto {
 
     @NotNull
     @NotBlank
+    @Size(min = 3, max = 10)
+    @Schema(description = "Nome do usuário")
     private String nome;
 
     @NotNull
@@ -23,10 +26,13 @@ public class FuncionarioRequestDto {
     @NotNull
     @NotBlank
     @Email
+    @Schema(description = "Email do usuário")
     private String email;
 
     @NotNull
     @NotBlank
+    @Size(min = 6, max = 20)
+    @Schema(description = "Senha do usuário")
     private String senha;
 
     public FuncionarioRequestDto(String nome, String cpf, String telefone, String email, String senha) {

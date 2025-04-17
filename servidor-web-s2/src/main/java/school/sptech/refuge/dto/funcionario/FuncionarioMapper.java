@@ -63,4 +63,44 @@ public class FuncionarioMapper {
                 dto.getSenha()
         );
     }
+
+    public static Funcionario of(FuncionarioRequestDto funcionarioRequestDto) {
+        Funcionario funcionario = new Funcionario();
+
+        funcionario.setEmail(funcionarioRequestDto.getEmail());
+        funcionario.setNome(funcionarioRequestDto.getNome());
+        funcionario.setSenha(funcionarioRequestDto.getSenha());
+
+        return funcionario;
+    }
+
+    public static Funcionario of(FuncionarioLoginDto funcionarioLoginDto) {
+        Funcionario funcionario = new Funcionario();
+
+        funcionario.setEmail(funcionarioLoginDto.getEmail());
+        funcionario.setSenha(funcionarioLoginDto.getSenha());
+
+        return funcionario;
+    }
+
+    public static FuncionarioTokenDto of(Funcionario funcionario, String token) {
+        FuncionarioTokenDto funcionarioTokenDto = new FuncionarioTokenDto();
+
+        funcionarioTokenDto.setUserId(funcionario.getId());
+        funcionarioTokenDto.setEmail(funcionario.getEmail());
+        funcionarioTokenDto.setNome(funcionario.getNome());
+        funcionarioTokenDto.setToken(token);
+
+        return funcionarioTokenDto;
+    }
+
+    public static FuncionarioListDto of(Funcionario funcionario) {
+        FuncionarioListDto funcionarioListDto = new FuncionarioListDto();
+
+        funcionarioListDto.setId(funcionario.getId());
+        funcionarioListDto.setEmail(funcionario.getEmail());
+        funcionarioListDto.setNome(funcionario.getNome());
+
+        return funcionarioListDto;
+    }
 }

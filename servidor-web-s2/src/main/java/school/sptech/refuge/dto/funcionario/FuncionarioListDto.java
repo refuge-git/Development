@@ -1,12 +1,17 @@
 package school.sptech.refuge.dto.funcionario;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class FuncionarioListDto {
 
+    @Schema(description = "Id do usuário")
     private Integer id;
+    @Schema(description = "Nome do usuário")
     private String nome;
     private String cpf;
     private String telefone;
+    @Schema(description = "Email do usuário")
     private String email;
 
     public FuncionarioListDto(Integer id, String nome, String cpf, String telefone, String email) {
