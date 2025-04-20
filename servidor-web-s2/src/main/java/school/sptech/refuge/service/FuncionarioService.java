@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import school.sptech.refuge.config.GerenciadorTokenJwt;
 import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.dto.funcionario.FuncionarioMapper;
 import school.sptech.refuge.dto.funcionario.FuncionarioTokenDto;

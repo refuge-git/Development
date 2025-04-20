@@ -1,14 +1,13 @@
 package school.sptech.refuge.controller;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.dto.funcionario.FuncionarioAtualizacaoDto;
-import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.dto.funcionario.FuncionarioMapper;
-import school.sptech.refuge.dto.funcionario.FuncionarioRequestDto;
+import school.sptech.refuge.dto.funcionario.*;
 import school.sptech.refuge.entity.Funcionario;
 import school.sptech.refuge.repository.FuncionarioRepository;
 import school.sptech.refuge.service.FuncionarioService;
@@ -26,27 +25,56 @@ public class FuncionarioController {
         this.funcionarioService = funcionarioService;
     }
 
+//    @PostMapping
+//    public ResponseEntity<FuncionarioListDto> cadastrar(@Valid @RequestBody FuncionarioRequestDto dto) {
+//        Funcionario funcionario = FuncionarioMapper.toEntity(dto);
+//        Funcionario funcionarioCadastrado = funcionarioService.cadastrar(funcionario);
+//        FuncionarioListDto dtoSalvo = FuncionarioMapper.toListagemDto(funcionarioCadastrado);
+//        return ResponseEntity.status(201).body(dtoSalvo);
+//    }
+
     @PostMapping
-    public ResponseEntity<FuncionarioListDto> cadastrar(@Valid @RequestBody FuncionarioRequestDto dto) {
-        Funcionario funcionario = FuncionarioMapper.toEntity(dto);
-        Funcionario funcionarioCadastrado = funcionarioService.cadastrar(funcionario);
-        FuncionarioListDto dtoSalvo = FuncionarioMapper.toListagemDto(funcionarioCadastrado);
-        return ResponseEntity.status(201).body(dtoSalvo);
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> criar(@RequestBody @Valid FuncionarioRequestDto funcionarioRequestDto){
+
+        final Funcionario novoFuncionario = FuncionarioMapper.of(funcionarioRequestDto);
+        this.funcionarioService.criar(novoFuncionario);
+        return ResponseEntity.status(201).build();
     }
+
+    @PostMapping("/login")
+    public  ResponseEntity<FuncionarioTokenDto> login (@RequestBody FuncionarioLoginDto funcionarioLoginDto){
+
+        final Funcionario funcionario = FuncionarioMapper.of(funcionarioLoginDto);
+        FuncionarioTokenDto funcionarioTokenDto = this.funcionarioService.autenticar(funcionario);
+
+        return ResponseEntity.status(200).body(funcionarioTokenDto);
+    }
+
+//    @GetMapping
+//    public ResponseEntity<List<FuncionarioListDto>> listar() {
+//
+//        List<Funcionario> funcionarios = funcionarioService.listar();
+//
+//        if (funcionarios.isEmpty()) {
+//            return ResponseEntity.status(204).build();
+//        }
+//
+//        List<FuncionarioListDto> dtos = FuncionarioMapper.toListagemDtos(funcionarios);
+//        return ResponseEntity.status(200).body(dtos);
+//    }
 
     @GetMapping
-    public ResponseEntity<List<FuncionarioListDto>> listar() {
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<FuncionarioListDto>> listarTodos(){
 
-        List<Funcionario> funcionarios = funcionarioService.listar();
+        List<FuncionarioListDto> funcionariosEncontrados = this.funcionarioService.listarTodos();
 
-        if (funcionarios.isEmpty()) {
+        if(funcionariosEncontrados.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-
-        List<FuncionarioListDto> dtos = FuncionarioMapper.toListagemDtos(funcionarios);
-        return ResponseEntity.status(200).body(dtos);
+        return ResponseEntity.status(200).body(funcionariosEncontrados);
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<FuncionarioListDto> listarPorId(@PathVariable Integer id) {
