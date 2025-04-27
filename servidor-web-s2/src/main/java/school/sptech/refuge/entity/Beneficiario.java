@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Beneficiario {
@@ -32,6 +33,9 @@ public class Beneficiario {
     @ManyToOne
     @JoinColumn(name = "fk_funcionario", referencedColumnName = "id")
     private Funcionario funcionario;
+
+    @OneToMany(mappedBy = "beneficiario")
+    private List<Endereco> enderecos;
 
     public Beneficiario(Integer id, String nome, LocalDate dtNasc, String cpf, GeneroEnum generoEnum, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime dataAtivacao, Funcionario funcionario) {
         this.id = id;
@@ -171,5 +175,19 @@ public class Beneficiario {
         this.generoEnum = generoEnum;
     }
 
+    public LocalDateTime getDataAtivacao() {
+        return dataAtivacao;
+    }
 
+    public void setDataAtivacao(LocalDateTime dataAtivacao) {
+        this.dataAtivacao = dataAtivacao;
+    }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
 }

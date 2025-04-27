@@ -1,0 +1,86 @@
+package school.sptech.refuge.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import school.sptech.refuge.dto.endereco.EnderecoMapper;
+import school.sptech.refuge.dto.endereco.EnderecoRequestDto;
+import school.sptech.refuge.entity.Beneficiario;
+import school.sptech.refuge.entity.Endereco;
+import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
+import school.sptech.refuge.exception.EnderecoNaoEncontradoException;
+import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
+import school.sptech.refuge.repository.BeneficiarioRepository;
+import school.sptech.refuge.repository.EnderecoRepository;
+
+import java.util.List;
+
+@Service
+public class EnderecoService {
+
+
+    private final EnderecoRepository enderecoRepository;
+    private final BeneficiarioRepository beneficiarioRepository;
+
+    @Autowired
+    public EnderecoService(EnderecoRepository enderecoRepository, BeneficiarioRepository beneficiarioRepository) {
+        this.enderecoRepository = enderecoRepository;
+        this.beneficiarioRepository = beneficiarioRepository;
+    }
+
+    public Endereco salvarEndereco(EnderecoRequestDto dto) {
+        // Buscar o Beneficiario pelo ID
+        Beneficiario beneficiario = beneficiarioRepository.findById(dto.getBeneficiarioId())
+                .orElseThrow(() -> new RuntimeException("Beneficiário não encontrado"));
+
+        // Criar o Endereco
+        Endereco endereco = EnderecoMapper.toEntity(dto, beneficiario);
+
+        return enderecoRepository.save(endereco);
+    }
+
+    public Endereco cadastrar(Endereco endereco) {
+
+        return enderecoRepository.save(endereco);
+    }
+
+    public Endereco buscarPorId(Integer id) {
+        return enderecoRepository.findById(id)
+                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço de id %d não encontrado".formatted(id)));
+    }
+
+    public List<Endereco> listar() {
+
+        return enderecoRepository.findAll();
+    }
+
+    public Endereco atualizar(Endereco endereco) {
+        if (enderecoRepository.existsById(endereco.getId())) {
+            endereco.setId(endereco.getId());
+            return enderecoRepository.save(endereco);
+        } else {
+            throw new EnderecoNaoEncontradoException("Endereço de id %d não encontrado".formatted(endereco.getId()));
+        }
+    }
+
+    public void removerPorId(Integer id) {
+        if (enderecoRepository.existsById(id)) {
+            enderecoRepository.deleteById(id);
+        } else {
+            throw new EntidadeNaoEncontradaException("Funcionário de id %d não encontrado".formatted(id));
+        }
+    }
+
+    public List<Endereco> listarPorBairro (String bairro) {
+        return enderecoRepository.findByBairroLike(bairro);
+
+    }
+
+    public List<Endereco> listarPorRua(String rua) {
+        return enderecoRepository.findByRuaLike(rua);
+
+    }
+
+    public List<Endereco> listarPorLogradouro(String logradouro) {
+        return enderecoRepository.findByLogradouroContaining(logradouro);
+    }
+}
