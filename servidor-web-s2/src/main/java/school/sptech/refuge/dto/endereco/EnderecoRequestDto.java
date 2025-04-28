@@ -21,7 +21,7 @@ public class EnderecoRequestDto {
     @NotNull(message = "O NÚMERO da casa é obrigatório")
     private Integer numero;
 
-    @NotBlank(message = "O ID do Beneficiário é obrigatório")
+    @NotNull(message = "O ID do Beneficiário é obrigatório")
     private Integer beneficiarioId;
 
     public EnderecoRequestDto(String cep, String rua, String bairro, String logradouro, Integer numero, Integer beneficiarioId) {

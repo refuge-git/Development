@@ -19,7 +19,7 @@ public class Endereco {
     @JoinColumn(name = "fk_Beneficiario", referencedColumnName = "id")
     private Beneficiario beneficiario;
 
-    public Endereco(Integer id, String cep, String rua, String bairro, String logradouro, Integer numero, Endereco endereco) {
+    public Endereco(Integer id, String cep, String rua, String bairro, String logradouro, Integer numero, Beneficiario beneficiario) {
         this.id = id;
         this.cep = cep;
         this.rua = rua;

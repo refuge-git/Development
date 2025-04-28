@@ -33,7 +33,26 @@ public class EnderecoMapper {
                 .toList();
     }
 
+
+    // SOBRE-CARGA DE MÉTODO
     public static Endereco toEntity(EnderecoRequestDto dto, Beneficiario beneficiario) {
+        if (dto == null || beneficiario == null) {
+            return null;
+        }
+
+        return new Endereco(
+                null,
+                dto.getCep(),
+                dto.getRua(),
+                dto.getBairro(),
+                dto.getLogradouro(),
+                dto.getNumero(),
+                beneficiario
+
+        );
+    }
+
+    public static Endereco toEntity(EnderecoAtualizacaoDto dto, Beneficiario beneficiario) {
         if (dto == null || beneficiario == null) {
             return null;
         }
