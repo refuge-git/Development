@@ -35,7 +35,8 @@ public class TipoGeneroService {
             tipoGenero.setId(tipoGenero.getId());
             return tipoGeneroRepository.save(tipoGenero);
         } else {
-            throw new EntidadeNaoEncontradaException("Tipo genero de id %d não encontrado".formatted(beneficiario.getId()));
+            // REALMENTE É DE BENEFICIÁRIO?
+            throw new EntidadeNaoEncontradaException("Tipo genero de id %d não encontrado".formatted(tipoGenero.getId() /*beneficiario.getId()*/));
         }
     }
 
