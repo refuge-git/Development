@@ -3,6 +3,7 @@ package school.sptech.refuge.entity;
 import jakarta.persistence.*;
 import school.sptech.refuge.dto.endereco.EnderecoListDto;
 
+@Entity
 public class Endereco {
 
     @Id

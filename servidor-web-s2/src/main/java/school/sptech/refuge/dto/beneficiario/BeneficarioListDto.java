@@ -1,4 +1,5 @@
 package school.sptech.refuge.dto.beneficiario;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import school.sptech.refuge.dto.FuncionarioBeneficiarioListDto;
 import school.sptech.refuge.entity.Funcionario;
@@ -9,18 +10,29 @@ import school.sptech.refuge.entity.StatusEnum;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Schema(description = "DTO responsável por receber os dados via body")
 public class BeneficarioListDto {
 
     private Integer id;
+    @Schema(description = "Nome completo do usuário", example = "Raul Reis")
     private String nome;
+    @Schema(description = "Data de nascimento do usuário", example = "19/08/2004")
     private LocalDate dtNasc;
+    @Schema(description = "CPF do usuário", example = "000.000.000.00")
     private String cpf;
+    @Schema(description = "Gênero do usuário", example = "Masculino")
     private String genero;
+    @Schema(description = "Raça do usuário", example = "Branco")
     private String raca;
+    @Schema(description = "Nome completo da mãe do usuário", example = "Carmen Silva")
     private String nomeMae;
+    @Schema(description = "Endereço de foto do usuário")
     private String fotoPerfil;
+    @Schema(description = "Número cisar do usuário", example = "12345")
     private String sisa;
+    @Schema(description = "Status de atividade do usuário", example = "ATIVO - INATIVO")
     private String status;
+    @Schema(description = "Data de ativação do usuário", example = "25/07/2020")
     private LocalDateTime data_ativacao;
 
     private FuncionarioBeneficiarioListDto funcionario;

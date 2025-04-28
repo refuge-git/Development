@@ -1,5 +1,6 @@
 package school.sptech.refuge.service;
 
+import org.springframework.stereotype.Service;
 import school.sptech.refuge.entity.TipoGenero;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.TipoGeneroNaoEncontradoException;
@@ -7,6 +8,7 @@ import school.sptech.refuge.repository.TipoGeneroRepository;
 
 import java.util.List;
 
+@Service
 public class TipoGeneroService {
 
     private final TipoGeneroRepository tipoGeneroRepository;
