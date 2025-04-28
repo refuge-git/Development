@@ -8,7 +8,9 @@ import school.sptech.refuge.dto.endereco.EnderecoAtualizacaoDto;
 import school.sptech.refuge.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.dto.endereco.EnderecoMapper;
 import school.sptech.refuge.dto.endereco.EnderecoRequestDto;
+import school.sptech.refuge.entity.Beneficiario;
 import school.sptech.refuge.entity.Endereco;
+import school.sptech.refuge.service.BeneficiarioService;
 import school.sptech.refuge.service.EnderecoService;
 
 import java.util.List;
@@ -19,18 +21,21 @@ public class EnderecoController {
 
 
     private final EnderecoService enderecoService;
+    private final BeneficiarioService beneficiarioService;
 
-    public EnderecoController(EnderecoService enderecoService) {
+    public EnderecoController(EnderecoService enderecoService, BeneficiarioService beneficiarioService) {
         this.enderecoService = enderecoService;
+        this.beneficiarioService = beneficiarioService;
     }
 
-    @PostMapping
-    public ResponseEntity<EnderecoListDto> cadastrar(@Valid @RequestBody EnderecoRequestDto dto) {
-        Endereco endereco = EnderecoMapper.toEntity(dto, beneficiario);
-        Endereco enderecoCadastrado = enderecoService.cadastrar(endereco);
-        EnderecoListDto dtoSalvo = EnderecoMapper.toListagemDto(enderecoCadastrado);
-        return ResponseEntity.status(201).body(dtoSalvo);
-    }
+    // ARRUMAR POSTERIORMENTE!!!
+//    @PostMapping
+//    public ResponseEntity<EnderecoListDto> cadastrar(@Valid @RequestBody EnderecoRequestDto dto) {
+//        Endereco endereco = EnderecoMapper.toEntity(dto, beneficiario);
+//        Endereco enderecoCadastrado = enderecoService.cadastrar(endereco);
+//        EnderecoListDto dtoSalvo = EnderecoMapper.toListagemDto(enderecoCadastrado);
+//        return ResponseEntity.status(201).body(dtoSalvo);
+//    }
 
     @GetMapping
     public ResponseEntity<List<EnderecoListDto>> listar() {
@@ -51,6 +56,7 @@ public class EnderecoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<EnderecoListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody EnderecoAtualizacaoDto dto) {
+        Beneficiario beneficiario = beneficiarioService.buscarPorId(id);
         Endereco endereco = EnderecoMapper.toEntity(dto, beneficiario);
         Endereco enderecoAtualizado = enderecoService.atualizar(endereco);
         EnderecoListDto dtoAtualizado = EnderecoMapper.toListagemDto(enderecoAtualizado);
