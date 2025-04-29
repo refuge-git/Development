@@ -41,13 +41,13 @@ public class BeneficiarioController {
     }
 
     @Operation(
-            summary = "Cadastro de usuário",
-            description = "Recebe os dados do usuário pelo body e o transforma em entidade posteriormente"
+            summary = "Cadastro de beneficiário",
+            description = "Recebe os dados do beneficiário pelo body e o transforma em entidade posteriormente"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuário cadastrado",
+            @ApiResponse(responseCode = "201", description = "Beneficiário cadastrado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
-            @ApiResponse(responseCode = "400", description = "Dados de usuário inválidos ou ausente", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Dados de beneficiário inválidos ou ausente", content = @Content)
     })
     @PostMapping
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
@@ -58,13 +58,13 @@ public class BeneficiarioController {
     }
 
     @Operation(
-            summary = "Listar usuários",
-            description = "Retorna todos os usuários cadastrados"
+            summary = "Listar beneficiários",
+            description = "Retorna todos os beneficiários cadastrados"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Solicitação bem-sucedida",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficarioListDto.class))),
-            @ApiResponse(responseCode = "204", description = "Não há usuários cadastrados", content = @Content)
+            @ApiResponse(responseCode = "204", description = "Não há beneficiários cadastrados", content = @Content)
     })
     @GetMapping
     public ResponseEntity<List<BeneficarioListDto>> listar() {
@@ -78,11 +78,11 @@ public class BeneficiarioController {
 
 
     @Operation(
-            summary = "Buscar usuário por id",
-            description = "Retorna o usuário completo, dado o id passado"
+            summary = "Buscar beneficiário por id",
+            description = "Retorna o beneficiário completo, dado o id passado"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário encontrado",
+            @ApiResponse(responseCode = "200", description = "Beneficiário encontrado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficarioListDto.class)))
     })
     @GetMapping("/{id}")
@@ -94,11 +94,11 @@ public class BeneficiarioController {
 
 
     @Operation(
-            summary = "Atualização de usuário",
-            description = "Atualiza os dados do usuário pelo id passado e os dados presentes no body"
+            summary = "Atualização de beneficiário",
+            description = "Atualiza os dados do beneficiário pelo id passado e os dados presentes no body"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário atualizado",
+            @ApiResponse(responseCode = "200", description = "Beneficiário atualizado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficarioListDto.class)))
     })
     @PutMapping("/{id}")
@@ -108,8 +108,17 @@ public class BeneficiarioController {
         BeneficarioListDto dtoAtualizado = BeneficiarioMapper.toListagemDto(beneficiarioAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }
-    
 
+
+    @Operation(
+            summary = "Beneficiários por gênero",
+            description = "Listar todos os beneficiários pelo gênero especificado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Beneficiários por gênero encontrados",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o gênero especificado encontrado", content = @Content)
+    })
     @GetMapping("/genero")
     public ResponseEntity<List<BeneficarioListDto>> listarPorGenero(@RequestParam String genero) {
         List<Beneficiario> beneficiario = beneficiarioService.listarPorGenero(genero);
@@ -121,6 +130,15 @@ public class BeneficiarioController {
         return ResponseEntity.status(200).body(dto);
     }
 
+    @Operation(
+            summary = "Beneficiários por raça",
+            description = "Listar todos os beneficiários pela raça especificada"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Beneficiários por raça encontrados",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com a raça especificada foi encontrado", content = @Content)
+    })
     @GetMapping("/raca")
     public ResponseEntity<List<BeneficarioListDto>> listarPorRaca(@RequestParam String raca) {
         List<Beneficiario> beneficiario = beneficiarioService.listarPorRaca(raca);
@@ -132,6 +150,16 @@ public class BeneficiarioController {
         return ResponseEntity.status(200).body(dto);
     }
 
+
+    @Operation(
+            summary = "Beneficiários por nome",
+            description = "Listar todos os beneficiários pelo nome especificado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Beneficiários por nome encontrados",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o nome especificado foi encontrado", content = @Content)
+    })
     @GetMapping("/nome")
     public ResponseEntity<List<BeneficarioListDto>> listarContendoNome(@RequestParam String nome) {
         List<Beneficiario> beneficiario = beneficiarioService.listarNome(nome);
@@ -143,6 +171,15 @@ public class BeneficiarioController {
         return ResponseEntity.status(200).body(dto);
     }
 
+
+    @Operation(
+            summary = "Exclusão de beneficiário",
+            description = "Excluir beneficiário, dado o id passado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Beneficiários excluido com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class)))
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         beneficiarioService.removerPorId(id);
