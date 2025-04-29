@@ -46,9 +46,7 @@ public class EnderecoMapper {
                 dto.getRua(),
                 dto.getBairro(),
                 dto.getLogradouro(),
-                dto.getNumero(),
-                beneficiario
-
+                dto.getNumero()
         );
     }
 
@@ -63,9 +61,7 @@ public class EnderecoMapper {
                 dto.getRua(),
                 dto.getBairro(),
                 dto.getLogradouro(),
-                dto.getNumero(),
-                beneficiario
-
+                dto.getNumero()
         );
     }
 
@@ -80,8 +76,7 @@ public class EnderecoMapper {
                 dto.getRua(),
                 dto.getBairro(),
                 dto.getLogradouro(),
-                dto.getNumero(),
-                null // Aqui você passa o beneficiário associado
+                dto.getNumero()
         );
     }
 

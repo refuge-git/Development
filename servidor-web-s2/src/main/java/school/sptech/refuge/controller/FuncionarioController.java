@@ -1,12 +1,18 @@
 package school.sptech.refuge.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import school.sptech.refuge.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.dto.funcionario.*;
 import school.sptech.refuge.entity.Funcionario;
 import school.sptech.refuge.repository.FuncionarioRepository;
@@ -33,6 +39,15 @@ public class FuncionarioController {
 //        return ResponseEntity.status(201).body(dtoSalvo);
 //    }
 
+    @Operation(
+            summary = "Cadastro de funcionário",
+            description = "Recebe os dados do funcionário pelo body e o transforma em entidade posteriormente"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Funcionário cadastrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "Dados de funcionário inválidos ou ausente", content = @Content)
+    })
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> criar(@RequestBody @Valid FuncionarioRequestDto funcionarioRequestDto){
@@ -41,6 +56,7 @@ public class FuncionarioController {
         this.funcionarioService.criar(novoFuncionario);
         return ResponseEntity.status(201).build();
     }
+
 
     @PostMapping("/login")
     public  ResponseEntity<FuncionarioTokenDto> login (@RequestBody FuncionarioLoginDto funcionarioLoginDto){

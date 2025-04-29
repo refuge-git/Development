@@ -34,8 +34,9 @@ public class Beneficiario {
     @JoinColumn(name = "fk_funcionario", referencedColumnName = "id")
     private Funcionario funcionario;
 
-    @OneToMany(mappedBy = "beneficiario")
-    private List<Endereco> enderecos;
+    @ManyToOne
+    @JoinColumn(name = "fk_endereco", referencedColumnName = "id")
+    private Endereco endereco;
 
     public Beneficiario(Integer id, String nome, LocalDate dtNasc, String cpf, GeneroEnum generoEnum, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime dataAtivacao, Funcionario funcionario) {
         this.id = id;
@@ -181,13 +182,5 @@ public class Beneficiario {
 
     public void setDataAtivacao(LocalDateTime dataAtivacao) {
         this.dataAtivacao = dataAtivacao;
-    }
-
-    public List<Endereco> getEnderecos() {
-        return enderecos;
-    }
-
-    public void setEnderecos(List<Endereco> enderecos) {
-        this.enderecos = enderecos;
     }
 }

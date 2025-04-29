@@ -3,6 +3,8 @@ package school.sptech.refuge.entity;
 import jakarta.persistence.*;
 import school.sptech.refuge.dto.endereco.EnderecoListDto;
 
+import java.util.List;
+
 @Entity
 public class Endereco {
 
@@ -16,18 +18,16 @@ public class Endereco {
     private String logradouro;
     private Integer numero;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_Beneficiario", referencedColumnName = "id")
-    private Beneficiario beneficiario;
+    @OneToMany(mappedBy = "endereco")
+    private List<Beneficiario> beneficiarios;
 
-    public Endereco(Integer id, String cep, String rua, String bairro, String logradouro, Integer numero, Beneficiario beneficiario) {
+    public Endereco(Integer id, String cep, String rua, String bairro, String logradouro, Integer numero) {
         this.id = id;
         this.cep = cep;
         this.rua = rua;
         this.bairro = bairro;
         this.logradouro = logradouro;
         this.numero = numero;
-        this.beneficiario = beneficiario;
     }
 
     public Integer getId() {
@@ -76,14 +76,6 @@ public class Endereco {
 
     public void setNumero(Integer numero) {
         this.numero = numero;
-    }
-
-    public Beneficiario getBeneficiario() {
-        return beneficiario;
-    }
-
-    public void setBeneficiario(Beneficiario beneficiario) {
-        this.beneficiario = beneficiario;
     }
 
     public EnderecoListDto enderecoListDto(){
