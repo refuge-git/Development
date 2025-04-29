@@ -1,6 +1,11 @@
 package school.sptech.refuge.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +40,15 @@ public class BeneficiarioController {
         this.beneficiarioService = beneficiarioService;
     }
 
+    @Operation(
+            summary = "Cadastro de usuário",
+            description = "Recebe os dados do usuário pelo body e o transforma em entidade posteriormente"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuário cadastrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "400", description = "Dados de usuário inválidos ou ausente", content = @Content)
+    })
     @PostMapping
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
         Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, dto.getFuncionario());
@@ -43,6 +57,15 @@ public class BeneficiarioController {
         return ResponseEntity.status(201).body(dtoSalvo);
     }
 
+    @Operation(
+            summary = "Listar usuários",
+            description = "Retorna todos os usuários cadastrados"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Solicitação bem-sucedida",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficarioListDto.class))),
+            @ApiResponse(responseCode = "204", description = "Não há usuários cadastrados", content = @Content)
+    })
     @GetMapping
     public ResponseEntity<List<BeneficarioListDto>> listar() {
         List<Beneficiario> beneficiarios = beneficiarioService.listar();
@@ -54,6 +77,14 @@ public class BeneficiarioController {
     }
 
 
+    @Operation(
+            summary = "Buscar usuário por id",
+            description = "Retorna o usuário completo, dado o id passado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficarioListDto.class)))
+    })
     @GetMapping("/{id}")
     public ResponseEntity<BeneficarioListDto> listarPorId(@PathVariable Integer id) {
         Beneficiario beneficiario = beneficiarioService.buscarPorId(id);
@@ -62,6 +93,14 @@ public class BeneficiarioController {
     }
 
 
+    @Operation(
+            summary = "Atualização de usuário",
+            description = "Atualiza os dados do usuário pelo id passado e os dados presentes no body"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário atualizado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficarioListDto.class)))
+    })
     @PutMapping("/{id}")
     public ResponseEntity<BeneficarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody BeneficiarioAtualizacaoDto dto) {
         Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, id, dto.getFuncionario());
@@ -69,6 +108,7 @@ public class BeneficiarioController {
         BeneficarioListDto dtoAtualizado = BeneficiarioMapper.toListagemDto(beneficiarioAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }
+    
 
     @GetMapping("/genero")
     public ResponseEntity<List<BeneficarioListDto>> listarPorGenero(@RequestParam String genero) {
