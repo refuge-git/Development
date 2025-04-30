@@ -113,7 +113,8 @@ public class EnderecoController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Endereços encontrados com sucesso",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado", content = @Content)
     })
     @GetMapping("/bairro")
     public ResponseEntity<List<EnderecoListDto>> listarPorBairro(@RequestParam String bairro) {
@@ -131,7 +132,8 @@ public class EnderecoController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Endereços encontrados com sucesso",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado", content = @Content)
     })
     @GetMapping("/rua")
     public ResponseEntity<List<EnderecoListDto>> listarPorRua(@RequestParam String rua) {
@@ -149,7 +151,8 @@ public class EnderecoController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Endereços encontrados com sucesso",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado", content = @Content)
     })
     @GetMapping("/logradouro")
     public ResponseEntity<List<EnderecoListDto>> listarPorLogradouro(@RequestParam String logradouro) {
