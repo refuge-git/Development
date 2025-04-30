@@ -145,8 +145,7 @@ public class FuncionarioController {
             description = "Deleta o funcionário pelo id especificado"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioTokenDto.class)))
+            @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {

@@ -177,8 +177,7 @@ public class BeneficiarioController {
             description = "Excluir beneficiário, dado o id passado"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Beneficiários excluido com sucesso",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class)))
+            @ApiResponse(responseCode = "204", description = "Beneficiários excluido com sucesso")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
