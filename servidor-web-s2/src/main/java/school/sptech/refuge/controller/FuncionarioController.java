@@ -45,19 +45,25 @@ public class FuncionarioController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Funcionário cadastrado",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
-            @ApiResponse(responseCode = "400", description = "Dados de funcionário inválidos ou ausente", content = @Content)
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class)))
     })
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> criar(@RequestBody @Valid FuncionarioRequestDto funcionarioRequestDto){
-
         final Funcionario novoFuncionario = FuncionarioMapper.of(funcionarioRequestDto);
         this.funcionarioService.criar(novoFuncionario);
         return ResponseEntity.status(201).build();
     }
 
 
+    @Operation(
+            summary = "Login do funcionário",
+            description = "Autentica o funcionário a partir do email e senha"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário autenticado com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioTokenDto.class)))
+    })
     @PostMapping("/login")
     public  ResponseEntity<FuncionarioTokenDto> login (@RequestBody FuncionarioLoginDto funcionarioLoginDto){
 
@@ -80,6 +86,15 @@ public class FuncionarioController {
 //        return ResponseEntity.status(200).body(dtos);
 //    }
 
+    @Operation(
+            summary = "Listagem de funcionários",
+            description = "Lista todos os funcionários que estão cadastrados"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuários encontrados com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioTokenDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum funcionário encontrado", content = @Content)
+    })
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<FuncionarioListDto>> listarTodos(){
@@ -92,6 +107,14 @@ public class FuncionarioController {
         return ResponseEntity.status(200).body(funcionariosEncontrados);
     }
 
+    @Operation(
+            summary = "Listar funcionário por id",
+            description = "Lista o funcionário especificado dado o id"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioTokenDto.class)))
+    })
     @GetMapping("/{id}")
     public ResponseEntity<FuncionarioListDto> listarPorId(@PathVariable Integer id) {
         Funcionario funcionario = funcionarioService.buscarPorId(id);
@@ -100,7 +123,14 @@ public class FuncionarioController {
     }
 
 
-
+    @Operation(
+            summary = "Atualiza o funcionário",
+            description = "Atualiza o funcionário pelo id especificado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioTokenDto.class)))
+    })
     @PutMapping("/{id}")
     public ResponseEntity<FuncionarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody FuncionarioAtualizacaoDto dto) {
         Funcionario funcionario = FuncionarioMapper.toEntity(dto, id);
@@ -109,6 +139,15 @@ public class FuncionarioController {
         return ResponseEntity.status(200).body(dtoAtualizado);
     }
 
+
+    @Operation(
+            summary = "Deleta funcionário",
+            description = "Deleta o funcionário pelo id especificado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioTokenDto.class)))
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         funcionarioService.removerPorId(id);
