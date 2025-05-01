@@ -1,5 +1,6 @@
 package school.sptech.refuge.dto.beneficiario;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -21,32 +22,43 @@ public class BeneficiarioRequestDto {
     private String nome;
 
     @NotNull
-    @NotBlank
     @Past
+    @Schema(description = "Data de nascimento do beneficiário", example = "12/09/1997")
     private LocalDate dtNasc;
 
     @CPF
+    @Schema(description = "CPF do beneficiário", example = "32576924590")
     private String cpf;
 
     @NotNull
     @NotBlank
+    @Schema(description = "Gênero do beneficiário", example = "MULHER_TRANS")
     private String genero;
 
     @NotNull
     @NotBlank
+    @Schema(description = "Raça do beneficiário", example = "pardo")
     private String raca;
 
     @NotNull
     @NotBlank
+    @Schema(description = "Nome da mãe do beneficiário", example = "Maria de Lurdes")
     private String nomeMae;
 
+    @Schema(description = "Endereço de foto do beneficiário", example = "ronaldo.jpeg")
     private String fotoPerfil;
+
+    @Schema(description = "Número de indentificação sisar do beneficiário", example = "92817")
     private String sisa;
+
+    @Schema(description = "Status atual do beneficiário", example = "INATIVO")
     private String status;
 
     @CurrentTimestamp
+    @Schema(description = "Data de registro do beneficiário", example = "01/05/2025")
     private LocalDateTime data_ativacao;
 
+    @Schema(description = "Entidade que relaciona o funcionario ao beneficiario", example = "Entidade funcionario")
     private Funcionario funcionario;
 
 

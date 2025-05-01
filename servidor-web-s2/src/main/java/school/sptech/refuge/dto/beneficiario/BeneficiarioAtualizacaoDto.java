@@ -1,5 +1,6 @@
 package school.sptech.refuge.dto.beneficiario;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import school.sptech.refuge.entity.Funcionario;
 import school.sptech.refuge.entity.GeneroEnum;
 import school.sptech.refuge.entity.RacaEnum;
@@ -10,17 +11,29 @@ import java.time.LocalDateTime;
 
 public class BeneficiarioAtualizacaoDto {
 
+    @Schema(description = "Nome completo do usuário", example = "Raul Reis")
     private String nome;
+    @Schema(description = "Data de nascimento do usuário", example = "19/08/2004")
     private LocalDate dtNasc;
+    @Schema(description = "CPF do usuário", example = "000.000.000.00")
     private String cpf;
+    @Schema(description = "Gênero do usuário", example = "Masculino")
     private GeneroEnum generoEnum;
+    @Schema(description = "Raça do usuário", example = "Branco")
     private RacaEnum raca;
+    @Schema(description = "Nome completo da mãe do usuário", example = "Carmen Silva")
     private String nomeMae;
+    @Schema(description = "Endereço de foto do usuário")
     private String fotoPerfil;
+    @Schema(description = "Número cisar do usuário", example = "12345")
     private String sisa;
+    @Schema(description = "Status de atividade do usuário", example = "ATIVO - INATIVO")
     private StatusEnum statusEnum;
+    @Schema(description = "Data de ativação do usuário", example = "25/07/2020")
     private LocalDateTime data_ativacao;
+    @Schema(description = "FK que relaciona o endereço ao beneficiario", example = "1")
     private Integer idEndereco;
+    @Schema(description = "Entidade que relaciona o funcionario ao beneficiario", example = "Entidade funcionario")
     private Funcionario funcionario;
 
     public BeneficiarioAtualizacaoDto(String nome, LocalDate dtNasc, String cpf, GeneroEnum generoEnum, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime data_ativacao, Integer idEndereco, Funcionario funcionario) {
