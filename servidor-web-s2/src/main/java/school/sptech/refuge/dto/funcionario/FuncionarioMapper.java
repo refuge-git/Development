@@ -68,7 +68,9 @@ public class FuncionarioMapper {
         Funcionario funcionario = new Funcionario();
 
         funcionario.setEmail(funcionarioRequestDto.getEmail());
+        funcionario.setCpf(funcionarioRequestDto.getCpf());
         funcionario.setNome(funcionarioRequestDto.getNome());
+        funcionario.setTelefone(funcionarioRequestDto.getTelefone());
         funcionario.setSenha(funcionarioRequestDto.getSenha());
 
         return funcionario;
@@ -98,6 +100,8 @@ public class FuncionarioMapper {
         FuncionarioListDto funcionarioListDto = new FuncionarioListDto();
 
         funcionarioListDto.setId(funcionario.getId());
+        funcionarioListDto.setCpf(funcionario.getCpf());
+        funcionarioListDto.setTelefone(funcionario.getTelefone());
         funcionarioListDto.setEmail(funcionario.getEmail());
         funcionarioListDto.setNome(funcionario.getNome());
 

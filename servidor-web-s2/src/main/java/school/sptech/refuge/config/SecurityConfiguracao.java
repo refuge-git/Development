@@ -36,7 +36,7 @@ public class SecurityConfiguracao {
     private AutenticacaoService autenticacaoService;
 
     @Autowired
-    private AutenticacaoEntryPoint autenticacaoEntryPoint;
+    private AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
 
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
             new AntPathRequestMatcher("/swagger-ui/**"),
@@ -50,10 +50,12 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/webjars/**"),
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/actuator/*"),
-            new AntPathRequestMatcher("/usuarios/login/**"),
+            new AntPathRequestMatcher("/funcionarios/login/**"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/h2-console/**/**"),
-            new AntPathRequestMatcher("/error/**")
+            new AntPathRequestMatcher("/error/**"),
+            new AntPathRequestMatcher("/funcionarios/**"),
+            new AntPathRequestMatcher("/beneficiarios/**")
     };
 
     @Bean
@@ -69,7 +71,7 @@ public class SecurityConfiguracao {
                         .authenticated()
                 )
                 .exceptionHandling(handling -> handling
-                        .authenticationEntryPoint(autenticacaoEntryPoint))
+                        .authenticationEntryPoint(autenticacaoJwtEntryPoint))
                 .sessionManagement(management -> management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -86,10 +88,10 @@ public class SecurityConfiguracao {
         return  authenticationManagerBuilder.build();
     }
 
-//    @Bean
-//    public AutenticacaoEntryPoint jwtAuthenticationEntryPointBean(){
-//        return new AutenticacaoEntryPoint();
-//    }
+    @Bean
+   public AutenticacaoEntryPoint jwtAuthenticationEntryPointBean(){
+        return new AutenticacaoEntryPoint();
+    }
 
     @Bean
     public AutenticacaoFilter jwtAuthenticationFilterBean() {
@@ -112,8 +114,8 @@ public class SecurityConfiguracao {
         configuracao.applyPermitDefaultValues();
         configuracao.setAllowedMethods(
                 Arrays.asList(
-                        HttpMethod.POST.name(),
                         HttpMethod.GET.name(),
+                        HttpMethod.POST.name(),
                         HttpMethod.PUT.name(),
                         HttpMethod.PATCH.name(),
                         HttpMethod.DELETE.name(),

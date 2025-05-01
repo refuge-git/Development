@@ -14,13 +14,11 @@ public class FuncionarioRequestDto {
 
     @NotNull
     @NotBlank
-    @CPF
     private String cpf;
 
     @NotNull
     @NotBlank
-    @Min(value = 11)
-    @Max(value = 14)
+    @Size(min = 11, max = 14)
     private String telefone;
 
     @NotNull
