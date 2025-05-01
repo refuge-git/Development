@@ -1,13 +1,18 @@
 package school.sptech.refuge.dto.endereco;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import school.sptech.refuge.entity.Beneficiario;
 
 public class EnderecoListDto {
 
     private Integer id;
+    @Schema(description = "CEP do endereço do beneficiário", example = "04241064")
     private String cep;
+    @Schema(description = "Rua do endereço do beneficiário", example = "Rua Pereira Augusto")
     private String rua;
+    @Schema(description = "Bairro do endereço do beneficiário", example = "Jardim Silveira")
     private String bairro;
+
     private String logradouro;
     private Integer numero;
     private Beneficiario beneficiario;

@@ -51,7 +51,7 @@ public class BeneficiarioRequestDto {
     @Schema(description = "Número de indentificação sisar do beneficiário", example = "92817")
     private String sisa;
 
-    @Schema(description = "Status atual do beneficiário", example = "INATIVO")
+    @Schema(description = "Status atual do beneficiário", example = "ATIVO - INATIVO")
     private String status;
 
     @CurrentTimestamp

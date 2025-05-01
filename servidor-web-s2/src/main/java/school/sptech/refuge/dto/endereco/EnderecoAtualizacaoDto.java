@@ -1,11 +1,18 @@
 package school.sptech.refuge.dto.endereco;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class EnderecoAtualizacaoDto {
 
+    @Schema(description = "CEP do endereço do beneficiário", example = "04241064")
     private String cep;
+    @Schema(description = "Rua do endereço do beneficiário", example = "Rua Pereira Augusto")
     private String rua;
+    @Schema(description = "Bairro do endereço do beneficiário", example = "Jardim Silveira")
     private String bairro;
+    @Schema(description = "Logradouro do endereço do beneficiário", example = "Praça da Árvore")
     private String logradouro;
+    @Schema(description = "Número do endereço do beneficiário", example = "314")
     private Integer numero;
 
     public EnderecoAtualizacaoDto(String cep, String rua, String bairro, String logradouro, Integer numero) {
