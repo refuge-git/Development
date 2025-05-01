@@ -7,11 +7,13 @@ public class FuncionarioListDto {
 
     @Schema(description = "Id do usuário")
     private Integer id;
-    @Schema(description = "Nome do usuário")
+    @Schema(description = "Nome completo do funcionário", example = "Marcio Santa da Silva")
     private String nome;
+    @Schema(description = "CPF do funcionário", example = "93827345439")
     private String cpf;
+    @Schema(description = "Telefone com ddd do funcionário", example = "(11)98724-9812")
     private String telefone;
-    @Schema(description = "Email do usuário")
+    @Schema(description = "Email do funcionário", example = "marcio@gmail.com")
     private String email;
 
     public FuncionarioListDto(Integer id, String nome, String cpf, String telefone, String email) {

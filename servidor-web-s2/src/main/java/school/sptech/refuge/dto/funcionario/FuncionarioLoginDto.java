@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class FuncionarioLoginDto {
 
-    @Schema(description = "E-mail do usuário")
+    @Schema(description = "Email do funcionário", example = "marcio@gmail.com")
     private String email;
 
-    @Schema(description = "Senha do usuário")
+    @Schema(description = "Senha de acesso do funcionário", example = "12345678")
     private String senha;
 
     public String getEmail() {

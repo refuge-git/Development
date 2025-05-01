@@ -1,10 +1,15 @@
 package school.sptech.refuge.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class FuncionarioBeneficiarioListDto {
 
     private Integer id;
+    @Schema(description = "Nome completo do funcionário", example = "Gustavo Pereira")
     private String nome;
+    @Schema(description = "Telefone do funcionário", example = "(11)98315-8730")
     private String telefone;
+    @Schema(description = "Email do funcionário", example = "gustavo@gmail.com")
     private String email;
 
     public FuncionarioBeneficiarioListDto(Integer id, String nome, String telefone, String email) {
