@@ -51,34 +51,40 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/funcionarios/login/**"),
+//            new AntPathRequestMatcher("/funcionarios/**"),
+//            new AntPathRequestMatcher("/beneficiarios/**/"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/h2-console/**/**"),
-            new AntPathRequestMatcher("/error/**"),
-            new AntPathRequestMatcher("/funcionarios/**"),
-            new AntPathRequestMatcher("/beneficiarios/**")
+            new AntPathRequestMatcher("/error/**")
     };
 
     @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .headers( headers -> headers
+                .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .cors(Customizer.withDefaults())
                 .csrf(CsrfConfigurer<HttpSecurity>::disable)
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers(URLS_PERMITIDAS)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(URLS_PERMITIDAS)
                         .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/funcionarios")
+                        .permitAll()
+                        .requestMatchers("/funcionarios/**")
+                        .authenticated()
                         .anyRequest()
                         .authenticated()
                 )
                 .exceptionHandling(handling -> handling
-                        .authenticationEntryPoint(autenticacaoJwtEntryPoint))
+                        .authenticationEntryPoint(autenticacaoJwtEntryPoint))  // Ponto de entrada de autenticação em caso de falha
                 .sessionManagement(management -> management
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Desativa sessão, já que está usando JWT (stateless)
 
         http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception{
