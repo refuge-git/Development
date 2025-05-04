@@ -4,13 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CurrentTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.br.CPF;
+import school.sptech.refuge.entity.Endereco;
 import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.entity.GeneroEnum;
-import school.sptech.refuge.entity.RacaEnum;
-import school.sptech.refuge.entity.StatusEnum;
+import school.sptech.refuge.entity.TipoGenero;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,21 +18,23 @@ public class BeneficiarioRequestDto {
 
     @NotNull
     @NotBlank
-    private String nome;
+    @Schema(description = "Nome de registro do beneficiário", example = "Carolina Santos")
+    private String nomeRegistro;
+
+    @NotNull
+    @NotBlank
+    @Schema(description = "Nome social do beneficiário", example = "Julia Santos")
+    private String nomeSocial;
 
     @NotNull
     @Past
     @Schema(description = "Data de nascimento do beneficiário", example = "12/09/1997")
     private LocalDate dtNasc;
 
-    @CPF
+
     @Schema(description = "CPF do beneficiário", example = "32576924590")
     private String cpf;
 
-    @NotNull
-    @NotBlank
-    @Schema(description = "Gênero do beneficiário", example = "MULHER_TRANS")
-    private String genero;
 
     @NotNull
     @NotBlank
@@ -48,25 +49,35 @@ public class BeneficiarioRequestDto {
     @Schema(description = "Endereço de foto do beneficiário", example = "ronaldo.jpeg")
     private String fotoPerfil;
 
+
     @Schema(description = "Número de indentificação sisar do beneficiário", example = "92817")
     private String sisa;
 
-    @Schema(description = "Status atual do beneficiário", example = "ATIVO - INATIVO")
+    @Schema(description = "Status atual do beneficiário", example = "ATIVO")
     private String status;
 
     @CurrentTimestamp
     @Schema(description = "Data de registro do beneficiário", example = "01/05/2025")
     private LocalDateTime data_ativacao;
 
+    @NotNull
     @Schema(description = "Entidade que relaciona o funcionario ao beneficiario", example = "Entidade funcionario")
     private Funcionario funcionario;
 
+    @NotNull
+    @Schema(description = "Entidade que relaciona o endereço ao beneficiario", example = "Entidade endereço")
+    private Endereco endereco;
 
-    public BeneficiarioRequestDto(String nome, LocalDate dtNasc, String cpf, String genero, String raca, String nomeMae, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, Funcionario funcionario) {
-        this.nome = nome;
+    @NotNull
+    @Schema(description = "Entidade que relaciona o tipoGenero ao beneficiario", example = "Entidade tipoGenero")
+    private TipoGenero tipoGenero;
+
+
+    public BeneficiarioRequestDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, String raca, String nomeMae, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero) {
+        this.nomeRegistro = nomeRegistro;
+        this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
         this.cpf = cpf;
-        this.genero = genero;
         this.raca = raca;
         this.nomeMae = nomeMae;
         this.fotoPerfil = fotoPerfil;
@@ -74,17 +85,27 @@ public class BeneficiarioRequestDto {
         this.status = status;
         this.data_ativacao = data_ativacao;
         this.funcionario = funcionario;
+        this.endereco = endereco;
+        this.tipoGenero = tipoGenero;
     }
 
     public BeneficiarioRequestDto() {
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeRegistro() {
+        return nomeRegistro;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeRegistro(String nomeRegistro) {
+        this.nomeRegistro = nomeRegistro;
+    }
+
+    public String getNomeSocial() {
+        return nomeSocial;
+    }
+
+    public void setNomeSocial(String nomeSocial) {
+        this.nomeSocial = nomeSocial;
     }
 
     public LocalDate getDtNasc() {
@@ -103,12 +124,12 @@ public class BeneficiarioRequestDto {
         this.cpf = cpf;
     }
 
-    public String getGenero() {
-        return genero;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public void setGenero(String genero) {
-        this.genero = genero;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     public String getRaca() {
@@ -139,14 +160,6 @@ public class BeneficiarioRequestDto {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public String getNumeroCartao() {
-        return sisa;
-    }
-
-    public void setNumeroCartao(String numeroCartao) {
-        this.sisa = numeroCartao;
-    }
-
     public String getSisa() {
         return sisa;
     }
@@ -174,4 +187,13 @@ public class BeneficiarioRequestDto {
     public String getStatus() {
         return status;
     }
+
+    public TipoGenero getTipoGenero() {
+        return tipoGenero;
+    }
+
+    public void setTipoGenero(TipoGenero tipoGenero) {
+        this.tipoGenero = tipoGenero;
+    }
+
 }

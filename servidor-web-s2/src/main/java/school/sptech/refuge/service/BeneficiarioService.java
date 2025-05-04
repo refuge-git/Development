@@ -49,10 +49,10 @@ public class BeneficiarioService {
         }
     }
 
-    public List<Beneficiario> listarPorGenero(String genero) {
-       return beneficiarioRepository.findByGeneroEnumLike(genero);
+    /*public List<Beneficiario> listarPorGenero(String genero) {
+       return beneficiarioRepository.findByTipoGeneroLike(genero);
 
-    }
+    }*/
 
     public List<Beneficiario> listarPorRaca(String raca) {
         return beneficiarioRepository.findByRacaLike(raca);
@@ -60,7 +60,7 @@ public class BeneficiarioService {
     }
 
     public List<Beneficiario> listarNome(String nome) {
-        return beneficiarioRepository.findByNomeContaining(nome);
+        return beneficiarioRepository.findByNomeSocialContainingIgnoreCase(nome);
 
     }
 

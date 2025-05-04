@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,7 @@ public class TipoGeneroController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = TipoGeneroListDto.class)))
     })
     @PostMapping
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoGeneroListDto> cadastrar(@Valid @RequestBody TipoGeneroRequestDto dto) {
         TipoGenero tipoGenero = TipoGeneroMapper.toEntity(dto);
         TipoGenero tipoCadastrado = tipoGeneroService.cadastrar(tipoGenero);
@@ -53,6 +55,7 @@ public class TipoGeneroController {
             @ApiResponse(responseCode = "204", description = "Não há gêneros cadastrados", content = @Content)
     })
     @GetMapping
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<TipoGeneroListDto>> listar() {
         List<TipoGenero> tipos = tipoGeneroService.listar();
         if (tipos.isEmpty()) {
@@ -72,6 +75,7 @@ public class TipoGeneroController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = TipoGeneroListDto.class)))
     })
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoGeneroListDto> listarPorId(@PathVariable Integer id) {
         TipoGenero tipoGenero = tipoGeneroService.buscarPorId(id);
         TipoGeneroListDto dto = TipoGeneroMapper.toListagemDto(tipoGenero);
@@ -88,6 +92,7 @@ public class TipoGeneroController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = TipoGeneroListDto.class)))
     })
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoGeneroListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody TipoGeneroRequestDto dto) {
         TipoGenero tipoGenero = TipoGeneroMapper.toEntity(dto, id);
         TipoGenero tipoAtualizado = tipoGeneroService.atualizar(tipoGenero);
@@ -104,6 +109,7 @@ public class TipoGeneroController {
             @ApiResponse(responseCode = "204", description = "Gênero excluido com sucesso")
     })
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         tipoGeneroService.removerPorId(id);
         return ResponseEntity.status(204).build();

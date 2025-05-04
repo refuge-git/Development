@@ -6,10 +6,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.dto.beneficiario.BeneficarioListDto;
+import school.sptech.refuge.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.dto.endereco.EnderecoAtualizacaoDto;
 import school.sptech.refuge.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.dto.endereco.EnderecoMapper;
@@ -27,21 +29,27 @@ public class EnderecoController {
 
 
     private final EnderecoService enderecoService;
-    private final BeneficiarioService beneficiarioService;
 
-    public EnderecoController(EnderecoService enderecoService, BeneficiarioService beneficiarioService) {
+    public EnderecoController(EnderecoService enderecoService) {
         this.enderecoService = enderecoService;
-        this.beneficiarioService = beneficiarioService;
     }
 
-    // ARRUMAR POSTERIORMENTE!!!
-//    @PostMapping
-//    public ResponseEntity<EnderecoListDto> cadastrar(@Valid @RequestBody EnderecoRequestDto dto) {
-//        Endereco endereco = EnderecoMapper.toEntity(dto, beneficiario);
-//        Endereco enderecoCadastrado = enderecoService.cadastrar(endereco);
-//        EnderecoListDto dtoSalvo = EnderecoMapper.toListagemDto(enderecoCadastrado);
-//        return ResponseEntity.status(201).body(dtoSalvo);
-//    }
+    @Operation(
+            summary = "Cadastro de endereço",
+            description = "Recebe os dados do endereço pelo body e o transforma em entidade posteriormente"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Endereço cadastrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoRequestDto.class)))
+    })
+    @PostMapping
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<EnderecoListDto> cadastrar(@Valid @RequestBody EnderecoRequestDto dto) {
+        Endereco endereco = EnderecoMapper.toEntity(dto);
+        Endereco enderecoCadastrado = enderecoService.cadastrar(endereco);
+        EnderecoListDto dtoSalvo = EnderecoMapper.toListagemDto(enderecoCadastrado);
+        return ResponseEntity.status(201).body(dtoSalvo);
+   }
 
     @Operation(
             summary = "Listar endereços",
@@ -53,6 +61,7 @@ public class EnderecoController {
             @ApiResponse(responseCode = "204", description = "Não há endereços cadastrados", content = @Content)
     })
     @GetMapping
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<EnderecoListDto>> listar() {
         List<Endereco> enderecos = enderecoService.listar();
         if (enderecos.isEmpty()) {
@@ -61,6 +70,8 @@ public class EnderecoController {
         List<EnderecoListDto> dtos = EnderecoMapper.toListagemDtos(enderecos);
         return ResponseEntity.status(200).body(dtos);
     }
+
+
 
     @Operation(
             summary = "Listar endereço por id",
@@ -71,11 +82,14 @@ public class EnderecoController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class)))
     })
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<EnderecoListDto> listarPorId(@PathVariable Integer id) {
         Endereco endereco = enderecoService.buscarPorId(id);
         EnderecoListDto dto = EnderecoMapper.toListagemDto(endereco);
         return ResponseEntity.status(200).body(dto);
     }
+
+
 
     @Operation(
             summary = "Atualiza o endereço",
@@ -86,13 +100,15 @@ public class EnderecoController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class)))
     })
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<EnderecoListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody EnderecoAtualizacaoDto dto) {
-        Beneficiario beneficiario = beneficiarioService.buscarPorId(id);
-        Endereco endereco = EnderecoMapper.toEntity(dto, beneficiario);
+        Endereco endereco = EnderecoMapper.toEntity(dto);
         Endereco enderecoAtualizado = enderecoService.atualizar(endereco);
         EnderecoListDto dtoAtualizado = EnderecoMapper.toListagemDto(enderecoAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }
+
+
 
     @Operation(
             summary = "Deleta o endereço",
@@ -102,10 +118,13 @@ public class EnderecoController {
             @ApiResponse(responseCode = "204", description = "Endereço excluido com sucesso")
     })
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         enderecoService.removerPorId(id);
         return ResponseEntity.status(204).build();
     }
+
+
 
     @Operation(
             summary = "Listar o endereço por bairro",
@@ -117,6 +136,7 @@ public class EnderecoController {
             @ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado", content = @Content)
     })
     @GetMapping("/bairro")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<EnderecoListDto>> listarPorBairro(@RequestParam String bairro) {
         List<Endereco> enderecos = enderecoService.listarPorBairro(bairro);
         if (enderecos.isEmpty()) {
@@ -126,7 +146,7 @@ public class EnderecoController {
         return ResponseEntity.status(200).body(dtos);
     }
 
-    @Operation(
+    /*@Operation(
             summary = "Listar o endereço por rua",
             description = "Lista os endereços dado a rua especificada"
     )
@@ -143,9 +163,9 @@ public class EnderecoController {
         }
         List<EnderecoListDto> dtos = EnderecoMapper.toListagemDtos(enderecos);
         return ResponseEntity.status(200).body(dtos);
-    }
+    }*/
 
-    @Operation(
+    /*@Operation(
             summary = "Listar o endereço pelo logradouro",
             description = "Lista os endereços dado o logradouro especificado"
     )
@@ -162,6 +182,6 @@ public class EnderecoController {
         }
         List<EnderecoListDto> dtos = EnderecoMapper.toListagemDtos(enderecos);
         return ResponseEntity.status(200).body(dtos);
-    }
+    }*/
     
 }

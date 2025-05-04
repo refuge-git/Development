@@ -8,7 +8,7 @@ public class FuncionarioRequestDto {
 
     @NotNull
     @NotBlank
-    @Size(min = 3, max = 10)
+    @Size(min = 3, max = 50)
     @Schema(description = "Nome completo do funcionário", example = "Marcio Santa da Silva")
     private String nome;
 

@@ -10,10 +10,10 @@ public class TipoGeneroListDto {
     @Schema(description = "Descrição do gênero", example = "Pessoa que não se indentifica nem como um homem nem como mulher")
     private String descricao;
 
-    public TipoGeneroListDto(String descricao, Integer id, String nome) {
-        this.descricao = descricao;
+    public TipoGeneroListDto(Integer id, String nome, String descricao) {
         this.id = id;
         this.nome = nome;
+        this.descricao = descricao;
     }
 
     public TipoGeneroListDto() {

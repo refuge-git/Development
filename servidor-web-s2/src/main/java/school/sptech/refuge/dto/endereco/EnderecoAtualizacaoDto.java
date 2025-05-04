@@ -4,42 +4,60 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class EnderecoAtualizacaoDto {
 
-    @Schema(description = "CEP do endereço do beneficiário", example = "04241064")
-    private String cep;
-    @Schema(description = "Rua do endereço do beneficiário", example = "Rua Pereira Augusto")
-    private String rua;
-    @Schema(description = "Bairro do endereço do beneficiário", example = "Jardim Silveira")
-    private String bairro;
-    @Schema(description = "Logradouro do endereço do beneficiário", example = "Praça da Árvore")
-    private String logradouro;
-    @Schema(description = "Número do endereço do beneficiário", example = "314")
-    private Integer numero;
 
-    public EnderecoAtualizacaoDto(String cep, String rua, String bairro, String logradouro, Integer numero) {
-        this.cep = cep;
-        this.rua = rua;
-        this.bairro = bairro;
-        this.logradouro = logradouro;
+    private String tipoLogradouro;
+    private String nomeLogradouro;
+    private Integer numero;
+    private String complemento;
+    private String bairro;
+    private String cep;
+    private String nomeLocalidade;
+    private String siglaCidade;
+
+    public EnderecoAtualizacaoDto(String tipoLogradouro, String nomeLogradouro, Integer numero, String complemento, String bairro, String cep, String nomeLocalidade, String siglaCidade) {
+        this.tipoLogradouro = tipoLogradouro;
+        this.nomeLogradouro = nomeLogradouro;
         this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cep = cep;
+        this.nomeLocalidade = nomeLocalidade;
+        this.siglaCidade = siglaCidade;
     }
 
     public EnderecoAtualizacaoDto() {
     }
 
-    public String getCep() {
-        return cep;
+    public String getTipoLogradouro() {
+        return tipoLogradouro;
     }
 
-    public void setCep(String cep) {
-        this.cep = cep;
+    public void setTipoLogradouro(String tipoLogradouro) {
+        this.tipoLogradouro = tipoLogradouro;
     }
 
-    public String getRua() {
-        return rua;
+    public String getNomeLogradouro() {
+        return nomeLogradouro;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
+    public void setNomeLogradouro(String nomeLogradouro) {
+        this.nomeLogradouro = nomeLogradouro;
+    }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
     }
 
     public String getBairro() {
@@ -50,19 +68,27 @@ public class EnderecoAtualizacaoDto {
         this.bairro = bairro;
     }
 
-    public String getLogradouro() {
-        return logradouro;
+    public String getCep() {
+        return cep;
     }
 
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
-    public Integer getNumero() {
-        return numero;
+    public String getNomeLocalidade() {
+        return nomeLocalidade;
     }
 
-    public void setNumero(Integer numero) {
-        this.numero = numero;
+    public void setNomeLocalidade(String nomeLocalidade) {
+        this.nomeLocalidade = nomeLocalidade;
+    }
+
+    public String getSiglaCidade() {
+        return siglaCidade;
+    }
+
+    public void setSiglaCidade(String siglaCidade) {
+        this.siglaCidade = siglaCidade;
     }
 }

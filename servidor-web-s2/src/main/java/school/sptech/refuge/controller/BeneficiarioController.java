@@ -6,28 +6,19 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.dto.beneficiario.BeneficiarioAtualizacaoDto;
 import school.sptech.refuge.dto.beneficiario.BeneficiarioMapper;
 import school.sptech.refuge.dto.beneficiario.BeneficiarioRequestDto;
-import school.sptech.refuge.dto.funcionario.FuncionarioAtualizacaoDto;
-import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.dto.funcionario.FuncionarioMapper;
-import school.sptech.refuge.dto.funcionario.FuncionarioRequestDto;
 import school.sptech.refuge.entity.Beneficiario;
-import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.entity.GeneroEnum;
-import school.sptech.refuge.repository.BeneficiarioRepository;
 import school.sptech.refuge.service.BeneficiarioService;
-import school.sptech.refuge.service.FuncionarioService;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/beneficiarios") // URI do servidor
@@ -50,8 +41,9 @@ public class BeneficiarioController {
             @ApiResponse(responseCode = "400", description = "Dados de beneficiário inválidos ou ausente", content = @Content)
     })
     @PostMapping
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
-        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, dto.getFuncionario());
+        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, dto.getFuncionario(), dto.getTipoGenero(), dto.getEndereco());
         Beneficiario beneficiarioCadastrado = beneficiarioService.cadastrar(beneficiario);
         BeneficarioListDto dtoSalvo = BeneficiarioMapper.toListagemDto(beneficiarioCadastrado);
         return ResponseEntity.status(201).body(dtoSalvo);
@@ -67,6 +59,7 @@ public class BeneficiarioController {
             @ApiResponse(responseCode = "204", description = "Não há beneficiários cadastrados", content = @Content)
     })
     @GetMapping
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listar() {
         List<Beneficiario> beneficiarios = beneficiarioService.listar();
         if (beneficiarios.isEmpty()) {
@@ -86,6 +79,7 @@ public class BeneficiarioController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficarioListDto.class)))
     })
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> listarPorId(@PathVariable Integer id) {
         Beneficiario beneficiario = beneficiarioService.buscarPorId(id);
         BeneficarioListDto dto = BeneficiarioMapper.toListagemDto(beneficiario);
@@ -102,15 +96,16 @@ public class BeneficiarioController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficarioListDto.class)))
     })
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody BeneficiarioAtualizacaoDto dto) {
-        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, id, dto.getFuncionario());
+        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, id, dto.getFuncionario(), dto.getTipoGenero(), dto.getEndereco());
         Beneficiario beneficiarioAtualizado = beneficiarioService.atualizar(beneficiario);
         BeneficarioListDto dtoAtualizado = BeneficiarioMapper.toListagemDto(beneficiarioAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }
 
 
-    @Operation(
+    /*@Operation(
             summary = "Beneficiários por gênero",
             description = "Listar todos os beneficiários pelo gênero especificado"
     )
@@ -120,6 +115,7 @@ public class BeneficiarioController {
             @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o gênero especificado encontrado", content = @Content)
     })
     @GetMapping("/genero")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorGenero(@RequestParam String genero) {
         List<Beneficiario> beneficiario = beneficiarioService.listarPorGenero(genero);
         if (beneficiario.isEmpty()) {
@@ -128,7 +124,7 @@ public class BeneficiarioController {
 
         List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiario);
         return ResponseEntity.status(200).body(dto);
-    }
+    }*/
 
     @Operation(
             summary = "Beneficiários por raça",
@@ -140,6 +136,7 @@ public class BeneficiarioController {
             @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com a raça especificada foi encontrado", content = @Content)
     })
     @GetMapping("/raca")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorRaca(@RequestParam String raca) {
         List<Beneficiario> beneficiario = beneficiarioService.listarPorRaca(raca);
         if (beneficiario.isEmpty()) {
@@ -161,6 +158,7 @@ public class BeneficiarioController {
             @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o nome especificado foi encontrado", content = @Content)
     })
     @GetMapping("/nome")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarContendoNome(@RequestParam String nome) {
         List<Beneficiario> beneficiario = beneficiarioService.listarNome(nome);
         if (beneficiario.isEmpty()) {
@@ -180,6 +178,7 @@ public class BeneficiarioController {
             @ApiResponse(responseCode = "204", description = "Beneficiários excluido com sucesso")
     })
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         beneficiarioService.removerPorId(id);
         return ResponseEntity.status(204).build();

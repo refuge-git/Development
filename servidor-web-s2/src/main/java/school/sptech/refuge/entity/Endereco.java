@@ -11,23 +11,28 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private String cep;
-    private String rua;
-    private String bairro;
-    private String logradouro;
+    private String tipoLogradouro;
+    private String nomeLogradouro;
     private Integer numero;
+    private String complemento;
+    private String bairro;
+    private String cep;
+    private String nomeLocalidade;
+    private String siglaCidade;
 
-    @OneToMany(mappedBy = "endereco")
-    private List<Beneficiario> beneficiarios;
-
-    public Endereco(Integer id, String cep, String rua, String bairro, String logradouro, Integer numero) {
+    public Endereco(Integer id, String tipoLogradouro, String nomeLogradouro, Integer numero, String complemento, String bairro, String cep, String nomeLocalidade, String siglaCidade) {
         this.id = id;
-        this.cep = cep;
-        this.rua = rua;
-        this.bairro = bairro;
-        this.logradouro = logradouro;
+        this.tipoLogradouro = tipoLogradouro;
+        this.nomeLogradouro = nomeLogradouro;
         this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cep = cep;
+        this.nomeLocalidade = nomeLocalidade;
+        this.siglaCidade = siglaCidade;
+    }
+
+    public Endereco() {
     }
 
     public Integer getId() {
@@ -38,36 +43,20 @@ public class Endereco {
         this.id = id;
     }
 
-    public String getCep() {
-        return cep;
+    public String getTipoLogradouro() {
+        return tipoLogradouro;
     }
 
-    public void setCep(String cep) {
-        this.cep = cep;
+    public void setTipoLogradouro(String tipoLogradouro) {
+        this.tipoLogradouro = tipoLogradouro;
     }
 
-    public String getRua() {
-        return rua;
+    public String getNomeLogradouro() {
+        return nomeLogradouro;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
-    }
-
-    public String getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
-
-    public String getLogradouro() {
-        return logradouro;
-    }
-
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
+    public void setNomeLogradouro(String nomeLogradouro) {
+        this.nomeLogradouro = nomeLogradouro;
     }
 
     public Integer getNumero() {
@@ -78,15 +67,43 @@ public class Endereco {
         this.numero = numero;
     }
 
-    public EnderecoListDto enderecoListDto(){
-        return new EnderecoListDto(
-                this.id,
-                this.cep,
-                this.rua,
-                this.bairro,
-                this.logradouro,
-                this.numero
-        );
+    public String getComplemento() {
+        return complemento;
     }
 
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getNomeLocalidade() {
+        return nomeLocalidade;
+    }
+
+    public void setNomeLocalidade(String nomeLocalidade) {
+        this.nomeLocalidade = nomeLocalidade;
+    }
+
+    public String getSiglaCidade() {
+        return siglaCidade;
+    }
+
+    public void setSiglaCidade(String siglaCidade) {
+        this.siglaCidade = siglaCidade;
+    }
 }

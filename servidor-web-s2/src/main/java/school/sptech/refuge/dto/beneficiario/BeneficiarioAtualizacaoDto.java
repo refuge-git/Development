@@ -1,10 +1,7 @@
 package school.sptech.refuge.dto.beneficiario;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.entity.GeneroEnum;
-import school.sptech.refuge.entity.RacaEnum;
-import school.sptech.refuge.entity.StatusEnum;
+import school.sptech.refuge.entity.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,13 +9,13 @@ import java.time.LocalDateTime;
 public class BeneficiarioAtualizacaoDto {
 
     @Schema(description = "Nome completo do usuário", example = "Raul Reis")
-    private String nome;
+    private String nomeRegistro;
+    @Schema(description = "Nome social do usuário", example = "Raul Reis")
+    private String nomeSocial;
     @Schema(description = "Data de nascimento do usuário", example = "19/08/2004")
     private LocalDate dtNasc;
     @Schema(description = "CPF do usuário", example = "000.000.000.00")
     private String cpf;
-    @Schema(description = "Gênero do usuário", example = "Masculino")
-    private GeneroEnum generoEnum;
     @Schema(description = "Raça do usuário", example = "Branco")
     private RacaEnum raca;
     @Schema(description = "Nome completo da mãe do usuário", example = "Carmen Silva")
@@ -31,35 +28,46 @@ public class BeneficiarioAtualizacaoDto {
     private StatusEnum statusEnum;
     @Schema(description = "Data de ativação do usuário", example = "25/07/2020")
     private LocalDateTime data_ativacao;
-    @Schema(description = "FK que relaciona o endereço ao beneficiario", example = "1")
-    private Integer idEndereco;
     @Schema(description = "Entidade que relaciona o funcionario ao beneficiario", example = "Entidade funcionario")
     private Funcionario funcionario;
+    @Schema(description = "Entidade que relaciona o endereço ao beneficiario", example = "Entidade endereço")
+    private Endereco endereco;
 
-    public BeneficiarioAtualizacaoDto(String nome, LocalDate dtNasc, String cpf, GeneroEnum generoEnum, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime data_ativacao, Integer idEndereco, Funcionario funcionario) {
-        this.nome = nome;
+    private TipoGenero tipoGenero;
+
+    public BeneficiarioAtualizacaoDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime data_ativacao, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero) {
+        this.nomeRegistro = nomeRegistro;
+        this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
         this.cpf = cpf;
-        this.generoEnum = generoEnum;
         this.raca = raca;
         this.nomeMae = nomeMae;
         this.fotoPerfil = fotoPerfil;
         this.sisa = sisa;
         this.statusEnum = statusEnum;
         this.data_ativacao = data_ativacao;
-        this.idEndereco = idEndereco;
         this.funcionario = funcionario;
+        this.endereco = endereco;
+        this.tipoGenero = tipoGenero;
     }
 
     public BeneficiarioAtualizacaoDto() {
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeRegistro() {
+        return nomeRegistro;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeRegistro(String nomeRegistro) {
+        this.nomeRegistro = nomeRegistro;
+    }
+
+    public String getNomeSocial() {
+        return nomeSocial;
+    }
+
+    public void setNomeSocial(String nomeSocial) {
+        this.nomeSocial = nomeSocial;
     }
 
     public LocalDate getDtNasc() {
@@ -76,14 +84,6 @@ public class BeneficiarioAtualizacaoDto {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public GeneroEnum getGenero() {
-        return generoEnum;
-    }
-
-    public void setGenero(GeneroEnum generoEnum) {
-        this.generoEnum = generoEnum;
     }
 
     public RacaEnum getRaca() {
@@ -110,36 +110,12 @@ public class BeneficiarioAtualizacaoDto {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public String getNumeroCartao() {
-        return sisa;
-    }
-
-    public void setNumeroCartao(String numeroCartao) {
-        this.sisa = numeroCartao;
-    }
-
-    public GeneroEnum getGeneroEnum() {
-        return generoEnum;
-    }
-
-    public void setGeneroEnum(GeneroEnum generoEnum) {
-        this.generoEnum = generoEnum;
-    }
-
     public String getSisa() {
         return sisa;
     }
 
     public void setSisa(String sisa) {
         this.sisa = sisa;
-    }
-
-    public Integer getIdEndereco() {
-        return idEndereco;
-    }
-
-    public void setIdEndereco(Integer idEndereco) {
-        this.idEndereco = idEndereco;
     }
 
     public StatusEnum getStatusEnum() {
@@ -164,5 +140,21 @@ public class BeneficiarioAtualizacaoDto {
 
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public TipoGenero getTipoGenero() {
+        return tipoGenero;
+    }
+
+    public void setTipoGenero(TipoGenero tipoGenero) {
+        this.tipoGenero = tipoGenero;
     }
 }

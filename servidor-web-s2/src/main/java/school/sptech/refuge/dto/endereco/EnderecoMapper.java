@@ -15,11 +15,14 @@ public class EnderecoMapper {
 
         return new EnderecoListDto(
                 entity.getId(),
-                entity.getCep(),
-                entity.getRua(),
+                entity.getTipoLogradouro(),
+                entity.getNomeLogradouro(),
+                entity.getNumero(),
+                entity.getComplemento(),
                 entity.getBairro(),
-                entity.getLogradouro(),
-                entity.getNumero()
+                entity.getCep(),
+                entity.getNomeLocalidade(),
+                entity.getSiglaCidade()
         );
     }
 
@@ -35,48 +38,57 @@ public class EnderecoMapper {
 
 
     // SOBRE-CARGA DE MÉTODO
-    public static Endereco toEntity(EnderecoRequestDto dto, Beneficiario beneficiario) {
-        if (dto == null || beneficiario == null) {
+    public static Endereco toEntity(EnderecoRequestDto dto) {
+        if (dto == null) {
             return null;
         }
 
         return new Endereco(
                 null,
-                dto.getCep(),
-                dto.getRua(),
+                dto.getTipoLogradouro(),
+                dto.getNomeLogradouro(),
+                dto.getNumero(),
+                dto.getComplemento(),
                 dto.getBairro(),
-                dto.getLogradouro(),
-                dto.getNumero()
+                dto.getCep(),
+                dto.getNomeLocalidade(),
+                dto.getSiglaCidade()
         );
     }
 
-    public static Endereco toEntity(EnderecoAtualizacaoDto dto, Beneficiario beneficiario) {
-        if (dto == null || beneficiario == null) {
+    public static Endereco toEntity(EnderecoAtualizacaoDto dto) {
+        if (dto == null) {
             return null;
         }
 
         return new Endereco(
                 null,
-                dto.getCep(),
-                dto.getRua(),
+                dto.getTipoLogradouro(),
+                dto.getNomeLogradouro(),
+                dto.getNumero(),
+                dto.getComplemento(),
                 dto.getBairro(),
-                dto.getLogradouro(),
-                dto.getNumero()
+                dto.getCep(),
+                dto.getNomeLocalidade(),
+                dto.getSiglaCidade()
         );
     }
 
-    public static Endereco toEntity(EnderecoAtualizacaoDto dto, Integer id, Beneficiario beneficiario) {
+    public static Endereco toEntity(EnderecoAtualizacaoDto dto, Integer id) {
         if (dto == null) {
             return null;
         }
 
         return new Endereco(
                 id,
-                dto.getCep(),
-                dto.getRua(),
+                dto.getTipoLogradouro(),
+                dto.getNomeLogradouro(),
+                dto.getNumero(),
+                dto.getComplemento(),
                 dto.getBairro(),
-                dto.getLogradouro(),
-                dto.getNumero()
+                dto.getCep(),
+                dto.getNomeLocalidade(),
+                dto.getSiglaCidade()
         );
     }
 

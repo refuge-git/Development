@@ -1,6 +1,8 @@
 package school.sptech.refuge.dto.beneficiario;
 
 import school.sptech.refuge.dto.FuncionarioBeneficiarioListDto;
+import school.sptech.refuge.dto.endereco.EnderecoListDto;
+import school.sptech.refuge.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.entity.*;
 
 import java.util.List;
@@ -20,19 +22,40 @@ public class BeneficiarioMapper {
                 entity.getFuncionario().getTelefone()
         );
 
+        EnderecoListDto enderecoListDto = new EnderecoListDto(
+                entity.getFuncionario().getId(),
+                entity.getEndereco().getTipoLogradouro(),
+                entity.getEndereco().getNomeLogradouro(),
+                entity.getEndereco().getNumero(),
+                entity.getEndereco().getComplemento(),
+                entity.getEndereco().getBairro(),
+                entity.getEndereco().getCep(),
+                entity.getEndereco().getNomeLocalidade(),
+                entity.getEndereco().getSiglaCidade()
+
+        );
+
+        TipoGeneroListDto tipoGeneroListDto = new TipoGeneroListDto(
+                entity.getTipoGenero().getId(),
+                entity.getTipoGenero().getNome(),
+                entity.getTipoGenero().getDescricao()
+        );
+
         return new BeneficarioListDto(
                 entity.getId(),
-                entity.getNome(),
+                entity.getNomeRegistro(),
+                entity.getNomeSocial(),
                 entity.getDtNasc(),
                 entity.getCpf(),
-                entity.getGenero().getDescricaoGenero(),
                 entity.getRaca().getDescricaoRaca(),
                 entity.getNomeMae(),
                 entity.getFotoPerfil(),
                 entity.getSisa(),
                 entity.getStatusEnum().getDescricaoStatus(),
-                entity.getData_ativacao(),
-                funcionarioDto
+                entity.getDataAtivacao(),
+                funcionarioDto,
+                enderecoListDto,
+                tipoGeneroListDto
         );
     }
 
@@ -46,45 +69,50 @@ public class BeneficiarioMapper {
                 .toList();
     }
 
-    public static Beneficiario toEntity(BeneficiarioRequestDto dto, Funcionario funcionario) {
+    public static Beneficiario toEntity(BeneficiarioRequestDto dto, Funcionario funcionario, TipoGenero tipoGenero, Endereco endereco) {
         if (dto == null) {
             return null;
         }
 
         return new Beneficiario(
                 null,
-                dto.getNome(),
+                dto.getNomeRegistro(),
+                dto.getNomeSocial(),
                 dto.getDtNasc(),
                 dto.getCpf(),
-                GeneroEnum.fromString(dto.getGenero()),
                 RacaEnum.fromString(dto.getRaca()),
                 dto.getNomeMae(),
                 dto.getFotoPerfil(),
                 dto.getSisa(),
                 StatusEnum.fromString(dto.getStatus()),
                 dto.getData_ativacao(),
-                funcionario
+                funcionario,
+                endereco,
+                tipoGenero
         );
     }
 
-    public static Beneficiario toEntity(BeneficiarioAtualizacaoDto dto, Integer id, Funcionario funcionario) {
+    public static Beneficiario toEntity(BeneficiarioAtualizacaoDto dto, Integer id, Funcionario funcionario, TipoGenero tipoGenero, Endereco endereco) {
         if (dto == null) {
             return null;
         }
 
         return new Beneficiario(
                 id,
-                dto.getNome(),
+                dto.getNomeRegistro(),
+                dto.getNomeSocial(),
                 dto.getDtNasc(),
                 dto.getCpf(),
-                dto.getGenero(),
                 dto.getRaca(),
                 dto.getNomeMae(),
                 dto.getFotoPerfil(),
                 dto.getSisa(),
                 dto.getStatusEnum(),
                 dto.getData_ativacao(),
-                funcionario
+                funcionario,
+                endereco,
+                tipoGenero
+
         );
     }
 }

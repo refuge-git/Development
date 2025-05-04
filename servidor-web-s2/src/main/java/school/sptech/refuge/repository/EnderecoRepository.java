@@ -9,7 +9,7 @@ import java.util.List;
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
     List<Endereco> findByBairroLike(String bairro);
 
-    List<Endereco> findByRuaLike(String rua);
+    /*List<Endereco> findByRuaLike(String rua);
 
-    List<Endereco> findByLogradouroContaining(String logradouro);
+    List<Endereco> findByLogradouroContaining(String logradouro);*/
 }

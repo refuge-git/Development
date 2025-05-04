@@ -14,9 +14,9 @@ public class TipoGeneroMapper {
 
         // Retornando instância diretamente
         return new TipoGeneroListDto(
-                entity.getDescricao(),
                 entity.getId(),
-                entity.getNome()
+                entity.getNome(),
+                entity.getDescricao()
         );
 
     }

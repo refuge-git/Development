@@ -12,12 +12,10 @@ public class Beneficiario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nome;
+    private String nomeRegistro;
+    private String nomeSocial;
     private LocalDate dtNasc;
     private String cpf;
-
-    @Enumerated(EnumType.STRING)
-    private GeneroEnum generoEnum;
 
     @Enumerated(EnumType.STRING)
     private RacaEnum raca;
@@ -38,12 +36,16 @@ public class Beneficiario {
     @JoinColumn(name = "fk_endereco", referencedColumnName = "id")
     private Endereco endereco;
 
-    public Beneficiario(Integer id, String nome, LocalDate dtNasc, String cpf, GeneroEnum generoEnum, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime dataAtivacao, Funcionario funcionario) {
+    @ManyToOne
+    @JoinColumn(name = "fk_genero", referencedColumnName = "id")
+    private TipoGenero tipoGenero;
+
+    public Beneficiario(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime dataAtivacao, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero) {
         this.id = id;
-        this.nome = nome;
+        this.nomeRegistro = nomeRegistro;
+        this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
         this.cpf = cpf;
-        this.generoEnum = generoEnum;
         this.raca = raca;
         this.nomeMae = nomeMae;
         this.fotoPerfil = fotoPerfil;
@@ -51,6 +53,8 @@ public class Beneficiario {
         this.statusEnum = statusEnum;
         this.dataAtivacao = dataAtivacao;
         this.funcionario = funcionario;
+        this.endereco = endereco;
+        this.tipoGenero = tipoGenero;
     }
 
     public Beneficiario() {
@@ -64,12 +68,20 @@ public class Beneficiario {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeRegistro() {
+        return nomeRegistro;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeRegistro(String nomeRegistro) {
+        this.nomeRegistro = nomeRegistro;
+    }
+
+    public String getNomeSocial() {
+        return nomeSocial;
+    }
+
+    public void setNomeSocial(String nomeSocial) {
+        this.nomeSocial = nomeSocial;
     }
 
     public LocalDate getDtNasc() {
@@ -86,14 +98,6 @@ public class Beneficiario {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public GeneroEnum getGenero() {
-        return generoEnum;
-    }
-
-    public void setGenero(GeneroEnum generoEnum) {
-        this.generoEnum = generoEnum;
     }
 
     public RacaEnum getRaca() {
@@ -120,36 +124,12 @@ public class Beneficiario {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public String getNumeroCartao() {
+    public String getSisa() {
         return sisa;
     }
 
-    public void setNumeroCartao(String numeroCartao) {
-        this.sisa = numeroCartao;
-    }
-
-    public StatusEnum getStatus() {
-        return statusEnum;
-    }
-
-    public void setStatus(StatusEnum statusEnum) {
-        this.statusEnum = statusEnum;
-    }
-
-    public LocalDateTime getData_ativacao() {
-        return dataAtivacao;
-    }
-
-    public void setData_ativacao(LocalDateTime data_ativacao) {
-        this.dataAtivacao = data_ativacao;
-    }
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setSisa(String sisa) {
+        this.sisa = sisa;
     }
 
     public StatusEnum getStatusEnum() {
@@ -160,27 +140,35 @@ public class Beneficiario {
         this.statusEnum = statusEnum;
     }
 
-    public String getSisa() {
-        return sisa;
-    }
-
-    public void setSisa(String sisa) {
-        this.sisa = sisa;
-    }
-
-    public GeneroEnum getGeneroEnum() {
-        return generoEnum;
-    }
-
-    public void setGeneroEnum(GeneroEnum generoEnum) {
-        this.generoEnum = generoEnum;
-    }
-
     public LocalDateTime getDataAtivacao() {
         return dataAtivacao;
     }
 
     public void setDataAtivacao(LocalDateTime dataAtivacao) {
         this.dataAtivacao = dataAtivacao;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public TipoGenero getTipoGenero() {
+        return tipoGenero;
+    }
+
+    public void setTipoGenero(TipoGenero tipoGenero) {
+        this.tipoGenero = tipoGenero;
     }
 }

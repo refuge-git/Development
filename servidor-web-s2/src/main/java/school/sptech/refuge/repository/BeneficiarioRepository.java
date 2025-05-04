@@ -8,9 +8,7 @@ import java.util.List;
 
 public interface BeneficiarioRepository extends JpaRepository<Beneficiario, Integer> {
 
-    List<Beneficiario> findByGeneroEnumLike(String genero);
-
     List<Beneficiario> findByRacaLike(String raca);
 
-    List<Beneficiario> findByNomeContaining(String nome);
+    List<Beneficiario> findByNomeSocialContainingIgnoreCase(String nome);
 }

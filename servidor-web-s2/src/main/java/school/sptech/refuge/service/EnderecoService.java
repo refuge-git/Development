@@ -19,23 +19,10 @@ public class EnderecoService {
 
 
     private final EnderecoRepository enderecoRepository;
-    private final BeneficiarioRepository beneficiarioRepository;
 
     @Autowired
-    public EnderecoService(EnderecoRepository enderecoRepository, BeneficiarioRepository beneficiarioRepository) {
+    public EnderecoService(EnderecoRepository enderecoRepository) {
         this.enderecoRepository = enderecoRepository;
-        this.beneficiarioRepository = beneficiarioRepository;
-    }
-
-    public Endereco salvarEndereco(EnderecoRequestDto dto) {
-        // Buscar o Beneficiario pelo ID
-        Beneficiario beneficiario = beneficiarioRepository.findById(dto.getBeneficiarioId())
-                .orElseThrow(() -> new RuntimeException("Beneficiário não encontrado"));
-
-        // Criar o Endereco
-        Endereco endereco = EnderecoMapper.toEntity(dto, beneficiario);
-
-        return enderecoRepository.save(endereco);
     }
 
     public Endereco cadastrar(Endereco endereco) {
@@ -75,12 +62,12 @@ public class EnderecoService {
 
     }
 
-    public List<Endereco> listarPorRua(String rua) {
+    /*public List<Endereco> listarPorRua(String rua) {
         return enderecoRepository.findByRuaLike(rua);
 
-    }
+    }*/
 
-    public List<Endereco> listarPorLogradouro(String logradouro) {
+    /*public List<Endereco> listarPorLogradouro(String logradouro) {
         return enderecoRepository.findByLogradouroContaining(logradouro);
-    }
+    }*/
 }

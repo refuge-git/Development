@@ -116,6 +116,7 @@ public class FuncionarioController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioTokenDto.class)))
     })
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<FuncionarioListDto> listarPorId(@PathVariable Integer id) {
         Funcionario funcionario = funcionarioService.buscarPorId(id);
         FuncionarioListDto dto = FuncionarioMapper.toListagemDto(funcionario);
@@ -132,6 +133,7 @@ public class FuncionarioController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioTokenDto.class)))
     })
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<FuncionarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody FuncionarioAtualizacaoDto dto) {
         Funcionario funcionario = FuncionarioMapper.toEntity(dto, id);
         Funcionario funcionarioAtualizado = funcionarioService.atualizar(funcionario);
@@ -148,6 +150,7 @@ public class FuncionarioController {
             @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso")
     })
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         funcionarioService.removerPorId(id);
         return ResponseEntity.status(204).build();

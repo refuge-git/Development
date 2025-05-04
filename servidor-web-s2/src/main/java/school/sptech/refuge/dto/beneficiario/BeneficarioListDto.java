@@ -2,10 +2,9 @@ package school.sptech.refuge.dto.beneficiario;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import school.sptech.refuge.dto.FuncionarioBeneficiarioListDto;
-import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.entity.GeneroEnum;
-import school.sptech.refuge.entity.RacaEnum;
-import school.sptech.refuge.entity.StatusEnum;
+import school.sptech.refuge.dto.endereco.EnderecoListDto;
+import school.sptech.refuge.dto.tipogenero.TipoGeneroListDto;
+import school.sptech.refuge.entity.TipoGenero;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,13 +14,13 @@ public class BeneficarioListDto {
 
     private Integer id;
     @Schema(description = "Nome completo do usuário", example = "Raul Reis")
-    private String nome;
+    private String nomeRegistro;
+    @Schema(description = "Nome social do usuário", example = "Roberta Reis")
+    private String nomeSocial;
     @Schema(description = "Data de nascimento do usuário", example = "19/08/2004")
     private LocalDate dtNasc;
     @Schema(description = "CPF do usuário", example = "000.000.000.00")
     private String cpf;
-    @Schema(description = "Gênero do usuário", example = "Masculino")
-    private String genero;
     @Schema(description = "Raça do usuário", example = "Branco")
     private String raca;
     @Schema(description = "Nome completo da mãe do usuário", example = "Carmen Silva")
@@ -36,14 +35,16 @@ public class BeneficarioListDto {
     private LocalDateTime data_ativacao;
 
     private FuncionarioBeneficiarioListDto funcionario;
+    private EnderecoListDto endereco;
+    private TipoGeneroListDto tipoGenero;
 
 
-    public BeneficarioListDto(Integer id, String nome, LocalDate dtNasc, String cpf, String genero, String raca, String nomeMae, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, FuncionarioBeneficiarioListDto funcionario) {
+    public BeneficarioListDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, String raca, String nomeMae, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, FuncionarioBeneficiarioListDto funcionario, EnderecoListDto endereco, TipoGeneroListDto tipoGenero) {
         this.id = id;
-        this.nome = nome;
+        this.nomeRegistro = nomeRegistro;
+        this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
         this.cpf = cpf;
-        this.genero = genero;
         this.raca = raca;
         this.nomeMae = nomeMae;
         this.fotoPerfil = fotoPerfil;
@@ -51,6 +52,8 @@ public class BeneficarioListDto {
         this.status = status;
         this.data_ativacao = data_ativacao;
         this.funcionario = funcionario;
+        this.endereco = endereco;
+        this.tipoGenero = tipoGenero;
     }
 
     public BeneficarioListDto() {
@@ -64,12 +67,20 @@ public class BeneficarioListDto {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeRegistro() {
+        return nomeRegistro;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeRegistro(String nomeRegistro) {
+        this.nomeRegistro = nomeRegistro;
+    }
+
+    public String getNomeSocial() {
+        return nomeSocial;
+    }
+
+    public void setNomeSocial(String nomeSocial) {
+        this.nomeSocial = nomeSocial;
     }
 
     public LocalDate getDtNasc() {
@@ -86,14 +97,6 @@ public class BeneficarioListDto {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
     }
 
     public String getRaca() {
@@ -150,5 +153,21 @@ public class BeneficarioListDto {
 
     public void setFuncionario(FuncionarioBeneficiarioListDto funcionario) {
         this.funcionario = funcionario;
+    }
+
+    public EnderecoListDto getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(EnderecoListDto endereco) {
+        this.endereco = endereco;
+    }
+
+    public TipoGeneroListDto getTipoGenero() {
+        return tipoGenero;
+    }
+
+    public void setTipoGenero(TipoGeneroListDto tipoGenero) {
+        this.tipoGenero = tipoGenero;
     }
 }
