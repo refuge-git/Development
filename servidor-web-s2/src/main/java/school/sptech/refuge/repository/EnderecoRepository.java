@@ -7,9 +7,11 @@ import school.sptech.refuge.entity.Endereco;
 import java.util.List;
 
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
-    List<Endereco> findByBairroLike(String bairro);
 
-    /*List<Endereco> findByRuaLike(String rua);
+    List<Endereco> findByBairroContainingIgnoreCase(String bairro);
 
-    List<Endereco> findByLogradouroContaining(String logradouro);*/
+    List<Endereco> findByTipoLogradouroContainingIgnoreCase(String logradouro);
+
+
+    List<Endereco> findByNomeLogradouroContainingIgnoreCase(String rua);
 }

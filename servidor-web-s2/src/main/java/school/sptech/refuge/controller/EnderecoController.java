@@ -102,7 +102,7 @@ public class EnderecoController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<EnderecoListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody EnderecoAtualizacaoDto dto) {
-        Endereco endereco = EnderecoMapper.toEntity(dto);
+        Endereco endereco = EnderecoMapper.toEntity(dto, id);
         Endereco enderecoAtualizado = enderecoService.atualizar(endereco);
         EnderecoListDto dtoAtualizado = EnderecoMapper.toListagemDto(enderecoAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
@@ -146,35 +146,35 @@ public class EnderecoController {
         return ResponseEntity.status(200).body(dtos);
     }
 
-    /*@Operation(
-            summary = "Listar o endereço por rua",
-            description = "Lista os endereços dado a rua especificada"
+    @Operation(
+            summary = "Listar o endereço por nome do logradouro",
+            description = "Lista os endereços dado o nome do logradouro"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Endereços encontrados com sucesso",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class))),
             @ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado", content = @Content)
     })
-    @GetMapping("/rua")
+    @GetMapping("/nome_logradouro")
     public ResponseEntity<List<EnderecoListDto>> listarPorRua(@RequestParam String rua) {
-        List<Endereco> enderecos = enderecoService.listarPorRua(rua);
+        List<Endereco> enderecos = enderecoService.listarPorNomeLogradouro(rua);
         if (enderecos.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
         List<EnderecoListDto> dtos = EnderecoMapper.toListagemDtos(enderecos);
         return ResponseEntity.status(200).body(dtos);
-    }*/
+    }
 
-    /*@Operation(
-            summary = "Listar o endereço pelo logradouro",
-            description = "Lista os endereços dado o logradouro especificado"
+    @Operation(
+            summary = "Listar o endereço pelo tipo de logradouro",
+            description = "Lista os endereços dado o tipo de logradouro especificado"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Endereços encontrados com sucesso",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class))),
             @ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado", content = @Content)
     })
-    @GetMapping("/logradouro")
+    @GetMapping("/tipo_logradouro")
     public ResponseEntity<List<EnderecoListDto>> listarPorLogradouro(@RequestParam String logradouro) {
         List<Endereco> enderecos = enderecoService.listarPorLogradouro(logradouro);
         if (enderecos.isEmpty()) {
@@ -182,6 +182,6 @@ public class EnderecoController {
         }
         List<EnderecoListDto> dtos = EnderecoMapper.toListagemDtos(enderecos);
         return ResponseEntity.status(200).body(dtos);
-    }*/
+    }
     
 }

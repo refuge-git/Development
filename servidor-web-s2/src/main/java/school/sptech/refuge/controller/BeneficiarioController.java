@@ -149,18 +149,39 @@ public class BeneficiarioController {
 
 
     @Operation(
-            summary = "Beneficiários por nome",
-            description = "Listar todos os beneficiários pelo nome especificado"
+            summary = "Beneficiários por nome de registro.",
+            description = "Listar todos os beneficiários pelo nome de registro especificado"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Beneficiários por nome encontrados",
+            @ApiResponse(responseCode = "200", description = "Beneficiários por nome de registro encontrados",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
-            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o nome especificado foi encontrado", content = @Content)
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o nome de registro especificado foi encontrado", content = @Content)
     })
-    @GetMapping("/nome")
+    @GetMapping("/nome_registro")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<BeneficarioListDto>> listarContendoNome(@RequestParam String nome) {
-        List<Beneficiario> beneficiario = beneficiarioService.listarNome(nome);
+    public ResponseEntity<List<BeneficarioListDto>> listarContendoNomeRegistro(@RequestParam String nome) {
+        List<Beneficiario> beneficiario = beneficiarioService.listarNomeRegistro(nome);
+        if (beneficiario.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiario);
+        return ResponseEntity.status(200).body(dto);
+    }
+
+    @Operation(
+            summary = "Beneficiários por nome social.",
+            description = "Listar todos os beneficiários pelo nome social especificado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Beneficiários por nome de social encontrados",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o nome social especificado foi encontrado", content = @Content)
+    })
+    @GetMapping("/nome_social")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<BeneficarioListDto>> listarContendoNomeSocial(@RequestParam String nome) {
+        List<Beneficiario> beneficiario = beneficiarioService.listarNomeSocial(nome);
         if (beneficiario.isEmpty()) {
             return ResponseEntity.status(204).build();
         }

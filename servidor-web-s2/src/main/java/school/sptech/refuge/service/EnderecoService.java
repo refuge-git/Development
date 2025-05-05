@@ -58,16 +58,16 @@ public class EnderecoService {
     }
 
     public List<Endereco> listarPorBairro (String bairro) {
-        return enderecoRepository.findByBairroLike(bairro);
+        return enderecoRepository.findByBairroContainingIgnoreCase(bairro);
 
     }
 
-    /*public List<Endereco> listarPorRua(String rua) {
-        return enderecoRepository.findByRuaLike(rua);
+    public List<Endereco> listarPorNomeLogradouro(String rua) {
+        return enderecoRepository.findByNomeLogradouroContainingIgnoreCase(rua);
 
-    }*/
+    }
 
-    /*public List<Endereco> listarPorLogradouro(String logradouro) {
-        return enderecoRepository.findByLogradouroContaining(logradouro);
-    }*/
+    public List<Endereco> listarPorLogradouro(String logradouro) {
+        return enderecoRepository.findByTipoLogradouroContainingIgnoreCase(logradouro);
+    }
 }

@@ -11,4 +11,6 @@ public interface BeneficiarioRepository extends JpaRepository<Beneficiario, Inte
     List<Beneficiario> findByRacaLike(String raca);
 
     List<Beneficiario> findByNomeSocialContainingIgnoreCase(String nome);
+
+    List<Beneficiario> findByNomeRegistroContainingIgnoreCase(String nome);
 }

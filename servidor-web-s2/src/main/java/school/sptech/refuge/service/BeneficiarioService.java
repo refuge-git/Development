@@ -59,8 +59,13 @@ public class BeneficiarioService {
 
     }
 
-    public List<Beneficiario> listarNome(String nome) {
+    public List<Beneficiario> listarNomeSocial(String nome) {
         return beneficiarioRepository.findByNomeSocialContainingIgnoreCase(nome);
+
+    }
+
+    public List<Beneficiario> listarNomeRegistro(String nome) {
+        return beneficiarioRepository.findByNomeRegistroContainingIgnoreCase(nome);
 
     }
 

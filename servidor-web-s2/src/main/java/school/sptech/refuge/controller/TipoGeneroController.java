@@ -9,10 +9,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import school.sptech.refuge.dto.beneficiario.BeneficarioListDto;
+import school.sptech.refuge.dto.beneficiario.BeneficiarioMapper;
 import school.sptech.refuge.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.dto.tipogenero.TipoGeneroMapper;
 import school.sptech.refuge.dto.tipogenero.TipoGeneroRequestDto;
+import school.sptech.refuge.entity.Beneficiario;
 import school.sptech.refuge.entity.TipoGenero;
 import school.sptech.refuge.service.TipoGeneroService;
 
@@ -79,6 +82,26 @@ public class TipoGeneroController {
     public ResponseEntity<TipoGeneroListDto> listarPorId(@PathVariable Integer id) {
         TipoGenero tipoGenero = tipoGeneroService.buscarPorId(id);
         TipoGeneroListDto dto = TipoGeneroMapper.toListagemDto(tipoGenero);
+        return ResponseEntity.status(200).body(dto);
+    }
+
+    @Operation(
+            summary = "Listar gênero por partes da descrição",
+            description = "Lista o gênero dado parte da descrição"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Gênero encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = TipoGeneroListDto.class)))
+    })
+    @GetMapping("/descricao")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<TipoGeneroListDto>> listarPorDescricao(@RequestParam String descricao) {
+        List<TipoGenero> tipos = tipoGeneroService.buscarPorDescricao(descricao);
+        if (tipos.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<TipoGeneroListDto> dto = TipoGeneroMapper.toListagemDtos(tipos);
         return ResponseEntity.status(200).body(dto);
     }
 

@@ -56,23 +56,6 @@ public class EnderecoMapper {
         );
     }
 
-    public static Endereco toEntity(EnderecoAtualizacaoDto dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        return new Endereco(
-                null,
-                dto.getTipoLogradouro(),
-                dto.getNomeLogradouro(),
-                dto.getNumero(),
-                dto.getComplemento(),
-                dto.getBairro(),
-                dto.getCep(),
-                dto.getNomeLocalidade(),
-                dto.getSiglaCidade()
-        );
-    }
 
     public static Endereco toEntity(EnderecoAtualizacaoDto dto, Integer id) {
         if (dto == null) {

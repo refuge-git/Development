@@ -32,6 +32,10 @@ public class TipoGeneroService {
         return tipoGeneroRepository.findAll();
     }
 
+    public List<TipoGenero> buscarPorDescricao(String descricao) {
+        return tipoGeneroRepository.findByDescricaoContainingIgnoreCase(descricao);
+    }
+
     public TipoGenero atualizar(TipoGenero tipoGenero) {
         if (tipoGeneroRepository.existsById(tipoGenero.getId())) {
             tipoGenero.setId(tipoGenero.getId());
