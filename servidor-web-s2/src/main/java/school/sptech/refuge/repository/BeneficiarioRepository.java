@@ -8,9 +8,12 @@ import java.util.List;
 
 public interface BeneficiarioRepository extends JpaRepository<Beneficiario, Integer> {
 
-    List<Beneficiario> findByRacaLike(String raca);
 
     List<Beneficiario> findByNomeSocialContainingIgnoreCase(String nome);
 
     List<Beneficiario> findByNomeRegistroContainingIgnoreCase(String nome);
+
+/*
+    List<Beneficiario> findByRacaContainingIgnoreCase(String raca);
+*/
 }

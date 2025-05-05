@@ -2,9 +2,15 @@ package school.sptech.refuge.service;
 
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.entity.Beneficiario;
+import school.sptech.refuge.entity.Endereco;
+import school.sptech.refuge.entity.Funcionario;
+import school.sptech.refuge.entity.TipoGenero;
 import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.repository.BeneficiarioRepository;
+import school.sptech.refuge.repository.EnderecoRepository;
+import school.sptech.refuge.repository.FuncionarioRepository;
+import school.sptech.refuge.repository.TipoGeneroRepository;
 
 import java.util.List;
 
@@ -12,14 +18,35 @@ import java.util.List;
 public class BeneficiarioService {
 
     private final BeneficiarioRepository beneficiarioRepository;
+    private final FuncionarioRepository funcionarioRepository;
+    private final EnderecoRepository enderecoRepository;
+    private final TipoGeneroRepository tipoGeneroRepository;
 
-    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository) {
+    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository, FuncionarioRepository funcionarioRepository, EnderecoRepository enderecoRepository, TipoGeneroRepository tipoGeneroRepository) {
         this.beneficiarioRepository = beneficiarioRepository;
+        this.funcionarioRepository = funcionarioRepository;
+        this.enderecoRepository = enderecoRepository;
+        this.tipoGeneroRepository = tipoGeneroRepository;
     }
 
     public Beneficiario cadastrar(Beneficiario beneficiario) {
 
         return beneficiarioRepository.save(beneficiario);
+    }
+
+    public Funcionario validarFuncionario(Integer id) {
+        return funcionarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+    }
+
+    public Endereco validarEndereco(Integer id) {
+        return enderecoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
+    }
+
+    public TipoGenero validarTipoGenero(Integer id) {
+        return tipoGeneroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tipo de gênero não encontrado"));
     }
 
     public Beneficiario buscarPorId(Integer id) {
@@ -54,10 +81,10 @@ public class BeneficiarioService {
 
     }*/
 
-    public List<Beneficiario> listarPorRaca(String raca) {
-        return beneficiarioRepository.findByRacaLike(raca);
+    /*public List<Beneficiario> listarPorRaca(String raca) {
+        return beneficiarioRepository.findByRacaContainingIgnoreCase(raca);
 
-    }
+    }*/
 
     public List<Beneficiario> listarNomeSocial(String nome) {
         return beneficiarioRepository.findByNomeSocialContainingIgnoreCase(nome);

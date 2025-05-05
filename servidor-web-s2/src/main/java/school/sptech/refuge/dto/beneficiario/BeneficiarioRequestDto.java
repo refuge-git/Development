@@ -61,19 +61,19 @@ public class BeneficiarioRequestDto {
     private LocalDateTime data_ativacao;
 
     @NotNull
-    @Schema(description = "Entidade que relaciona o funcionario ao beneficiario", example = "Entidade funcionario")
-    private Funcionario funcionario;
+    @Schema(description = "ID do funcionário responsável", example = "1")
+    private Integer idFuncionario;
 
     @NotNull
-    @Schema(description = "Entidade que relaciona o endereço ao beneficiario", example = "Entidade endereço")
-    private Endereco endereco;
+    @Schema(description = "ID do endereço do beneficiário", example = "3")
+    private Integer idEndereco;
 
     @NotNull
-    @Schema(description = "Entidade que relaciona o tipoGenero ao beneficiario", example = "Entidade tipoGenero")
-    private TipoGenero tipoGenero;
+    @Schema(description = "ID do tipo de gênero", example = "2")
+    private Integer idTipoGenero;
 
 
-    public BeneficiarioRequestDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, String raca, String nomeMae, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero) {
+    public BeneficiarioRequestDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, String raca, String nomeMae, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero) {
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
@@ -84,35 +84,35 @@ public class BeneficiarioRequestDto {
         this.sisa = sisa;
         this.status = status;
         this.data_ativacao = data_ativacao;
-        this.funcionario = funcionario;
-        this.endereco = endereco;
-        this.tipoGenero = tipoGenero;
+        this.idFuncionario = idFuncionario;
+        this.idEndereco = idEndereco;
+        this.idTipoGenero = idTipoGenero;
     }
 
     public BeneficiarioRequestDto() {
     }
 
-    public String getNomeRegistro() {
+    public @NotNull @NotBlank String getNomeRegistro() {
         return nomeRegistro;
     }
 
-    public void setNomeRegistro(String nomeRegistro) {
+    public void setNomeRegistro(@NotNull @NotBlank String nomeRegistro) {
         this.nomeRegistro = nomeRegistro;
     }
 
-    public String getNomeSocial() {
+    public @NotNull @NotBlank String getNomeSocial() {
         return nomeSocial;
     }
 
-    public void setNomeSocial(String nomeSocial) {
+    public void setNomeSocial(@NotNull @NotBlank String nomeSocial) {
         this.nomeSocial = nomeSocial;
     }
 
-    public LocalDate getDtNasc() {
+    public @NotNull @Past LocalDate getDtNasc() {
         return dtNasc;
     }
 
-    public void setDtNasc(LocalDate dtNasc) {
+    public void setDtNasc(@NotNull @Past LocalDate dtNasc) {
         this.dtNasc = dtNasc;
     }
 
@@ -124,31 +124,19 @@ public class BeneficiarioRequestDto {
         this.cpf = cpf;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getRaca() {
+    public @NotNull @NotBlank String getRaca() {
         return raca;
     }
 
-    public void setRaca(String raca) {
+    public void setRaca(@NotNull @NotBlank String raca) {
         this.raca = raca;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getNomeMae() {
+    public @NotNull @NotBlank String getNomeMae() {
         return nomeMae;
     }
 
-    public void setNomeMae(String nomeMae) {
+    public void setNomeMae(@NotNull @NotBlank String nomeMae) {
         this.nomeMae = nomeMae;
     }
 
@@ -168,12 +156,12 @@ public class BeneficiarioRequestDto {
         this.sisa = sisa;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public String getStatus() {
+        return status;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public LocalDateTime getData_ativacao() {
@@ -184,16 +172,27 @@ public class BeneficiarioRequestDto {
         this.data_ativacao = data_ativacao;
     }
 
-    public String getStatus() {
-        return status;
+    public @NotNull Integer getIdFuncionario() {
+        return idFuncionario;
     }
 
-    public TipoGenero getTipoGenero() {
-        return tipoGenero;
+    public void setIdFuncionario(@NotNull Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
-    public void setTipoGenero(TipoGenero tipoGenero) {
-        this.tipoGenero = tipoGenero;
+    public @NotNull Integer getIdEndereco() {
+        return idEndereco;
     }
 
+    public void setIdEndereco(@NotNull Integer idEndereco) {
+        this.idEndereco = idEndereco;
+    }
+
+    public @NotNull Integer getIdTipoGenero() {
+        return idTipoGenero;
+    }
+
+    public void setIdTipoGenero(@NotNull Integer idTipoGenero) {
+        this.idTipoGenero = idTipoGenero;
+    }
 }

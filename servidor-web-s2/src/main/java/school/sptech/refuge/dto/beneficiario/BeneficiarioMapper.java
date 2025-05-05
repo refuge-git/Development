@@ -23,7 +23,7 @@ public class BeneficiarioMapper {
         );
 
         EnderecoListDto enderecoListDto = new EnderecoListDto(
-                entity.getFuncionario().getId(),
+                entity.getEndereco().getId(),
                 entity.getEndereco().getTipoLogradouro(),
                 entity.getEndereco().getNomeLogradouro(),
                 entity.getEndereco().getNumero(),
@@ -69,10 +69,7 @@ public class BeneficiarioMapper {
                 .toList();
     }
 
-    public static Beneficiario toEntity(BeneficiarioRequestDto dto, Funcionario funcionario, TipoGenero tipoGenero, Endereco endereco) {
-        if (dto == null) {
-            return null;
-        }
+    public static Beneficiario toEntity(BeneficiarioRequestDto dto, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero) {
 
         return new Beneficiario(
                 null,

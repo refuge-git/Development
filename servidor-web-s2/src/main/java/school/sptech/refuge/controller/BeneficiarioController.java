@@ -15,6 +15,9 @@ import school.sptech.refuge.dto.beneficiario.BeneficiarioAtualizacaoDto;
 import school.sptech.refuge.dto.beneficiario.BeneficiarioMapper;
 import school.sptech.refuge.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.entity.Beneficiario;
+import school.sptech.refuge.entity.Endereco;
+import school.sptech.refuge.entity.Funcionario;
+import school.sptech.refuge.entity.TipoGenero;
 import school.sptech.refuge.service.BeneficiarioService;
 
 
@@ -43,7 +46,10 @@ public class BeneficiarioController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
-        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, dto.getFuncionario(), dto.getTipoGenero(), dto.getEndereco());
+        Funcionario funcionario = beneficiarioService.validarFuncionario(dto.getIdFuncionario());
+        Endereco endereco = beneficiarioService.validarEndereco(dto.getIdEndereco());
+        TipoGenero tipoGenero = beneficiarioService.validarTipoGenero(dto.getIdTipoGenero());
+        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, funcionario, endereco, tipoGenero);
         Beneficiario beneficiarioCadastrado = beneficiarioService.cadastrar(beneficiario);
         BeneficarioListDto dtoSalvo = BeneficiarioMapper.toListagemDto(beneficiarioCadastrado);
         return ResponseEntity.status(201).body(dtoSalvo);
@@ -126,7 +132,7 @@ public class BeneficiarioController {
         return ResponseEntity.status(200).body(dto);
     }*/
 
-    @Operation(
+    /*@Operation(
             summary = "Beneficiários por raça",
             description = "Listar todos os beneficiários pela raça especificada"
     )
@@ -146,7 +152,7 @@ public class BeneficiarioController {
         List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiario);
         return ResponseEntity.status(200).body(dto);
     }
-
+*/
 
     @Operation(
             summary = "Beneficiários por nome de registro.",
