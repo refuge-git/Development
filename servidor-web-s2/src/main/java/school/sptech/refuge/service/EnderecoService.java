@@ -70,4 +70,10 @@ public class EnderecoService {
     public List<Endereco> listarPorLogradouro(String logradouro) {
         return enderecoRepository.findByTipoLogradouroContainingIgnoreCase(logradouro);
     }
+
+    public Endereco buscarPorCep(String cep){
+        return enderecoRepository.findByCep(cep)
+                .orElseThrow(() -> new EnderecoNaoEncontradoException("CEP não encontrado"));
+    }
+
 }

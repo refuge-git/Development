@@ -5,6 +5,7 @@ import school.sptech.refuge.entity.Endereco;
 import school.sptech.refuge.entity.Endereco;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
 
@@ -12,6 +13,7 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
 
     List<Endereco> findByTipoLogradouroContainingIgnoreCase(String logradouro);
 
-
     List<Endereco> findByNomeLogradouroContainingIgnoreCase(String rua);
+
+    Optional<Endereco> findByCep(String cep);
 }
