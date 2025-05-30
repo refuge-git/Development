@@ -64,12 +64,10 @@ public class FuncionarioService {
     }
 
 
-
-
-    public Funcionario cadastrar(Funcionario funcionario) {
+    /*public Funcionario cadastrar(Funcionario funcionario) {
 
         return funcionarioRepository.save(funcionario);
-    }
+    }*/
 
     public Funcionario buscarPorId(Integer id) {
         return funcionarioRepository.findById(id)

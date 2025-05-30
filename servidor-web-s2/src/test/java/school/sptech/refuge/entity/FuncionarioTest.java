@@ -13,6 +13,7 @@ import school.sptech.refuge.service.FuncionarioService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

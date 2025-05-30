@@ -29,15 +29,15 @@ public class Beneficiario {
 
 
     @ManyToOne
-    @JoinColumn(name = "fk_funcionario", referencedColumnName = "id")
+    @JoinColumn(name = "fk_funcionario", referencedColumnName = "id_funcionario")
     private Funcionario funcionario;
 
     @ManyToOne
-    @JoinColumn(name = "fk_endereco", referencedColumnName = "id")
+    @JoinColumn(name = "fk_endereco", referencedColumnName = "id_endereco")
     private Endereco endereco;
 
     @ManyToOne
-    @JoinColumn(name = "fk_genero", referencedColumnName = "id")
+    @JoinColumn(name = "fk_genero", referencedColumnName = "id_genero")
     private TipoGenero tipoGenero;
 
     public Beneficiario(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime dataAtivacao, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero) {

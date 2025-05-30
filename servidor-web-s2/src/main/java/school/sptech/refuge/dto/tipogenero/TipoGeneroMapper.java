@@ -37,9 +37,9 @@ public class TipoGeneroMapper {
         }
 
         return new TipoGenero(
-                dto.getDescricao(),
                 null,
-                dto.getNome()
+                dto.getNome(),
+                dto.getDescricao()
         );
     }
 
@@ -49,9 +49,9 @@ public class TipoGeneroMapper {
         }
 
         return new TipoGenero(
-                dto.getDescricao(),
                 id,
-                dto.getNome()
+                dto.getNome(),
+                dto.getDescricao()
         );
     }
 }
