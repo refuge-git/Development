@@ -12,14 +12,15 @@ public class TipoGenero {
     private String nome;
     private String descricao;
 
-    public TipoGenero(String descricao, Integer id, String nome) {
-        this.descricao = descricao;
+    public TipoGenero( Integer id, String nome, String descricao) {
         this.id = id;
         this.nome = nome;
+        this.descricao = descricao;
     }
 
     public TipoGenero() {
     }
+
 
     public Integer getId() {
         return id;
