@@ -3,6 +3,7 @@ package school.sptech.refuge.dto.condicaosaude;
 import school.sptech.refuge.dto.funcionario.FuncionarioAtualizacaoDto;
 import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.entity.Beneficiario;
+import school.sptech.refuge.entity.Categoria;
 import school.sptech.refuge.entity.CondicaoSaude;
 import school.sptech.refuge.entity.Funcionario;
 

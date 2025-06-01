@@ -2,6 +2,7 @@ package school.sptech.refuge.dto.condicaosaude;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
+import school.sptech.refuge.entity.Categoria;
 
 import java.time.LocalDate;
 
@@ -30,6 +31,9 @@ public class CondicaoSaudeListDto {
     }
 
     public CondicaoSaudeListDto() {
+    }
+
+    public CondicaoSaudeListDto(Integer id, String descricao, LocalDate dataRegistro, Categoria categoria, String tratamento, String observacoes) {
     }
 
     public Integer getId() {

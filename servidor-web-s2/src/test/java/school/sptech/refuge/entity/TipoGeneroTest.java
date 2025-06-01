@@ -69,7 +69,7 @@ class TipoGeneroTest {
         assertNotNull(resultado);
         assertEquals(1, resultado.getId());
         assertEquals("Masculino", resultado.getNome());
-        assertEquals("Gênero masculino", resultado.getDescricao());
+        assertEquals("Gênero Masculino", resultado.getDescricao());
     }
 
     @Test
@@ -135,7 +135,7 @@ class TipoGeneroTest {
 
         List<TipoGenero> genero = List.of(
                 new TipoGenero(2, "Feminino", "Gênero feminino"),
-                new TipoGenero(4, "Não-binário", "Identidade não feminina")
+                new TipoGenero(4, "Não-binário", "Identidade não feminino")
         );
 
 
