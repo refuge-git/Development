@@ -53,7 +53,7 @@ public class EnderecoService {
         if (enderecoRepository.existsById(id)) {
             enderecoRepository.deleteById(id);
         } else {
-            throw new EntidadeNaoEncontradaException("Funcionário de id %d não encontrado".formatted(id));
+            throw new EnderecoNaoEncontradoException("Funcionário de id %d não encontrado".formatted(id));
         }
     }
 

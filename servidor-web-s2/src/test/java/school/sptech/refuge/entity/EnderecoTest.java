@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.exception.EnderecoNaoEncontradoException;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
@@ -27,6 +26,69 @@ class EnderecoTest {
 
     @Mock
     private EnderecoRepository enderecoRepository;
+
+//    @Test
+//    @DisplayName("Deve cadastrar endereço com sucesso caso tudo esteja correto")
+//    void deveCadastrarEnderecoComSucesso() {
+//
+//        Endereco endereco = new Endereco(1, "Rua", "das Flores", 123,
+//                "Casa", "Jardim", "12345-678", "São Paulo", "SP");
+//
+//        when(enderecoRepository.save(endereco)).thenReturn(endereco);
+//
+//        Endereco resultado = enderecoService.cadastrar(endereco);
+//
+//        assertNotNull(resultado);
+//        assertEquals("Rua", resultado.getTipoLogradouro());
+//        assertEquals("das Flores", resultado.getNomeLogradouro());
+//        assertEquals("12345-678", resultado.getCep());
+//    }
+//
+//    @Test
+//    @DisplayName("Deve lançar exceção ao tentar cadastrar endereço nulo")
+//    void deveLancarExcecaoAoCadastrarEnderecoNulo() {
+//
+//        Endereco endereco = null;
+//
+//        assertThrows(EnderecoNaoEncontradoException.class, () -> {
+//            enderecoService.cadastrar(endereco);
+//        });
+//    }
+
+    @Test
+    @DisplayName("Deve retornar endereço existente ao buscar por ID")
+    void deveRetornarEnderecoQuandoIdExiste() {
+
+        Integer id = 1;
+        Endereco endereco = new Endereco();
+        endereco.setId(id);
+        endereco.setTipoLogradouro("Rua");
+        endereco.setNomeLogradouro("das Flores");
+
+        when(enderecoRepository.findById(id)).thenReturn(Optional.of(endereco));
+
+        Endereco resultado = enderecoService.buscarPorId(id);
+
+        assertNotNull(resultado);
+        assertEquals(id, resultado.getId());
+        assertEquals("Rua", resultado.getTipoLogradouro());
+        verify(enderecoRepository, times(1)).findById(id);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar endereço por ID inexistente")
+    void deveLancarExcecaoQuandoIdNaoExiste() {
+
+        Integer idInexistente = 999;
+        when(enderecoRepository.findById(idInexistente)).thenReturn(Optional.empty());
+
+        EnderecoNaoEncontradoException excecao = assertThrows(
+                EnderecoNaoEncontradoException.class,
+                () -> enderecoService.buscarPorId(idInexistente));
+
+        assertEquals("Endereço de id 999 não encontrado", excecao.getMessage());
+        verify(enderecoRepository, times(1)).findById(idInexistente);
+    }
 
     @Test
     @DisplayName("Quando acionar listar e não houver informacoes, deve retornar lista vazia")
@@ -98,14 +160,14 @@ class EnderecoTest {
     }
 
     @Test
-    @DisplayName("Deve lançar exceção EntidadeNaoEncontradaException ao tentar atualizar endereco inexistente")
-    void atualizarEnderecoInexistenteDeveRetornarEntidadeNaoEncontradaExceptionTeste(){
+    @DisplayName("Deve lançar exceção EnderecoNaoEncontradoException ao tentar atualizar endereco inexistente")
+    void atualizarEnderecoInexistenteDeveRetornarEnderecoNaoEncontradoExceptionTeste(){
         Endereco endereco = new Endereco(42, "Rua", "Teste da Silva", 321,
                 "Ap 1000", "Testes", "00000-000", "São Paulo", "SP");
 
         when(enderecoRepository.existsById(endereco.getId())).thenReturn(false);
 
-        assertThrows(EntidadeNaoEncontradaException.class, () -> enderecoService.atualizar(endereco));
+        assertThrows(EnderecoNaoEncontradoException.class, () -> enderecoService.atualizar(endereco));
     }
 
     @Test
@@ -120,12 +182,12 @@ class EnderecoTest {
     }
 
     @Test
-    @DisplayName("Deve lançar execeção EntidadeNaoEncontradaException ao tentar remover endereco inexistente")
-    void removerEnderecoInexistenteDeveLancarExcecaoEntidadeNaoEncontradaExceptionTeste(){
+    @DisplayName("Deve lançar execeção EnderecoNaoEncontradoException ao tentar remover endereco inexistente")
+    void removerEnderecoInexistenteDeveLancarExcecaoEnderecoNaoEncontradoExceptionTeste(){
 
         when(enderecoRepository.existsById(99)).thenReturn(false);
 
-        assertThrows(EntidadeNaoEncontradaException.class, () -> enderecoService.removerPorId(99));
+        assertThrows(EnderecoNaoEncontradoException.class, () -> enderecoService.removerPorId(99));
     }
 
     @Test
