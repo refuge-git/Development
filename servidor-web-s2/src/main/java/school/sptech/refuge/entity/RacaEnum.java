@@ -7,7 +7,8 @@ public enum RacaEnum {
         PRETO("Preto(a)"),
         PARDO("Pardo(a)"),
         AMARELA("Amarelo(a)"),
-        INDIGENA("Indigena");
+        INDIGENA("Indigena"),
+        NAO_DECLARADO("Não declarado");
 
 
     private final String descricaoRaca;
@@ -22,11 +23,12 @@ public enum RacaEnum {
 
     public static RacaEnum fromString(String raca){
         for (RacaEnum racaEnum : RacaEnum.values()){
-            if(racaEnum.name().equalsIgnoreCase(raca)){
+            if(racaEnum.name().equalsIgnoreCase(raca)
+                    || racaEnum.getDescricaoRaca().equalsIgnoreCase(raca)){
                 return racaEnum;
             }
         }
-        throw new RacaInvalidaException("Tipo de raça inválida: "+ raca);
+        throw new RacaInvalidaException("Tipo de raça inválida: " + raca);
     }
 
 

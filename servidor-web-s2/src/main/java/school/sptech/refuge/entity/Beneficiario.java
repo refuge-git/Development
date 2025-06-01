@@ -11,21 +11,31 @@ public class Beneficiario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_beneficiario")
     private Integer id;
     private String nomeRegistro;
     private String nomeSocial;
     private LocalDate dtNasc;
     private String cpf;
+    private Boolean estrangeiro;
 
     @Enumerated(EnumType.STRING)
     private RacaEnum raca;
+
+    @Enumerated(EnumType.STRING)
+    private SexoEnum sexo;
     private String nomeMae;
+    private Boolean egressoPrisional;
+
+    @Enumerated(EnumType.STRING)
+    private LocalEnum localDorme;
     private String fotoPerfil;
     private String sisa;
 
     @Enumerated(EnumType.STRING)
-    private StatusEnum statusEnum;
+    private StatusEnum status;
     private LocalDateTime dataAtivacao;
+    private String observacao;
 
 
     @ManyToOne
@@ -40,21 +50,31 @@ public class Beneficiario {
     @JoinColumn(name = "fk_genero", referencedColumnName = "id_genero")
     private TipoGenero tipoGenero;
 
-    public Beneficiario(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime dataAtivacao, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero) {
+    @ManyToOne
+    @JoinColumn(name = "fk_sexualidade", referencedColumnName = "id_sexualidade")
+    private TipoSexualidade tipoSexualidade;
+
+    public Beneficiario(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, RacaEnum raca, SexoEnum sexo, String nomeMae, Boolean egressoPrisional, LocalEnum localDorme, String fotoPerfil, String sisa, StatusEnum status, LocalDateTime dataAtivacao, String observacao, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero, TipoSexualidade tipoSexualidade) {
         this.id = id;
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
         this.cpf = cpf;
+        this.estrangeiro = estrangeiro;
         this.raca = raca;
+        this.sexo = sexo;
         this.nomeMae = nomeMae;
+        this.egressoPrisional = egressoPrisional;
+        this.localDorme = localDorme;
         this.fotoPerfil = fotoPerfil;
         this.sisa = sisa;
-        this.statusEnum = statusEnum;
+        this.status = status;
         this.dataAtivacao = dataAtivacao;
+        this.observacao = observacao;
         this.funcionario = funcionario;
         this.endereco = endereco;
         this.tipoGenero = tipoGenero;
+        this.tipoSexualidade = tipoSexualidade;
     }
 
     public Beneficiario() {
@@ -100,6 +120,14 @@ public class Beneficiario {
         this.cpf = cpf;
     }
 
+    public Boolean getEstrangeiro() {
+        return estrangeiro;
+    }
+
+    public void setEstrangeiro(Boolean estrangeiro) {
+        this.estrangeiro = estrangeiro;
+    }
+
     public RacaEnum getRaca() {
         return raca;
     }
@@ -108,12 +136,36 @@ public class Beneficiario {
         this.raca = raca;
     }
 
+    public SexoEnum getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(SexoEnum sexo) {
+        this.sexo = sexo;
+    }
+
     public String getNomeMae() {
         return nomeMae;
     }
 
     public void setNomeMae(String nomeMae) {
         this.nomeMae = nomeMae;
+    }
+
+    public Boolean getEgressoPrisional() {
+        return egressoPrisional;
+    }
+
+    public void setEgressoPrisional(Boolean egressoPrisional) {
+        this.egressoPrisional = egressoPrisional;
+    }
+
+    public LocalEnum getLocalDorme() {
+        return localDorme;
+    }
+
+    public void setLocalDorme(LocalEnum localDorme) {
+        this.localDorme = localDorme;
     }
 
     public String getFotoPerfil() {
@@ -132,12 +184,12 @@ public class Beneficiario {
         this.sisa = sisa;
     }
 
-    public StatusEnum getStatusEnum() {
-        return statusEnum;
+    public StatusEnum getStatus() {
+        return status;
     }
 
-    public void setStatusEnum(StatusEnum statusEnum) {
-        this.statusEnum = statusEnum;
+    public void setStatus(StatusEnum status) {
+        this.status = status;
     }
 
     public LocalDateTime getDataAtivacao() {
@@ -146,6 +198,14 @@ public class Beneficiario {
 
     public void setDataAtivacao(LocalDateTime dataAtivacao) {
         this.dataAtivacao = dataAtivacao;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
 
     public Funcionario getFuncionario() {
@@ -170,5 +230,13 @@ public class Beneficiario {
 
     public void setTipoGenero(TipoGenero tipoGenero) {
         this.tipoGenero = tipoGenero;
+    }
+
+    public TipoSexualidade getTipoSexualidade() {
+        return tipoSexualidade;
+    }
+
+    public void setTipoSexualidade(TipoSexualidade tipoSexualidade) {
+        this.tipoSexualidade = tipoSexualidade;
     }
 }

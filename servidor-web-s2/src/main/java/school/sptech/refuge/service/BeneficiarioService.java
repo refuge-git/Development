@@ -54,6 +54,11 @@ public class BeneficiarioService {
                 .orElseThrow(() -> new BeneficiarioNaoEncontradaException("Beneficiário de id %d não encontrado".formatted(id)));
     }
 
+    public Beneficiario buscarRelacionamento(Integer id) {
+        return beneficiarioRepository.buscarComRelacionamentos(id)
+                .orElseThrow(() -> new BeneficiarioNaoEncontradaException("Beneficiário não encontrado"));
+    }
+
     public List<Beneficiario> listar() {
 
         return beneficiarioRepository.findAll();

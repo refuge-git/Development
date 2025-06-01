@@ -8,6 +8,7 @@ public class TipoGenero {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_genero")
     private Integer id;
     private String nome;
     private String descricao;

@@ -1,6 +1,7 @@
 package school.sptech.refuge.dto.beneficiario;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import school.sptech.refuge.entity.*;
 
 import java.time.LocalDate;
@@ -10,45 +11,69 @@ public class BeneficiarioAtualizacaoDto {
 
     @Schema(description = "Nome completo do usuário", example = "Raul Reis")
     private String nomeRegistro;
-    @Schema(description = "Nome social do usuário", example = "Raul Reis")
+    @Schema(description = "Nome social do usuário", example = "Roberta Reis")
     private String nomeSocial;
     @Schema(description = "Data de nascimento do usuário", example = "19/08/2004")
     private LocalDate dtNasc;
     @Schema(description = "CPF do usuário", example = "000.000.000.00")
     private String cpf;
+    @Schema(description = "Boolean se beneficiário é estrangeiro ou não")
+    private Boolean estrangeiro;
     @Schema(description = "Raça do usuário", example = "Branco")
-    private RacaEnum raca;
+    private String raca;
+    @Schema(description = "Sexo do beneficiário", example = "Feminino")
+    private String sexo;
     @Schema(description = "Nome completo da mãe do usuário", example = "Carmen Silva")
     private String nomeMae;
+    @Schema(description = "Boolean se beneficiário já esteve preso")
+    private Boolean egressoPrisional;
+    @Schema(description = "Local em que o beneficiário dorme", example = "Casa")
+    private String localDorme;
     @Schema(description = "Endereço de foto do usuário")
     private String fotoPerfil;
     @Schema(description = "Número cisar do usuário", example = "12345")
     private String sisa;
     @Schema(description = "Status de atividade do usuário", example = "ATIVO - INATIVO")
-    private StatusEnum statusEnum;
+    private String status;
     @Schema(description = "Data de ativação do usuário", example = "25/07/2020")
     private LocalDateTime data_ativacao;
-    @Schema(description = "Entidade que relaciona o funcionario ao beneficiario", example = "Entidade funcionario")
-    private Funcionario funcionario;
-    @Schema(description = "Entidade que relaciona o endereço ao beneficiario", example = "Entidade endereço")
-    private Endereco endereco;
+    @Schema(description = "Observações sobre o beneficiário")
+    private String observacao;
 
-    private TipoGenero tipoGenero;
 
-    public BeneficiarioAtualizacaoDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, RacaEnum raca, String nomeMae, String fotoPerfil, String sisa, StatusEnum statusEnum, LocalDateTime data_ativacao, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero) {
+    @Schema(description = "ID do funcionário responsável", example = "1")
+    private Integer idFuncionario;
+
+    @Schema(description = "ID do endereço do beneficiário", example = "3")
+    private Integer idEndereco;
+
+    @Schema(description = "ID do tipo de gênero", example = "2")
+    private Integer idTipoGenero;
+
+
+    @Schema(description = "ID do tipo de sexualidade", example = "2")
+    private Integer idTipoSexualidade;
+
+    public BeneficiarioAtualizacaoDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade) {
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
         this.cpf = cpf;
+        this.estrangeiro = estrangeiro;
         this.raca = raca;
+        this.sexo = sexo;
         this.nomeMae = nomeMae;
+        this.egressoPrisional = egressoPrisional;
+        this.localDorme = localDorme;
         this.fotoPerfil = fotoPerfil;
         this.sisa = sisa;
-        this.statusEnum = statusEnum;
+        this.status = status;
         this.data_ativacao = data_ativacao;
-        this.funcionario = funcionario;
-        this.endereco = endereco;
-        this.tipoGenero = tipoGenero;
+        this.observacao = observacao;
+        this.idFuncionario = idFuncionario;
+        this.idEndereco = idEndereco;
+        this.idTipoGenero = idTipoGenero;
+        this.idTipoSexualidade = idTipoSexualidade;
     }
 
     public BeneficiarioAtualizacaoDto() {
@@ -86,12 +111,28 @@ public class BeneficiarioAtualizacaoDto {
         this.cpf = cpf;
     }
 
-    public RacaEnum getRaca() {
+    public Boolean getEstrangeiro() {
+        return estrangeiro;
+    }
+
+    public void setEstrangeiro(Boolean estrangeiro) {
+        this.estrangeiro = estrangeiro;
+    }
+
+    public String getRaca() {
         return raca;
     }
 
-    public void setRaca(RacaEnum raca) {
+    public void setRaca(String raca) {
         this.raca = raca;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 
     public String getNomeMae() {
@@ -100,6 +141,22 @@ public class BeneficiarioAtualizacaoDto {
 
     public void setNomeMae(String nomeMae) {
         this.nomeMae = nomeMae;
+    }
+
+    public Boolean getEgressoPrisional() {
+        return egressoPrisional;
+    }
+
+    public void setEgressoPrisional(Boolean egressoPrisional) {
+        this.egressoPrisional = egressoPrisional;
+    }
+
+    public String getLocalDorme() {
+        return localDorme;
+    }
+
+    public void setLocalDorme(String localDorme) {
+        this.localDorme = localDorme;
     }
 
     public String getFotoPerfil() {
@@ -118,12 +175,12 @@ public class BeneficiarioAtualizacaoDto {
         this.sisa = sisa;
     }
 
-    public StatusEnum getStatusEnum() {
-        return statusEnum;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStatusEnum(StatusEnum statusEnum) {
-        this.statusEnum = statusEnum;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public LocalDateTime getData_ativacao() {
@@ -134,27 +191,43 @@ public class BeneficiarioAtualizacaoDto {
         this.data_ativacao = data_ativacao;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public String getObservacao() {
+        return observacao;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public Integer getIdFuncionario() {
+        return idFuncionario;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public void setIdFuncionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
-    public TipoGenero getTipoGenero() {
-        return tipoGenero;
+    public Integer getIdEndereco() {
+        return idEndereco;
     }
 
-    public void setTipoGenero(TipoGenero tipoGenero) {
-        this.tipoGenero = tipoGenero;
+    public void setIdEndereco(Integer idEndereco) {
+        this.idEndereco = idEndereco;
+    }
+
+    public Integer getIdTipoGenero() {
+        return idTipoGenero;
+    }
+
+    public void setIdTipoGenero(Integer idTipoGenero) {
+        this.idTipoGenero = idTipoGenero;
+    }
+
+    public Integer getIdTipoSexualidade() {
+        return idTipoSexualidade;
+    }
+
+    public void setIdTipoSexualidade(Integer idTipoSexualidade) {
+        this.idTipoSexualidade = idTipoSexualidade;
     }
 }

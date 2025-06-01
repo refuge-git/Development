@@ -3,7 +3,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import school.sptech.refuge.dto.FuncionarioBeneficiarioListDto;
 import school.sptech.refuge.dto.endereco.EnderecoListDto;
+import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.dto.tipogenero.TipoGeneroListDto;
+import school.sptech.refuge.dto.tiposexualidade.TipoSexualidadeListDto;
 import school.sptech.refuge.entity.TipoGenero;
 
 import java.time.LocalDate;
@@ -21,10 +23,18 @@ public class BeneficarioListDto {
     private LocalDate dtNasc;
     @Schema(description = "CPF do usuário", example = "000.000.000.00")
     private String cpf;
+    @Schema(description = "Boolean se beneficiário é estrangeiro ou não")
+    private Boolean estrangeiro;
     @Schema(description = "Raça do usuário", example = "Branco")
     private String raca;
+    @Schema(description = "Sexo do beneficiário", example = "Feminino")
+    private String sexo;
     @Schema(description = "Nome completo da mãe do usuário", example = "Carmen Silva")
     private String nomeMae;
+    @Schema(description = "Boolean se beneficiário já esteve preso")
+    private Boolean egressoPrisional;
+    @Schema(description = "Local em que o beneficiário dorme", example = "Casa")
+    private String localDorme;
     @Schema(description = "Endereço de foto do usuário")
     private String fotoPerfil;
     @Schema(description = "Número cisar do usuário", example = "12345")
@@ -33,27 +43,36 @@ public class BeneficarioListDto {
     private String status;
     @Schema(description = "Data de ativação do usuário", example = "25/07/2020")
     private LocalDateTime data_ativacao;
+    @Schema(description = "Observações sobre o beneficiário")
+    private String observacao;
 
-    private FuncionarioBeneficiarioListDto funcionario;
+    private FuncionarioListDto funcionario;
     private EnderecoListDto endereco;
     private TipoGeneroListDto tipoGenero;
+    private TipoSexualidadeListDto tipoSexualidade;
 
 
-    public BeneficarioListDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, String raca, String nomeMae, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, FuncionarioBeneficiarioListDto funcionario, EnderecoListDto endereco, TipoGeneroListDto tipoGenero) {
+    public BeneficarioListDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, FuncionarioListDto funcionario, EnderecoListDto endereco, TipoGeneroListDto tipoGenero, TipoSexualidadeListDto tipoSexualidade) {
         this.id = id;
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
         this.cpf = cpf;
+        this.estrangeiro = estrangeiro;
         this.raca = raca;
+        this.sexo = sexo;
         this.nomeMae = nomeMae;
+        this.egressoPrisional = egressoPrisional;
+        this.localDorme = localDorme;
         this.fotoPerfil = fotoPerfil;
         this.sisa = sisa;
         this.status = status;
         this.data_ativacao = data_ativacao;
+        this.observacao = observacao;
         this.funcionario = funcionario;
         this.endereco = endereco;
         this.tipoGenero = tipoGenero;
+        this.tipoSexualidade = tipoSexualidade;
     }
 
     public BeneficarioListDto() {
@@ -99,6 +118,14 @@ public class BeneficarioListDto {
         this.cpf = cpf;
     }
 
+    public Boolean getEstrangeiro() {
+        return estrangeiro;
+    }
+
+    public void setEstrangeiro(Boolean estrangeiro) {
+        this.estrangeiro = estrangeiro;
+    }
+
     public String getRaca() {
         return raca;
     }
@@ -107,12 +134,36 @@ public class BeneficarioListDto {
         this.raca = raca;
     }
 
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
     public String getNomeMae() {
         return nomeMae;
     }
 
     public void setNomeMae(String nomeMae) {
         this.nomeMae = nomeMae;
+    }
+
+    public Boolean getEgressoPrisional() {
+        return egressoPrisional;
+    }
+
+    public void setEgressoPrisional(Boolean egressoPrisional) {
+        this.egressoPrisional = egressoPrisional;
+    }
+
+    public String getLocalDorme() {
+        return localDorme;
+    }
+
+    public void setLocalDorme(String localDorme) {
+        this.localDorme = localDorme;
     }
 
     public String getFotoPerfil() {
@@ -147,11 +198,19 @@ public class BeneficarioListDto {
         this.data_ativacao = data_ativacao;
     }
 
-    public FuncionarioBeneficiarioListDto getFuncionario() {
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
+    }
+
+    public FuncionarioListDto getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(FuncionarioBeneficiarioListDto funcionario) {
+    public void setFuncionario(FuncionarioListDto funcionario) {
         this.funcionario = funcionario;
     }
 
@@ -169,5 +228,13 @@ public class BeneficarioListDto {
 
     public void setTipoGenero(TipoGeneroListDto tipoGenero) {
         this.tipoGenero = tipoGenero;
+    }
+
+    public TipoSexualidadeListDto getTipoSexualidade() {
+        return tipoSexualidade;
+    }
+
+    public void setTipoSexualidade(TipoSexualidadeListDto tipoSexualidade) {
+        this.tipoSexualidade = tipoSexualidade;
     }
 }

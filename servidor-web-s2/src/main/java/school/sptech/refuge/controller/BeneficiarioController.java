@@ -46,12 +46,10 @@ public class BeneficiarioController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
-        Funcionario funcionario = beneficiarioService.validarFuncionario(dto.getIdFuncionario());
-        Endereco endereco = beneficiarioService.validarEndereco(dto.getIdEndereco());
-        TipoGenero tipoGenero = beneficiarioService.validarTipoGenero(dto.getIdTipoGenero());
-        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, funcionario, endereco, tipoGenero);
+        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto);
         Beneficiario beneficiarioCadastrado = beneficiarioService.cadastrar(beneficiario);
-        BeneficarioListDto dtoSalvo = BeneficiarioMapper.toListagemDto(beneficiarioCadastrado);
+        Beneficiario beneficiarioCompleto = beneficiarioService.buscarRelacionamento(beneficiarioCadastrado.getId());
+        BeneficarioListDto dtoSalvo = BeneficiarioMapper.toListagemDto(beneficiarioCompleto);
         return ResponseEntity.status(201).body(dtoSalvo);
     }
 
@@ -104,7 +102,7 @@ public class BeneficiarioController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody BeneficiarioAtualizacaoDto dto) {
-        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, id, dto.getFuncionario(), dto.getTipoGenero(), dto.getEndereco());
+        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, id);
         Beneficiario beneficiarioAtualizado = beneficiarioService.atualizar(beneficiario);
         BeneficarioListDto dtoAtualizado = BeneficiarioMapper.toListagemDto(beneficiarioAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
