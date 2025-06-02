@@ -27,33 +27,25 @@ class EnderecoTest {
     @Mock
     private EnderecoRepository enderecoRepository;
 
-//    @Test
-//    @DisplayName("Deve cadastrar endereço com sucesso caso tudo esteja correto")
-//    void deveCadastrarEnderecoComSucesso() {
-//
-//        Endereco endereco = new Endereco(1, "Rua", "das Flores", 123,
-//                "Casa", "Jardim", "12345-678", "São Paulo", "SP");
-//
-//        when(enderecoRepository.save(endereco)).thenReturn(endereco);
-//
-//        Endereco resultado = enderecoService.cadastrar(endereco);
-//
-//        assertNotNull(resultado);
-//        assertEquals("Rua", resultado.getTipoLogradouro());
-//        assertEquals("das Flores", resultado.getNomeLogradouro());
-//        assertEquals("12345-678", resultado.getCep());
-//    }
-//
-//    @Test
-//    @DisplayName("Deve lançar exceção ao tentar cadastrar endereço nulo")
-//    void deveLancarExcecaoAoCadastrarEnderecoNulo() {
-//
-//        Endereco endereco = null;
-//
-//        assertThrows(EnderecoNaoEncontradoException.class, () -> {
-//            enderecoService.cadastrar(endereco);
-//        });
-//    }
+    @Test
+    @DisplayName("Deve cadastrar endereço com todos os dados preenchidos corretamente")
+    void deveCadastrarEnderecoComSucesso() {
+
+        Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
+                "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
+
+        when(enderecoRepository.save(endereco)).thenReturn(endereco);
+
+        Endereco resultado = enderecoService.cadastrar(endereco);
+
+        assertNotNull(resultado);
+        assertEquals("Rua", resultado.getTipoLogradouro());
+        assertEquals("Alameda Santos", resultado.getNomeLogradouro());
+        assertEquals("Centro", resultado.getBairro());
+        assertEquals("SP", resultado.getSiglaCidade());
+        verify(enderecoRepository, times(1)).save(endereco);
+    }
+
 
     @Test
     @DisplayName("Deve retornar endereço existente ao buscar por ID")
