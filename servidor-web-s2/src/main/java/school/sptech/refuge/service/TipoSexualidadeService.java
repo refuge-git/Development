@@ -5,6 +5,7 @@ import school.sptech.refuge.entity.TipoGenero;
 import school.sptech.refuge.entity.TipoSexualidade;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.TipoGeneroNaoEncontradoException;
+import school.sptech.refuge.exception.TipoSexualidadeNaoEncontradoException;
 import school.sptech.refuge.repository.TipoSexualidadeRepository;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class TipoSexualidadeService {
 
     public TipoSexualidade buscarPorId(Integer id) {
         return tipoSexualidadeRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de sexualidade de id %d não encontrado".formatted(id)));
+                .orElseThrow(() -> new TipoSexualidadeNaoEncontradoException("Tipo de sexualidade de id %d não encontrado".formatted(id)));
     }
 
     public List<TipoSexualidade> listar() {
@@ -42,7 +43,7 @@ public class TipoSexualidadeService {
             tipoSexualidade.setId(tipoSexualidade.getId());
             return tipoSexualidadeRepository.save(tipoSexualidade);
         } else {
-            throw new EntidadeNaoEncontradaException("Tipo sexualidade de id %d não encontrado".formatted(tipoSexualidade.getId()));
+            throw new TipoSexualidadeNaoEncontradoException("Tipo sexualidade de id %d não encontrado".formatted(tipoSexualidade.getId()));
         }
     }
 
@@ -50,7 +51,7 @@ public class TipoSexualidadeService {
         if (tipoSexualidadeRepository.existsById(id)) {
             tipoSexualidadeRepository.deleteById(id);
         } else {
-            throw new EntidadeNaoEncontradaException("Tipo sexualidade de id %d não encontrado".formatted(id));
+            throw new TipoSexualidadeNaoEncontradoException("Tipo sexualidade de id %d não encontrado".formatted(id));
         }
     }
 }
