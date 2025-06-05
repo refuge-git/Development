@@ -22,19 +22,19 @@ import java.util.List;
 @Service
 public class FuncionarioService {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private final FuncionarioRepository funcionarioRepository;
 
-    @Autowired
-    private GerenciadorTokenJwt gerenciadorTokenJwt;
+    private final GerenciadorTokenJwt gerenciadorTokenJwt;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository) {
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, PasswordEncoder passwordEncoder, GerenciadorTokenJwt gerenciadorTokenJwt, AuthenticationManager authenticationManager) {
         this.funcionarioRepository = funcionarioRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.gerenciadorTokenJwt = gerenciadorTokenJwt;
+        this.authenticationManager = authenticationManager;
     }
 
     public void criar(Funcionario funcionario) {
@@ -63,11 +63,6 @@ public class FuncionarioService {
         return funcionariosEncontrados.stream().map(FuncionarioMapper::of).toList();
     }
 
-
-    /*public Funcionario cadastrar(Funcionario funcionario) {
-
-        return funcionarioRepository.save(funcionario);
-    }*/
 
     public Funcionario buscarPorId(Integer id) {
         return funcionarioRepository.findById(id)

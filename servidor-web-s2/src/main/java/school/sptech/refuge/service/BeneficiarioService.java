@@ -1,16 +1,10 @@
 package school.sptech.refuge.service;
 
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.entity.Beneficiario;
-import school.sptech.refuge.entity.Endereco;
-import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.entity.TipoGenero;
+import school.sptech.refuge.entity.*;
 import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.repository.BeneficiarioRepository;
-import school.sptech.refuge.repository.EnderecoRepository;
-import school.sptech.refuge.repository.FuncionarioRepository;
-import school.sptech.refuge.repository.TipoGeneroRepository;
+import school.sptech.refuge.repository.*;
 
 import java.util.List;
 
@@ -21,15 +15,26 @@ public class BeneficiarioService {
     private final FuncionarioRepository funcionarioRepository;
     private final EnderecoRepository enderecoRepository;
     private final TipoGeneroRepository tipoGeneroRepository;
+    private final TipoSexualidadeRepository tipoSexualidadeRepository;
 
-    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository, FuncionarioRepository funcionarioRepository, EnderecoRepository enderecoRepository, TipoGeneroRepository tipoGeneroRepository) {
+    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository, FuncionarioRepository funcionarioRepository, EnderecoRepository enderecoRepository, TipoGeneroRepository tipoGeneroRepository, TipoSexualidadeRepository tipoSexualidadeRepository) {
         this.beneficiarioRepository = beneficiarioRepository;
         this.funcionarioRepository = funcionarioRepository;
         this.enderecoRepository = enderecoRepository;
         this.tipoGeneroRepository = tipoGeneroRepository;
+        this.tipoSexualidadeRepository = tipoSexualidadeRepository;
     }
 
     public Beneficiario cadastrar(Beneficiario beneficiario) {
+        Funcionario funcionario = validarFuncionario(beneficiario.getFuncionario().getId());
+        Endereco endereco = validarEndereco(beneficiario.getEndereco().getId());
+        TipoGenero tipoGenero = validarTipoGenero(beneficiario.getTipoGenero().getId());
+        TipoSexualidade tipoSexualidade = validarTipoSexualidade(beneficiario.getTipoSexualidade().getId());
+
+        beneficiario.setFuncionario(funcionario);
+        beneficiario.setEndereco(endereco);
+        beneficiario.setTipoGenero(tipoGenero);
+        beneficiario.setTipoSexualidade(tipoSexualidade);
 
         return beneficiarioRepository.save(beneficiario);
     }
@@ -47,6 +52,11 @@ public class BeneficiarioService {
     public TipoGenero validarTipoGenero(Integer id) {
         return tipoGeneroRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tipo de gênero não encontrado"));
+    }
+
+    public TipoSexualidade validarTipoSexualidade(Integer id) {
+        return tipoSexualidadeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tipo de sexualidade não encontrado"));
     }
 
     public Beneficiario buscarPorId(Integer id) {

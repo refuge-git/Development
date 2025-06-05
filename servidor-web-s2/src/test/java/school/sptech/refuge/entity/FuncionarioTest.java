@@ -6,6 +6,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import school.sptech.refuge.config.GerenciadorTokenJwt;
+import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.dto.funcionario.FuncionarioTokenDto;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.repository.FuncionarioRepository;
@@ -27,6 +34,18 @@ class FuncionarioTest {
 
     @Mock
     private FuncionarioRepository funcionarioRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private GerenciadorTokenJwt gerenciadorTokenJwt;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private Authentication authentication;
 
     @Test
     @DisplayName("Quando listar for acionado com tabela preenchida com 3 funcionários, deve retornar corretamente")
@@ -113,6 +132,75 @@ class FuncionarioTest {
         when(funcionarioRepository.existsById(funcionario.getId())).thenReturn(false);
 
         assertThrows(EntidadeNaoEncontradaException.class, () -> funcionarioService.atualizar(funcionario));
+    }
+
+    @Test
+    @DisplayName("listarTodos deve retornar lista de FuncionarioListDto corretamente")
+    void listarTodosDeveRetornarListaDeFuncionarioListDtoTeste() {
+        List<Funcionario> funcionarios = List.of(
+                new Funcionario(1, "Rosa dos Santos", "93451123491", "111991234567", "rosa@gmail.com", "senha1234"),
+                new Funcionario(2, "Mario Silva", "67898714354", "(11)998765678", "mario@gmail.com", "123senha")
+        );
+
+        when(funcionarioRepository.findAll()).thenReturn(funcionarios);
+        List<FuncionarioListDto> resultado = funcionarioService.listarTodos();
+
+        assertNotNull(resultado);
+        assertEquals(2, resultado.size());
+
+        assertEquals("Rosa dos Santos", resultado.get(0).getNome());
+        assertEquals("Mario Silva", resultado.get(1).getNome());
+
+        verify(funcionarioRepository, times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("listarTodos deve retornar lista vazia quando não houver funcionários cadastrados")
+    void listarTodosDeveRetornarListaVaziaQuandoNaoHouverFuncionarios() {
+        when(funcionarioRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<FuncionarioListDto> resultado = funcionarioService.listarTodos();
+
+        assertNotNull(resultado);
+        assertTrue(resultado.isEmpty());
+
+        verify(funcionarioRepository, times(1)).findAll();
+    }
+
+
+    @Test
+    @DisplayName("Criar funcionário deve criptografar senha e salvar com sucesso")
+    void criarFuncionarioDeveSalvarComSenhaCriptografadaTeste() {
+
+        Funcionario funcionario = new Funcionario(42, "Carlos", "00000000000", "11900000000", "carlos@email.com", "senha");
+        when(passwordEncoder.encode("senha")).thenReturn("senhaCriptografada");
+
+        funcionarioService.criar(funcionario);
+
+
+        verify(passwordEncoder).encode("senha");
+        verify(funcionarioRepository).save(argThat(f -> f.getSenha().equals("senhaCriptografada")));
+    }
+
+
+
+    @Test
+    @DisplayName("Autenticar funcionário com dados válidos deve retornar token com sucesso")
+    void autenticarFuncionarioValidoDeveRetornarTokenTeste() {
+        Funcionario funcionario = new Funcionario(42, "Carlos", "00000000000", "11900000000", "carlos@email.com", "senha");
+        UsernamePasswordAuthenticationToken token =
+                new UsernamePasswordAuthenticationToken(funcionario.getEmail(), funcionario.getSenha());
+
+        Authentication authenticationMock = mock(Authentication.class);
+        when(authenticationManager.authenticate(token)).thenReturn(authenticationMock);
+        when(funcionarioRepository.findByEmail(funcionario.getEmail())).thenReturn(Optional.of(funcionario));
+        when(gerenciadorTokenJwt.generateToken(authenticationMock)).thenReturn("token.jwt.exemplo");
+
+        FuncionarioTokenDto resultado = funcionarioService.autenticar(funcionario);
+
+        assertNotNull(resultado);
+        assertEquals("token.jwt.exemplo", resultado.getToken());
+        assertEquals("Carlos", resultado.getNome());
     }
 
 }
