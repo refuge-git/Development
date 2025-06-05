@@ -108,7 +108,6 @@ public class BeneficiarioService {
 
     public List<Beneficiario> listarNomeRegistro(String nome) {
         return beneficiarioRepository.findByNomeRegistroContainingIgnoreCase(nome);
-
     }
 
 }
