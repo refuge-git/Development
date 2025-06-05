@@ -28,7 +28,6 @@ public class CondicaoSaudeMapper {
     // Converte uma lista de entidades CondicaoSaude em uma lista de DTOs
     public static List<CondicaoSaudeListDto> toListagemDtos(List<CondicaoSaude> entities) {
         if (entities == null) return null;
-
         return entities.stream()
                 .map(CondicaoSaudeMapper::toListagemDto)
                 .toList();
