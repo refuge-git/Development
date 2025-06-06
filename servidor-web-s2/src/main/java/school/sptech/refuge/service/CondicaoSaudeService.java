@@ -61,9 +61,9 @@ public class CondicaoSaudeService {
         return condicaoSaudeRepository.findByDescricaoContainingIgnoreCase(descricao);
     }
 
-    public List<CondicaoSaude> listarPorDataRegistro(LocalDate data) {
+    /*public List<CondicaoSaude> listarPorDataRegistro(LocalDate data) {
         return condicaoSaudeRepository.findAllByDataRegistro(data);
-    }
+    }*/
 
     public CondicaoSaude buscarPorId(Integer id) {
         return condicaoSaudeRepository.findById(id)

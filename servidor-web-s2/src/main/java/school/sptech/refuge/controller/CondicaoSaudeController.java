@@ -96,8 +96,8 @@ private final CondicaoSaudeService condicaoSaudeService;
     })
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<CondicaoSaudeListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody CondicaoSaudeAtualizacaoDto dto) {
-        CondicaoSaude condicaoSaude = CondicaoSaudeMapper.toEntity(dto, id);
+    public ResponseEntity<CondicaoSaudeListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody CondicaoSaudeAtualizacaoDto dto, Categoria categoria) {
+        CondicaoSaude condicaoSaude = CondicaoSaudeMapper.toEntity(dto, id, categoria);
         CondicaoSaude condicaoSaudeAtualizado = condicaoSaudeService.atualizar(condicaoSaude);
         CondicaoSaudeListDto dtoAtualizado = CondicaoSaudeMapper.toListagemDto(condicaoSaudeAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
@@ -124,14 +124,6 @@ private final CondicaoSaudeService condicaoSaudeService;
         return ResponseEntity.status(200).body(dto);
     }
 
-    @Operation(
-            summary = "Condição de saúde por data de registro.",
-            description = "Listar a condição de saúde por data de registro"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Beneficiários por nome de registro encontrados",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
-            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o nome de registro especificado foi encontrado", content = @Content)
-    })
+
 
 }
