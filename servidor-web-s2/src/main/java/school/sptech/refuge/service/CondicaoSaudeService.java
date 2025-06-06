@@ -32,7 +32,7 @@ public class CondicaoSaudeService {
 
     public Categoria validarCategoria(Integer id) {
         return categoriaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria da condição não encontrada"))
+                .orElseThrow(() -> new RuntimeException("Categoria da condição não encontrada"));
     }
 
     public List<CondicaoSaude> listar() {

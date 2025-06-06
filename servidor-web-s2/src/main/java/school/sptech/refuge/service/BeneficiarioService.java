@@ -87,7 +87,7 @@ public class BeneficiarioService {
         if (beneficiarioRepository.existsById(id)) {
             beneficiarioRepository.deleteById(id);
         } else {
-            throw new EntidadeNaoEncontradaException("Funcionário de id %d não encontrado".formatted(id));
+            throw new EntidadeNaoEncontradaException("Beneficiário de id %d não encontrado".formatted(id));
         }
     }
 
