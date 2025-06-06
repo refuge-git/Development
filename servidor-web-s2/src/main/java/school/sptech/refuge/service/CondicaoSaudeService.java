@@ -1,6 +1,7 @@
 package school.sptech.refuge.service;
 
 import org.springframework.stereotype.Service;
+import school.sptech.refuge.exception.CondicaoSaudeNaoEncontradaException;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.CategoriaNaoEncontradaException;
 import school.sptech.refuge.entity.Categoria;
@@ -62,5 +63,10 @@ public class CondicaoSaudeService {
 
     public List<CondicaoSaude> listarPorDataRegistro(LocalDate data) {
         return condicaoSaudeRepository.findAllByDataRegistro(data);
+    }
+
+    public CondicaoSaude buscarPorId(Integer id) {
+        return condicaoSaudeRepository.findById(id)
+                .orElseThrow(() -> new CondicaoSaudeNaoEncontradaException("Condição de saúde de id %d não encontrado".formatted(id)));
     }
 }
