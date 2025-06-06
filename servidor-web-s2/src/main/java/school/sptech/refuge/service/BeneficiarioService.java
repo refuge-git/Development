@@ -2,8 +2,7 @@ package school.sptech.refuge.service;
 
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.entity.*;
-import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
-import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
+import school.sptech.refuge.exception.*;
 import school.sptech.refuge.repository.*;
 
 import java.util.List;
@@ -41,32 +40,27 @@ public class BeneficiarioService {
 
     public Funcionario validarFuncionario(Integer id) {
         return funcionarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+                .orElseThrow(() -> new FuncionarioNaoEncontradaException("Funcionário não encontrado"));
     }
 
     public Endereco validarEndereco(Integer id) {
         return enderecoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
+                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado"));
     }
 
     public TipoGenero validarTipoGenero(Integer id) {
         return tipoGeneroRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tipo de gênero não encontrado"));
+                .orElseThrow(() -> new TipoGeneroNaoEncontradoException("Tipo de gênero não encontrado"));
     }
 
     public TipoSexualidade validarTipoSexualidade(Integer id) {
         return tipoSexualidadeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tipo de sexualidade não encontrado"));
+                .orElseThrow(() -> new TipoSexualidadeNaoEncontradoException("Tipo de sexualidade não encontrado"));
     }
 
     public Beneficiario buscarPorId(Integer id) {
         return beneficiarioRepository.findById(id)
                 .orElseThrow(() -> new BeneficiarioNaoEncontradaException("Beneficiário de id %d não encontrado".formatted(id)));
-    }
-
-    public Beneficiario buscarRelacionamento(Integer id) {
-        return beneficiarioRepository.buscarComRelacionamentos(id)
-                .orElseThrow(() -> new BeneficiarioNaoEncontradaException("Beneficiário não encontrado"));
     }
 
     public List<Beneficiario> listar() {
@@ -79,7 +73,7 @@ public class BeneficiarioService {
             beneficiario.setId(beneficiario.getId());
             return beneficiarioRepository.save(beneficiario);
         } else {
-            throw new EntidadeNaoEncontradaException("Beneficiario de id %d não encontrado".formatted(beneficiario.getId()));
+            throw new BeneficiarioNaoEncontradaException("Beneficiario de id %d não encontrado".formatted(beneficiario.getId()));
         }
     }
 
@@ -87,19 +81,42 @@ public class BeneficiarioService {
         if (beneficiarioRepository.existsById(id)) {
             beneficiarioRepository.deleteById(id);
         } else {
-            throw new EntidadeNaoEncontradaException("Beneficiário de id %d não encontrado".formatted(id));
+            throw new BeneficiarioNaoEncontradaException("Beneficiário de id %d não encontrado".formatted(id));
         }
     }
 
-    /*public List<Beneficiario> listarPorGenero(String genero) {
-       return beneficiarioRepository.findByTipoGeneroLike(genero);
+    public List<Beneficiario> listarPorSexo(SexoEnum sexo) {
+       return beneficiarioRepository.findBySexo(sexo);
 
-    }*/
+    }
 
-    /*public List<Beneficiario> listarPorRaca(String raca) {
-        return beneficiarioRepository.findByRacaContainingIgnoreCase(raca);
+    public List<Beneficiario> listarPorRaca(RacaEnum raca) {
+        return beneficiarioRepository.findByRaca(raca);
+    }
 
-    }*/
+    public List<Beneficiario> listarPorTipoSexualidade(String nomeSexualidade) {
+        List<Beneficiario> beneficiarios = beneficiarioRepository.findByNomeTipoSexualidade(nomeSexualidade);
+
+        if (beneficiarios.isEmpty()) {
+            throw new BeneficiarioNaoEncontradaException(
+                    "Nenhum beneficiário com sexualidade '%s' foi encontrado.".formatted(nomeSexualidade)
+            );
+        }
+
+        return beneficiarios;
+    }
+
+    public List<Beneficiario> listarPorTipoGenero(String nomeGenero){
+        List<Beneficiario> beneficiarios = beneficiarioRepository.findByNomeTipoGenero(nomeGenero);
+
+        if (beneficiarios.isEmpty()) {
+            throw new BeneficiarioNaoEncontradaException(
+                    "Nenhum beneficiário com gênero '%s' foi encontrado.".formatted(nomeGenero)
+            );
+        }
+
+        return beneficiarios;
+    }
 
     public List<Beneficiario> listarNomeSocial(String nome) {
         return beneficiarioRepository.findByNomeSocialContainingIgnoreCase(nome);

@@ -14,10 +14,7 @@ import school.sptech.refuge.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.dto.beneficiario.BeneficiarioAtualizacaoDto;
 import school.sptech.refuge.dto.beneficiario.BeneficiarioMapper;
 import school.sptech.refuge.dto.beneficiario.BeneficiarioRequestDto;
-import school.sptech.refuge.entity.Beneficiario;
-import school.sptech.refuge.entity.Endereco;
-import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.entity.TipoGenero;
+import school.sptech.refuge.entity.*;
 import school.sptech.refuge.service.BeneficiarioService;
 
 
@@ -48,8 +45,8 @@ public class BeneficiarioController {
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
         Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto);
         Beneficiario beneficiarioCadastrado = beneficiarioService.cadastrar(beneficiario);
-        Beneficiario beneficiarioCompleto = beneficiarioService.buscarRelacionamento(beneficiarioCadastrado.getId());
-        BeneficarioListDto dtoSalvo = BeneficiarioMapper.toListagemDto(beneficiarioCompleto);
+        /*Beneficiario beneficiarioCompleto = beneficiarioService.buscarPorId(beneficiarioCadastrado.getId());*/
+        BeneficarioListDto dtoSalvo = BeneficiarioMapper.toListagemDto(beneficiarioCadastrado);
         return ResponseEntity.status(201).body(dtoSalvo);
     }
 
@@ -109,28 +106,28 @@ public class BeneficiarioController {
     }
 
 
-    /*@Operation(
-            summary = "Beneficiários por gênero",
-            description = "Listar todos os beneficiários pelo gênero especificado"
+    @Operation(
+            summary = "Beneficiários por sexo",
+            description = "Listar todos os beneficiários pelo sexo especificado"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Beneficiários por gênero encontrados",
+            @ApiResponse(responseCode = "200", description = "Beneficiários por sexo encontrados",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
-            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o gênero especificado encontrado", content = @Content)
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o sexo especificado encontrado", content = @Content)
     })
-    @GetMapping("/genero")
+    @GetMapping("/sexo")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<BeneficarioListDto>> listarPorGenero(@RequestParam String genero) {
-        List<Beneficiario> beneficiario = beneficiarioService.listarPorGenero(genero);
+    public ResponseEntity<List<BeneficarioListDto>> listarPorSexo(@RequestParam SexoEnum sexo) {
+        List<Beneficiario> beneficiario = beneficiarioService.listarPorSexo(sexo);
         if (beneficiario.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
         List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiario);
         return ResponseEntity.status(200).body(dto);
-    }*/
+    }
 
-    /*@Operation(
+    @Operation(
             summary = "Beneficiários por raça",
             description = "Listar todos os beneficiários pela raça especificada"
     )
@@ -141,7 +138,7 @@ public class BeneficiarioController {
     })
     @GetMapping("/raca")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<BeneficarioListDto>> listarPorRaca(@RequestParam String raca) {
+    public ResponseEntity<List<BeneficarioListDto>> listarPorRaca(@RequestParam RacaEnum raca) {
         List<Beneficiario> beneficiario = beneficiarioService.listarPorRaca(raca);
         if (beneficiario.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -150,7 +147,48 @@ public class BeneficiarioController {
         List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiario);
         return ResponseEntity.status(200).body(dto);
     }
-*/
+
+    @Operation(
+            summary = "Beneficiários por nome do tipo de gênero",
+            description = "Listar todos os beneficiários pelo nome do tipo de gênero especificada"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Beneficiários por tipo de gênero encontrados",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o tipo de gênero especificado foi encontrado", content = @Content)
+    })
+    @GetMapping("/beneficiarios/nome-genero")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<BeneficarioListDto>> listarPorNomeGenero(@RequestParam String nomeGenero) {
+        List<Beneficiario> beneficiarios = beneficiarioService.listarPorTipoGenero(nomeGenero);
+        if (beneficiarios.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarios);
+        return ResponseEntity.status(200).body(dto);
+    }
+
+    @Operation(
+            summary = "Beneficiários por nome do tipo de sexualidade",
+            description = "Listar todos os beneficiários pelo nome do tipo de sexualidade especificado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Beneficiários por tipo de sexualidade encontrados",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o tipo de sexaulidade especificado foi encontrado", content = @Content)
+    })
+    @GetMapping("/beneficiarios/nome-sexualidade")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<BeneficarioListDto>> listarPorNomeSexualidade(@RequestParam String nomeSexualidade) {
+        List<Beneficiario> beneficiarios = beneficiarioService.listarPorTipoSexualidade(nomeSexualidade);
+        if (beneficiarios.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarios);
+        return ResponseEntity.status(200).body(dto);
+    }
 
     @Operation(
             summary = "Beneficiários por nome de registro.",
@@ -161,7 +199,7 @@ public class BeneficiarioController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
             @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o nome de registro especificado foi encontrado", content = @Content)
     })
-    @GetMapping("/nome_registro")
+    @GetMapping("/nome-registro")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarContendoNomeRegistro(@RequestParam String nome) {
         List<Beneficiario> beneficiario = beneficiarioService.listarNomeRegistro(nome);
@@ -182,7 +220,7 @@ public class BeneficiarioController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
             @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o nome social especificado foi encontrado", content = @Content)
     })
-    @GetMapping("/nome_social")
+    @GetMapping("/nome-social")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarContendoNomeSocial(@RequestParam String nome) {
         List<Beneficiario> beneficiario = beneficiarioService.listarNomeSocial(nome);

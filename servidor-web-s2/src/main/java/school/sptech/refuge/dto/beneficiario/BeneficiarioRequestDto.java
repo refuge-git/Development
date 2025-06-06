@@ -41,12 +41,12 @@ public class BeneficiarioRequestDto {
 
     @NotNull
     @NotBlank
-    @Schema(description = "Raça do beneficiário", example = "pardo")
+    @Schema(description = "Raça do beneficiário", example = "PARDO")
     private String raca;
 
     @NotNull
     @NotBlank
-    @Schema(description = "Sexo do beneficiário", example = "Feminino")
+    @Schema(description = "Sexo do beneficiário", example = "FEMININO")
     private String sexo;
 
     @NotNull
@@ -60,10 +60,10 @@ public class BeneficiarioRequestDto {
 
     @NotNull
     @NotBlank
-    @Schema(description = "Local em que o beneficiário dorme", example = "Casa")
+    @Schema(description = "Local em que o beneficiário dorme", example = "CASA")
     private String localDorme;
 
-    @Schema(description = "Endereço de foto do beneficiário", example = "ronaldo.jpeg")
+    @Schema(description = "Endereço de foto do beneficiário", example = "carol.jpeg")
     private String fotoPerfil;
 
 

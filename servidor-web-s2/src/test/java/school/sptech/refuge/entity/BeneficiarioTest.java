@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
-import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.repository.*;
 import school.sptech.refuge.service.BeneficiarioService;
@@ -28,6 +27,7 @@ import static school.sptech.refuge.entity.LocalEnum.PENSAO;
 import static school.sptech.refuge.entity.RacaEnum.BRANCO;
 import static school.sptech.refuge.entity.RacaEnum.PRETO;
 import static school.sptech.refuge.entity.SexoEnum.FEMININO;
+import static school.sptech.refuge.entity.SexoEnum.MASCULINO;
 import static school.sptech.refuge.entity.StatusEnum.ATIVO;
 import static school.sptech.refuge.entity.StatusEnum.INATIVO;
 
@@ -132,7 +132,7 @@ class BeneficiarioTest {
         Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
                 "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
 
-        TipoGenero tipoGenero = new TipoGenero(1, "Masculino", "Gênero Masculino");
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
 
         TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Heterossexual", "Atração pelo sexo oposto");
 
@@ -162,7 +162,7 @@ class BeneficiarioTest {
         Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
                 "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
 
-        TipoGenero tipoGenero = new TipoGenero(1, "Masculino", "Gênero Masculino");
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
 
         TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Heterossexual", "Atração pelo sexo oposto");
 
@@ -198,7 +198,7 @@ class BeneficiarioTest {
         Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
                 "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
 
-        TipoGenero tipoGenero = new TipoGenero(1, "Masculino", "Gênero Masculino");
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
 
         TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Heterossexual", "Atração pelo sexo oposto");
 
@@ -224,7 +224,7 @@ class BeneficiarioTest {
         Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
                 "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
 
-        TipoGenero tipoGenero = new TipoGenero(1, "Masculino", "Gênero Masculino");
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
 
         TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Heterossexual", "Atração pelo sexo oposto");
 
@@ -253,17 +253,228 @@ class BeneficiarioTest {
         verify(beneficiarioRepository, times(1)).deleteById(1);
     }
 
-    @DisplayName("Quando removerPorId for acionado com ID inexistente, deve lançar EntidadeNaoEncontradaException")
+    @DisplayName("Quando removerPorId for acionado com ID inexistente, deve lançar BeneficiarioNaoEncontradaException")
     @Test
-    void removerPorIdQuandoIdNaoExisteDeveLancarExcecaoTeste() {
+    void removerPorIdQuandoIdNaoExisteDeveLancarBeneficiarioNaoEncontradaExceptionTeste() {
         when(beneficiarioRepository.existsById(99)).thenReturn(false);
 
-        EntidadeNaoEncontradaException exception = assertThrows(
-                EntidadeNaoEncontradaException.class,
+        BeneficiarioNaoEncontradaException exception = assertThrows(
+                BeneficiarioNaoEncontradaException.class,
                 () -> beneficiarioService.removerPorId(99)
         );
 
         assertEquals("Beneficiário de id 99 não encontrado", exception.getMessage());
     }
+
+
+    @Test
+    @DisplayName("Quando atualizar for acionado com ID existente, deve salvar e retornar o beneficiário atualizado")
+    void atualizarQuandoForAcionadoEIdExisteDeveRetornarBeneficiarioAtualizadoTeste() {
+        Funcionario funcionario = new Funcionario(1, "João", "12345678901", "(11)999999999", "joao@gmail.com", "senha123");
+
+        Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
+                "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
+
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
+
+        TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Heterossexual", "Atração pelo sexo oposto");
+
+
+        Beneficiario beneficiario = new Beneficiario(2, "João Rocha", "Maria Julia", LocalDate.of(2005, 10, 2), "54971239912", false, PRETO, FEMININO, "Tatiana Gomes", false, PENSAO, null, "SISA106", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        when(beneficiarioRepository.existsById(2)).thenReturn(true);
+        when(beneficiarioRepository.save(beneficiario)).thenReturn(beneficiario);
+
+        Beneficiario resultado = beneficiarioService.atualizar(beneficiario);
+
+        assertNotNull(resultado);
+        assertEquals("João Rocha", resultado.getNomeRegistro());
+        verify(beneficiarioRepository).save(beneficiario);
+    }
+
+
+    @DisplayName("Quando atualizar for acionado com ID inexistente, deve lançar BeneficiarioNaoEncontradaException")
+    @Test
+    void atualizarQuandoIdNaoExisteDeveLancarBeneficiarioNaoEncontradaExceptionTeste() {
+        Funcionario funcionario = new Funcionario(1, "João", "12345678901", "(11)999999999", "joao@gmail.com", "senha123");
+
+        Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
+                "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
+
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
+
+        TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Heterossexual", "Atração pelo sexo oposto");
+
+        Beneficiario beneficiario = new Beneficiario(55, "João Rocha", "Maria Julia", LocalDate.of(2005, 10, 2), "54971239912", false, PRETO, FEMININO, "Tatiana Gomes", false, PENSAO, null, "SISA106", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        when(beneficiarioRepository.existsById(55)).thenReturn(false);
+
+        BeneficiarioNaoEncontradaException exception = assertThrows(
+                BeneficiarioNaoEncontradaException.class,
+                () -> beneficiarioService.atualizar(beneficiario)
+        );
+
+        assertEquals("Beneficiario de id 55 não encontrado", exception.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("Quando listarPorSexo for acionado deve retornar lista de beneficiários com sexo correspondente")
+    void listarPorSexoQuandoAcionadoDeveRetornarListaDeBeneficiariosCorrespondentesTeste() {
+        Funcionario funcionario = new Funcionario(1, "João", "12345678901", "(11)999999999", "joao@gmail.com", "senha123");
+
+        Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
+                "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
+
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
+
+        TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Heterossexual", "Atração pelo sexo oposto");
+
+        Beneficiario b1 = new Beneficiario(1, "Felipe Santos", "Maria", LocalDate.of(2001, 11, 3),
+                "34567890122", false, BRANCO, MASCULINO, "Marcia Gomes", false, PENSAO, null,
+                "SISA104", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",
+                funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        Beneficiario b2 = new Beneficiario(2, "Felipe Rocha", "Maria Julia", LocalDate.of(2005, 10, 2),
+                "54971239912", false, PRETO, MASCULINO, "Tatiana Gomes", false, PENSAO, null,
+                "SISA106", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",
+                funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        List<Beneficiario> beneficiarios = List.of(b1, b2);
+
+        SexoEnum sexo = MASCULINO;
+        when(beneficiarioRepository.findBySexo(sexo)).thenReturn(beneficiarios);
+
+        List<Beneficiario> resultado = beneficiarioService.listarPorSexo(sexo);
+
+        assertFalse(resultado.isEmpty());
+        assertEquals(2, resultado.size());
+    }
+
+    @Test
+    @DisplayName("Quando listarPorRaca for acionado deve retornar lista de beneficiários com raça correspondente")
+    void listarPorRacaQuandoAcionadoDeveRetornarListaDeBeneficiariosCorrespondentesTeste() {
+        Funcionario funcionario = new Funcionario(1, "João", "12345678901", "(11)999999999", "joao@gmail.com", "senha123");
+
+        Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
+                "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
+
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
+
+        TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Heterossexual", "Atração pelo sexo oposto");
+
+        Beneficiario b1 = new Beneficiario(1, "Felipe Santos", "Maria", LocalDate.of(2001, 11, 3),
+                "34567890122", false, BRANCO, MASCULINO, "Marcia Gomes", false, PENSAO, null,
+                "SISA104", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",
+                funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        Beneficiario b2 = new Beneficiario(2, "Felipe Rocha", "Maria Julia", LocalDate.of(2005, 10, 2),
+                "54971239912", false, BRANCO, MASCULINO, "Tatiana Gomes", false, PENSAO, null,
+                "SISA106", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",
+                funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        List<Beneficiario> beneficiarios = List.of(b1, b2);
+
+        RacaEnum raca = BRANCO;
+        when(beneficiarioRepository.findByRaca(raca)).thenReturn(beneficiarios);
+
+        List<Beneficiario> resultado = beneficiarioService.listarPorRaca(raca);
+
+        assertFalse(resultado.isEmpty());
+        assertEquals(2, resultado.size());
+    }
+
+
+    @Test
+    @DisplayName("Quando listarPorTipoSexualidade for acionado com parâmetro do tipo de sexaulidade correto deve retornar lista de beneficiários correspondentes")
+    void listarPorTipoSexualidadeQuandoAcionadoDeveRetornarListaDeBeneficiariosCorrespondentesTeste() {
+        Funcionario funcionario = new Funcionario(1, "João", "12345678901", "(11)999999999", "joao@gmail.com", "senha123");
+
+        Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
+                "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
+
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
+
+        TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Homossexual", "Atração pelo sexo oposto");
+
+        Beneficiario b1 = new Beneficiario(1, "Felipe Santos", "Maria", LocalDate.of(2001, 11, 3),
+                "34567890122", false, BRANCO, MASCULINO, "Marcia Gomes", false, PENSAO, null,
+                "SISA104", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",
+                funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        Beneficiario b2 = new Beneficiario(2, "Felipe Rocha", "Maria Julia", LocalDate.of(2005, 10, 2),
+                "54971239912", false, BRANCO, MASCULINO, "Tatiana Gomes", false, PENSAO, null,
+                "SISA106", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",
+                funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        List<Beneficiario> beneficiarios = List.of(b1, b2);
+        String nome = "homossexual";
+        when(beneficiarioRepository.findByNomeTipoSexualidade(nome)).thenReturn(beneficiarios);
+
+        List<Beneficiario> resultado = beneficiarioService.listarPorTipoSexualidade(nome);
+
+        assertFalse(resultado.isEmpty());
+        assertEquals(2, resultado.size());
+    }
+
+    @Test
+    @DisplayName("Quando listarPorTipoSexualidade for acionado com tipo de sexualidade inexistente deve retornar uma lista vazia")
+    void listarPorTipoSexualidadeQuandoForAcionadoComTipoInexistenteDeveLancarBeneficiarioNaoEncontradaExceptionTeste() {
+        String nome = "Inexistente";
+        when(beneficiarioRepository.findByNomeTipoSexualidade(nome)).thenReturn(Collections.emptyList());
+
+        BeneficiarioNaoEncontradaException exception = assertThrows(BeneficiarioNaoEncontradaException.class, () ->
+                beneficiarioService.listarPorTipoSexualidade(nome));
+
+        assertEquals("Nenhum beneficiário com sexualidade 'Inexistente' foi encontrado.", exception.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("Quando listarPorTipoGenero for acionado com parâmetro do tipo de gênero correto deve retornar lista de beneficiários correspondentes")
+    void listarPorTipoGeneroQuandoAcionadoDeveRetornarListaDeBeneficiariosCorrespondentesTeste() {
+        Funcionario funcionario = new Funcionario(1, "João", "12345678901", "(11)999999999", "joao@gmail.com", "senha123");
+
+        Endereco endereco = new Endereco(1, "Rua", "Alameda Santos", 456,
+                "Ap 10 A", "Centro", "01310-000", "São Paulo", "SP");
+
+        TipoGenero tipoGenero = new TipoGenero(1, "Cisgênero", "Pessoa cuja identidade de gênero corresponde ao sexo atribuído no nascimento");
+
+        TipoSexualidade tipoSexualidade = new TipoSexualidade(1, "Homossexual", "Atração pelo sexo oposto");
+
+        Beneficiario b1 = new Beneficiario(1, "Felipe Santos", "Maria", LocalDate.of(2001, 11, 3),
+                "34567890122", false, BRANCO, MASCULINO, "Marcia Gomes", false, PENSAO, null,
+                "SISA104", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",
+                funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        Beneficiario b2 = new Beneficiario(2, "Felipe Rocha", "Maria Julia", LocalDate.of(2005, 10, 2),
+                "54971239912", false, BRANCO, MASCULINO, "Tatiana Gomes", false, PENSAO, null,
+                "SISA106", INATIVO, LocalDateTime.parse("2025-06-05T10:50:26"), "Pessoa com bom comportamento",
+                funcionario, endereco, tipoGenero, tipoSexualidade);
+
+        List<Beneficiario> beneficiarios = List.of(b1, b2);
+        String nome = "cisgênero";
+        when(beneficiarioRepository.findByNomeTipoGenero(nome)).thenReturn(beneficiarios);
+
+        List<Beneficiario> resultado = beneficiarioService.listarPorTipoGenero(nome);
+
+        assertFalse(resultado.isEmpty());
+        assertEquals(2, resultado.size());
+    }
+
+    @Test
+    @DisplayName("Quando listarPorTipoGenero for acionado com tipo de sexualidade inexistente deve retornar uma lista vazia")
+    void listarPorTipoGeneroQuandoForAcionadoComTipoInexistenteDeveLancarBeneficiarioNaoEncontradaExceptionTeste() {
+        String nome = "Inexistente";
+        when(beneficiarioRepository.findByNomeTipoGenero(nome)).thenReturn(Collections.emptyList());
+
+        BeneficiarioNaoEncontradaException exception = assertThrows(BeneficiarioNaoEncontradaException.class, () ->
+                beneficiarioService.listarPorTipoGenero(nome));
+
+        assertEquals("Nenhum beneficiário com gênero 'Inexistente' foi encontrado.", exception.getMessage());
+
+    }
+
+
 
 }

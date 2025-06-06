@@ -3,7 +3,7 @@ package school.sptech.refuge.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import school.sptech.refuge.entity.Beneficiario;
+import school.sptech.refuge.entity.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,15 +16,16 @@ public interface BeneficiarioRepository extends JpaRepository<Beneficiario, Inte
 
     List<Beneficiario> findByNomeRegistroContainingIgnoreCase(String nome);
 
-    @Query("SELECT b FROM Beneficiario b " +
-            "LEFT JOIN FETCH b.funcionario " +
-            "LEFT JOIN FETCH b.endereco " +
-            "LEFT JOIN FETCH b.tipoGenero " +
-            "LEFT JOIN FETCH b.tipoSexualidade " +
-            "WHERE b.id = :id")
-    Optional<Beneficiario> buscarComRelacionamentos(@Param("id") Integer id);
+    @Query("SELECT b FROM Beneficiario b WHERE b.raca = :raca")
+    List<Beneficiario> findByRaca(@Param("raca") RacaEnum raca);
 
-/*
-    List<Beneficiario> findByRacaContainingIgnoreCase(String raca);
-*/
+    @Query("SELECT b FROM Beneficiario b WHERE b.sexo = :sexo")
+    List<Beneficiario> findBySexo(@Param("sexo") SexoEnum sexo);
+
+    @Query("SELECT b FROM Beneficiario b WHERE b.tipoGenero.nome = :nomeGenero")
+    List<Beneficiario> findByNomeTipoGenero(@Param("nomeGenero") String nomeGenero);
+
+    @Query("SELECT b FROM Beneficiario b WHERE b.tipoSexualidade.nome = :nomeSexualidade")
+    List<Beneficiario> findByNomeTipoSexualidade(@Param("nomeSexualidade") String nomeSexualidade);
+
 }

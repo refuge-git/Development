@@ -22,11 +22,11 @@ public class CondicaoSaude {
     private String observacoes;
 
     @ManyToOne
-    @JoinColumn(name = "fk_beneficiario", referencedColumnName = "id")
+    @JoinColumn(name = "fk_beneficiario", referencedColumnName = "id_beneficiario")
     private Beneficiario beneficiario;
 
     @ManyToOne
-    @JoinColumn(name = "fk_categoria", referencedColumnName = "id")
+    @JoinColumn(name = "fk_categoria", referencedColumnName = "id_categoria")
     private Categoria categoria;
 
     public CondicaoSaude() {
