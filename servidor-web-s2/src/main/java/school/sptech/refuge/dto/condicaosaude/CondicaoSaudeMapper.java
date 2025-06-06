@@ -2,10 +2,7 @@ package school.sptech.refuge.dto.condicaosaude;
 
 import school.sptech.refuge.dto.funcionario.FuncionarioAtualizacaoDto;
 import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.entity.Beneficiario;
-import school.sptech.refuge.entity.Categoria;
-import school.sptech.refuge.entity.CondicaoSaude;
-import school.sptech.refuge.entity.Funcionario;
+import school.sptech.refuge.entity.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,14 +31,19 @@ public class CondicaoSaudeMapper {
     }
 
     /* Converte um objeto que veio da requisição (CondicaoSaudeRequestDto) em um objeto de entidade (CondicaoSaudez) que pode ser salvo no banco. */
-    public static CondicaoSaude toEntity(CondicaoSaudeRequestDto request, Beneficiario beneficiario, Categoria categoria) {
+    public static CondicaoSaude toEntity(CondicaoSaudeRequestDto request) {
         if (request == null) return null;
         /* this.descricao = descricao;
         this.dataRegistro = dataRegistro;
         this.tratamento = tratamento;
         this.observacoes = observacoes;
-        this.idFuncionario = idFuncionario;
+        this.idBeneficiario = idBeneficiario;
         this.idCategoria = idCategoria;*/
+        Beneficiario beneficiario = new Beneficiario();
+        beneficiario.setId(request.getIdBeneficiario());
+
+        Categoria categoria = new Categoria();
+        categoria.setId(request.getIdCategoria());
 
         return new CondicaoSaude(
                 null,
