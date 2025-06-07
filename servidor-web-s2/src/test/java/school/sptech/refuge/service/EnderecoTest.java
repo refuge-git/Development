@@ -1,4 +1,4 @@
-package school.sptech.refuge.entity;
+package school.sptech.refuge.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import school.sptech.refuge.entity.Endereco;
 import school.sptech.refuge.exception.EnderecoNaoEncontradoException;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.repository.EnderecoRepository;

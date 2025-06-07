@@ -1,4 +1,4 @@
-package school.sptech.refuge.entity;
+package school.sptech.refuge.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import school.sptech.refuge.config.GerenciadorTokenJwt;
 import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.dto.funcionario.FuncionarioTokenDto;
+import school.sptech.refuge.entity.Funcionario;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.repository.FuncionarioRepository;

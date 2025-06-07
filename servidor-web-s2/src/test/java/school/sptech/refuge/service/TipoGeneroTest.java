@@ -1,4 +1,4 @@
-package school.sptech.refuge.entity;
+package school.sptech.refuge.service;
 
 // import org.assertj.core.api.DateAssert;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import school.sptech.refuge.entity.TipoGenero;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.TipoGeneroNaoEncontradoException;
 import school.sptech.refuge.repository.TipoGeneroRepository;

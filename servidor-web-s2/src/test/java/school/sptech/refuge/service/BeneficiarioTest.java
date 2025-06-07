@@ -1,4 +1,4 @@
-package school.sptech.refuge.entity;
+package school.sptech.refuge.service;
 
 import jakarta.validation.constraints.Null;
 import org.junit.jupiter.api.DisplayName;
@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import school.sptech.refuge.entity.*;
 import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.repository.*;
