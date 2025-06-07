@@ -1,34 +1,26 @@
-package school.sptech.refuge.entity;
+package school.sptech.refuge.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
+import school.sptech.refuge.entity.Categoria;
 import school.sptech.refuge.exception.CategoriaNaoEncontradaException;
+import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.repository.CategoriaRepository;
-import school.sptech.refuge.service.CategoriaService;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import static school.sptech.refuge.entity.LocalEnum.PENSAO;
-import static school.sptech.refuge.entity.RacaEnum.BRANCO;
-import static school.sptech.refuge.entity.RacaEnum.PRETO;
-import static school.sptech.refuge.entity.SexoEnum.FEMININO;
-import static school.sptech.refuge.entity.StatusEnum.ATIVO;
-import static school.sptech.refuge.entity.StatusEnum.INATIVO;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CategoriaTest {
+
 @InjectMocks
     private CategoriaService categoriaService;
 
@@ -93,6 +85,63 @@ class CategoriaTest {
         when(categoriaRepository.findAll()).thenReturn(Collections.emptyList());
         List<Categoria> resultado = categoriaService.listar();
         assertTrue(resultado.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Atualizar categoria existente deve retornar categoria atualizada")
+    void atualizarCategoriaExistenteDeveRetornarCategoriaAtualizada() {
+        Categoria categoria = new Categoria(1, "Deficiência");
+
+        when(categoriaRepository.existsById(1)).thenReturn(true);
+        when(categoriaRepository.save(categoria)).thenReturn(categoria);
+
+        Categoria resultado = categoriaService.atualizar(categoria);
+
+        assertNotNull(resultado);
+        assertEquals("Deficiência", resultado.getNome());
+    }
+
+    @Test
+    @DisplayName("Atualizar categoria inexistente deve lançar exceção")
+    void atualizarCategoriaInexistenteDeveLancarExcecao() {
+        Categoria categoria = new Categoria(99, "Inexistente");
+
+        when(categoriaRepository.existsById(99)).thenReturn(false);
+
+        assertThrows(EntidadeNaoEncontradaException.class, () -> categoriaService.atualizar(categoria));
+    }
+
+    @Test
+    @DisplayName("Remover categoria existente não deve lançar exceção")
+    void removerCategoriaExistenteDeveSerBemSucedido() {
+        when(categoriaRepository.existsById(1)).thenReturn(true);
+        doNothing().when(categoriaRepository).deleteById(1);
+
+        assertDoesNotThrow(() -> categoriaService.remover(1));
+    }
+
+    @Test
+    @DisplayName("Remover categoria inexistente deve lançar exceção")
+    void removerCategoriaInexistenteDeveLancarExcecao() {
+        when(categoriaRepository.existsById(99)).thenReturn(false);
+
+        assertThrows(EntidadeNaoEncontradaException.class, () -> categoriaService.remover(99));
+    }
+
+    @Test
+    @DisplayName("Buscar por nome deve retornar categorias correspondentes")
+    void buscarPorNomeDeveRetornarCategoriasCorrespondentes() {
+        List<Categoria> categorias = List.of(
+                new Categoria(1, "Deficiência"),
+                new Categoria(2, "Deficiência")
+        );
+
+        when(categoriaRepository.findAllByNome("Deficiência")).thenReturn(categorias);
+
+        List<Categoria> resultado = categoriaService.buscarPorNome("Deficiência");
+
+        assertEquals(2, resultado.size());
+        assertEquals("Deficiência", resultado.get(0).getNome());
     }
 
 }
