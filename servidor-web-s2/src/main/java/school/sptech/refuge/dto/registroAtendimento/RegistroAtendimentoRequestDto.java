@@ -2,21 +2,22 @@ package school.sptech.refuge.dto.registroAtendimento;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class RegistroAtendimentoRequestDto {
-    private Date data_hora;
+    private LocalDateTime dataHora;
     @Schema(description = "Id do tipo de atendimento referenciado na relação", example = "1")
     private Integer idTipoAtendimento;
     @Schema(description = "Id do beneficiario referenciado na relação", example = "1")
     private Integer idBeneficiario;
 
-    public Date getData_hora() {
-        return data_hora;
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 
-    public void setData_hora(Date data_hora) {
-        this.data_hora = data_hora;
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 
     public Integer getIdTipoAtendimento() {

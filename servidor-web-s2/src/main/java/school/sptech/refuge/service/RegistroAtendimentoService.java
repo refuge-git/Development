@@ -2,14 +2,13 @@ package school.sptech.refuge.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.dto.registroAtendimento.RegistroAtendimentoMapper;
-import school.sptech.refuge.dto.registroAtendimento.RegistroAtendimentoRequestDto;
-import school.sptech.refuge.dto.registroAtendimento.RegistroAtendimentoResponseDto;
 import school.sptech.refuge.entity.Beneficiario;
+import school.sptech.refuge.entity.Funcionario;
 import school.sptech.refuge.entity.RegistroAtendimento;
 import school.sptech.refuge.entity.TipoAtendimento;
-import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
+import school.sptech.refuge.exception.*;
 import school.sptech.refuge.repository.BeneficiarioRepository;
+import school.sptech.refuge.repository.FuncionarioRepository;
 import school.sptech.refuge.repository.RegistroAtendimentoRepository;
 import school.sptech.refuge.repository.TipoAtendimentoRepository;
 
@@ -18,70 +17,59 @@ import java.util.Optional;
 
 @Service
 public class RegistroAtendimentoService {
-    @Autowired
-    private BeneficiarioRepository beneficiarioRepository;
-    @Autowired
-    private TipoAtendimentoRepository tipoAtendimentoRepository;
 
-    @Autowired
-    private RegistroAtendimentoRepository repository;
+    private final RegistroAtendimentoRepository registroAtendimentoRepository;
+    private final TipoAtendimentoRepository tipoAtendimentoRepository;
+    private final BeneficiarioRepository beneficiarioRepository;
 
-    private RegistroAtendimentoMapper mapper = new RegistroAtendimentoMapper();
+    public RegistroAtendimentoService(RegistroAtendimentoRepository registroAtendimentoRepository, TipoAtendimentoRepository tipoAtendimentoRepository, BeneficiarioRepository beneficiarioRepository) {
+        this.registroAtendimentoRepository = registroAtendimentoRepository;
+        this.tipoAtendimentoRepository = tipoAtendimentoRepository;
+        this.beneficiarioRepository = beneficiarioRepository;
+    }
 
+    public TipoAtendimento validarTipoAtendimento(Integer id) {
+        return tipoAtendimentoRepository.findById(id)
+                .orElseThrow(() -> new TipoAtendimentoNaoEncotradoException("Tipo de atendimento não encontrado"));
+    }
+
+    public Beneficiario validarBeneficiario(Integer id) {
+        return beneficiarioRepository.findById(id)
+                .orElseThrow(() -> new BeneficiarioNaoEncontradaException("Beneficiário não encontrado"));
+    }
     // CREATE
-    public RegistroAtendimentoResponseDto criar(RegistroAtendimentoRequestDto dto) {
-        TipoAtendimento tipo = tipoAtendimentoRepository.findById(dto.getIdTipoAtendimento())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de atendimento com id %d não encontrado".formatted(dto.getIdTipoAtendimento())));
+    public RegistroAtendimento criar(RegistroAtendimento registroAtendimento ){
+        TipoAtendimento tipoAtendimento = validarTipoAtendimento(registroAtendimento.getTipoAtendimento().getId());
+        registroAtendimento.setTipoAtendimento(tipoAtendimento);
 
-        Beneficiario beneficiario = beneficiarioRepository.findById(dto.getIdBeneficiario())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Beneficiário com id %d não encontrado".formatted(dto.getIdBeneficiario())));
-
-        RegistroAtendimento novo = new RegistroAtendimento();
-        novo.setData_hora(dto.getData_hora());
-        novo.setTipoAtendimento(tipo);
-        novo.setBeneficiario(beneficiario);
-
-        return mapper.toDto(repository.save(novo));
+        return registroAtendimentoRepository.save(registroAtendimento);
     }
 
-    // READ - TODOS
-    public List<RegistroAtendimentoResponseDto> listarTodos() {
-        List<RegistroAtendimento> lista = repository.findAll();
-        return mapper.toListDto(lista);
+    // READ
+    public List<RegistroAtendimento> listarTodos(){
+        return registroAtendimentoRepository.findAll();
     }
 
-    // READ - POR ID
-    public RegistroAtendimentoResponseDto buscarPorId(Integer id) {
-        Optional<RegistroAtendimento> opt = repository.findById(id);
-        if (opt.isEmpty()) {
-            throw new EntidadeNaoEncontradaException("Registro de atendimento com id %d não encontrado".formatted(id));
-        }
-        return mapper.toDto(opt.get());
+    public RegistroAtendimento buscarPorId(Integer id){
+        return registroAtendimentoRepository.findById(id)
+                .orElseThrow(() -> new RegistroAtendimentoNaoEncontradoException("Registro de atendimento de id %d não encontrado".formatted(id)));
     }
 
     // UPDATE
-    public RegistroAtendimentoResponseDto atualizar(Integer id, RegistroAtendimentoRequestDto dto) {
-        RegistroAtendimento existente = repository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Registro de atendimento com id %d não encontrado".formatted(id)));
-
-        TipoAtendimento tipo = tipoAtendimentoRepository.findById(dto.getIdTipoAtendimento())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de atendimento com id %d não encontrado".formatted(dto.getIdTipoAtendimento())));
-
-        Beneficiario beneficiario = beneficiarioRepository.findById(dto.getIdBeneficiario())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Beneficiário com id %d não encontrado".formatted(dto.getIdBeneficiario())));
-
-
-        RegistroAtendimento atualizado = mapper.toEntity(dto, tipo, beneficiario);
-        atualizado.setId(id);
-
-        return mapper.toDto(repository.save(atualizado));
+    public RegistroAtendimento atualizar(RegistroAtendimento registroAtendimento){
+        if (registroAtendimentoRepository.existsById(registroAtendimento.getId())) {
+            registroAtendimento.setId(registroAtendimento.getId());
+            return registroAtendimentoRepository.save(registroAtendimento);
+        } else {
+            throw new RegistroAtendimentoNaoEncontradoException("Registro de atendimento de id %d não encontrado".formatted(registroAtendimento.getId()));
+        }
     }
 
-    // DELETE
-    public void deletar(Integer id) {
-        if (!repository.existsById(id)) {
-            throw new EntidadeNaoEncontradaException("Registro de atendimento com id %d não encontrado".formatted(id));
+    public void deletar(Integer id){
+        if (registroAtendimentoRepository.existsById(id)) {
+            registroAtendimentoRepository.deleteById(id);
+        } else {
+            throw new RegistroAtendimentoNaoEncontradoException("Registro de atendimento de id %d não encontrado".formatted(id));
         }
-        repository.deleteById(id);
     }
 }

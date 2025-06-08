@@ -1,36 +1,91 @@
 package school.sptech.refuge.dto.tipoAtendimento;
 
+import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.entity.Funcionario;
 import school.sptech.refuge.entity.TipoAtendimento;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TipoAtendimentoMapper {
-    public TipoAtendimento toEntity(TipoAtendimentoRequestDto dto){
-        TipoAtendimento entity = new TipoAtendimento();
-        entity.setNome(dto.getNome());
-        entity.setDescricao(dto.getDescricao());
-        entity.setDt_criacao(dto.getDt_criacao());
+    public static TipoAtendimento toEntity(TipoAtendimentoRequestDto dto){
+        if (dto == null) {
+            return null;
+        }
+
+        Funcionario funcionario = new Funcionario();
+        funcionario.setId(dto.getIdFuncionario());
+
+        TipoAtendimento entity = new TipoAtendimento(
+                null,
+                dto.getNome(),
+                dto.getDescricao(),
+                dto.getDtCriacao(),
+                funcionario
+        );
 
         return entity;
     }
 
-    public TipoAtendimentoResponseDto toDto(TipoAtendimento entity){
+    public static TipoAtendimento toEntity(TipoAtendimentoRequestDto dto, Integer id){
+        if (dto == null) {
+            return null;
+        }
+
+        Funcionario funcionario = new Funcionario();
+        funcionario.setId(dto.getIdFuncionario());
+
+        TipoAtendimento entity = new TipoAtendimento(
+                id,
+                dto.getNome(),
+                dto.getDescricao(),
+                dto.getDtCriacao(),
+                funcionario
+        );
+
+        return entity;
+    }
+
+    /*public TipoAtendimentoResponseDto toDto(TipoAtendimento entity){
         TipoAtendimentoResponseDto dto = new TipoAtendimentoResponseDto();
 
         dto.setId(entity.getId_TipoAtendimento());
         dto.setNome(entity.getNome());
 
         return dto;
-    }
+    }*/
 
-    public List<TipoAtendimentoResponseDto> toListDto(List<TipoAtendimento> atendimentos){
-        List<TipoAtendimentoResponseDto> responseDtos = new ArrayList<>();
+    public static TipoAtendimentoResponseDto toListagemDto(TipoAtendimento entity) {
 
-        for(TipoAtendimento at : atendimentos){
-            responseDtos.add(toDto(at));
+        if (entity == null) {
+            return null;
         }
 
-        return responseDtos;
+        FuncionarioListDto funcionarioDto = new FuncionarioListDto(
+                entity.getFuncionario().getId(),
+                entity.getFuncionario().getNome(),
+                entity.getFuncionario().getCpf(),
+                entity.getFuncionario().getEmail(),
+                entity.getFuncionario().getTelefone()
+        );
+
+        return new TipoAtendimentoResponseDto(
+                entity.getId(),
+                entity.getNome(),
+                entity.getDescricao(),
+                entity.getDataCriacao(),
+                funcionarioDto
+        );
+    }
+
+
+    public static List<TipoAtendimentoResponseDto> toListagemDtos(List<TipoAtendimento> atendimentos){
+        if (atendimentos == null) {
+            return null;
+        }
+
+        return atendimentos.stream()
+                .map(TipoAtendimentoMapper::toListagemDto)
+                .toList();
     }
 }

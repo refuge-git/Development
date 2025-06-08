@@ -2,6 +2,7 @@ package school.sptech.refuge.dto.tipoAtendimento;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TipoAtendimentoRequestDto {
@@ -10,7 +11,19 @@ public class TipoAtendimentoRequestDto {
     @Schema(description = "Descrição do atendimento realizado", example = "Atendimento com psicólog")
     private String descricao;
     @Schema(description = "Data de criação desse atendimento", example = "2025-06-07T14:30:00")
-    private Date dt_criacao;
+    private LocalDateTime dtCriacao;
+    @Schema(description = "Id do funcionário que criou o tipo de atendimento", example = "2")
+    private Integer idFuncionario;
+
+    public TipoAtendimentoRequestDto(String nome, String descricao, LocalDateTime dtCriacao, Integer idFuncionario) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.dtCriacao = dtCriacao;
+        this.idFuncionario = idFuncionario;
+    }
+
+    public TipoAtendimentoRequestDto() {
+    }
 
     public String getNome() {
         return nome;
@@ -28,11 +41,19 @@ public class TipoAtendimentoRequestDto {
         this.descricao = descricao;
     }
 
-    public Date getDt_criacao() {
-        return dt_criacao;
+    public LocalDateTime getDtCriacao() {
+        return dtCriacao;
     }
 
-    public void setDt_criacao(Date dt_criacao) {
-        this.dt_criacao = dt_criacao;
+    public void setDtCriacao(LocalDateTime dtCriacao) {
+        this.dtCriacao = dtCriacao;
+    }
+
+    public Integer getIdFuncionario() {
+        return idFuncionario;
+    }
+
+    public void setIdFuncionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 }

@@ -2,37 +2,41 @@ package school.sptech.refuge.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 public class TipoAtendimento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_TipoAtendimento;
+    @Column(name = "id_tipo_atendimento")
+    private Integer id;
     private String nome;
     private String descricao;
-    private Date dt_criacao;
+    private LocalDateTime dataCriacao;
 
     @ManyToOne
+    @JoinColumn(name = "fk_funcionario", referencedColumnName = "id_funcionario")
     private Funcionario funcionario;
 
     public TipoAtendimento(){
     }
 
-    public TipoAtendimento(Integer id_TipoAtendimento, String nome, String descricao, Date dt_criacao, Funcionario funcionario) {
-        this.id_TipoAtendimento = id_TipoAtendimento;
+
+    public TipoAtendimento(Integer id, String nome, String descricao, LocalDateTime dataCriacao, Funcionario funcionario) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-        this.dt_criacao = dt_criacao;
+        this.dataCriacao = dataCriacao;
         this.funcionario = funcionario;
     }
 
-    public Integer getId_TipoAtendimento() {
-        return id_TipoAtendimento;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId_TipoAtendimento(Integer id_TipoAtendimento) {
-        this.id_TipoAtendimento = id_TipoAtendimento;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -51,12 +55,12 @@ public class TipoAtendimento {
         this.descricao = descricao;
     }
 
-    public Date getDt_criacao() {
-        return dt_criacao;
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
     }
 
-    public void setDt_criacao(Date dt_criacao) {
-        this.dt_criacao = dt_criacao;
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 
     public Funcionario getFuncionario() {

@@ -1,20 +1,29 @@
 package school.sptech.refuge.dto.registroAtendimento;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import school.sptech.refuge.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.dto.tipoAtendimento.TipoAtendimentoResponseDto;
 import school.sptech.refuge.entity.Beneficiario;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class RegistroAtendimentoResponseDto {
     @Schema(description = "Id da entidade retornada ao ser salva", example = "1")
     private Integer id;
     @Schema(description = "Data e hora que aquele registro foi feito", example = "2025-06-07T14:30:00")
-    private Date data_hora;
+    private LocalDateTime dataHora;
     @Schema(description = "Entidade retornada pela relação de tipo de atendimento", example = "1")
     private TipoAtendimentoResponseDto tipoAtendimento;
     @Schema(description = "Entidade retornada pela relação de beneficiario", example = "1")
-    private Beneficiario beneficiario;
+    private BeneficarioListDto beneficiario;
+
+    public RegistroAtendimentoResponseDto(Integer id, LocalDateTime dataHora, TipoAtendimentoResponseDto tipoAtendimento, BeneficarioListDto beneficiario) {
+        this.id = id;
+        this.dataHora = dataHora;
+        this.tipoAtendimento = tipoAtendimento;
+        this.beneficiario = beneficiario;
+    }
 
     public Integer getId() {
         return id;
@@ -24,12 +33,12 @@ public class RegistroAtendimentoResponseDto {
         this.id = id;
     }
 
-    public Date getData_hora() {
-        return data_hora;
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 
-    public void setData_hora(Date data_hora) {
-        this.data_hora = data_hora;
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 
     public TipoAtendimentoResponseDto getTipoAtendimento() {
@@ -40,11 +49,11 @@ public class RegistroAtendimentoResponseDto {
         this.tipoAtendimento = tipoAtendimento;
     }
 
-    public Beneficiario getBeneficiario() {
+    public BeneficarioListDto getBeneficiario() {
         return beneficiario;
     }
 
-    public void setBeneficiario(Beneficiario beneficiario) {
+    public void setBeneficiario(BeneficarioListDto beneficiario) {
         this.beneficiario = beneficiario;
     }
 }

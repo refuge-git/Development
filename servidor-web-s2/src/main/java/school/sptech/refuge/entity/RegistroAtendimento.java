@@ -1,24 +1,37 @@
 package school.sptech.refuge.entity;
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 public class RegistroAtendimento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_registro_atendimento")
     private Integer id;
-    private Date data_hora;
+    private LocalDateTime dataHora;
 
 
     // Relacionamentos da tabela auxiliar
     @ManyToOne
-    @JoinColumn(name = "tipo_atendimento_id_tipo_atendimento", nullable = false)
+    @JoinColumn(name = "fk_tipo", referencedColumnName = "id_tipo_atendimento")
     private TipoAtendimento tipoAtendimento;
     @ManyToOne
-    @JoinColumn(name = "beneficiario_id_beneficiario", nullable = false)
+    @JoinColumn(name = "fk_beneficiario", referencedColumnName = "id_beneficiario")
     private Beneficiario beneficiario;
+
+    public RegistroAtendimento(Integer id, LocalDateTime dataHora, TipoAtendimento tipoAtendimento, Beneficiario beneficiario) {
+        this.id = id;
+        this.dataHora = dataHora;
+        this.tipoAtendimento = tipoAtendimento;
+        this.beneficiario = beneficiario;
+    }
+
+    public RegistroAtendimento() {
+    }
 
     public Integer getId() {
         return id;
@@ -28,12 +41,12 @@ public class RegistroAtendimento {
         this.id = id;
     }
 
-    public Date getData_hora() {
-        return data_hora;
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 
-    public void setData_hora(Date data_hora) {
-        this.data_hora = data_hora;
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 
     public TipoAtendimento getTipoAtendimento() {

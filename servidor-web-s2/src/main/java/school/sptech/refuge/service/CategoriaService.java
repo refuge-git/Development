@@ -42,10 +42,10 @@ public class CategoriaService {
         }
     }
 
-    /*public List<Categoria> buscarPorNome(String nome) {
+    public List<Categoria> buscarPorNome(String nome) {
 
         return categoriaRepository.findAllByNome(nome);
-    }*/
+    }
 
     public Categoria buscarPorId(Integer id) {
         return categoriaRepository.findById(id)
