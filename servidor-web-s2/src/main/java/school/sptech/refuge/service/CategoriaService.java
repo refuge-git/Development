@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 public class CategoriaService {
+
     private final CategoriaRepository categoriaRepository;
 
     public CategoriaService(CategoriaRepository categoriaRepository) {
@@ -22,13 +23,14 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
 
-    public List<Categoria> listar() { return categoriaRepository.findAll(); }
+    public List<Categoria> listar() {
+        return categoriaRepository.findAll(); }
 
     public Categoria atualizar(Categoria categoria) {
-        if(categoriaRepository.existsById(categoria.getId())) {
+        if(categoriaRepository.existsById((categoria.getId()))) {
             return categoriaRepository.save(categoria);
         } else {
-            throw new EntidadeNaoEncontradaException("Categoria com id %d não encontrada".formatted(categoria.getId()));
+            throw new EntidadeNaoEncontradaException("Categoria com id %id não encontrada".formatted(categoria.getId()));
         }
     }
 
@@ -36,13 +38,14 @@ public class CategoriaService {
         if(categoriaRepository.existsById(id)) {
             categoriaRepository.deleteById(id);
         } else {
-            throw new EntidadeNaoEncontradaException("Categoria com id %d não encontrada".formatted(id));
+            throw new CategoriaNaoEncontradaException("Categoria com id %id não encontrada".formatted(id));
         }
     }
 
-    public List<Categoria> buscarPorNome(String nome) {
+    /*public List<Categoria> buscarPorNome(String nome) {
+
         return categoriaRepository.findAllByNome(nome);
-    }
+    }*/
 
     public Categoria buscarPorId(Integer id) {
         return categoriaRepository.findById(id)

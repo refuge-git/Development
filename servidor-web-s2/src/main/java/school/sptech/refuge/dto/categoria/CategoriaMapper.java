@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CategoriaMapper {
-    public static CategoriaListDto toCategoriaListDto(Categoria categoria) {
+    public static CategoriaListDto toListagemDto(Categoria categoria) {
         if (categoria == null) return null;
 
         return new CategoriaListDto(
@@ -17,10 +17,10 @@ public class CategoriaMapper {
     }
 
     // Converte uma lista de entidades Categoria em uma lista de DTOs
-    public static List<CategoriaListDto> toCategoriaListDto(List<Categoria> categorias) {
+    public static List<CategoriaListDto> toListagemDto(List<Categoria> categorias) {
         if (categorias == null) return null;
 
-        return categorias.stream().map(CategoriaMapper::toCategoriaListDto)
+        return categorias.stream().map(CategoriaMapper::toListagemDto)
                 .toList();
     }
 

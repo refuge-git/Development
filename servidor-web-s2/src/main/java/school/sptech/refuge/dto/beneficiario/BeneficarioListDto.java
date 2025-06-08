@@ -1,7 +1,6 @@
 package school.sptech.refuge.dto.beneficiario;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import school.sptech.refuge.dto.FuncionarioBeneficiarioListDto;
 import school.sptech.refuge.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.dto.tipogenero.TipoGeneroListDto;

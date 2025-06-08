@@ -10,13 +10,16 @@ public class CondicaoSaudeAtualizacaoDto {
     private String tratamento;
     @Schema(description = "Observações da condição de saúde")
     private String observacoes;
-    @Schema(description = "Categoria da condição de saúde")
+    @Schema(description = "Id do beneficiário da condição de saúde")
+    private Integer idBeneficiario;
+    @Schema(description = "Id da categoria da condição de saúde")
     private Integer idCategoria;
 
-    public CondicaoSaudeAtualizacaoDto(String descricao, String tratamento, String observacoes, Integer idCategoria) {
+    public CondicaoSaudeAtualizacaoDto(String descricao, String tratamento, String observacoes, Integer idBeneficiario, Integer idCategoria) {
         this.descricao = descricao;
         this.tratamento = tratamento;
         this.observacoes = observacoes;
+        this.idBeneficiario = idBeneficiario;
         this.idCategoria = idCategoria;
     }
 
@@ -45,6 +48,14 @@ public class CondicaoSaudeAtualizacaoDto {
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
+    }
+
+    public Integer getIdBeneficiario() {
+        return idBeneficiario;
+    }
+
+    public void setIdBeneficiario(Integer idBeneficiario) {
+        this.idBeneficiario = idBeneficiario;
     }
 
     public Integer getIdCategoria() {
