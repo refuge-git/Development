@@ -55,13 +55,6 @@ public class Beneficiario {
     @JoinColumn(name = "fk_sexualidade", referencedColumnName = "id_sexualidade")
     private TipoSexualidade tipoSexualidade;
 
-    @ManyToMany
-    @JoinTable(
-            name = "RegistroAtendimento",
-            joinColumns = @JoinColumn(name = "id_TipoAtendimento"),
-            inverseJoinColumns = @JoinColumn(name = "id_usuario")
-    )
-    private Set<TipoAtendimento> atendimentos = new HashSet<>();
 
     public Beneficiario(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, RacaEnum raca, SexoEnum sexo, String nomeMae, Boolean egressoPrisional, LocalEnum localDorme, String fotoPerfil, String sisa, StatusEnum status, LocalDateTime dataAtivacao, String observacao, Funcionario funcionario, Endereco endereco, TipoGenero tipoGenero, TipoSexualidade tipoSexualidade) {
         this.id = id;
