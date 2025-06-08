@@ -194,7 +194,7 @@ class TipoSexualidadeTest {
                 TipoSexualidadeNaoEncontradoException.class,
                 () -> sexualidadeService.removerPorId(100));
 
-        assertEquals("Tipo sexualidade de id 100 não encontrado", exception.getMessage());
+        assertEquals("Tipo de sexualidade de id 100 não encontrado", exception.getMessage());
         verify(sexualidadeRepository).existsById(100);
     }
 

@@ -53,6 +53,12 @@ class BeneficiarioTest {
     @Mock
     private TipoSexualidadeRepository tipoSexualidadeRepository;
 
+    @Mock
+    private CondicaoSaudeRepository condicaoSaudeRepository;
+
+    @Mock
+    private RegistroAtendimentoRepository registroAtendimentoRepository;
+
     @Test
     @DisplayName("Cadastrar beneficiário com dados válidos deve retornar beneficiário salvo")
     void cadastrarBeneficiarioQuandoForAcionadoDeveRetonarBeneficiarioCadastradoComSucessoTeste() {

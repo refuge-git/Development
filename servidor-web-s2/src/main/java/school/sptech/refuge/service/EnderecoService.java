@@ -1,14 +1,13 @@
 package school.sptech.refuge.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.dto.endereco.EnderecoMapper;
 import school.sptech.refuge.dto.endereco.EnderecoRequestDto;
 import school.sptech.refuge.entity.Beneficiario;
 import school.sptech.refuge.entity.Endereco;
-import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
-import school.sptech.refuge.exception.EnderecoNaoEncontradoException;
-import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
+import school.sptech.refuge.exception.*;
 import school.sptech.refuge.repository.BeneficiarioRepository;
 import school.sptech.refuge.repository.EnderecoRepository;
 
@@ -50,10 +49,14 @@ public class EnderecoService {
     }
 
     public void removerPorId(Integer id) {
-        if (enderecoRepository.existsById(id)) {
+        if (!enderecoRepository.existsById(id)) {
+            throw new EnderecoNaoEncontradoException("Endereço de id %d não encontrado".formatted(id));
+        }
+
+        try {
             enderecoRepository.deleteById(id);
-        } else {
-            throw new EnderecoNaoEncontradoException("Funcionário de id %d não encontrado".formatted(id));
+        } catch (DataIntegrityViolationException e) {
+            throw new ViolacaoDeDadosException("Não é possível excluir o endereço, pois existem registros relacionados a ele.");
         }
     }
 

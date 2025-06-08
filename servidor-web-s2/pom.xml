@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>school.sptech</groupId>
-	<artifactId>exemplo-strategy</artifactId>
+	<artifactId>refuge-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>servidor-web-s2</name>
-	<description>Exemplo Padrão de projeto</description>
+	<description>Refuge - Backend</description>
 	<url/>
 	<licenses>
 		<license/>

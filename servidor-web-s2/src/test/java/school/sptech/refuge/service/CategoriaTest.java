@@ -125,7 +125,7 @@ class CategoriaTest {
     void removerCategoriaInexistenteDeveLancarExcecao() {
         when(categoriaRepository.existsById(99)).thenReturn(false);
 
-        assertThrows(EntidadeNaoEncontradaException.class, () -> categoriaService.remover(99));
+        assertThrows(CategoriaNaoEncontradaException.class, () -> categoriaService.remover(99));
     }
 
     @Test

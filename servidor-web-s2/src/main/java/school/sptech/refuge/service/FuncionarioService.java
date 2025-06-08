@@ -1,6 +1,7 @@
 package school.sptech.refuge.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,8 @@ import school.sptech.refuge.dto.funcionario.FuncionarioTokenDto;
 import school.sptech.refuge.entity.Funcionario;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
+import school.sptech.refuge.exception.TipoSexualidadeNaoEncontradoException;
+import school.sptech.refuge.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.repository.FuncionarioRepository;
 
 import java.util.List;
@@ -84,10 +87,14 @@ public class FuncionarioService {
     }
 
     public void removerPorId(Integer id) {
-        if (funcionarioRepository.existsById(id)) {
+        if (!funcionarioRepository.existsById(id)) {
+            throw new FuncionarioNaoEncontradaException("Funcionário de id %d não encontrado".formatted(id));
+        }
+
+        try {
             funcionarioRepository.deleteById(id);
-        } else {
-            throw new EntidadeNaoEncontradaException("Funcionário de id %d não encontrado".formatted(id));
+        } catch (DataIntegrityViolationException e) {
+            throw new ViolacaoDeDadosException("Não é possível excluir o funcionário, pois existem registros relacionados a ele.");
         }
     }
 

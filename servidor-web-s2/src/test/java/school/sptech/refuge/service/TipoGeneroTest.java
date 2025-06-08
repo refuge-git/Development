@@ -98,7 +98,7 @@ class TipoGeneroTest {
     void RemoverTipoGeneroPorIdComIDInexistenteDeveLancarEntidadeNaoEncontradaExceptionTeste(){
         when(tipoGeneroRepository.existsById(99)).thenReturn(false);
 
-        assertThrows(EntidadeNaoEncontradaException.class, () -> tipoGeneroService.removerPorId(99));
+        assertThrows(TipoGeneroNaoEncontradoException.class, () -> tipoGeneroService.removerPorId(99));
     }
 
     @Test

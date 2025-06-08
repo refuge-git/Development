@@ -1,11 +1,10 @@
 package school.sptech.refuge.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.entity.Categoria;
 import school.sptech.refuge.entity.CondicaoSaude;
-import school.sptech.refuge.exception.CategoriaNaoEncontradaException;
-import school.sptech.refuge.exception.CondicaoSaudeNaoEncontradaException;
-import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
+import school.sptech.refuge.exception.*;
 import school.sptech.refuge.repository.CategoriaRepository;
 
 import java.util.List;
@@ -30,15 +29,19 @@ public class CategoriaService {
         if(categoriaRepository.existsById((categoria.getId()))) {
             return categoriaRepository.save(categoria);
         } else {
-            throw new EntidadeNaoEncontradaException("Categoria com id %id não encontrada".formatted(categoria.getId()));
+            throw new EntidadeNaoEncontradaException("Categoria com id %d não encontrada".formatted(categoria.getId()));
         }
     }
 
     public void remover(Integer id) {
-        if(categoriaRepository.existsById(id)) {
+        if (!categoriaRepository.existsById(id)) {
+            throw new CategoriaNaoEncontradaException("Categoria de id %d não encontrado".formatted(id));
+        }
+
+        try {
             categoriaRepository.deleteById(id);
-        } else {
-            throw new CategoriaNaoEncontradaException("Categoria com id %id não encontrada".formatted(id));
+        } catch (DataIntegrityViolationException e) {
+            throw new ViolacaoDeDadosException("Não é possível excluir a categoria, pois existem registros relacionados a ele.");
         }
     }
 

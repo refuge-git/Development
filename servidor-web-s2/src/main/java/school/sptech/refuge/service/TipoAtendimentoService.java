@@ -1,16 +1,14 @@
 package school.sptech.refuge.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.dto.tipoAtendimento.TipoAtendimentoMapper;
 import school.sptech.refuge.dto.tipoAtendimento.TipoAtendimentoRequestDto;
 import school.sptech.refuge.dto.tipoAtendimento.TipoAtendimentoResponseDto;
 import school.sptech.refuge.entity.Funcionario;
 import school.sptech.refuge.entity.TipoAtendimento;
-import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
-import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
-import school.sptech.refuge.exception.TipoAtendimentoNaoEncotradoException;
+import school.sptech.refuge.exception.*;
 import school.sptech.refuge.repository.FuncionarioRepository;
 import school.sptech.refuge.repository.TipoAtendimentoRepository;
 
@@ -59,11 +57,15 @@ public class TipoAtendimentoService {
         }
     }
 
-    public void deletar(Integer id){
-        if (tipoAtendimentoRepository.existsById(id)) {
-            tipoAtendimentoRepository.deleteById(id);
-        } else {
+    public void deletar(Integer id) {
+        if (!tipoAtendimentoRepository.existsById(id)) {
             throw new TipoAtendimentoNaoEncotradoException("Tipo de atendimento de id %d não encontrado".formatted(id));
+        }
+
+        try {
+            tipoAtendimentoRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ViolacaoDeDadosException("Não é possível excluir o tipo de atendimento, pois existem registros relacionados a ele.");
         }
     }
 }

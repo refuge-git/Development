@@ -156,6 +156,7 @@ public class EnderecoController {
             @ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado", content = @Content)
     })
     @GetMapping("/nome_logradouro")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<EnderecoListDto>> listarPorRua(@RequestParam String rua) {
         List<Endereco> enderecos = enderecoService.listarPorNomeLogradouro(rua);
         if (enderecos.isEmpty()) {
@@ -174,7 +175,8 @@ public class EnderecoController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = EnderecoListDto.class))),
             @ApiResponse(responseCode = "204", description = "Nenhum endereço encontrado", content = @Content)
     })
-    @GetMapping("/tipo_logradouro")
+    @GetMapping("/tipo-logradouro")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<EnderecoListDto>> listarPorLogradouro(@RequestParam String logradouro) {
         List<Endereco> enderecos = enderecoService.listarPorLogradouro(logradouro);
         if (enderecos.isEmpty()) {

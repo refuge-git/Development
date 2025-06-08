@@ -1,9 +1,12 @@
 package school.sptech.refuge.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.entity.TipoGenero;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.TipoGeneroNaoEncontradoException;
+import school.sptech.refuge.exception.TipoSexualidadeNaoEncontradoException;
+import school.sptech.refuge.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.repository.TipoGeneroRepository;
 
 import java.util.List;
@@ -47,10 +50,14 @@ public class TipoGeneroService {
     }
 
     public void removerPorId(Integer id) {
-        if (tipoGeneroRepository.existsById(id)) {
+        if (!tipoGeneroRepository.existsById(id)) {
+            throw new TipoGeneroNaoEncontradoException("Tipo de gênero de id %d não encontrado".formatted(id));
+        }
+
+        try {
             tipoGeneroRepository.deleteById(id);
-        } else {
-            throw new EntidadeNaoEncontradaException("Tipo genêro de id %d não encontrado".formatted(id));
+        } catch (DataIntegrityViolationException e) {
+            throw new ViolacaoDeDadosException("Não é possível excluir o tipo de gênero, pois existem registros relacionados a ele.");
         }
     }
 }

@@ -1,5 +1,6 @@
 package school.sptech.refuge.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.entity.*;
 import school.sptech.refuge.exception.*;
@@ -82,14 +83,14 @@ public class BeneficiarioService {
     }
 
     public void removerPorId(Integer id) {
-        if (beneficiarioRepository.existsById(id)) {
-            // Deleta as condições de saúde relacionadas antes
-            registroAtendimentoRepository.deleteAllByBeneficiarioId(id);
-            condicaoSaudeRepository.deleteAllByBeneficiarioId(id);
-            // Agora deleta o beneficiário
-            beneficiarioRepository.deleteById(id);
-        } else {
+        if (!beneficiarioRepository.existsById(id)) {
             throw new BeneficiarioNaoEncontradaException("Beneficiário de id %d não encontrado".formatted(id));
+        }
+
+        try {
+            beneficiarioRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ViolacaoDeDadosException("Não é possível excluir o tipo de sexualidade, pois existem registros relacionados a ele.");
         }
     }
 

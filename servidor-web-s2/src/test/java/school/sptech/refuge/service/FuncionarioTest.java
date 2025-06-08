@@ -108,7 +108,7 @@ class FuncionarioTest {
     void removerFuncionarioInexistenteDeveLancarExcecaoEntidadeNaoEncontradaExceptionTeste() {
         when(funcionarioRepository.existsById(99)).thenReturn(false);
 
-        assertThrows(EntidadeNaoEncontradaException.class, () -> funcionarioService.removerPorId(99));
+        assertThrows(FuncionarioNaoEncontradaException.class, () -> funcionarioService.removerPorId(99));
     }
 
     @Test

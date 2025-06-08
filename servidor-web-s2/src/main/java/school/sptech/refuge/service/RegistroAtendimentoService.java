@@ -1,6 +1,7 @@
 package school.sptech.refuge.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.entity.Beneficiario;
 import school.sptech.refuge.entity.Funcionario;
@@ -67,11 +68,15 @@ public class RegistroAtendimentoService {
         }
     }
 
-    public void deletar(Integer id){
-        if (registroAtendimentoRepository.existsById(id)) {
-            registroAtendimentoRepository.deleteById(id);
-        } else {
+    public void deletar(Integer id) {
+        if (!registroAtendimentoRepository.existsById(id)) {
             throw new RegistroAtendimentoNaoEncontradoException("Registro de atendimento de id %d não encontrado".formatted(id));
+        }
+
+        try {
+            registroAtendimentoRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ViolacaoDeDadosException("Não é possível excluir o registro de atendimento, pois existem registros relacionados a ele.");
         }
     }
 }

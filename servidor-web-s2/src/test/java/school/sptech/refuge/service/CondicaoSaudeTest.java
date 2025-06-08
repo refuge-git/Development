@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import school.sptech.refuge.entity.Beneficiario;
 import school.sptech.refuge.entity.Categoria;
 import school.sptech.refuge.entity.CondicaoSaude;
 import school.sptech.refuge.exception.CondicaoSaudeNaoEncontradaException;
@@ -43,16 +44,30 @@ class CondicaoSaudeTest {
         Categoria categoria = new Categoria();
         categoria.setId(1);
 
-        CondicaoSaude condicao = new CondicaoSaude(null, "Dor de cabeça", LocalDate.now(), "Paracetamol", "Paciente sente dor leve", null, categoria);
+        Beneficiario beneficiario = new Beneficiario();
+        beneficiario.setId(1);
+
+        CondicaoSaude condicao = new CondicaoSaude(
+                1,
+                "Dor de cabeça",
+                LocalDate.now(),
+                "Paracetamol",
+                "Paciente sente dor leve",
+                beneficiario,
+                categoria
+        );
 
         when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoria));
+        when(beneficiarioRepository.findById(1)).thenReturn(Optional.of(beneficiario));
         when(condicaoSaudeRepository.save(any())).thenReturn(condicao);
 
         CondicaoSaude resultado = condicaoSaudeService.cadastrar(condicao);
 
         assertNotNull(resultado);
-        assertEquals("Dor de cabeça", resultado.getDescricao());
+        assertEquals(1, resultado.getId());
+
         verify(categoriaRepository, times(1)).findById(1);
+        verify(beneficiarioRepository, times(1)).findById(1);
         verify(condicaoSaudeRepository, times(1)).save(condicao);
     }
 
