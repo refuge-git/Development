@@ -97,7 +97,7 @@ private final CondicaoSaudeService condicaoSaudeService;
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CondicaoSaudeListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody CondicaoSaudeAtualizacaoDto dto, Categoria categoria) {
-        CondicaoSaude condicaoSaude = CondicaoSaudeMapper.toEntity(dto, id, categoria);
+        CondicaoSaude condicaoSaude = CondicaoSaudeMapper.toEntity(dto, id);
         CondicaoSaude condicaoSaudeAtualizado = condicaoSaudeService.atualizar(condicaoSaude);
         CondicaoSaudeListDto dtoAtualizado = CondicaoSaudeMapper.toListagemDto(condicaoSaudeAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
@@ -122,6 +122,20 @@ private final CondicaoSaudeService condicaoSaudeService;
 
         List<CondicaoSaudeListDto> dto = CondicaoSaudeMapper.toListagemDtos(condicoesSaude);
         return ResponseEntity.status(200).body(dto);
+    }
+
+    @Operation(
+            summary = "Excluir condição de saúde",
+            description = "Exclui a condição de saúde dado o id especificado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Condição de saúde excluida com sucesso")
+    })
+    @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> remover(@PathVariable Integer id) {
+        condicaoSaudeService.removerPorId(id);
+        return ResponseEntity.status(204).build();
     }
 
 

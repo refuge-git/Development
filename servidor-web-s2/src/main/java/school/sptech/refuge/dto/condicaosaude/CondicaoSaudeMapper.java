@@ -1,7 +1,12 @@
 package school.sptech.refuge.dto.condicaosaude;
 
+import school.sptech.refuge.dto.beneficiario.BeneficarioListDto;
+import school.sptech.refuge.dto.categoria.CategoriaListDto;
+import school.sptech.refuge.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.dto.funcionario.FuncionarioAtualizacaoDto;
 import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.dto.tipogenero.TipoGeneroListDto;
+import school.sptech.refuge.dto.tiposexualidade.TipoSexualidadeListDto;
 import school.sptech.refuge.entity.*;
 
 import java.util.List;
@@ -11,14 +16,77 @@ public class CondicaoSaudeMapper {
     public static CondicaoSaudeListDto toListagemDto(CondicaoSaude entity) {
         if (entity == null) return null;
 
+        CategoriaListDto categoriaListDto = new CategoriaListDto(
+                entity.getCategoria().getId(),
+                entity.getCategoria().getNome()
+        );
+
+        FuncionarioListDto funcionarioDto = new FuncionarioListDto(
+                entity.getBeneficiario().getFuncionario().getId(),
+                entity.getBeneficiario().getFuncionario().getNome(),
+                entity.getBeneficiario().getFuncionario().getCpf(),
+                entity.getBeneficiario().getFuncionario().getEmail(),
+                entity.getBeneficiario().getFuncionario().getTelefone()
+        );
+
+        EnderecoListDto enderecoListDto = new EnderecoListDto(
+                entity.getBeneficiario().getEndereco().getId(),
+                entity.getBeneficiario().getEndereco().getTipoLogradouro(),
+                entity.getBeneficiario().getEndereco().getNomeLogradouro(),
+                entity.getBeneficiario().getEndereco().getNumero(),
+                entity.getBeneficiario().getEndereco().getComplemento(),
+                entity.getBeneficiario().getEndereco().getBairro(),
+                entity.getBeneficiario().getEndereco().getCep(),
+                entity.getBeneficiario().getEndereco().getNomeLocalidade(),
+                entity.getBeneficiario().getEndereco().getSiglaCidade()
+
+        );
+
+        TipoGeneroListDto tipoGeneroListDto = new TipoGeneroListDto(
+                entity.getBeneficiario().getTipoGenero().getId(),
+                entity.getBeneficiario().getTipoGenero().getNome(),
+                entity.getBeneficiario().getTipoGenero().getDescricao()
+        );
+
+        TipoSexualidadeListDto tipoSexualidadeListDto = new TipoSexualidadeListDto(
+                entity.getBeneficiario().getTipoSexualidade().getId(),
+                entity.getBeneficiario().getTipoSexualidade().getNome(),
+                entity.getBeneficiario().getTipoSexualidade().getDescricao()
+        );
+
+        String descricaoStatus = entity.getBeneficiario().getStatus() != null ? entity.getBeneficiario().getStatus().getDescricaoStatus() : "Status não definido";
+
+        BeneficarioListDto beneficarioListDto = new BeneficarioListDto(
+                entity.getBeneficiario().getId(),
+                entity.getBeneficiario().getNomeRegistro(),
+                entity.getBeneficiario().getNomeSocial(),
+                entity.getBeneficiario().getDtNasc(),
+                entity.getBeneficiario().getCpf(),
+                entity.getBeneficiario().getEstrangeiro(),
+                entity.getBeneficiario().getRaca().getDescricaoRaca(),
+                entity.getBeneficiario().getSexo().getDescricaoSexo(),
+                entity.getBeneficiario().getNomeMae(),
+                entity.getBeneficiario().getEgressoPrisional(),
+                entity.getBeneficiario().getLocalDorme().getDescricaoLocal(),
+                entity.getBeneficiario().getFotoPerfil(),
+                entity.getBeneficiario().getSisa(),
+                descricaoStatus,
+                entity.getBeneficiario().getDataAtivacao(),
+                entity.getBeneficiario().getObservacao(),
+                funcionarioDto,
+                enderecoListDto,
+                tipoGeneroListDto,
+                tipoSexualidadeListDto
+        );
+
         return new CondicaoSaudeListDto(
                 entity.getId(),
                 entity.getDescricao(),
                 entity.getDataRegistro(),
-                entity.getCategoria(),
                 entity.getTratamento(),
-                entity.getObservacoes()
-
+                entity.getObservacoes(),
+                beneficarioListDto,
+                categoriaListDto
         );
     }
 
@@ -33,12 +101,7 @@ public class CondicaoSaudeMapper {
     /* Converte um objeto que veio da requisição (CondicaoSaudeRequestDto) em um objeto de entidade (CondicaoSaudez) que pode ser salvo no banco. */
     public static CondicaoSaude toEntity(CondicaoSaudeRequestDto request) {
         if (request == null) return null;
-        /* this.descricao = descricao;
-        this.dataRegistro = dataRegistro;
-        this.tratamento = tratamento;
-        this.observacoes = observacoes;
-        this.idBeneficiario = idBeneficiario;
-        this.idCategoria = idCategoria;*/
+
         Beneficiario beneficiario = new Beneficiario();
         beneficiario.setId(request.getIdBeneficiario());
 
@@ -48,7 +111,7 @@ public class CondicaoSaudeMapper {
         return new CondicaoSaude(
                 null,
                 request.getDescricao(),
-                request.getDataRegistro(),
+                null,
                 request.getTratamento(),
                 request.getObservacoes(),
                 beneficiario,
@@ -56,8 +119,14 @@ public class CondicaoSaudeMapper {
         );
     }
 
-    public static CondicaoSaude toEntity(CondicaoSaudeAtualizacaoDto dto, Integer id, Categoria categoria) {
+    public static CondicaoSaude toEntity(CondicaoSaudeAtualizacaoDto dto, Integer id) {
         if (dto == null) return null;
+
+        Beneficiario beneficiario = new Beneficiario();
+        beneficiario.setId(dto.getIdBeneficiario());
+
+        Categoria categoria = new Categoria();
+        categoria.setId(dto.getIdCategoria());
 
         return new CondicaoSaude(
                 id,
@@ -65,7 +134,7 @@ public class CondicaoSaudeMapper {
                 null,
                 dto.getTratamento(),
                 dto.getObservacoes(),
-                null,
+                beneficiario,
                 categoria
         );
     }
