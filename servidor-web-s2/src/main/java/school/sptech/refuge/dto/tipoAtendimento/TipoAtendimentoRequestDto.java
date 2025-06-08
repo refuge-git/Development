@@ -1,10 +1,15 @@
 package school.sptech.refuge.dto.tipoAtendimento;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Date;
 
 public class TipoAtendimentoRequestDto {
+    @Schema(description = "Nome de tipo de atendimentos", example = "Psicólógico")
     private String nome;
+    @Schema(description = "Descrição do atendimento realizado", example = "Atendimento com psicólog")
     private String descricao;
+    @Schema(description = "Data de criação desse atendimento", example = "2025-06-07T14:30:00")
     private Date dt_criacao;
 
     public String getNome() {
