@@ -40,7 +40,9 @@ public class RegistroAtendimentoService {
     // CREATE
     public RegistroAtendimento criar(RegistroAtendimento registroAtendimento ){
         TipoAtendimento tipoAtendimento = validarTipoAtendimento(registroAtendimento.getTipoAtendimento().getId());
+        Beneficiario beneficiario = validarBeneficiario(registroAtendimento.getBeneficiario().getId());
         registroAtendimento.setTipoAtendimento(tipoAtendimento);
+        registroAtendimento.setBeneficiario(beneficiario);
 
         return registroAtendimentoRepository.save(registroAtendimento);
     }

@@ -15,13 +15,17 @@ public class BeneficiarioService {
     private final EnderecoRepository enderecoRepository;
     private final TipoGeneroRepository tipoGeneroRepository;
     private final TipoSexualidadeRepository tipoSexualidadeRepository;
+    private final CondicaoSaudeRepository condicaoSaudeRepository;
+    private final RegistroAtendimentoRepository registroAtendimentoRepository;
 
-    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository, FuncionarioRepository funcionarioRepository, EnderecoRepository enderecoRepository, TipoGeneroRepository tipoGeneroRepository, TipoSexualidadeRepository tipoSexualidadeRepository) {
+    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository, FuncionarioRepository funcionarioRepository, EnderecoRepository enderecoRepository, TipoGeneroRepository tipoGeneroRepository, TipoSexualidadeRepository tipoSexualidadeRepository, CondicaoSaudeRepository condicaoSaudeRepository, RegistroAtendimentoRepository registroAtendimentoRepository) {
         this.beneficiarioRepository = beneficiarioRepository;
         this.funcionarioRepository = funcionarioRepository;
         this.enderecoRepository = enderecoRepository;
         this.tipoGeneroRepository = tipoGeneroRepository;
         this.tipoSexualidadeRepository = tipoSexualidadeRepository;
+        this.condicaoSaudeRepository = condicaoSaudeRepository;
+        this.registroAtendimentoRepository = registroAtendimentoRepository;
     }
 
     public Beneficiario cadastrar(Beneficiario beneficiario) {
@@ -79,6 +83,10 @@ public class BeneficiarioService {
 
     public void removerPorId(Integer id) {
         if (beneficiarioRepository.existsById(id)) {
+            // Deleta as condições de saúde relacionadas antes
+            registroAtendimentoRepository.deleteAllByBeneficiarioId(id);
+            condicaoSaudeRepository.deleteAllByBeneficiarioId(id);
+            // Agora deleta o beneficiário
             beneficiarioRepository.deleteById(id);
         } else {
             throw new BeneficiarioNaoEncontradaException("Beneficiário de id %d não encontrado".formatted(id));

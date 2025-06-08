@@ -24,7 +24,7 @@ import school.sptech.refuge.service.CondicaoSaudeService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/condicoesSaude")
+@RequestMapping("/condicoes-saude")
 public class CondicaoSaudeController {
 private final CondicaoSaudeService condicaoSaudeService;
 
@@ -43,7 +43,7 @@ private final CondicaoSaudeService condicaoSaudeService;
     })
     @PostMapping
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<CondicaoSaudeListDto> cadastrar(@Valid @RequestBody CondicaoSaudeRequestDto dto, Beneficiario beneficiario, Categoria categoria) {
+    public ResponseEntity<CondicaoSaudeListDto> cadastrar(@Valid @RequestBody CondicaoSaudeRequestDto dto) {
          CondicaoSaude condicaoSaude = CondicaoSaudeMapper.toEntity(dto);
          CondicaoSaude condicaoSaudeCadastrada = condicaoSaudeService.cadastrar(condicaoSaude);
          CondicaoSaudeListDto dtoSalvo = CondicaoSaudeMapper.toListagemDto(condicaoSaudeCadastrada);
@@ -96,7 +96,7 @@ private final CondicaoSaudeService condicaoSaudeService;
     })
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<CondicaoSaudeListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody CondicaoSaudeAtualizacaoDto dto, Categoria categoria) {
+    public ResponseEntity<CondicaoSaudeListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody CondicaoSaudeAtualizacaoDto dto) {
         CondicaoSaude condicaoSaude = CondicaoSaudeMapper.toEntity(dto, id);
         CondicaoSaude condicaoSaudeAtualizado = condicaoSaudeService.atualizar(condicaoSaude);
         CondicaoSaudeListDto dtoAtualizado = CondicaoSaudeMapper.toListagemDto(condicaoSaudeAtualizado);
@@ -112,7 +112,7 @@ private final CondicaoSaudeService condicaoSaudeService;
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = CondicaoSaudeRequestDto.class))),
             @ApiResponse(responseCode = "204", description = "Nenhuma condição de saúde com a descrição especificada foi encontrado", content = @Content)
     })
-    @GetMapping("/condicoesSaude/descricao")
+    @GetMapping("/descricao")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<CondicaoSaudeListDto>> listarPorDescricao(@RequestParam String descricao) {
         List<CondicaoSaude> condicoesSaude = condicaoSaudeService.listarPorDescricao(descricao);

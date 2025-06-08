@@ -20,42 +20,27 @@ public class RegistroAtendimentoMapper {
     public static RegistroAtendimentoResponseDto toListagemDto(RegistroAtendimento entity) {
         if (entity == null) return null;
 
-        FuncionarioListDto funcionarioDto = new FuncionarioListDto(
-                entity.getBeneficiario().getFuncionario().getId(),
-                entity.getBeneficiario().getFuncionario().getNome(),
-                entity.getBeneficiario().getFuncionario().getCpf(),
-                entity.getBeneficiario().getFuncionario().getEmail(),
-                entity.getBeneficiario().getFuncionario().getTelefone()
-        );
+        FuncionarioListDto funcionarioDto = toFuncionarioDto(entity.getBeneficiario().getFuncionario());
 
-        EnderecoListDto enderecoListDto = new EnderecoListDto(
-                entity.getBeneficiario().getEndereco().getId(),
-                entity.getBeneficiario().getEndereco().getTipoLogradouro(),
-                entity.getBeneficiario().getEndereco().getNomeLogradouro(),
-                entity.getBeneficiario().getEndereco().getNumero(),
-                entity.getBeneficiario().getEndereco().getComplemento(),
-                entity.getBeneficiario().getEndereco().getBairro(),
-                entity.getBeneficiario().getEndereco().getCep(),
-                entity.getBeneficiario().getEndereco().getNomeLocalidade(),
-                entity.getBeneficiario().getEndereco().getSiglaCidade()
+        EnderecoListDto enderecoDto = toEnderecoDto(entity.getBeneficiario().getEndereco());
 
-        );
-
-        TipoGeneroListDto tipoGeneroListDto = new TipoGeneroListDto(
+        TipoGeneroListDto generoDto = new TipoGeneroListDto(
                 entity.getBeneficiario().getTipoGenero().getId(),
                 entity.getBeneficiario().getTipoGenero().getNome(),
                 entity.getBeneficiario().getTipoGenero().getDescricao()
         );
 
-        TipoSexualidadeListDto tipoSexualidadeListDto = new TipoSexualidadeListDto(
+        TipoSexualidadeListDto sexualidadeDto = new TipoSexualidadeListDto(
                 entity.getBeneficiario().getTipoSexualidade().getId(),
                 entity.getBeneficiario().getTipoSexualidade().getNome(),
                 entity.getBeneficiario().getTipoSexualidade().getDescricao()
         );
 
-        String descricaoStatus = entity.getBeneficiario().getStatus() != null ? entity.getBeneficiario().getStatus().getDescricaoStatus() : "Status não definido";
+        String descricaoStatus = entity.getBeneficiario().getStatus() != null
+                ? entity.getBeneficiario().getStatus().getDescricaoStatus()
+                : "Status não definido";
 
-        BeneficarioListDto beneficarioListDto = new BeneficarioListDto(
+        BeneficarioListDto beneficiarioDto = new BeneficarioListDto(
                 entity.getBeneficiario().getId(),
                 entity.getBeneficiario().getNomeRegistro(),
                 entity.getBeneficiario().getNomeSocial(),
@@ -73,12 +58,12 @@ public class RegistroAtendimentoMapper {
                 entity.getBeneficiario().getDataAtivacao(),
                 entity.getBeneficiario().getObservacao(),
                 funcionarioDto,
-                enderecoListDto,
-                tipoGeneroListDto,
-                tipoSexualidadeListDto
+                enderecoDto,
+                generoDto,
+                sexualidadeDto
         );
 
-        TipoAtendimentoResponseDto tipoAtendimento = new TipoAtendimentoResponseDto(
+        TipoAtendimentoResponseDto tipoAtendimentoDto = new TipoAtendimentoResponseDto(
                 entity.getTipoAtendimento().getId(),
                 entity.getTipoAtendimento().getNome(),
                 entity.getTipoAtendimento().getDescricao(),
@@ -89,8 +74,8 @@ public class RegistroAtendimentoMapper {
         return new RegistroAtendimentoResponseDto(
                 entity.getId(),
                 entity.getDataHora(),
-                tipoAtendimento,
-                beneficarioListDto
+                tipoAtendimentoDto,
+                beneficiarioDto
         );
     }
 
@@ -171,5 +156,31 @@ public class RegistroAtendimentoMapper {
         );
 
         return entity;
+    }
+
+    private static FuncionarioListDto toFuncionarioDto(Funcionario funcionario) {
+        if (funcionario == null) return null;
+        return new FuncionarioListDto(
+                funcionario.getId(),
+                funcionario.getNome(),
+                funcionario.getCpf(),
+                funcionario.getEmail(),
+                funcionario.getTelefone()
+        );
+    }
+
+    private static EnderecoListDto toEnderecoDto(Endereco endereco) {
+        if (endereco == null) return null;
+        return new EnderecoListDto(
+                endereco.getId(),
+                endereco.getTipoLogradouro(),
+                endereco.getNomeLogradouro(),
+                endereco.getNumero(),
+                endereco.getComplemento(),
+                endereco.getBairro(),
+                endereco.getCep(),
+                endereco.getNomeLocalidade(),
+                endereco.getSiglaCidade()
+        );
     }
 }
