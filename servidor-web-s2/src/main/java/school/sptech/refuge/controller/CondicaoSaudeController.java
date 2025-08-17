@@ -138,6 +138,27 @@ private final CondicaoSaudeService condicaoSaudeService;
         return ResponseEntity.status(204).build();
     }
 
+    @Operation(
+            summary = "Condição de saúde por id do beneficiário",
+            description = "Listar todas as condições de saúde pelo id do beneficiário"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Condições de saúde pelo id do beneficiário encontradas",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CondicaoSaudeRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhuma condição de saúde com o id do beneficiário especificado foi encontrado", content = @Content)
+    })
+    @GetMapping("/beneficiario/{idBeneficiario}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<CondicaoSaudeListDto>> listarPorBeneficiarioId(@PathVariable Integer idBeneficiario) {
+        List<CondicaoSaude> condicoesSaude = condicaoSaudeService.listarPorIdBeneficiario(idBeneficiario);
+        if (condicoesSaude.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<CondicaoSaudeListDto> dto = CondicaoSaudeMapper.toListagemDtos(condicoesSaude);
+        return ResponseEntity.status(200).body(dto);
+    }
+
 
 
 }

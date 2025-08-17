@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class CondicaoSaudeAtualizacaoDto {
 
+    @Schema(description = "Diagnóstico da condição de saúde")
+    private String diagnostico;
     @Schema(description = "Descrição da condição de saúde")
     private String descricao;
     @Schema(description = "Tratamento da condição de saúde")
@@ -15,7 +17,8 @@ public class CondicaoSaudeAtualizacaoDto {
     @Schema(description = "Id da categoria da condição de saúde")
     private Integer idCategoria;
 
-    public CondicaoSaudeAtualizacaoDto(String descricao, String tratamento, String observacoes, Integer idBeneficiario, Integer idCategoria) {
+    public CondicaoSaudeAtualizacaoDto(String diagnostico, String descricao, String tratamento, String observacoes, Integer idBeneficiario, Integer idCategoria) {
+        this.diagnostico = diagnostico;
         this.descricao = descricao;
         this.tratamento = tratamento;
         this.observacoes = observacoes;
@@ -25,6 +28,10 @@ public class CondicaoSaudeAtualizacaoDto {
 
     public CondicaoSaudeAtualizacaoDto() {
     }
+
+    public String getDiagnostico() { return diagnostico; }
+
+    public void setDiagnostico(String diagnostico) { this.diagnostico = diagnostico; }
 
     public String getDescricao() {
         return descricao;

@@ -20,4 +20,5 @@ public interface CondicaoSaudeRepository extends JpaRepository<CondicaoSaude, In
     void deleteAllByBeneficiarioId(Integer id);
 
 
+    List<CondicaoSaude> findByBeneficiarioId(Integer idBeneficiario);
 }

@@ -7,15 +7,20 @@ import school.sptech.refuge.dto.categoria.CategoriaListDto;
 import school.sptech.refuge.entity.Categoria;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CondicaoSaudeListDto {
 
     @Schema(description = "Id da condição de saúde")
     private Integer id;
+    @Schema(description = "Diagnóstico da condição de saúde")
+    private String diagnostico;
     @Schema(description = "Descrição da condição de saúde")
     private String descricao;
     @Schema(description = "Data de registro da condição de saúde")
-    private LocalDate dataRegistro;
+    private LocalDateTime dataRegistro;
+    @Schema(description = "Data de atualização da condição de saúde")
+    private LocalDateTime dataAtualizacao;
     @Schema(description = "Tratamento da condição de saúde")
     private String tratamento;
     @Schema(description = "Observações da condição de saúde")
@@ -25,10 +30,12 @@ public class CondicaoSaudeListDto {
     @Schema(description = "Categoria da condição de saúde")
     private CategoriaListDto categoria;
 
-    public CondicaoSaudeListDto(Integer id, String descricao, LocalDate dataRegistro, String tratamento, String observacoes, BeneficarioListDto beneficiario, CategoriaListDto categoria) {
+    public CondicaoSaudeListDto(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, BeneficarioListDto beneficiario, CategoriaListDto categoria) {
         this.id = id;
+        this.diagnostico = diagnostico;
         this.descricao = descricao;
         this.dataRegistro = dataRegistro;
+        this.dataAtualizacao = dataAtualizacao;
         this.tratamento = tratamento;
         this.observacoes = observacoes;
         this.beneficiario = beneficiario;
@@ -49,6 +56,10 @@ public class CondicaoSaudeListDto {
         this.id = id;
     }
 
+    public String getDiagnostico() { return diagnostico; }
+
+    public void setDiagnostico(String diagnostico) { this.diagnostico = diagnostico; }
+
     public String getDescricao() {
         return descricao;
     }
@@ -57,12 +68,20 @@ public class CondicaoSaudeListDto {
         this.descricao = descricao;
     }
 
-    public LocalDate getDataRegistro() {
+    public LocalDateTime getDataRegistro() {
         return dataRegistro;
     }
 
-    public void setDataRegistro(LocalDate dataRegistro) {
+    public void setDataRegistro(LocalDateTime dataRegistro) {
         this.dataRegistro = dataRegistro;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public String getTratamento() {

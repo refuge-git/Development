@@ -9,6 +9,7 @@ import school.sptech.refuge.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.dto.tiposexualidade.TipoSexualidadeListDto;
 import school.sptech.refuge.entity.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,8 +82,10 @@ public class CondicaoSaudeMapper {
 
         return new CondicaoSaudeListDto(
                 entity.getId(),
+                entity.getDiagnostico(),
                 entity.getDescricao(),
                 entity.getDataRegistro(),
+                entity.getDataAtualizacao(),
                 entity.getTratamento(),
                 entity.getObservacoes(),
                 beneficarioListDto,
@@ -108,10 +111,14 @@ public class CondicaoSaudeMapper {
         Categoria categoria = new Categoria();
         categoria.setId(request.getIdCategoria());
 
+        LocalDateTime agora = LocalDateTime.now();
+
         return new CondicaoSaude(
                 null,
+                request.getDiagnostico(),
                 request.getDescricao(),
-                null,
+                agora,
+                agora,
                 request.getTratamento(),
                 request.getObservacoes(),
                 beneficiario,
@@ -130,8 +137,10 @@ public class CondicaoSaudeMapper {
 
         return new CondicaoSaude(
                 id,
+                dto.getDiagnostico(),
                 dto.getDescricao(),
                 null,
+                LocalDateTime.now(),
                 dto.getTratamento(),
                 dto.getObservacoes(),
                 beneficiario,

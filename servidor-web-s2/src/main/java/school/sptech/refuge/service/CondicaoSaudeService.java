@@ -77,4 +77,8 @@ public class CondicaoSaudeService {
         return condicaoSaudeRepository.findById(id)
                 .orElseThrow(() -> new CondicaoSaudeNaoEncontradaException("Condição de saúde de id %d não encontrado".formatted(id)));
     }
+
+    public List<CondicaoSaude> listarPorIdBeneficiario(Integer idBeneficiario) {
+        return condicaoSaudeRepository.findByBeneficiarioId(idBeneficiario);
+    }
 }
