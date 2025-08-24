@@ -6,11 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import school.sptech.refuge.entity.Endereco;
+import school.sptech.refuge.core.domain.endereco.valueobject.Endereco;
 import school.sptech.refuge.exception.EnderecoNaoEncontradoException;
-import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.repository.EnderecoRepository;
-import school.sptech.refuge.service.EnderecoService;
+import school.sptech.refuge.infrastructure.repository.EnderecoRepository;
 
 import java.util.Collections;
 import java.util.List;

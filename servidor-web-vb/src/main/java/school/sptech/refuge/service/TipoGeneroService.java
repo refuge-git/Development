@@ -2,12 +2,11 @@ package school.sptech.refuge.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.entity.TipoGenero;
+import school.sptech.refuge.core.domain.tipogenero.valueobject.TipoGenero;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.TipoGeneroNaoEncontradoException;
-import school.sptech.refuge.exception.TipoSexualidadeNaoEncontradoException;
 import school.sptech.refuge.exception.ViolacaoDeDadosException;
-import school.sptech.refuge.repository.TipoGeneroRepository;
+import school.sptech.refuge.infrastructure.repository.TipoGeneroRepository;
 
 import java.util.List;
 

@@ -3,12 +3,12 @@ package school.sptech.refuge.service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.domain.beneficiario.valueobject.Beneficiario;
-import school.sptech.refuge.entity.RegistroAtendimento;
-import school.sptech.refuge.entity.TipoAtendimento;
+import school.sptech.refuge.core.domain.registroatendimento.valueobject.RegistroAtendimento;
+import school.sptech.refuge.core.domain.tipoatendimento.valueobject.TipoAtendimento;
 import school.sptech.refuge.exception.*;
-import school.sptech.refuge.repository.BeneficiarioRepository;
-import school.sptech.refuge.repository.RegistroAtendimentoRepository;
-import school.sptech.refuge.repository.TipoAtendimentoRepository;
+import school.sptech.refuge.infrastructure.repository.BeneficiarioRepository;
+import school.sptech.refuge.infrastructure.repository.RegistroAtendimentoRepository;
+import school.sptech.refuge.infrastructure.repository.TipoAtendimentoRepository;
 
 import java.util.List;
 

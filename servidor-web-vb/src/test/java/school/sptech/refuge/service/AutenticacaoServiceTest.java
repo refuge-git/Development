@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import school.sptech.refuge.core.domain.funcionario.valueobject.Funcionario;
-import school.sptech.refuge.repository.FuncionarioRepository;
+import school.sptech.refuge.infrastructure.repository.FuncionarioRepository;
 
 import java.util.Optional;
 

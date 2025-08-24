@@ -2,14 +2,14 @@ package school.sptech.refuge.service;
 
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.domain.beneficiario.valueobject.Beneficiario;
+import school.sptech.refuge.core.domain.categoria.valueobject.Categoria;
 import school.sptech.refuge.exception.CondicaoSaudeNaoEncontradaException;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.CategoriaNaoEncontradaException;
-import school.sptech.refuge.entity.Categoria;
-import school.sptech.refuge.entity.CondicaoSaude;
-import school.sptech.refuge.repository.BeneficiarioRepository;
-import school.sptech.refuge.repository.CategoriaRepository;
-import school.sptech.refuge.repository.CondicaoSaudeRepository;
+import school.sptech.refuge.core.domain.condicaosaude.valueobject.CondicaoSaude;
+import school.sptech.refuge.infrastructure.repository.BeneficiarioRepository;
+import school.sptech.refuge.infrastructure.repository.CategoriaRepository;
+import school.sptech.refuge.infrastructure.repository.CondicaoSaudeRepository;
 
 import java.util.List;
 

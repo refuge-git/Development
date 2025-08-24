@@ -1,8 +1,10 @@
 package school.sptech.refuge.core.domain.beneficiario.valueobject;
 
 import jakarta.persistence.*;
+import school.sptech.refuge.core.domain.endereco.valueobject.Endereco;
 import school.sptech.refuge.core.domain.funcionario.valueobject.Funcionario;
-import school.sptech.refuge.entity.*;
+import school.sptech.refuge.core.domain.tipogenero.valueobject.TipoGenero;
+import school.sptech.refuge.core.domain.tiposexualidade.valueobject.TipoSexualidade;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

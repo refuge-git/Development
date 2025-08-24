@@ -2,10 +2,9 @@ package school.sptech.refuge.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.entity.Categoria;
-import school.sptech.refuge.entity.CondicaoSaude;
+import school.sptech.refuge.core.domain.categoria.valueobject.Categoria;
 import school.sptech.refuge.exception.*;
-import school.sptech.refuge.repository.CategoriaRepository;
+import school.sptech.refuge.infrastructure.repository.CategoriaRepository;
 
 import java.util.List;
 

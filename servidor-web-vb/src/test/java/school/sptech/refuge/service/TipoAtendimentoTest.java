@@ -7,12 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.core.domain.funcionario.valueobject.Funcionario;
-import school.sptech.refuge.entity.TipoAtendimento;
+import school.sptech.refuge.core.domain.tipoatendimento.valueobject.TipoAtendimento;
 import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.exception.ViolacaoDeDadosException;
-import school.sptech.refuge.repository.FuncionarioRepository;
-import school.sptech.refuge.repository.TipoAtendimentoRepository;
+import school.sptech.refuge.infrastructure.repository.FuncionarioRepository;
+import school.sptech.refuge.infrastructure.repository.TipoAtendimentoRepository;
 
 import java.util.List;
 import java.util.Optional;

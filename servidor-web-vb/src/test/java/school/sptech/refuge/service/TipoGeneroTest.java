@@ -7,11 +7,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import school.sptech.refuge.entity.TipoGenero;
+import school.sptech.refuge.core.domain.tipogenero.valueobject.TipoGenero;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.TipoGeneroNaoEncontradoException;
-import school.sptech.refuge.repository.TipoGeneroRepository;
-import school.sptech.refuge.service.TipoGeneroService;
+import school.sptech.refuge.infrastructure.repository.TipoGeneroRepository;
 
 import java.util.Collections;
 import java.util.List;

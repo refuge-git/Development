@@ -10,13 +10,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import school.sptech.refuge.config.GerenciadorTokenJwt;
-import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.dto.funcionario.FuncionarioTokenDto;
+import school.sptech.refuge.infrastructure.config.GerenciadorTokenJwt;
+import school.sptech.refuge.core.adapters.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.adapters.dto.funcionario.FuncionarioTokenDto;
 import school.sptech.refuge.core.domain.funcionario.valueobject.Funcionario;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
-import school.sptech.refuge.repository.FuncionarioRepository;
+import school.sptech.refuge.infrastructure.repository.FuncionarioRepository;
 
 import java.util.Collections;
 import java.util.List;

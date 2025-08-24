@@ -8,15 +8,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import school.sptech.refuge.config.GerenciadorTokenJwt;
-import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.dto.funcionario.FuncionarioMapper;
-import school.sptech.refuge.dto.funcionario.FuncionarioTokenDto;
+import school.sptech.refuge.infrastructure.config.GerenciadorTokenJwt;
+import school.sptech.refuge.core.adapters.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.adapters.dto.funcionario.FuncionarioMapper;
+import school.sptech.refuge.core.adapters.dto.funcionario.FuncionarioTokenDto;
 import school.sptech.refuge.core.domain.funcionario.valueobject.Funcionario;
 import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.exception.ViolacaoDeDadosException;
-import school.sptech.refuge.repository.FuncionarioRepository;
+import school.sptech.refuge.infrastructure.repository.FuncionarioRepository;
 
 import java.util.List;
 
