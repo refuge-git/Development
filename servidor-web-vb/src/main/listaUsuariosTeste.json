@@ -1,0 +1,101 @@
+[
+  {
+    "title": "Lista Pronta para cadastrar usuários de teste. Ao cadastrar separe os objetos, ou seja, não coloque o vetor completo!"
+  },
+  {
+    "nome": "Leandro Reis",
+    "dtNasc": "2004-05-15",
+    "cpf": "32844785824",
+    "genero": "MASCULINO",
+    "sexualidade": "Heterossexual",
+    "raca": "Branca",
+    "nomeMae": "Luzia",
+    "fotoPerfil": "https://exemplo.com/imagem.jpg",
+    "numeroCartao": "1234-5679-9012-2190",
+    "status": "INATIVO"
+  },
+  {
+    "nome": "Fernanda Oliveira",
+    "dtNasc": "1998-11-23",
+    "cpf": "45239876542",
+    "genero": "FEMININO",
+    "sexualidade": "Heterossexual",
+    "raca": "Parda",
+    "nomeMae": "Marta Oliveira",
+    "fotoPerfil": "https://exemplo.com/imagem1.jpg",
+    "numeroCartao": "9876-5432-1098-7654",
+    "status": "ATIVO"
+  },
+  {
+    "nome": "Ricardo Souza",
+    "dtNasc": "2000-07-09",
+    "cpf": "78451236985",
+    "genero": "MASCULINO",
+    "sexualidade": "Bissexual",
+    "raca": "Negro",
+    "nomeMae": "Carla Souza",
+    "fotoPerfil": "https://exemplo.com/imagem2.jpg",
+    "numeroCartao": "4567-8901-2345-6789",
+    "status": "INATIVO"
+  },
+  {
+    "nome": "Gabriela Santos",
+    "dtNasc": "1995-03-17",
+    "cpf": "96587412365",
+    "genero": "FEMININO",
+    "sexualidade": "Lésbica",
+    "raca": "Branca",
+    "nomeMae": "Ana Santos",
+    "fotoPerfil": "https://exemplo.com/imagem3.jpg",
+    "numeroCartao": "3214-6578-9087-6543",
+    "status": "ATIVO"
+  },
+  {
+    "nome": "Matheus Lima",
+    "dtNasc": "1993-08-21",
+    "cpf": "35789462158",
+    "genero": "MASCULINO",
+    "sexualidade": "Heterossexual",
+    "raca": "Pardo",
+    "nomeMae": "Juliana Lima",
+    "fotoPerfil": "https://exemplo.com/imagem4.jpg",
+    "numeroCartao": "6543-2187-9012-3654",
+    "status": "INATIVO"
+  },
+  {
+    "nome": "Camila Rocha",
+    "dtNasc": "2001-12-05",
+    "cpf": "25879634125",
+    "genero": "FEMININO",
+    "sexualidade": "Bissexual",
+    "raca": "Branca",
+    "nomeMae": "Regina Rocha",
+    "fotoPerfil": "https://exemplo.com/imagem5.jpg",
+    "numeroCartao": "8745-9632-1478-3695",
+    "status": "ATIVO"
+  },
+  {
+    "nome": "Pedro Henrique Alves",
+    "dtNasc": "1990-06-14",
+    "cpf": "14785236998",
+    "genero": "MASCULINO",
+    "sexualidade": "Homossexual",
+    "raca": "Negro",
+    "nomeMae": "Marisa Alves",
+    "fotoPerfil": "https://exemplo.com/imagem6.jpg",
+    "numeroCartao": "3698-7412-8523-1479",
+    "status": "INATIVO"
+  },
+  {
+    "nome": "Juliana Mendes",
+    "dtNasc": "1997-09-30",
+    "cpf": "98765432100",
+    "genero": "FEMININO",
+    "sexualidade": "Heterossexual",
+    "raca": "Indígena",
+    "nomeMae": "Clara Mendes",
+    "fotoPerfil": "https://exemplo.com/imagem7.jpg",
+    "numeroCartao": "1239-4567-8910-1121",
+    "status": "ATIVO"
+  }
+]
