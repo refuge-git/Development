@@ -7,8 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.core.domain.categoria.valueobject.Categoria;
-import school.sptech.refuge.exception.CategoriaNaoEncontradaException;
-import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
+import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
+import school.sptech.refuge.core.application.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.infrastructure.repository.CategoriaRepository;
 
 import java.util.Collections;

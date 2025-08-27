@@ -2,6 +2,7 @@ package school.sptech.refuge.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import school.sptech.refuge.core.application.exception.*;
 import school.sptech.refuge.core.domain.beneficiario.valueobject.Beneficiario;
 import school.sptech.refuge.core.domain.beneficiario.valueobject.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.valueobject.SexoEnum;
@@ -9,7 +10,6 @@ import school.sptech.refuge.core.domain.endereco.valueobject.Endereco;
 import school.sptech.refuge.core.domain.funcionario.valueobject.Funcionario;
 import school.sptech.refuge.core.domain.tipogenero.valueobject.TipoGenero;
 import school.sptech.refuge.core.domain.tiposexualidade.valueobject.TipoSexualidade;
-import school.sptech.refuge.exception.*;
 import school.sptech.refuge.infrastructure.repository.*;
 
 import java.util.List;

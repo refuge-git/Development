@@ -13,7 +13,7 @@ import school.sptech.refuge.core.domain.endereco.valueobject.Endereco;
 import school.sptech.refuge.core.domain.funcionario.valueobject.Funcionario;
 import school.sptech.refuge.core.domain.tipogenero.valueobject.TipoGenero;
 import school.sptech.refuge.core.domain.tiposexualidade.valueobject.TipoSexualidade;
-import school.sptech.refuge.exception.BeneficiarioNaoEncontradaException;
+import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.infrastructure.repository.*;
 
 import java.time.LocalDate;

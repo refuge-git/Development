@@ -3,8 +3,8 @@ package school.sptech.refuge.service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.domain.tiposexualidade.valueobject.TipoSexualidade;
-import school.sptech.refuge.exception.TipoSexualidadeNaoEncontradoException;
-import school.sptech.refuge.exception.ViolacaoDeDadosException;
+import school.sptech.refuge.core.application.exception.TipoSexualidadeNaoEncontradoException;
+import school.sptech.refuge.core.application.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.infrastructure.repository.TipoSexualidadeRepository;
 
 import java.util.List;

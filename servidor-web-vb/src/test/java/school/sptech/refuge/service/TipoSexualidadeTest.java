@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.core.domain.tiposexualidade.valueobject.TipoSexualidade;
-import school.sptech.refuge.exception.TipoSexualidadeNaoEncontradoException;
+import school.sptech.refuge.core.application.exception.TipoSexualidadeNaoEncontradoException;
 import school.sptech.refuge.infrastructure.repository.TipoSexualidadeRepository;
 
 import java.util.List;

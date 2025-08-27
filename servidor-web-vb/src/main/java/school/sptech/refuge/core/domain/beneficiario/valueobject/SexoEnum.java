@@ -1,6 +1,6 @@
 package school.sptech.refuge.core.domain.beneficiario.valueobject;
 
-import school.sptech.refuge.exception.SexoInvalidoException;
+import school.sptech.refuge.core.application.exception.SexoInvalidoException;
 
 public enum SexoEnum {
     FEMININO("Femino"),

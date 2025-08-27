@@ -3,8 +3,9 @@ package school.sptech.refuge.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import school.sptech.refuge.core.application.exception.EnderecoNaoEncontradoException;
+import school.sptech.refuge.core.application.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.core.domain.endereco.valueobject.Endereco;
-import school.sptech.refuge.exception.*;
 import school.sptech.refuge.infrastructure.repository.EnderecoRepository;
 
 import java.util.List;

@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.core.domain.endereco.valueobject.Endereco;
-import school.sptech.refuge.exception.EnderecoNaoEncontradoException;
+import school.sptech.refuge.core.application.exception.EnderecoNaoEncontradoException;
 import school.sptech.refuge.infrastructure.repository.EnderecoRepository;
 
 import java.util.Collections;

@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.core.adapters.dto.funcionario.FuncionarioDetalhesDto;
+import school.sptech.refuge.core.application.dtos.funcionario.FuncionarioDetalhesDto;
 import school.sptech.refuge.core.domain.funcionario.valueobject.Funcionario;
 import school.sptech.refuge.infrastructure.repository.FuncionarioRepository;
 
