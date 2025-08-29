@@ -13,7 +13,7 @@ public class RegistroAtendimentoRequestDto {
     private Integer idBeneficiario;
 
     public LocalDateTime getDataHora() {
-        return dataHora;
+        return LocalDateTime.now();
     }
 
     public void setDataHora(LocalDateTime dataHora) {
