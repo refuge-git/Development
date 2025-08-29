@@ -1,12 +1,12 @@
 package school.sptech.refuge.antes.dto.condicaosaude;
 
-import school.sptech.refuge.antes.dto.beneficiario.BeneficarioListDto;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.antes.dto.categoria.CategoriaListDto;
 import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.antes.dto.tipogenero.TipoGeneroListDto;
-import school.sptech.refuge.antes.dto.tiposexualidade.TipoSexualidadeListDto;
-import school.sptech.refuge.antes.entity.Beneficiario;
+import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
+import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.antes.entity.Categoria;
 import school.sptech.refuge.antes.entity.CondicaoSaude;
 import school.sptech.refuge.entity.*;
@@ -106,8 +106,8 @@ public class CondicaoSaudeMapper {
     public static CondicaoSaude toEntity(CondicaoSaudeRequestDto request) {
         if (request == null) return null;
 
-        Beneficiario beneficiario = new Beneficiario();
-        beneficiario.setId(request.getIdBeneficiario());
+        BeneficiarioEntity beneficiarioEntity = new BeneficiarioEntity();
+        beneficiarioEntity.setId(request.getIdBeneficiario());
 
         Categoria categoria = new Categoria();
         categoria.setId(request.getIdCategoria());
@@ -122,7 +122,7 @@ public class CondicaoSaudeMapper {
                 agora,
                 request.getTratamento(),
                 request.getObservacoes(),
-                beneficiario,
+                beneficiarioEntity,
                 categoria
         );
     }
@@ -130,8 +130,8 @@ public class CondicaoSaudeMapper {
     public static CondicaoSaude toEntity(CondicaoSaudeAtualizacaoDto dto, Integer id) {
         if (dto == null) return null;
 
-        Beneficiario beneficiario = new Beneficiario();
-        beneficiario.setId(dto.getIdBeneficiario());
+        BeneficiarioEntity beneficiarioEntity = new BeneficiarioEntity();
+        beneficiarioEntity.setId(dto.getIdBeneficiario());
 
         Categoria categoria = new Categoria();
         categoria.setId(dto.getIdCategoria());
@@ -144,7 +144,7 @@ public class CondicaoSaudeMapper {
                 LocalDateTime.now(),
                 dto.getTratamento(),
                 dto.getObservacoes(),
-                beneficiario,
+                beneficiarioEntity,
                 categoria
         );
     }

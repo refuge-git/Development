@@ -6,10 +6,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import school.sptech.refuge.antes.entity.Beneficiario;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.antes.entity.RegistroAtendimento;
 import school.sptech.refuge.antes.entity.TipoAtendimento;
-import school.sptech.refuge.antes.exception.BeneficiarioNaoEncontradaException;
+import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.antes.exception.RegistroAtendimentoNaoEncontradoException;
 import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.service.RegistroAtendimentoService;
@@ -40,7 +40,7 @@ class RegistroAtendimentoTest {
     void deveCriarRegistroComSucesso() {
         TipoAtendimento tipo = new TipoAtendimento();
         tipo.setId(1);
-        Beneficiario ben = new Beneficiario();
+        BeneficiarioEntity ben = new BeneficiarioEntity();
         ben.setId(1);
         RegistroAtendimento reg = new RegistroAtendimento();
         reg.setTipoAtendimento(tipo);
@@ -150,11 +150,11 @@ class RegistroAtendimentoTest {
     @Test
     @DisplayName("Quando acionado deve validar a existência de beneficiário pelo id especificado")
     void deveValidarBeneficiarioExistente() {
-        Beneficiario ben = new Beneficiario();
+        BeneficiarioEntity ben = new BeneficiarioEntity();
         ben.setId(1);
         when(beneficiarioRepo.findById(1)).thenReturn(Optional.of(ben));
 
-        Beneficiario resultado = service.validarBeneficiario(1);
+        BeneficiarioEntity resultado = service.validarBeneficiario(1);
 
         assertEquals(ben, resultado);
     }

@@ -13,7 +13,7 @@ import school.sptech.refuge.antes.dto.categoria.CategoriaAtualizacaoDto;
 import school.sptech.refuge.antes.dto.categoria.CategoriaListDto;
 import school.sptech.refuge.antes.dto.categoria.CategoriaMapper;
 import school.sptech.refuge.antes.dto.categoria.CategoriaRequestDto;
-import school.sptech.refuge.antes.dto.tipogenero.TipoGeneroListDto;
+import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.antes.entity.Categoria;
 import school.sptech.refuge.antes.service.CategoriaService;
 

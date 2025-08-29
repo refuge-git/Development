@@ -9,10 +9,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.antes.dto.tipogenero.TipoGeneroListDto;
-import school.sptech.refuge.antes.dto.tipogenero.TipoGeneroMapper;
-import school.sptech.refuge.antes.dto.tipogenero.TipoGeneroRequestDto;
-import school.sptech.refuge.antes.entity.TipoGenero;
+import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
+import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroMapper;
+import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroRequestDto;
+import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.antes.service.TipoGeneroService;
 
 import java.util.List;
@@ -38,8 +38,8 @@ public class TipoGeneroController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoGeneroListDto> cadastrar(@Valid @RequestBody TipoGeneroRequestDto dto) {
-        TipoGenero tipoGenero = TipoGeneroMapper.toEntity(dto);
-        TipoGenero tipoCadastrado = tipoGeneroService.cadastrar(tipoGenero);
+        TipoGeneroEntity tipoGeneroEntity = TipoGeneroMapper.toEntity(dto);
+        TipoGeneroEntity tipoCadastrado = tipoGeneroService.cadastrar(tipoGeneroEntity);
         TipoGeneroListDto dtoSalvo = TipoGeneroMapper.toListagemDto(tipoCadastrado);
         return ResponseEntity.status(201).body(dtoSalvo);
     }
@@ -56,7 +56,7 @@ public class TipoGeneroController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<TipoGeneroListDto>> listar() {
-        List<TipoGenero> tipos = tipoGeneroService.listar();
+        List<TipoGeneroEntity> tipos = tipoGeneroService.listar();
         if (tipos.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -76,8 +76,8 @@ public class TipoGeneroController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoGeneroListDto> listarPorId(@PathVariable Integer id) {
-        TipoGenero tipoGenero = tipoGeneroService.buscarPorId(id);
-        TipoGeneroListDto dto = TipoGeneroMapper.toListagemDto(tipoGenero);
+        TipoGeneroEntity tipoGeneroEntity = tipoGeneroService.buscarPorId(id);
+        TipoGeneroListDto dto = TipoGeneroMapper.toListagemDto(tipoGeneroEntity);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -92,7 +92,7 @@ public class TipoGeneroController {
     @GetMapping("/descricao")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<TipoGeneroListDto>> listarPorDescricao(@RequestParam String descricao) {
-        List<TipoGenero> tipos = tipoGeneroService.buscarPorDescricao(descricao);
+        List<TipoGeneroEntity> tipos = tipoGeneroService.buscarPorDescricao(descricao);
         if (tipos.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -113,8 +113,8 @@ public class TipoGeneroController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoGeneroListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody TipoGeneroRequestDto dto) {
-        TipoGenero tipoGenero = TipoGeneroMapper.toEntity(dto, id);
-        TipoGenero tipoAtualizado = tipoGeneroService.atualizar(tipoGenero);
+        TipoGeneroEntity tipoGeneroEntity = TipoGeneroMapper.toEntity(dto, id);
+        TipoGeneroEntity tipoAtualizado = tipoGeneroService.atualizar(tipoGeneroEntity);
         TipoGeneroListDto dtoAtualizado = TipoGeneroMapper.toListagemDto(tipoAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }

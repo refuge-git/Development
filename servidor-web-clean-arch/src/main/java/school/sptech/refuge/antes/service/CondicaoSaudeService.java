@@ -1,7 +1,7 @@
 package school.sptech.refuge.antes.service;
 
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.antes.entity.Beneficiario;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.antes.exception.CondicaoSaudeNaoEncontradaException;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.antes.exception.CategoriaNaoEncontradaException;
@@ -27,9 +27,9 @@ public class CondicaoSaudeService {
 
     public CondicaoSaude cadastrar(CondicaoSaude condicaoSaude) {
         Categoria categoria = validarCategoria(condicaoSaude.getCategoria().getId());
-        Beneficiario beneficiario = validarBeneficiario(condicaoSaude.getBeneficiario().getId());
+        BeneficiarioEntity beneficiarioEntity = validarBeneficiario(condicaoSaude.getBeneficiario().getId());
         condicaoSaude.setCategoria(categoria);
-        condicaoSaude.setBeneficiario(beneficiario);
+        condicaoSaude.setBeneficiario(beneficiarioEntity);
         return condicaoSaudeRepository.save(condicaoSaude);
     }
 
@@ -38,7 +38,7 @@ public class CondicaoSaudeService {
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria da condição não encontrada"));
     }
 
-    public Beneficiario validarBeneficiario(Integer id) {
+    public BeneficiarioEntity validarBeneficiario(Integer id) {
         return beneficiarioRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Beneficiário da condição não encontrada"));
     }

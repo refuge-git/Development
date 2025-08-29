@@ -2,9 +2,9 @@ package school.sptech.refuge.antes.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.antes.entity.TipoGenero;
+import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.antes.exception.TipoGeneroNaoEncontradoException;
+import school.sptech.refuge.core.application.exception.TipoGeneroNaoEncontradoException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.antes.repository.TipoGeneroRepository;
 
@@ -19,32 +19,32 @@ public class TipoGeneroService {
         this.tipoGeneroRepository = tipoGeneroRepository;
     }
 
-    public TipoGenero cadastrar(TipoGenero tipoGenero) {
+    public TipoGeneroEntity cadastrar(TipoGeneroEntity tipoGeneroEntity) {
 
-        return tipoGeneroRepository.save(tipoGenero);
+        return tipoGeneroRepository.save(tipoGeneroEntity);
     }
 
-    public TipoGenero buscarPorId(Integer id) {
+    public TipoGeneroEntity buscarPorId(Integer id) {
         return tipoGeneroRepository.findById(id)
                 .orElseThrow(() -> new TipoGeneroNaoEncontradoException("Tipo de genero de id %d não encontrado".formatted(id)));
     }
 
-    public List<TipoGenero> listar() {
+    public List<TipoGeneroEntity> listar() {
 
         return tipoGeneroRepository.findAll();
     }
 
-    public List<TipoGenero> buscarPorDescricao(String descricao) {
+    public List<TipoGeneroEntity> buscarPorDescricao(String descricao) {
         return tipoGeneroRepository.findByDescricaoContainingIgnoreCase(descricao);
     }
 
-    public TipoGenero atualizar(TipoGenero tipoGenero) {
-        if (tipoGeneroRepository.existsById(tipoGenero.getId())) {
-            tipoGenero.setId(tipoGenero.getId());
-            return tipoGeneroRepository.save(tipoGenero);
+    public TipoGeneroEntity atualizar(TipoGeneroEntity tipoGeneroEntity) {
+        if (tipoGeneroRepository.existsById(tipoGeneroEntity.getId())) {
+            tipoGeneroEntity.setId(tipoGeneroEntity.getId());
+            return tipoGeneroRepository.save(tipoGeneroEntity);
         } else {
             // REALMENTE É DE BENEFICIÁRIO?
-            throw new EntidadeNaoEncontradaException("Tipo genero de id %d não encontrado".formatted(tipoGenero.getId() /*beneficiario.getId()*/));
+            throw new EntidadeNaoEncontradaException("Tipo genero de id %d não encontrado".formatted(tipoGeneroEntity.getId() /*beneficiario.getId()*/));
         }
     }
 

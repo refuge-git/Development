@@ -10,13 +10,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.antes.dto.beneficiario.BeneficarioListDto;
-import school.sptech.refuge.antes.dto.beneficiario.BeneficiarioAtualizacaoDto;
-import school.sptech.refuge.antes.dto.beneficiario.BeneficiarioMapper;
-import school.sptech.refuge.antes.dto.beneficiario.BeneficiarioRequestDto;
-import school.sptech.refuge.antes.entity.Beneficiario;
-import school.sptech.refuge.antes.entity.RacaEnum;
-import school.sptech.refuge.antes.entity.SexoEnum;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioAtualizacaoDto;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
+import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
+import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.entity.*;
 import school.sptech.refuge.antes.service.BeneficiarioService;
 
@@ -46,10 +46,10 @@ public class BeneficiarioController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
-        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto);
-        Beneficiario beneficiarioCadastrado = beneficiarioService.cadastrar(beneficiario);
+        BeneficiarioEntity beneficiarioEntity = BeneficiarioMapper.toEntity(dto);
+        BeneficiarioEntity beneficiarioEntityCadastrado = beneficiarioService.cadastrar(beneficiarioEntity);
         /*Beneficiario beneficiarioCompleto = beneficiarioService.buscarPorId(beneficiarioCadastrado.getId());*/
-        BeneficarioListDto dtoSalvo = BeneficiarioMapper.toListagemDto(beneficiarioCadastrado);
+        BeneficarioListDto dtoSalvo = BeneficiarioMapper.toListagemDto(beneficiarioEntityCadastrado);
         return ResponseEntity.status(201).body(dtoSalvo);
     }
 
@@ -65,11 +65,11 @@ public class BeneficiarioController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listar() {
-        List<Beneficiario> beneficiarios = beneficiarioService.listar();
-        if (beneficiarios.isEmpty()) {
+        List<BeneficiarioEntity> beneficiarioEntities = beneficiarioService.listar();
+        if (beneficiarioEntities.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        List<BeneficarioListDto> dtos = BeneficiarioMapper.toListagemDtos(beneficiarios);
+        List<BeneficarioListDto> dtos = BeneficiarioMapper.toListagemDtos(beneficiarioEntities);
         return ResponseEntity.status(200).body(dtos);
     }
 
@@ -85,8 +85,8 @@ public class BeneficiarioController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> listarPorId(@PathVariable Integer id) {
-        Beneficiario beneficiario = beneficiarioService.buscarPorId(id);
-        BeneficarioListDto dto = BeneficiarioMapper.toListagemDto(beneficiario);
+        BeneficiarioEntity beneficiarioEntity = beneficiarioService.buscarPorId(id);
+        BeneficarioListDto dto = BeneficiarioMapper.toListagemDto(beneficiarioEntity);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -102,9 +102,9 @@ public class BeneficiarioController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody BeneficiarioAtualizacaoDto dto) {
-        Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, id);
-        Beneficiario beneficiarioAtualizado = beneficiarioService.atualizar(beneficiario);
-        BeneficarioListDto dtoAtualizado = BeneficiarioMapper.toListagemDto(beneficiarioAtualizado);
+        BeneficiarioEntity beneficiarioEntity = BeneficiarioMapper.toEntity(dto, id);
+        BeneficiarioEntity beneficiarioEntityAtualizado = beneficiarioService.atualizar(beneficiarioEntity);
+        BeneficarioListDto dtoAtualizado = BeneficiarioMapper.toListagemDto(beneficiarioEntityAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }
 
@@ -121,12 +121,12 @@ public class BeneficiarioController {
     @GetMapping("/sexo")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorSexo(@RequestParam SexoEnum sexo) {
-        List<Beneficiario> beneficiario = beneficiarioService.listarPorSexo(sexo);
-        if (beneficiario.isEmpty()) {
+        List<BeneficiarioEntity> beneficiarioEntity = beneficiarioService.listarPorSexo(sexo);
+        if (beneficiarioEntity.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
-        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiario);
+        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarioEntity);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -142,12 +142,12 @@ public class BeneficiarioController {
     @GetMapping("/raca")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorRaca(@RequestParam RacaEnum raca) {
-        List<Beneficiario> beneficiario = beneficiarioService.listarPorRaca(raca);
-        if (beneficiario.isEmpty()) {
+        List<BeneficiarioEntity> beneficiarioEntity = beneficiarioService.listarPorRaca(raca);
+        if (beneficiarioEntity.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
-        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiario);
+        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarioEntity);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -163,12 +163,12 @@ public class BeneficiarioController {
     @GetMapping("/beneficiarios/nome-genero")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorNomeGenero(@RequestParam String nomeGenero) {
-        List<Beneficiario> beneficiarios = beneficiarioService.listarPorTipoGenero(nomeGenero);
-        if (beneficiarios.isEmpty()) {
+        List<BeneficiarioEntity> beneficiarioEntities = beneficiarioService.listarPorTipoGenero(nomeGenero);
+        if (beneficiarioEntities.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
-        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarios);
+        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarioEntities);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -184,12 +184,12 @@ public class BeneficiarioController {
     @GetMapping("/beneficiarios/nome-sexualidade")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorNomeSexualidade(@RequestParam String nomeSexualidade) {
-        List<Beneficiario> beneficiarios = beneficiarioService.listarPorTipoSexualidade(nomeSexualidade);
-        if (beneficiarios.isEmpty()) {
+        List<BeneficiarioEntity> beneficiarioEntities = beneficiarioService.listarPorTipoSexualidade(nomeSexualidade);
+        if (beneficiarioEntities.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
-        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarios);
+        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarioEntities);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -205,12 +205,12 @@ public class BeneficiarioController {
     @GetMapping("/nome-registro")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarContendoNomeRegistro(@RequestParam String nome) {
-        List<Beneficiario> beneficiario = beneficiarioService.listarNomeRegistro(nome);
-        if (beneficiario.isEmpty()) {
+        List<BeneficiarioEntity> beneficiarioEntity = beneficiarioService.listarNomeRegistro(nome);
+        if (beneficiarioEntity.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
-        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiario);
+        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarioEntity);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -226,12 +226,12 @@ public class BeneficiarioController {
     @GetMapping("/nome-social")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarContendoNomeSocial(@RequestParam String nome) {
-        List<Beneficiario> beneficiario = beneficiarioService.listarNomeSocial(nome);
-        if (beneficiario.isEmpty()) {
+        List<BeneficiarioEntity> beneficiarioEntity = beneficiarioService.listarNomeSocial(nome);
+        if (beneficiarioEntity.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
-        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiario);
+        List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarioEntity);
         return ResponseEntity.status(200).body(dto);
     }
 

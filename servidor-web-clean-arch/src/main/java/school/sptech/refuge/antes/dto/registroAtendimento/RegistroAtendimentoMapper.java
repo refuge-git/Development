@@ -1,13 +1,14 @@
 package school.sptech.refuge.antes.dto.registroAtendimento;
 
-import school.sptech.refuge.antes.dto.beneficiario.BeneficarioListDto;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.antes.dto.tipoAtendimento.TipoAtendimentoResponseDto;
-import school.sptech.refuge.antes.dto.tipogenero.TipoGeneroListDto;
-import school.sptech.refuge.antes.dto.tiposexualidade.TipoSexualidadeListDto;
+import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
+import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
 import school.sptech.refuge.antes.entity.*;
 import school.sptech.refuge.entity.*;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 
 import java.util.List;
 
@@ -120,14 +121,14 @@ public class RegistroAtendimentoMapper {
         TipoAtendimento tipoAtendimento = new TipoAtendimento();
         tipoAtendimento.setId(dto.getIdTipoAtendimento());
 
-        Beneficiario beneficiario = new Beneficiario();
-        beneficiario.setId(dto.getIdBeneficiario());
+        BeneficiarioEntity beneficiarioEntity = new BeneficiarioEntity();
+        beneficiarioEntity.setId(dto.getIdBeneficiario());
 
         RegistroAtendimento entity = new RegistroAtendimento(
                 null,
                 dto.getDataHora(),
                 tipoAtendimento,
-                beneficiario
+                beneficiarioEntity
         );
 
         return entity;
@@ -141,14 +142,14 @@ public class RegistroAtendimentoMapper {
         TipoAtendimento tipoAtendimento = new TipoAtendimento();
         tipoAtendimento.setId(dto.getIdTipoAtendimento());
 
-        Beneficiario beneficiario = new Beneficiario();
-        beneficiario.setId(dto.getIdBeneficiario());
+        BeneficiarioEntity beneficiarioEntity = new BeneficiarioEntity();
+        beneficiarioEntity.setId(dto.getIdBeneficiario());
 
         RegistroAtendimento entity = new RegistroAtendimento(
                 id,
                 dto.getDataHora(),
                 tipoAtendimento,
-                beneficiario
+                beneficiarioEntity
         );
 
         return entity;

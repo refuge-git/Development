@@ -2,10 +2,10 @@ package school.sptech.refuge.antes.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.antes.entity.Beneficiario;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.antes.entity.RegistroAtendimento;
 import school.sptech.refuge.antes.entity.TipoAtendimento;
-import school.sptech.refuge.antes.exception.BeneficiarioNaoEncontradaException;
+import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.antes.exception.RegistroAtendimentoNaoEncontradoException;
 import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
@@ -34,16 +34,16 @@ public class RegistroAtendimentoService {
                 .orElseThrow(() -> new TipoAtendimentoNaoEncotradoException("Tipo de atendimento não encontrado"));
     }
 
-    public Beneficiario validarBeneficiario(Integer id) {
+    public BeneficiarioEntity validarBeneficiario(Integer id) {
         return beneficiarioRepository.findById(id)
                 .orElseThrow(() -> new BeneficiarioNaoEncontradaException("Beneficiário não encontrado"));
     }
     // CREATE
     public RegistroAtendimento criar(RegistroAtendimento registroAtendimento ){
         TipoAtendimento tipoAtendimento = validarTipoAtendimento(registroAtendimento.getTipoAtendimento().getId());
-        Beneficiario beneficiario = validarBeneficiario(registroAtendimento.getBeneficiario().getId());
+        BeneficiarioEntity beneficiarioEntity = validarBeneficiario(registroAtendimento.getBeneficiario().getId());
         registroAtendimento.setTipoAtendimento(tipoAtendimento);
-        registroAtendimento.setBeneficiario(beneficiario);
+        registroAtendimento.setBeneficiario(beneficiarioEntity);
 
         return registroAtendimentoRepository.save(registroAtendimento);
     }

@@ -2,6 +2,7 @@ package school.sptech.refuge.antes.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +27,7 @@ public class CondicaoSaude {
 
     @ManyToOne
     @JoinColumn(name = "fk_beneficiario", referencedColumnName = "id_beneficiario")
-    private Beneficiario beneficiario;
+    private BeneficiarioEntity beneficiarioEntity;
 
     @ManyToOne
     @JoinColumn(name = "fk_categoria", referencedColumnName = "id_categoria")
@@ -35,7 +36,7 @@ public class CondicaoSaude {
     public CondicaoSaude() {
     }
 
-    public CondicaoSaude(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, Beneficiario beneficiario, Categoria categoria) {
+    public CondicaoSaude(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, BeneficiarioEntity beneficiarioEntity, Categoria categoria) {
         this.id = id;
         this.diagnostico = diagnostico;
         this.descricao = descricao;
@@ -43,7 +44,7 @@ public class CondicaoSaude {
         this.dataAtualizacao = dataAtualizacao;
         this.tratamento = tratamento;
         this.observacoes = observacoes;
-        this.beneficiario = beneficiario;
+        this.beneficiarioEntity = beneficiarioEntity;
         this.categoria = categoria;
     }
     /** Define a data de registro e atualização antes de persistir o registro */
@@ -116,12 +117,12 @@ public class CondicaoSaude {
         this.observacoes = observacoes;
     }
 
-    public Beneficiario getBeneficiario() {
-        return beneficiario;
+    public BeneficiarioEntity getBeneficiario() {
+        return beneficiarioEntity;
     }
 
-    public void setBeneficiario(Beneficiario beneficiario) {
-        this.beneficiario = beneficiario;
+    public void setBeneficiario(BeneficiarioEntity beneficiarioEntity) {
+        this.beneficiarioEntity = beneficiarioEntity;
     }
 
     public Categoria getCategoria() {

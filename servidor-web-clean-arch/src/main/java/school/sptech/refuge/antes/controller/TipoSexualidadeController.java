@@ -9,10 +9,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.antes.dto.tiposexualidade.TipoSexualidadeListDto;
-import school.sptech.refuge.antes.dto.tiposexualidade.TipoSexualidadeMapper;
-import school.sptech.refuge.antes.dto.tiposexualidade.TipoSexualidadeRequestDto;
-import school.sptech.refuge.antes.entity.TipoSexualidade;
+import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
+import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeMapper;
+import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeRequestDto;
+import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
 import school.sptech.refuge.antes.service.TipoSexualidadeService;
 
 import java.util.List;
@@ -38,8 +38,8 @@ public class TipoSexualidadeController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoSexualidadeListDto> cadastrar(@Valid @RequestBody TipoSexualidadeRequestDto dto) {
-        TipoSexualidade tipoSexualidade = TipoSexualidadeMapper.toEntity(dto);
-        TipoSexualidade tipoCadastrado = tipoSexualidadeService.cadastrar(tipoSexualidade);
+        TipoSexualidadeEntity tipoSexualidadeEntity = TipoSexualidadeMapper.toEntity(dto);
+        TipoSexualidadeEntity tipoCadastrado = tipoSexualidadeService.cadastrar(tipoSexualidadeEntity);
         TipoSexualidadeListDto dtoSalvo = TipoSexualidadeMapper.toListagemDto(tipoCadastrado);
         return ResponseEntity.status(201).body(dtoSalvo);
     }
@@ -56,7 +56,7 @@ public class TipoSexualidadeController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<TipoSexualidadeListDto>> listar() {
-        List<TipoSexualidade> tipos = tipoSexualidadeService.listar();
+        List<TipoSexualidadeEntity> tipos = tipoSexualidadeService.listar();
         if (tipos.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -76,8 +76,8 @@ public class TipoSexualidadeController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoSexualidadeListDto> listarPorId(@PathVariable Integer id) {
-        TipoSexualidade tipoSexualidade = tipoSexualidadeService.buscarPorId(id);
-        TipoSexualidadeListDto dto = TipoSexualidadeMapper.toListagemDto(tipoSexualidade);
+        TipoSexualidadeEntity tipoSexualidadeEntity = tipoSexualidadeService.buscarPorId(id);
+        TipoSexualidadeListDto dto = TipoSexualidadeMapper.toListagemDto(tipoSexualidadeEntity);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -92,7 +92,7 @@ public class TipoSexualidadeController {
     @GetMapping("/descricao")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<TipoSexualidadeListDto>> listarPorDescricao(@RequestParam String descricao) {
-        List<TipoSexualidade> tipos = tipoSexualidadeService.buscarPorDescricao(descricao);
+        List<TipoSexualidadeEntity> tipos = tipoSexualidadeService.buscarPorDescricao(descricao);
         if (tipos.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -113,8 +113,8 @@ public class TipoSexualidadeController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoSexualidadeListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody TipoSexualidadeRequestDto dto) {
-        TipoSexualidade tipoSexualidade = TipoSexualidadeMapper.toEntity(dto, id);
-        TipoSexualidade tipoAtualizado = tipoSexualidadeService.atualizar(tipoSexualidade);
+        TipoSexualidadeEntity tipoSexualidadeEntity = TipoSexualidadeMapper.toEntity(dto, id);
+        TipoSexualidadeEntity tipoAtualizado = tipoSexualidadeService.atualizar(tipoSexualidadeEntity);
         TipoSexualidadeListDto dtoAtualizado = TipoSexualidadeMapper.toListagemDto(tipoAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }

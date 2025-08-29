@@ -1,6 +1,7 @@
 package school.sptech.refuge.antes.entity;
 
 import jakarta.persistence.*;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 
 import java.time.LocalDateTime;
 
@@ -19,13 +20,13 @@ public class RegistroAtendimento {
     private TipoAtendimento tipoAtendimento;
     @ManyToOne
     @JoinColumn(name = "fk_beneficiario", referencedColumnName = "id_beneficiario")
-    private Beneficiario beneficiario;
+    private BeneficiarioEntity beneficiarioEntity;
 
-    public RegistroAtendimento(Integer id, LocalDateTime dataHora, TipoAtendimento tipoAtendimento, Beneficiario beneficiario) {
+    public RegistroAtendimento(Integer id, LocalDateTime dataHora, TipoAtendimento tipoAtendimento, BeneficiarioEntity beneficiarioEntity) {
         this.id = id;
         this.dataHora = dataHora;
         this.tipoAtendimento = tipoAtendimento;
-        this.beneficiario = beneficiario;
+        this.beneficiarioEntity = beneficiarioEntity;
     }
 
     public RegistroAtendimento() {
@@ -55,11 +56,11 @@ public class RegistroAtendimento {
         this.tipoAtendimento = tipoAtendimento;
     }
 
-    public Beneficiario getBeneficiario() {
-        return beneficiario;
+    public BeneficiarioEntity getBeneficiario() {
+        return beneficiarioEntity;
     }
 
-    public void setBeneficiario(Beneficiario beneficiario) {
-        this.beneficiario = beneficiario;
+    public void setBeneficiario(BeneficiarioEntity beneficiarioEntity) {
+        this.beneficiarioEntity = beneficiarioEntity;
     }
 }

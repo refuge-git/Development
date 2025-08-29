@@ -2,8 +2,8 @@ package school.sptech.refuge.antes.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.antes.entity.TipoSexualidade;
-import school.sptech.refuge.antes.exception.TipoSexualidadeNaoEncontradoException;
+import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
+import school.sptech.refuge.core.application.exception.TipoSexualidadeNaoEncontradoException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.antes.repository.TipoSexualidadeRepository;
 
@@ -18,31 +18,31 @@ public class TipoSexualidadeService {
         this.tipoSexualidadeRepository = tipoSexualidadeRepository;
     }
 
-    public TipoSexualidade cadastrar(TipoSexualidade tipoSexualidade) {
+    public TipoSexualidadeEntity cadastrar(TipoSexualidadeEntity tipoSexualidadeEntity) {
 
-        return tipoSexualidadeRepository.save(tipoSexualidade);
+        return tipoSexualidadeRepository.save(tipoSexualidadeEntity);
     }
 
-    public TipoSexualidade buscarPorId(Integer id) {
+    public TipoSexualidadeEntity buscarPorId(Integer id) {
         return tipoSexualidadeRepository.findById(id)
                 .orElseThrow(() -> new TipoSexualidadeNaoEncontradoException("Tipo de sexualidade de id %d não encontrado".formatted(id)));
     }
 
-    public List<TipoSexualidade> listar() {
+    public List<TipoSexualidadeEntity> listar() {
 
         return tipoSexualidadeRepository.findAll();
     }
 
-    public List<TipoSexualidade> buscarPorDescricao(String descricao) {
+    public List<TipoSexualidadeEntity> buscarPorDescricao(String descricao) {
         return tipoSexualidadeRepository.findByDescricaoContainingIgnoreCase(descricao);
     }
 
-    public TipoSexualidade atualizar(TipoSexualidade tipoSexualidade) {
-        if (tipoSexualidadeRepository.existsById(tipoSexualidade.getId())) {
-            tipoSexualidade.setId(tipoSexualidade.getId());
-            return tipoSexualidadeRepository.save(tipoSexualidade);
+    public TipoSexualidadeEntity atualizar(TipoSexualidadeEntity tipoSexualidadeEntity) {
+        if (tipoSexualidadeRepository.existsById(tipoSexualidadeEntity.getId())) {
+            tipoSexualidadeEntity.setId(tipoSexualidadeEntity.getId());
+            return tipoSexualidadeRepository.save(tipoSexualidadeEntity);
         } else {
-            throw new TipoSexualidadeNaoEncontradoException("Tipo sexualidade de id %d não encontrado".formatted(tipoSexualidade.getId()));
+            throw new TipoSexualidadeNaoEncontradoException("Tipo sexualidade de id %d não encontrado".formatted(tipoSexualidadeEntity.getId()));
         }
     }
 
