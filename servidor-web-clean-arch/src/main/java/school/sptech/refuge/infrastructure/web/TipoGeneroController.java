@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.controller;
+package school.sptech.refuge.infrastructure.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,10 +10,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
-import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroMapper;
+import school.sptech.refuge.core.application.usecase.tipogenero.*;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroRequestDto;
-import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
-import school.sptech.refuge.antes.service.TipoGeneroService;
 
 import java.util.List;
 
@@ -21,10 +19,18 @@ import java.util.List;
 @RequestMapping("/tipos_generos")
 public class TipoGeneroController {
 
-    private final TipoGeneroService tipoGeneroService;
+    private final CriarTipoGeneroUseCase criarTipoGeneroUseCase;
+    private final ListarTodosTipoGeneroUseCase listarTodosTipoGeneroUseCase;
+    private final BuscarTipoGeneroPorIdUseCase buscarTipoGeneroPorIdUseCase;
+    private final AtualizarTipoGeneroUseCase atualizarTipoGeneroUseCase;
+    private final DeletarTipoGeneroUseCase deletarTipoGeneroUseCase;
 
-    public TipoGeneroController(TipoGeneroService tipoGeneroService) {
-        this.tipoGeneroService = tipoGeneroService;
+    public TipoGeneroController(CriarTipoGeneroUseCase criarTipoGeneroUseCase, ListarTodosTipoGeneroUseCase listarTodosTipoGeneroUseCase, BuscarTipoGeneroPorIdUseCase buscarTipoGeneroPorIdUseCase, AtualizarTipoGeneroUseCase atualizarTipoGeneroUseCase, DeletarTipoGeneroUseCase deletarTipoGeneroUseCase) {
+        this.criarTipoGeneroUseCase = criarTipoGeneroUseCase;
+        this.listarTodosTipoGeneroUseCase = listarTodosTipoGeneroUseCase;
+        this.buscarTipoGeneroPorIdUseCase = buscarTipoGeneroPorIdUseCase;
+        this.atualizarTipoGeneroUseCase = atualizarTipoGeneroUseCase;
+        this.deletarTipoGeneroUseCase = deletarTipoGeneroUseCase;
     }
 
     @Operation(
@@ -38,10 +44,8 @@ public class TipoGeneroController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoGeneroListDto> cadastrar(@Valid @RequestBody TipoGeneroRequestDto dto) {
-        TipoGeneroEntity tipoGeneroEntity = TipoGeneroMapper.toEntity(dto);
-        TipoGeneroEntity tipoCadastrado = tipoGeneroService.cadastrar(tipoGeneroEntity);
-        TipoGeneroListDto dtoSalvo = TipoGeneroMapper.toListagemDto(tipoCadastrado);
-        return ResponseEntity.status(201).body(dtoSalvo);
+        TipoGeneroListDto criado = criarTipoGeneroUseCase.execute(dto);
+        return ResponseEntity.status(201).body(criado);
     }
 
     @Operation(
@@ -56,12 +60,9 @@ public class TipoGeneroController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<TipoGeneroListDto>> listar() {
-        List<TipoGeneroEntity> tipos = tipoGeneroService.listar();
-        if (tipos.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        List<TipoGeneroListDto> dtos = TipoGeneroMapper.toListagemDtos(tipos);
-        return ResponseEntity.status(200).body(dtos);
+        List<TipoGeneroListDto> dtos = listarTodosTipoGeneroUseCase.execute();
+        if (dtos.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(dtos);
     }
 
 
@@ -76,29 +77,8 @@ public class TipoGeneroController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoGeneroListDto> listarPorId(@PathVariable Integer id) {
-        TipoGeneroEntity tipoGeneroEntity = tipoGeneroService.buscarPorId(id);
-        TipoGeneroListDto dto = TipoGeneroMapper.toListagemDto(tipoGeneroEntity);
-        return ResponseEntity.status(200).body(dto);
-    }
-
-    @Operation(
-            summary = "Listar gênero por partes da descrição",
-            description = "Lista o gênero dado parte da descrição"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Gênero encontrado",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = TipoGeneroListDto.class)))
-    })
-    @GetMapping("/descricao")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<TipoGeneroListDto>> listarPorDescricao(@RequestParam String descricao) {
-        List<TipoGeneroEntity> tipos = tipoGeneroService.buscarPorDescricao(descricao);
-        if (tipos.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-
-        List<TipoGeneroListDto> dto = TipoGeneroMapper.toListagemDtos(tipos);
-        return ResponseEntity.status(200).body(dto);
+        TipoGeneroListDto dto = buscarTipoGeneroPorIdUseCase.execute(id);
+        return ResponseEntity.ok(dto);
     }
 
 
@@ -113,10 +93,8 @@ public class TipoGeneroController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoGeneroListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody TipoGeneroRequestDto dto) {
-        TipoGeneroEntity tipoGeneroEntity = TipoGeneroMapper.toEntity(dto, id);
-        TipoGeneroEntity tipoAtualizado = tipoGeneroService.atualizar(tipoGeneroEntity);
-        TipoGeneroListDto dtoAtualizado = TipoGeneroMapper.toListagemDto(tipoAtualizado);
-        return ResponseEntity.status(200).body(dtoAtualizado);
+        TipoGeneroListDto dtoAtualizado = atualizarTipoGeneroUseCase.execute(id, dto);
+        return ResponseEntity.ok(dtoAtualizado);
     }
 
 
@@ -130,7 +108,7 @@ public class TipoGeneroController {
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
-        tipoGeneroService.removerPorId(id);
-        return ResponseEntity.status(204).build();
+        deletarTipoGeneroUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 }

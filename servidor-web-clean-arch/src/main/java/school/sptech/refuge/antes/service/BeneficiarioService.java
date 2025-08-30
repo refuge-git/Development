@@ -14,6 +14,7 @@ import school.sptech.refuge.entity.*;
 import school.sptech.refuge.exception.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
+import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroJpaRepository;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
 import school.sptech.refuge.repository.*;
 
@@ -25,16 +26,16 @@ public class BeneficiarioService {
     private final BeneficiarioRepository beneficiarioRepository;
     private final FuncionarioRepository funcionarioRepository;
     private final EnderecoRepository enderecoRepository;
-    private final TipoGeneroRepository tipoGeneroRepository;
+    private final TipoGeneroJpaRepository tipoGeneroJpaRepository;
     private final TipoSexualidadeRepository tipoSexualidadeRepository;
     private final CondicaoSaudeRepository condicaoSaudeRepository;
     private final RegistroAtendimentoRepository registroAtendimentoRepository;
 
-    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository, FuncionarioRepository funcionarioRepository, EnderecoRepository enderecoRepository, TipoGeneroRepository tipoGeneroRepository, TipoSexualidadeRepository tipoSexualidadeRepository, CondicaoSaudeRepository condicaoSaudeRepository, RegistroAtendimentoRepository registroAtendimentoRepository) {
+    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository, FuncionarioRepository funcionarioRepository, EnderecoRepository enderecoRepository, TipoGeneroJpaRepository tipoGeneroJpaRepository, TipoSexualidadeRepository tipoSexualidadeRepository, CondicaoSaudeRepository condicaoSaudeRepository, RegistroAtendimentoRepository registroAtendimentoRepository) {
         this.beneficiarioRepository = beneficiarioRepository;
         this.funcionarioRepository = funcionarioRepository;
         this.enderecoRepository = enderecoRepository;
-        this.tipoGeneroRepository = tipoGeneroRepository;
+        this.tipoGeneroJpaRepository = tipoGeneroJpaRepository;
         this.tipoSexualidadeRepository = tipoSexualidadeRepository;
         this.condicaoSaudeRepository = condicaoSaudeRepository;
         this.registroAtendimentoRepository = registroAtendimentoRepository;
@@ -65,7 +66,7 @@ public class BeneficiarioService {
     }
 
     public TipoGeneroEntity validarTipoGenero(Integer id) {
-        return tipoGeneroRepository.findById(id)
+        return tipoGeneroJpaRepository.findById(id)
                 .orElseThrow(() -> new TipoGeneroNaoEncontradoException("Tipo de gênero não encontrado"));
     }
 

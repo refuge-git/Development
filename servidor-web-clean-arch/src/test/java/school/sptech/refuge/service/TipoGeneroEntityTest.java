@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.core.application.exception.TipoGeneroNaoEncontradoException;
-import school.sptech.refuge.antes.repository.TipoGeneroRepository;
+import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroJpaRepository;
 import school.sptech.refuge.antes.service.TipoGeneroService;
 
 import java.util.Collections;
@@ -27,12 +27,12 @@ class TipoGeneroEntityTest {
     private TipoGeneroService tipoGeneroService;
 
     @Mock
-    private TipoGeneroRepository tipoGeneroRepository;
+    private TipoGeneroJpaRepository tipoGeneroJpaRepository;
 
     @Test
     @DisplayName("Listar deve retornar lista vazia quando não houver nenhum tipo de gênero")
     void retornarListaVaziaQuandoAcionarListarNaoHouverNenhumTipoDeGeneroTeste(){
-        when(tipoGeneroRepository.findAll()).thenReturn(Collections.emptyList());
+        when(tipoGeneroJpaRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<TipoGeneroEntity> resultado = tipoGeneroService.listar();
 
@@ -49,7 +49,7 @@ class TipoGeneroEntityTest {
                 new TipoGeneroEntity(3, "Outro", "Não Identificado")
         );
 
-        when(tipoGeneroRepository.findAll()).thenReturn(genero);
+        when(tipoGeneroJpaRepository.findAll()).thenReturn(genero);
 
         List<TipoGeneroEntity> resultado = tipoGeneroService.listar();
 
@@ -63,7 +63,7 @@ class TipoGeneroEntityTest {
 
         TipoGeneroEntity tipoGeneroEntity = new TipoGeneroEntity(1, "Masculino", "Gênero Masculino");
 
-        when(tipoGeneroRepository.findById(1)).thenReturn(Optional.of(tipoGeneroEntity));
+        when(tipoGeneroJpaRepository.findById(1)).thenReturn(Optional.of(tipoGeneroEntity));
 
         TipoGeneroEntity resultado = tipoGeneroService.buscarPorId(1);
 
@@ -77,7 +77,7 @@ class TipoGeneroEntityTest {
     @DisplayName("BuscarPorId com ID inexistente deve lançar TipoGeneroNaoEncontradoException")
     void buscarPorIdComIdInexistenteDeveLancarExcecaoTipoGeneroTeste(){
 
-        when(tipoGeneroRepository.findById(99)).thenReturn(Optional.empty());
+        when(tipoGeneroJpaRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(TipoGeneroNaoEncontradoException.class, () -> tipoGeneroService.buscarPorId(99));
 
@@ -86,17 +86,17 @@ class TipoGeneroEntityTest {
     @Test
     @DisplayName("RemoverPorId com ID existente deve remover sem erros")
     void RemoverPorIdComIDExistenteDeveRemoverSemErrosTeste(){
-        when(tipoGeneroRepository.existsById(1)).thenReturn(true);
+        when(tipoGeneroJpaRepository.existsById(1)).thenReturn(true);
 
         tipoGeneroService.removerPorId(1);
 
-        verify(tipoGeneroRepository, times(1)).deleteById(1);
+        verify(tipoGeneroJpaRepository, times(1)).deleteById(1);
     }
 
     @Test
     @DisplayName("RemoverPorId com ID inexistente deve lançar EntidadeNaoEncontradaException")
     void RemoverTipoGeneroPorIdComIDInexistenteDeveLancarEntidadeNaoEncontradaExceptionTeste(){
-        when(tipoGeneroRepository.existsById(99)).thenReturn(false);
+        when(tipoGeneroJpaRepository.existsById(99)).thenReturn(false);
 
         assertThrows(TipoGeneroNaoEncontradoException.class, () -> tipoGeneroService.removerPorId(99));
     }
@@ -106,8 +106,8 @@ class TipoGeneroEntityTest {
     void AtualizarComTipoDeGeneroExistenteDeveComSucesso(){
         TipoGeneroEntity tipoGeneroEntity = new TipoGeneroEntity(3, "Masculino", "Gênero masculino");
 
-        when(tipoGeneroRepository.existsById(tipoGeneroEntity.getId())).thenReturn(true);
-        when(tipoGeneroRepository.save(tipoGeneroEntity)).thenReturn(tipoGeneroEntity);
+        when(tipoGeneroJpaRepository.existsById(tipoGeneroEntity.getId())).thenReturn(true);
+        when(tipoGeneroJpaRepository.save(tipoGeneroEntity)).thenReturn(tipoGeneroEntity);
 
         TipoGeneroEntity atualizado = tipoGeneroService.atualizar(tipoGeneroEntity);
 
@@ -123,11 +123,11 @@ class TipoGeneroEntityTest {
 
     TipoGeneroEntity tipoGeneroEntity = new TipoGeneroEntity(42, "Não-binário", "Gênero não identificado");
 
-    when(tipoGeneroRepository.existsById(tipoGeneroEntity.getId())).thenReturn(false);
+    when(tipoGeneroJpaRepository.existsById(tipoGeneroEntity.getId())).thenReturn(false);
 
     assertThrows(EntidadeNaoEncontradaException.class, () -> tipoGeneroService.atualizar(tipoGeneroEntity));
 
-    verify(tipoGeneroRepository, never()).save(any());
+    verify(tipoGeneroJpaRepository, never()).save(any());
     }
 
     @Test
@@ -140,7 +140,7 @@ class TipoGeneroEntityTest {
         );
 
 
-        when(tipoGeneroRepository.findByDescricaoContainingIgnoreCase("feminino")).thenReturn(genero);
+        when(tipoGeneroJpaRepository.findByDescricaoContainingIgnoreCase("feminino")).thenReturn(genero);
         List<TipoGeneroEntity> resultado = tipoGeneroService.buscarPorDescricao("feminino");
 
         assertNotNull(resultado);
@@ -152,7 +152,7 @@ class TipoGeneroEntityTest {
     @DisplayName("BuscarPorDescricao deve retornar lista vazia quando nenhuma descrição combinar")
     void BuscarPorDescricaoDeveRetornarListaVaziaQuandoNenhumaDescricaoCombinarTeste(){
 
-        when(tipoGeneroRepository.findByDescricaoContainingIgnoreCase("alienígena")).thenReturn(Collections.emptyList());
+        when(tipoGeneroJpaRepository.findByDescricaoContainingIgnoreCase("alienígena")).thenReturn(Collections.emptyList());
 
         List<TipoGeneroEntity> resultado = tipoGeneroService.buscarPorDescricao("alienígena");
 
@@ -168,7 +168,7 @@ class TipoGeneroEntityTest {
         TipoGeneroEntity novoGenero = new TipoGeneroEntity(null, "Não-binário", "Gênero não-binário");
         TipoGeneroEntity salvo = new TipoGeneroEntity(1, "Não-binário", "Gênero não-binário");
 
-        when(tipoGeneroRepository.save(novoGenero)).thenReturn(salvo);
+        when(tipoGeneroJpaRepository.save(novoGenero)).thenReturn(salvo);
 
         TipoGeneroEntity resultado = tipoGeneroService.cadastrar(novoGenero);
 

@@ -14,6 +14,7 @@ import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
+import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroJpaRepository;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
 
 import java.time.LocalDate;
@@ -50,7 +51,7 @@ class BeneficiarioEntityTest {
     private EnderecoRepository enderecoRepository;
 
     @Mock
-    private TipoGeneroRepository tipoGeneroRepository;
+    private TipoGeneroJpaRepository tipoGeneroJpaRepository;
 
     @Mock
     private TipoSexualidadeRepository tipoSexualidadeRepository;
@@ -84,7 +85,7 @@ class BeneficiarioEntityTest {
 
         when(funcionarioRepository.findById(1)).thenReturn(Optional.of(funcionario));
         when(enderecoRepository.findById(2)).thenReturn(Optional.of(endereco));
-        when(tipoGeneroRepository.findById(3)).thenReturn(Optional.of(tipoGeneroEntity));
+        when(tipoGeneroJpaRepository.findById(3)).thenReturn(Optional.of(tipoGeneroEntity));
         when(tipoSexualidadeRepository.findById(4)).thenReturn(Optional.of(tipoSexualidadeEntity));
 
         when(beneficiarioRepository.save(any(BeneficiarioEntity.class))).thenReturn(beneficiarioEntity);

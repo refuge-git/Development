@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.controller;
+package school.sptech.refuge.infrastructure.web;
 
 
 import io.swagger.v3.oas.annotations.Operation;
