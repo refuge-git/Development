@@ -10,10 +10,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
-import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeMapper;
+import school.sptech.refuge.core.application.usecase.tiposexualidade.*;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeRequestDto;
-import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
-import school.sptech.refuge.antes.service.TipoSexualidadeService;
 
 import java.util.List;
 
@@ -21,10 +19,18 @@ import java.util.List;
 @RequestMapping("/tipos_sexualidades")
 public class TipoSexualidadeController {
 
-    private final TipoSexualidadeService tipoSexualidadeService;
+    private final CriarTipoSexualidadeUseCase criarTipoSexualidadeUseCase;
+    private final ListarTodosTipoSexualidadeUseCase listarTodosTipoSexualidadeUseCase;
+    private final BuscarTipoSexualidadePorIdUseCase buscarTipoSexualidadePorIdUseCase;
+    private final AtualizarTipoSexualidadeUseCase atualizarTipoSexualidadeUseCase;
+    private final DeletarTipoSexualidadeUseCase deletarTipoSexualidadeUseCase;
 
-    public TipoSexualidadeController(TipoSexualidadeService tipoSexualidadeService) {
-        this.tipoSexualidadeService = tipoSexualidadeService;
+    public TipoSexualidadeController(CriarTipoSexualidadeUseCase criarTipoSexualidadeUseCase, ListarTodosTipoSexualidadeUseCase listarTodosTipoSexualidadeUseCase, BuscarTipoSexualidadePorIdUseCase buscarTipoSexualidadePorIdUseCase, AtualizarTipoSexualidadeUseCase atualizarTipoSexualidadeUseCase, DeletarTipoSexualidadeUseCase deletarTipoSexualidadeUseCase) {
+        this.criarTipoSexualidadeUseCase = criarTipoSexualidadeUseCase;
+        this.listarTodosTipoSexualidadeUseCase = listarTodosTipoSexualidadeUseCase;
+        this.buscarTipoSexualidadePorIdUseCase = buscarTipoSexualidadePorIdUseCase;
+        this.atualizarTipoSexualidadeUseCase = atualizarTipoSexualidadeUseCase;
+        this.deletarTipoSexualidadeUseCase = deletarTipoSexualidadeUseCase;
     }
 
     @Operation(
@@ -38,10 +44,8 @@ public class TipoSexualidadeController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoSexualidadeListDto> cadastrar(@Valid @RequestBody TipoSexualidadeRequestDto dto) {
-        TipoSexualidadeEntity tipoSexualidadeEntity = TipoSexualidadeMapper.toEntity(dto);
-        TipoSexualidadeEntity tipoCadastrado = tipoSexualidadeService.cadastrar(tipoSexualidadeEntity);
-        TipoSexualidadeListDto dtoSalvo = TipoSexualidadeMapper.toListagemDto(tipoCadastrado);
-        return ResponseEntity.status(201).body(dtoSalvo);
+        TipoSexualidadeListDto criado = criarTipoSexualidadeUseCase.execute(dto);
+        return ResponseEntity.status(201).body(criado);
     }
 
     @Operation(
@@ -56,12 +60,9 @@ public class TipoSexualidadeController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<TipoSexualidadeListDto>> listar() {
-        List<TipoSexualidadeEntity> tipos = tipoSexualidadeService.listar();
-        if (tipos.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        List<TipoSexualidadeListDto> dtos = TipoSexualidadeMapper.toListagemDtos(tipos);
-        return ResponseEntity.status(200).body(dtos);
+        List<TipoSexualidadeListDto> dtos = listarTodosTipoSexualidadeUseCase.execute();
+        if (dtos.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(dtos);
     }
 
 
@@ -76,29 +77,8 @@ public class TipoSexualidadeController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoSexualidadeListDto> listarPorId(@PathVariable Integer id) {
-        TipoSexualidadeEntity tipoSexualidadeEntity = tipoSexualidadeService.buscarPorId(id);
-        TipoSexualidadeListDto dto = TipoSexualidadeMapper.toListagemDto(tipoSexualidadeEntity);
-        return ResponseEntity.status(200).body(dto);
-    }
-
-    @Operation(
-            summary = "Listar tipos de sexualidade por partes da descrição",
-            description = "Lista tipos de sexualidade dado parte da descrição"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Sexualidade encontrado",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = TipoSexualidadeListDto.class)))
-    })
-    @GetMapping("/descricao")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<TipoSexualidadeListDto>> listarPorDescricao(@RequestParam String descricao) {
-        List<TipoSexualidadeEntity> tipos = tipoSexualidadeService.buscarPorDescricao(descricao);
-        if (tipos.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-
-        List<TipoSexualidadeListDto> dto = TipoSexualidadeMapper.toListagemDtos(tipos);
-        return ResponseEntity.status(200).body(dto);
+        TipoSexualidadeListDto dto = buscarTipoSexualidadePorIdUseCase.execute(id);
+        return ResponseEntity.ok(dto);
     }
 
 
@@ -113,10 +93,8 @@ public class TipoSexualidadeController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<TipoSexualidadeListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody TipoSexualidadeRequestDto dto) {
-        TipoSexualidadeEntity tipoSexualidadeEntity = TipoSexualidadeMapper.toEntity(dto, id);
-        TipoSexualidadeEntity tipoAtualizado = tipoSexualidadeService.atualizar(tipoSexualidadeEntity);
-        TipoSexualidadeListDto dtoAtualizado = TipoSexualidadeMapper.toListagemDto(tipoAtualizado);
-        return ResponseEntity.status(200).body(dtoAtualizado);
+        TipoSexualidadeListDto dtoAtualizado = atualizarTipoSexualidadeUseCase.execute(id, dto);
+        return ResponseEntity.ok(dtoAtualizado);
     }
 
 
@@ -130,7 +108,7 @@ public class TipoSexualidadeController {
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
-        tipoSexualidadeService.removerPorId(id);
-        return ResponseEntity.status(204).build();
+        deletarTipoSexualidadeUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 }
