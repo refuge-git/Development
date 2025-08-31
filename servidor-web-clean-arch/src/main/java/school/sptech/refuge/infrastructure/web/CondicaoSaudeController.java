@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.controller;
+package school.sptech.refuge.infrastructure.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,11 +9,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.antes.dto.condicaosaude.CondicaoSaudeAtualizacaoDto;
-import school.sptech.refuge.antes.dto.condicaosaude.CondicaoSaudeListDto;
-import school.sptech.refuge.antes.dto.condicaosaude.CondicaoSaudeMapper;
-import school.sptech.refuge.antes.dto.condicaosaude.CondicaoSaudeRequestDto;
-import school.sptech.refuge.antes.entity.CondicaoSaude;
+import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeAtualizacaoDto;
+import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeListDto;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeMapper;
+import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeRequestDto;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
 import school.sptech.refuge.antes.service.CondicaoSaudeService;
 
 import java.util.List;
@@ -39,9 +39,9 @@ private final CondicaoSaudeService condicaoSaudeService;
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CondicaoSaudeListDto> cadastrar(@Valid @RequestBody CondicaoSaudeRequestDto dto) {
-         CondicaoSaude condicaoSaude = CondicaoSaudeMapper.toEntity(dto);
-         CondicaoSaude condicaoSaudeCadastrada = condicaoSaudeService.cadastrar(condicaoSaude);
-         CondicaoSaudeListDto dtoSalvo = CondicaoSaudeMapper.toListagemDto(condicaoSaudeCadastrada);
+         CondicaoSaudeEntity condicaoSaudeEntity = CondicaoSaudeMapper.toEntity(dto);
+         CondicaoSaudeEntity condicaoSaudeEntityCadastrada = condicaoSaudeService.cadastrar(condicaoSaudeEntity);
+         CondicaoSaudeListDto dtoSalvo = CondicaoSaudeMapper.toListagemDto(condicaoSaudeEntityCadastrada);
          return ResponseEntity.status(201).body(dtoSalvo);
      }
 
@@ -57,7 +57,7 @@ private final CondicaoSaudeService condicaoSaudeService;
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<CondicaoSaudeListDto>> listar() {
-        List<CondicaoSaude> condicoesSaude = condicaoSaudeService.listar();
+        List<CondicaoSaudeEntity> condicoesSaude = condicaoSaudeService.listar();
         if (condicoesSaude.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -76,8 +76,8 @@ private final CondicaoSaudeService condicaoSaudeService;
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CondicaoSaudeListDto> listarPorId(@PathVariable Integer id) {
-        CondicaoSaude condicaoSaude = condicaoSaudeService.buscarPorId(id);
-        CondicaoSaudeListDto dto = CondicaoSaudeMapper.toListagemDto(condicaoSaude);
+        CondicaoSaudeEntity condicaoSaudeEntity = condicaoSaudeService.buscarPorId(id);
+        CondicaoSaudeListDto dto = CondicaoSaudeMapper.toListagemDto(condicaoSaudeEntity);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -92,9 +92,9 @@ private final CondicaoSaudeService condicaoSaudeService;
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CondicaoSaudeListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody CondicaoSaudeAtualizacaoDto dto) {
-        CondicaoSaude condicaoSaude = CondicaoSaudeMapper.toEntity(dto, id);
-        CondicaoSaude condicaoSaudeAtualizado = condicaoSaudeService.atualizar(condicaoSaude);
-        CondicaoSaudeListDto dtoAtualizado = CondicaoSaudeMapper.toListagemDto(condicaoSaudeAtualizado);
+        CondicaoSaudeEntity condicaoSaudeEntity = CondicaoSaudeMapper.toEntity(dto, id);
+        CondicaoSaudeEntity condicaoSaudeEntityAtualizado = condicaoSaudeService.atualizar(condicaoSaudeEntity);
+        CondicaoSaudeListDto dtoAtualizado = CondicaoSaudeMapper.toListagemDto(condicaoSaudeEntityAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }
 
@@ -110,7 +110,7 @@ private final CondicaoSaudeService condicaoSaudeService;
     @GetMapping("/descricao")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<CondicaoSaudeListDto>> listarPorDescricao(@RequestParam String descricao) {
-        List<CondicaoSaude> condicoesSaude = condicaoSaudeService.listarPorDescricao(descricao);
+        List<CondicaoSaudeEntity> condicoesSaude = condicaoSaudeService.listarPorDescricao(descricao);
         if (condicoesSaude.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -145,7 +145,7 @@ private final CondicaoSaudeService condicaoSaudeService;
     @GetMapping("/beneficiario/{idBeneficiario}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<CondicaoSaudeListDto>> listarPorBeneficiarioId(@PathVariable Integer idBeneficiario) {
-        List<CondicaoSaude> condicoesSaude = condicaoSaudeService.listarPorIdBeneficiario(idBeneficiario);
+        List<CondicaoSaudeEntity> condicoesSaude = condicaoSaudeService.listarPorIdBeneficiario(idBeneficiario);
         if (condicoesSaude.isEmpty()) {
             return ResponseEntity.status(204).build();
         }

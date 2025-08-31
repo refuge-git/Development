@@ -1,18 +1,17 @@
-package school.sptech.refuge.antes.repository;
+package school.sptech.refuge.infrastructure.bd.condicaosaude;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import school.sptech.refuge.antes.entity.CondicaoSaude;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface CondicaoSaudeRepository extends JpaRepository<CondicaoSaude, Integer> {
-    List<CondicaoSaude> findByDescricaoContainingIgnoreCase(String descricao);
+public interface CondicaoSaudeRepository extends JpaRepository<CondicaoSaudeEntity, Integer> {
+    List<CondicaoSaudeEntity> findByDescricaoContainingIgnoreCase(String descricao);
 
-    List<CondicaoSaude> findAllByDataRegistro(LocalDate dataRegistro);
+    List<CondicaoSaudeEntity> findAllByDataRegistro(LocalDate dataRegistro);
 
     @Modifying
     @Transactional
@@ -20,5 +19,5 @@ public interface CondicaoSaudeRepository extends JpaRepository<CondicaoSaude, In
     void deleteAllByBeneficiarioId(Integer id);
 
 
-    List<CondicaoSaude> findByBeneficiarioId(Integer idBeneficiario);
+    List<CondicaoSaudeEntity> findByBeneficiarioId(Integer idBeneficiario);
 }

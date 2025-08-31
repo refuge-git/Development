@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.controller;
+package school.sptech.refuge.infrastructure.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,12 +9,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.antes.dto.categoria.CategoriaAtualizacaoDto;
-import school.sptech.refuge.antes.dto.categoria.CategoriaListDto;
-import school.sptech.refuge.antes.dto.categoria.CategoriaMapper;
-import school.sptech.refuge.antes.dto.categoria.CategoriaRequestDto;
+import school.sptech.refuge.core.application.dto.categoria.CategoriaAtualizacaoDto;
+import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaMapper;
+import school.sptech.refuge.core.application.dto.categoria.CategoriaRequestDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
-import school.sptech.refuge.antes.entity.Categoria;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
 import school.sptech.refuge.antes.service.CategoriaService;
 
 import java.util.List;
@@ -40,9 +40,9 @@ public class CategoriaController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CategoriaListDto> cadastrar(@Valid @RequestBody CategoriaRequestDto dto) {
-        Categoria categoria = CategoriaMapper.toEntity(dto);
-        Categoria categoriaCadastrada = categoriaService.cadastrar(categoria);
-        CategoriaListDto dtoSalvo = CategoriaMapper.toListagemDto(categoriaCadastrada);
+        CategoriaEntity categoriaEntity = CategoriaMapper.toEntity(dto);
+        CategoriaEntity categoriaEntityCadastrada = categoriaService.cadastrar(categoriaEntity);
+        CategoriaListDto dtoSalvo = CategoriaMapper.toListagemDto(categoriaEntityCadastrada);
         return ResponseEntity.status(201).body(dtoSalvo);
     }
 
@@ -58,11 +58,11 @@ public class CategoriaController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<CategoriaListDto>> listar() {
-        List<Categoria> categorias = categoriaService.listar();
-        if (categorias.isEmpty()) {
+        List<CategoriaEntity> categoriaEntities = categoriaService.listar();
+        if (categoriaEntities.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        List<CategoriaListDto> dtos = CategoriaMapper.toListagemDto(categorias);
+        List<CategoriaListDto> dtos = CategoriaMapper.toListagemDto(categoriaEntities);
         return ResponseEntity.status(200).body(dtos);
     }
 
@@ -78,8 +78,8 @@ public class CategoriaController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CategoriaListDto> listarPorId(@PathVariable Integer id) {
-        Categoria categoria = categoriaService.buscarPorId(id);
-        CategoriaListDto dto = CategoriaMapper.toListagemDto(categoria);
+        CategoriaEntity categoriaEntity = categoriaService.buscarPorId(id);
+        CategoriaListDto dto = CategoriaMapper.toListagemDto(categoriaEntity);
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -95,8 +95,8 @@ public class CategoriaController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CategoriaListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody CategoriaAtualizacaoDto dto) {
-        Categoria categoria = CategoriaMapper.toEntity(dto, id);
-        Categoria categotiaAtualizada = categoriaService.atualizar(categoria);
+        CategoriaEntity categoriaEntity = CategoriaMapper.toEntity(dto, id);
+        CategoriaEntity categotiaAtualizada = categoriaService.atualizar(categoriaEntity);
         CategoriaListDto dtoAtualizado = CategoriaMapper.toListagemDto(categotiaAtualizada);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }

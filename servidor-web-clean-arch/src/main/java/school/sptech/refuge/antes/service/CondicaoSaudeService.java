@@ -2,14 +2,14 @@ package school.sptech.refuge.antes.service;
 
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
-import school.sptech.refuge.antes.exception.CondicaoSaudeNaoEncontradaException;
+import school.sptech.refuge.core.application.exception.CondicaoSaudeNaoEncontradaException;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.antes.exception.CategoriaNaoEncontradaException;
-import school.sptech.refuge.antes.entity.Categoria;
-import school.sptech.refuge.antes.entity.CondicaoSaude;
+import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
 import school.sptech.refuge.antes.repository.BeneficiarioRepository;
-import school.sptech.refuge.antes.repository.CategoriaRepository;
-import school.sptech.refuge.antes.repository.CondicaoSaudeRepository;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaRepository;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
 
 import java.util.List;
 
@@ -25,15 +25,15 @@ public class CondicaoSaudeService {
         this.beneficiarioRepository = beneficiarioRepository;
     }
 
-    public CondicaoSaude cadastrar(CondicaoSaude condicaoSaude) {
-        Categoria categoria = validarCategoria(condicaoSaude.getCategoria().getId());
-        BeneficiarioEntity beneficiarioEntity = validarBeneficiario(condicaoSaude.getBeneficiario().getId());
-        condicaoSaude.setCategoria(categoria);
-        condicaoSaude.setBeneficiario(beneficiarioEntity);
-        return condicaoSaudeRepository.save(condicaoSaude);
+    public CondicaoSaudeEntity cadastrar(CondicaoSaudeEntity condicaoSaudeEntity) {
+        CategoriaEntity categoriaEntity = validarCategoria(condicaoSaudeEntity.getCategoria().getId());
+        BeneficiarioEntity beneficiarioEntity = validarBeneficiario(condicaoSaudeEntity.getBeneficiario().getId());
+        condicaoSaudeEntity.setCategoria(categoriaEntity);
+        condicaoSaudeEntity.setBeneficiario(beneficiarioEntity);
+        return condicaoSaudeRepository.save(condicaoSaudeEntity);
     }
 
-    public Categoria validarCategoria(Integer id) {
+    public CategoriaEntity validarCategoria(Integer id) {
         return categoriaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria da condição não encontrada"));
     }
@@ -43,16 +43,16 @@ public class CondicaoSaudeService {
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Beneficiário da condição não encontrada"));
     }
 
-    public List<CondicaoSaude> listar() {
+    public List<CondicaoSaudeEntity> listar() {
         return condicaoSaudeRepository.findAll();
     }
 
-    public CondicaoSaude atualizar(CondicaoSaude condicaoSaude) {
-        if(condicaoSaudeRepository.existsById(condicaoSaude.getId())) {
-            condicaoSaude.setId(condicaoSaude.getId());
-            return condicaoSaudeRepository.save(condicaoSaude);
+    public CondicaoSaudeEntity atualizar(CondicaoSaudeEntity condicaoSaudeEntity) {
+        if(condicaoSaudeRepository.existsById(condicaoSaudeEntity.getId())) {
+            condicaoSaudeEntity.setId(condicaoSaudeEntity.getId());
+            return condicaoSaudeRepository.save(condicaoSaudeEntity);
         } else {
-            throw new EntidadeNaoEncontradaException("Condição de saude com id %d não encontrada".formatted(condicaoSaude.getId()));
+            throw new EntidadeNaoEncontradaException("Condição de saude com id %d não encontrada".formatted(condicaoSaudeEntity.getId()));
         }
     }
 
@@ -64,7 +64,7 @@ public class CondicaoSaudeService {
         }
     }
 
-    public List<CondicaoSaude> listarPorDescricao(String descricao) {
+    public List<CondicaoSaudeEntity> listarPorDescricao(String descricao) {
         return condicaoSaudeRepository.findByDescricaoContainingIgnoreCase(descricao);
     }
 
@@ -72,12 +72,12 @@ public class CondicaoSaudeService {
         return condicaoSaudeRepository.findAllByDataRegistro(data);
     }*/
 
-    public CondicaoSaude buscarPorId(Integer id) {
+    public CondicaoSaudeEntity buscarPorId(Integer id) {
         return condicaoSaudeRepository.findById(id)
                 .orElseThrow(() -> new CondicaoSaudeNaoEncontradaException("Condição de saúde de id %d não encontrado".formatted(id)));
     }
 
-    public List<CondicaoSaude> listarPorIdBeneficiario(Integer idBeneficiario) {
+    public List<CondicaoSaudeEntity> listarPorIdBeneficiario(Integer idBeneficiario) {
         return condicaoSaudeRepository.findByBeneficiarioId(idBeneficiario);
     }
 }

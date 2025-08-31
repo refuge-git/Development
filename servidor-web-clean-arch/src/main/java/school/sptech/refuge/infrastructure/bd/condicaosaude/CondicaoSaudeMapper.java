@@ -1,21 +1,22 @@
-package school.sptech.refuge.antes.dto.condicaosaude;
+package school.sptech.refuge.infrastructure.bd.condicaosaude;
 
+import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeAtualizacaoDto;
+import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeListDto;
+import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeRequestDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
-import school.sptech.refuge.antes.dto.categoria.CategoriaListDto;
+import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
 import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
-import school.sptech.refuge.antes.entity.Categoria;
-import school.sptech.refuge.antes.entity.CondicaoSaude;
-import school.sptech.refuge.entity.*;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class CondicaoSaudeMapper {
-    public static CondicaoSaudeListDto toListagemDto(CondicaoSaude entity) {
+    public static CondicaoSaudeListDto toListagemDto(CondicaoSaudeEntity entity) {
         if (entity == null) return null;
 
         CategoriaListDto categoriaListDto = new CategoriaListDto(
@@ -95,7 +96,7 @@ public class CondicaoSaudeMapper {
     }
 
     // Converte uma lista de entidades CondicaoSaude em uma lista de DTOs
-    public static List<CondicaoSaudeListDto> toListagemDtos(List<CondicaoSaude> entities) {
+    public static List<CondicaoSaudeListDto> toListagemDtos(List<CondicaoSaudeEntity> entities) {
         if (entities == null) return null;
         return entities.stream()
                 .map(CondicaoSaudeMapper::toListagemDto)
@@ -103,18 +104,18 @@ public class CondicaoSaudeMapper {
     }
 
     /* Converte um objeto que veio da requisição (CondicaoSaudeRequestDto) em um objeto de entidade (CondicaoSaudez) que pode ser salvo no banco. */
-    public static CondicaoSaude toEntity(CondicaoSaudeRequestDto request) {
+    public static CondicaoSaudeEntity toEntity(CondicaoSaudeRequestDto request) {
         if (request == null) return null;
 
         BeneficiarioEntity beneficiarioEntity = new BeneficiarioEntity();
         beneficiarioEntity.setId(request.getIdBeneficiario());
 
-        Categoria categoria = new Categoria();
-        categoria.setId(request.getIdCategoria());
+        CategoriaEntity categoriaEntity = new CategoriaEntity();
+        categoriaEntity.setId(request.getIdCategoria());
 
         LocalDateTime agora = LocalDateTime.now();
 
-        return new CondicaoSaude(
+        return new CondicaoSaudeEntity(
                 null,
                 request.getDiagnostico(),
                 request.getDescricao(),
@@ -123,20 +124,20 @@ public class CondicaoSaudeMapper {
                 request.getTratamento(),
                 request.getObservacoes(),
                 beneficiarioEntity,
-                categoria
+                categoriaEntity
         );
     }
 
-    public static CondicaoSaude toEntity(CondicaoSaudeAtualizacaoDto dto, Integer id) {
+    public static CondicaoSaudeEntity toEntity(CondicaoSaudeAtualizacaoDto dto, Integer id) {
         if (dto == null) return null;
 
         BeneficiarioEntity beneficiarioEntity = new BeneficiarioEntity();
         beneficiarioEntity.setId(dto.getIdBeneficiario());
 
-        Categoria categoria = new Categoria();
-        categoria.setId(dto.getIdCategoria());
+        CategoriaEntity categoriaEntity = new CategoriaEntity();
+        categoriaEntity.setId(dto.getIdCategoria());
 
-        return new CondicaoSaude(
+        return new CondicaoSaudeEntity(
                 id,
                 dto.getDiagnostico(),
                 dto.getDescricao(),
@@ -145,7 +146,7 @@ public class CondicaoSaudeMapper {
                 dto.getTratamento(),
                 dto.getObservacoes(),
                 beneficiarioEntity,
-                categoria
+                categoriaEntity
         );
     }
 }

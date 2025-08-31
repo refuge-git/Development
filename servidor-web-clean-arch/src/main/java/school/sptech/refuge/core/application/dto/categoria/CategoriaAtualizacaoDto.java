@@ -1,16 +1,16 @@
-package school.sptech.refuge.antes.dto.categoria;
+package school.sptech.refuge.core.application.dto.categoria;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class CategoriaRequestDto {
+public class CategoriaAtualizacaoDto {
     @Schema(description = "Nome da categoria")
     private String nome;
 
-    public CategoriaRequestDto(String nome) {
+    public CategoriaAtualizacaoDto(String nome) {
         this.nome = nome;
     }
 
-    public CategoriaRequestDto() {
+    public CategoriaAtualizacaoDto() {
     }
 
     public String getNome() {

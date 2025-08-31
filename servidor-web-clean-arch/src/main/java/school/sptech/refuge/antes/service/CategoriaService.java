@@ -2,12 +2,12 @@ package school.sptech.refuge.antes.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.antes.entity.Categoria;
-import school.sptech.refuge.antes.exception.CategoriaNaoEncontradaException;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
+import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
-import school.sptech.refuge.exception.*;
-import school.sptech.refuge.antes.repository.CategoriaRepository;
+//import school.sptech.refuge.exception.*;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaRepository;
 
 import java.util.List;
 
@@ -20,18 +20,18 @@ public class CategoriaService {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Categoria cadastrar(Categoria categoria) {
-        return categoriaRepository.save(categoria);
+    public CategoriaEntity cadastrar(CategoriaEntity categoriaEntity) {
+        return categoriaRepository.save(categoriaEntity);
     }
 
-    public List<Categoria> listar() {
+    public List<CategoriaEntity> listar() {
         return categoriaRepository.findAll(); }
 
-    public Categoria atualizar(Categoria categoria) {
-        if(categoriaRepository.existsById((categoria.getId()))) {
-            return categoriaRepository.save(categoria);
+    public CategoriaEntity atualizar(CategoriaEntity categoriaEntity) {
+        if(categoriaRepository.existsById((categoriaEntity.getId()))) {
+            return categoriaRepository.save(categoriaEntity);
         } else {
-            throw new EntidadeNaoEncontradaException("Categoria com id %d não encontrada".formatted(categoria.getId()));
+            throw new EntidadeNaoEncontradaException("Categoria com id %d não encontrada".formatted(categoriaEntity.getId()));
         }
     }
 
@@ -47,12 +47,12 @@ public class CategoriaService {
         }
     }
 
-    public List<Categoria> buscarPorNome(String nome) {
+    public List<CategoriaEntity> buscarPorNome(String nome) {
 
         return categoriaRepository.findAllByNome(nome);
     }
 
-    public Categoria buscarPorId(Integer id) {
+    public CategoriaEntity buscarPorId(Integer id) {
         return categoriaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria de id %d não encontrado".formatted(id)));
     }

@@ -1,8 +1,8 @@
-package school.sptech.refuge.antes.dto.condicaosaude;
+package school.sptech.refuge.core.application.dto.condicaosaude;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
-import school.sptech.refuge.antes.dto.categoria.CategoriaListDto;
+import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
 
 import java.time.LocalDateTime;
 

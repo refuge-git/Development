@@ -1,13 +1,15 @@
-package school.sptech.refuge.antes.entity;
+package school.sptech.refuge.infrastructure.bd.condicaosaude;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-public class CondicaoSaude {
+public class CondicaoSaudeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_condicao_saude")
@@ -31,12 +33,12 @@ public class CondicaoSaude {
 
     @ManyToOne
     @JoinColumn(name = "fk_categoria", referencedColumnName = "id_categoria")
-    private Categoria categoria;
+    private CategoriaEntity categoriaEntity;
 
-    public CondicaoSaude() {
+    public CondicaoSaudeEntity(int i, String dorDeCabeça, LocalDate now, String paracetamol, String pacienteSenteDorLeve, BeneficiarioEntity beneficiarioEntity, CategoriaEntity categoriaEntity) {
     }
 
-    public CondicaoSaude(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, BeneficiarioEntity beneficiarioEntity, Categoria categoria) {
+    public CondicaoSaudeEntity(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, BeneficiarioEntity beneficiarioEntity, CategoriaEntity categoriaEntity) {
         this.id = id;
         this.diagnostico = diagnostico;
         this.descricao = descricao;
@@ -45,7 +47,7 @@ public class CondicaoSaude {
         this.tratamento = tratamento;
         this.observacoes = observacoes;
         this.beneficiarioEntity = beneficiarioEntity;
-        this.categoria = categoria;
+        this.categoriaEntity = categoriaEntity;
     }
     /** Define a data de registro e atualização antes de persistir o registro */
     @PrePersist
@@ -125,11 +127,11 @@ public class CondicaoSaude {
         this.beneficiarioEntity = beneficiarioEntity;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public CategoriaEntity getCategoria() {
+        return categoriaEntity;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setCategoria(CategoriaEntity categoriaEntity) {
+        this.categoriaEntity = categoriaEntity;
     }
 }

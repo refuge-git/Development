@@ -7,13 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
-import school.sptech.refuge.antes.entity.Categoria;
-import school.sptech.refuge.antes.entity.CondicaoSaude;
-import school.sptech.refuge.antes.exception.CondicaoSaudeNaoEncontradaException;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
+import school.sptech.refuge.core.application.exception.CondicaoSaudeNaoEncontradaException;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.antes.repository.BeneficiarioRepository;
-import school.sptech.refuge.antes.repository.CategoriaRepository;
-import school.sptech.refuge.antes.repository.CondicaoSaudeRepository;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaRepository;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
 import school.sptech.refuge.antes.service.CondicaoSaudeService;
 
 import java.time.LocalDate;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CondicaoSaudeTest {
+class CondicaoSaudeEntityTest {
 
     @InjectMocks
     private CondicaoSaudeService condicaoSaudeService;
@@ -41,27 +41,27 @@ class CondicaoSaudeTest {
     @Test
     @DisplayName("Deve cadastrar condição de saúde com sucesso")
     void deveCadastrarCondicaoSaudeComSucesso() {
-        Categoria categoria = new Categoria();
-        categoria.setId(1);
+        CategoriaEntity categoriaEntity = new CategoriaEntity();
+        categoriaEntity.setId(1);
 
         BeneficiarioEntity beneficiarioEntity = new BeneficiarioEntity();
         beneficiarioEntity.setId(1);
 
-        CondicaoSaude condicao = new CondicaoSaude(
+        CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(
                 1,
                 "Dor de cabeça",
                 LocalDate.now(),
                 "Paracetamol",
                 "Paciente sente dor leve",
                 beneficiarioEntity,
-                categoria
+                categoriaEntity
         );
 
-        when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoria));
+        when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoriaEntity));
         when(beneficiarioRepository.findById(1)).thenReturn(Optional.of(beneficiarioEntity));
         when(condicaoSaudeRepository.save(any())).thenReturn(condicao);
 
-        CondicaoSaude resultado = condicaoSaudeService.cadastrar(condicao);
+        CondicaoSaudeEntity resultado = condicaoSaudeService.cadastrar(condicao);
 
         assertNotNull(resultado);
         assertEquals(1, resultado.getId());
@@ -74,7 +74,8 @@ class CondicaoSaudeTest {
     @Test
     @DisplayName("Deve lançar exceção ao cadastrar com categoria inexistente")
     void deveLancarExcecaoAoCadastrarSemCategoriaValida() {
-        CondicaoSaude condicao = new CondicaoSaude(null, "Dor", LocalDate.now(), "Analgésico", "Teste", null, new Categoria(99, "Invalida"));
+        CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(null, "Dor", LocalDate.now(), "Analgésico", "Teste", null, new CategoriaRepository(99, "Invalida") {
+        });
 
         when(categoriaRepository.findById(99)).thenReturn(Optional.empty());
 
@@ -88,10 +89,10 @@ class CondicaoSaudeTest {
     @Test
     @DisplayName("Deve listar todas as condições de saúde")
     void deveListarTodasCondicoes() {
-        List<CondicaoSaude> condicoes = List.of(new CondicaoSaude(), new CondicaoSaude());
+        List<CondicaoSaudeEntity> condicoes = List.of(new CondicaoSaudeEntity(1, "Dor de cabeça", LocalDate.now(), "Paracetamol", "Paciente sente dor leve", beneficiarioEntity, categoriaEntity), new CondicaoSaudeEntity(1, "Dor de cabeça", LocalDate.now(), "Paracetamol", "Paciente sente dor leve", beneficiarioEntity, categoriaEntity));
         when(condicaoSaudeRepository.findAll()).thenReturn(condicoes);
 
-        List<CondicaoSaude> resultado = condicaoSaudeService.listar();
+        List<CondicaoSaudeEntity> resultado = condicaoSaudeService.listar();
 
         assertEquals(2, resultado.size());
         verify(condicaoSaudeRepository).findAll();
@@ -100,12 +101,12 @@ class CondicaoSaudeTest {
     @Test
     @DisplayName("Deve atualizar condição existente")
     void deveAtualizarCondicaoSaudeComSucesso() {
-        CondicaoSaude condicao = new CondicaoSaude(1, "Febre", LocalDate.now(), "Repouso", "Paciente com febre", null, null);
+        CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(1, "Febre", LocalDate.now(), "Repouso", "Paciente com febre", null, null);
 
         when(condicaoSaudeRepository.existsById(1)).thenReturn(true);
         when(condicaoSaudeRepository.save(condicao)).thenReturn(condicao);
 
-        CondicaoSaude resultado = condicaoSaudeService.atualizar(condicao);
+        CondicaoSaudeEntity resultado = condicaoSaudeService.atualizar(condicao);
 
         assertNotNull(resultado);
         assertEquals("Febre", resultado.getDescricao());
@@ -116,7 +117,7 @@ class CondicaoSaudeTest {
     @Test
     @DisplayName("Deve lançar exceção ao tentar atualizar condição inexistente")
     void deveLancarExcecaoAoAtualizarCondicaoInexistente() {
-        CondicaoSaude condicao = new CondicaoSaude(99, "Inexistente", LocalDate.now(), "N/A", "N/A", null, null);
+        CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(99, "Inexistente", LocalDate.now(), "N/A", "N/A", null, null);
 
         when(condicaoSaudeRepository.existsById(99)).thenReturn(false);
 
@@ -152,9 +153,9 @@ class CondicaoSaudeTest {
     @DisplayName("Deve listar condições por descrição contendo texto")
     void deveListarPorDescricao() {
         when(condicaoSaudeRepository.findByDescricaoContainingIgnoreCase("febre"))
-                .thenReturn(List.of(new CondicaoSaude(), new CondicaoSaude()));
+                .thenReturn(List.of(new CondicaoSaudeEntity(1, "Dor de cabeça", LocalDate.now(), "Paracetamol", "Paciente sente dor leve", beneficiarioEntity, categoriaEntity), new CondicaoSaudeEntity(1, "Dor de cabeça", LocalDate.now(), "Paracetamol", "Paciente sente dor leve", beneficiarioEntity, categoriaEntity)));
 
-        List<CondicaoSaude> resultado = condicaoSaudeService.listarPorDescricao("febre");
+        List<CondicaoSaudeEntity> resultado = condicaoSaudeService.listarPorDescricao("febre");
 
         assertEquals(2, resultado.size());
         verify(condicaoSaudeRepository).findByDescricaoContainingIgnoreCase("febre");
@@ -163,11 +164,11 @@ class CondicaoSaudeTest {
     @Test
     @DisplayName("Deve buscar condição por ID com sucesso")
     void deveBuscarPorIdComSucesso() {
-        CondicaoSaude condicao = new CondicaoSaude(1, "Teste", LocalDate.now(), "Tratamento", "Obs", null, null);
+        CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(1, "Teste", LocalDate.now(), "Tratamento", "Obs", null, null);
 
         when(condicaoSaudeRepository.findById(1)).thenReturn(Optional.of(condicao));
 
-        CondicaoSaude resultado = condicaoSaudeService.buscarPorId(1);
+        CondicaoSaudeEntity resultado = condicaoSaudeService.buscarPorId(1);
 
         assertNotNull(resultado);
         assertEquals(1, resultado.getId());

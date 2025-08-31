@@ -1,15 +1,11 @@
-package school.sptech.refuge.antes.entity;
+package school.sptech.refuge.core.domain.categoria;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
-@Entity
 public class Categoria {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false, name = "id_categoria")
+
     private Integer id;
-    @Size(min = 0, max = 45)
     private String nome;
 
     public Categoria(Integer id, String nome) {

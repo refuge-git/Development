@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.exception;
+package school.sptech.refuge.core.application.exception;
 
 public class CondicaoSaudeNaoEncontradaException extends RuntimeException {
     public CondicaoSaudeNaoEncontradaException(String message) {
