@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioDetalhesDto;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
-import school.sptech.refuge.antes.repository.FuncionarioRepository;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaRepository;
 
 import java.util.Optional;
 
@@ -15,13 +15,13 @@ import java.util.Optional;
 public class AutenticacaoService implements UserDetailsService {
 
     @Autowired
-    private FuncionarioRepository funcionarioRepository;
+    private FuncionarioJpaRepository funcionarioJpaRepository;
 
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Funcionario> funcionarioOptional = funcionarioRepository.findByEmail(username);
+        Optional<Funcionario> funcionarioOptional = funcionarioJpaRepository.findByEmail(username);
 
         if (funcionarioOptional.isEmpty()) {
             throw new UsernameNotFoundException(String.format("usuario: %s nao encontrado", username));

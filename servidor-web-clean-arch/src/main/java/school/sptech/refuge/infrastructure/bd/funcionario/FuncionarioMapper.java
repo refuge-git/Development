@@ -1,8 +1,10 @@
-package school.sptech.refuge.core.application.dto.funcionario;
+package school.sptech.refuge.infrastructure.bd.funcionario;
 
+import school.sptech.refuge.core.application.dto.funcionario.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FuncionarioMapper {
     public static FuncionarioListDto toListagemDto(Funcionario entity) {
@@ -106,5 +108,34 @@ public class FuncionarioMapper {
         funcionarioListDto.setNome(funcionario.getNome());
 
         return funcionarioListDto;
+    }
+
+    public static FuncionarioEntity ofDomain(Funcionario funcionario) {
+        if (Objects.isNull(funcionario)) {
+            return null;
+        }
+        FuncionarioEntity entity = new FuncionarioEntity();
+        entity.setId(funcionario.getId());
+        entity.setNome(funcionario.getNome());
+        entity.setCpf(funcionario.getCpf());
+        entity.setTelefone(funcionario.getTelefone());
+        entity.setEmail(funcionario.getEmail());
+        entity.setSenha(funcionario.getSenha());
+
+        return entity;
+    }
+
+    public static Funcionario ofEntity(FuncionarioEntity funcionarioEntity){
+        if (Objects.isNull(funcionarioEntity)) {
+            return null;
+        }
+        Funcionario dominio = new Funcionario();
+        dominio.setId(funcionarioEntity.getId());
+        dominio.setNome(funcionarioEntity.getNome());
+        dominio.setCpf(funcionarioEntity.getCpf());
+        dominio.setTelefone(funcionarioEntity.getTelefone());
+        dominio.setEmail(funcionarioEntity.getEmail());
+        dominio.setSenha(funcionarioEntity.getSenha());
+        return dominio;
     }
 }

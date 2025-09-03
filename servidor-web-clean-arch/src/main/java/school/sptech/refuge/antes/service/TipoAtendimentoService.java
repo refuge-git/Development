@@ -8,7 +8,7 @@ import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaE
 import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.exception.*;
-import school.sptech.refuge.antes.repository.FuncionarioRepository;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaRepository;
 import school.sptech.refuge.antes.repository.TipoAtendimentoRepository;
 
 import java.util.List;
@@ -17,15 +17,15 @@ import java.util.List;
 public class TipoAtendimentoService {
 
     private final TipoAtendimentoRepository tipoAtendimentoRepository;
-    private final FuncionarioRepository funcionarioRepository;
+    private final FuncionarioJpaRepository funcionarioJpaRepository;
 
-    public TipoAtendimentoService(TipoAtendimentoRepository tipoAtendimentoRepository, FuncionarioRepository funcionarioRepository) {
+    public TipoAtendimentoService(TipoAtendimentoRepository tipoAtendimentoRepository, FuncionarioJpaRepository funcionarioJpaRepository) {
         this.tipoAtendimentoRepository = tipoAtendimentoRepository;
-        this.funcionarioRepository = funcionarioRepository;
+        this.funcionarioJpaRepository = funcionarioJpaRepository;
     }
 
     public Funcionario validarFuncionario(Integer id) {
-        return funcionarioRepository.findById(id)
+        return funcionarioJpaRepository.findById(id)
                 .orElseThrow(() -> new FuncionarioNaoEncontradaException("Funcionário não encontrado"));
     }
     // CREATE

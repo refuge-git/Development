@@ -15,6 +15,7 @@ import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaRepository;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroJpaRepository;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
@@ -47,7 +48,7 @@ class BeneficiarioEntityTest {
     private BeneficiarioRepository beneficiarioRepository;
 
     @Mock
-    private FuncionarioRepository funcionarioRepository;
+    private FuncionarioJpaRepository funcionarioJpaRepository;
 
     @Mock
     private EnderecoRepository enderecoRepository;
@@ -85,7 +86,7 @@ class BeneficiarioEntityTest {
         beneficiarioEntity.setTipoGenero(tipoGeneroEntity);
         beneficiarioEntity.setTipoSexualidade(tipoSexualidadeEntity);
 
-        when(funcionarioRepository.findById(1)).thenReturn(Optional.of(funcionario));
+        when(funcionarioJpaRepository.findById(1)).thenReturn(Optional.of(funcionario));
         when(enderecoRepository.findById(2)).thenReturn(Optional.of(endereco));
         when(tipoGeneroJpaRepository.findById(3)).thenReturn(Optional.of(tipoGeneroEntity));
         when(tipoSexualidadeRepository.findById(4)).thenReturn(Optional.of(tipoSexualidadeEntity));
@@ -124,7 +125,7 @@ class BeneficiarioEntityTest {
         beneficiarioEntity.setTipoGenero(tipoGeneroEntity);
         beneficiarioEntity.setTipoSexualidade(tipoSexualidadeEntity);
 
-        when(funcionarioRepository.findById(20)).thenReturn(Optional.empty());
+        when(funcionarioJpaRepository.findById(20)).thenReturn(Optional.empty());
 
         RuntimeException excecao = assertThrows(RuntimeException.class, () ->
                 beneficiarioService.cadastrar(beneficiarioEntity)
@@ -132,7 +133,7 @@ class BeneficiarioEntityTest {
 
         assertEquals("Funcionário não encontrado", excecao.getMessage());
 
-        verify(funcionarioRepository).findById(20);
+        verify(funcionarioJpaRepository).findById(20);
         verify(beneficiarioRepository, never()).save(any());
     }
 

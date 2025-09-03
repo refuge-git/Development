@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.controller;
+package school.sptech.refuge.infrastructure.web;
 
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,9 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.application.dto.funcionario.*;
+import school.sptech.refuge.core.application.usecase.funcionario.*;
 import school.sptech.refuge.dto.funcionario.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.antes.service.FuncionarioService;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioMapper;
 
 import java.util.List;
 
@@ -22,10 +24,18 @@ import java.util.List;
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
 
-    private final FuncionarioService funcionarioService;
+    private final CriarFuncionarioUseCase criarFuncionarioUseCase;
+    private final AtualizarFuncionarioUseCase atualizarFuncionarioUseCase;
+    private final BuscarFuncionarioUseCase buscarFuncionarioUseCase;
+    private final ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase;
+    private final DeletarFuncionarioUseCase deletarFuncionarioUseCase;
 
-    public FuncionarioController(FuncionarioService funcionarioService) {
-        this.funcionarioService = funcionarioService;
+    public FuncionarioController(CriarFuncionarioUseCase criarFuncionarioUseCase, AtualizarFuncionarioUseCase atualizarFuncionarioUseCase, BuscarFuncionarioUseCase buscarFuncionarioUseCase, ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase, DeletarFuncionarioUseCase deletarFuncionarioUseCase) {
+        this.criarFuncionarioUseCase = criarFuncionarioUseCase;
+        this.atualizarFuncionarioUseCase = atualizarFuncionarioUseCase;
+        this.buscarFuncionarioUseCase = buscarFuncionarioUseCase;
+        this.listarTodosFuncionariosUseCase = listarTodosFuncionariosUseCase;
+        this.deletarFuncionarioUseCase = deletarFuncionarioUseCase;
     }
 
 //    @PostMapping

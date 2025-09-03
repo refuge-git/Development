@@ -11,7 +11,7 @@ import school.sptech.refuge.antes.entity.TipoAtendimento;
 import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
-import school.sptech.refuge.antes.repository.FuncionarioRepository;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaRepository;
 import school.sptech.refuge.antes.repository.TipoAtendimentoRepository;
 import school.sptech.refuge.antes.service.TipoAtendimentoService;
 
@@ -28,7 +28,7 @@ class TipoAtendimentoTest {
     private TipoAtendimentoRepository tipoRepo;
 
     @Mock
-    private FuncionarioRepository funcionarioRepo;
+    private FuncionarioJpaRepository funcionarioRepo;
 
     @InjectMocks
     private TipoAtendimentoService service;

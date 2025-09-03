@@ -16,7 +16,7 @@ import school.sptech.refuge.core.application.dto.funcionario.FuncionarioTokenDto
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaException;
-import school.sptech.refuge.antes.repository.FuncionarioRepository;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaRepository;
 import school.sptech.refuge.antes.service.FuncionarioService;
 
 import java.util.Collections;
@@ -27,13 +27,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class FuncionarioTest {
+class FuncionarioEntityTest {
 
     @InjectMocks
     private FuncionarioService funcionarioService;
 
     @Mock
-    private FuncionarioRepository funcionarioRepository;
+    private FuncionarioJpaRepository funcionarioJpaRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -56,7 +56,7 @@ class FuncionarioTest {
                 new Funcionario(3, "Valeria Gomes", "32456712376", "(11)991235567", "valeria@gmail.com", "s123enha")
 
         );
-        when(funcionarioRepository.findAll()).thenReturn(funcionarios);
+        when(funcionarioJpaRepository.findAll()).thenReturn(funcionarios);
         List<Funcionario> listaFuncionarios = funcionarioService.listar();
         assertEquals(3, listaFuncionarios.size());
 
@@ -66,7 +66,7 @@ class FuncionarioTest {
     @DisplayName("Listar quando acionado e não houver funcionarios, deve retornar lista vazia")
     void listarQuandoAcionadoComTabelaVaziaDevRetornarUmaColecaoVaziaTeste() {
 
-        when(funcionarioRepository.findAll()).thenReturn(Collections.emptyList());
+        when(funcionarioJpaRepository.findAll()).thenReturn(Collections.emptyList());
         List<Funcionario> resultado = funcionarioService.listar();
         assertTrue(resultado.isEmpty());
     }
@@ -76,7 +76,7 @@ class FuncionarioTest {
     void buscarPorIdComIdExistenteDeveRetornarFuncionarioTeste() {
         Funcionario funcionario = new Funcionario(1, "João", "12345678901", "(11)999999999", "joao@gmail.com", "senha123");
 
-        when(funcionarioRepository.findById(1)).thenReturn(Optional.of(funcionario));
+        when(funcionarioJpaRepository.findById(1)).thenReturn(Optional.of(funcionario));
 
         Funcionario resultado = funcionarioService.buscarPorId(1);
 
@@ -87,7 +87,7 @@ class FuncionarioTest {
     @Test
     @DisplayName("Deve lançar exceção ao buscar funcionário com ID inexistente")
     void buscarPorIdComIdInexistenteDeveLancarExcecaoTeste() {
-        when(funcionarioRepository.findById(99)).thenReturn(Optional.empty());
+        when(funcionarioJpaRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(FuncionarioNaoEncontradaException.class, () -> funcionarioService.buscarPorId(99));
     }
@@ -95,17 +95,17 @@ class FuncionarioTest {
     @Test
     @DisplayName("Quando remover for acionado deve remover funcionário existente com sucesso")
     void removerFuncionarioExistenteDeveRemoverSemErrosTeste() {
-        when(funcionarioRepository.existsById(1)).thenReturn(true);
+        when(funcionarioJpaRepository.existsById(1)).thenReturn(true);
 
         funcionarioService.removerPorId(1);
 
-        verify(funcionarioRepository, times(1)).deleteById(1);
+        verify(funcionarioJpaRepository, times(1)).deleteById(1);
     }
 
     @Test
     @DisplayName("Deve lançar exceção EntidadeNaoEncontradaException ao tentar remover funcionário inexistente")
     void removerFuncionarioInexistenteDeveLancarExcecaoEntidadeNaoEncontradaExceptionTeste() {
-        when(funcionarioRepository.existsById(99)).thenReturn(false);
+        when(funcionarioJpaRepository.existsById(99)).thenReturn(false);
 
         assertThrows(FuncionarioNaoEncontradaException.class, () -> funcionarioService.removerPorId(99));
     }
@@ -115,8 +115,8 @@ class FuncionarioTest {
     void atualizarFuncionarioExistenteComSucessoTeste() {
         Funcionario funcionario = new Funcionario(1, "Ana", "11111111111", "11988888888", "ana@email.com", "senha123");
 
-        when(funcionarioRepository.existsById(funcionario.getId())).thenReturn(true);
-        when(funcionarioRepository.save(funcionario)).thenReturn(funcionario);
+        when(funcionarioJpaRepository.existsById(funcionario.getId())).thenReturn(true);
+        when(funcionarioJpaRepository.save(funcionario)).thenReturn(funcionario);
 
         Funcionario atualizado = funcionarioService.atualizar(funcionario);
 
@@ -129,7 +129,7 @@ class FuncionarioTest {
     void atualizarFuncionarioInexistenteDeveRetornarEntidadeNaoEncontradaExceptionTeste() {
         Funcionario funcionario = new Funcionario(42, "Carlos", "00000000000", "11900000000", "carlos@email.com", "senha");
 
-        when(funcionarioRepository.existsById(funcionario.getId())).thenReturn(false);
+        when(funcionarioJpaRepository.existsById(funcionario.getId())).thenReturn(false);
 
         assertThrows(EntidadeNaoEncontradaException.class, () -> funcionarioService.atualizar(funcionario));
     }
@@ -142,7 +142,7 @@ class FuncionarioTest {
                 new Funcionario(2, "Mario Silva", "67898714354", "(11)998765678", "mario@gmail.com", "123senha")
         );
 
-        when(funcionarioRepository.findAll()).thenReturn(funcionarios);
+        when(funcionarioJpaRepository.findAll()).thenReturn(funcionarios);
         List<FuncionarioListDto> resultado = funcionarioService.listarTodos();
 
         assertNotNull(resultado);
@@ -151,20 +151,20 @@ class FuncionarioTest {
         assertEquals("Rosa dos Santos", resultado.get(0).getNome());
         assertEquals("Mario Silva", resultado.get(1).getNome());
 
-        verify(funcionarioRepository, times(1)).findAll();
+        verify(funcionarioJpaRepository, times(1)).findAll();
     }
 
     @Test
     @DisplayName("listarTodos deve retornar lista vazia quando não houver funcionários cadastrados")
     void listarTodosDeveRetornarListaVaziaQuandoNaoHouverFuncionarios() {
-        when(funcionarioRepository.findAll()).thenReturn(Collections.emptyList());
+        when(funcionarioJpaRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<FuncionarioListDto> resultado = funcionarioService.listarTodos();
 
         assertNotNull(resultado);
         assertTrue(resultado.isEmpty());
 
-        verify(funcionarioRepository, times(1)).findAll();
+        verify(funcionarioJpaRepository, times(1)).findAll();
     }
 
 
@@ -179,7 +179,7 @@ class FuncionarioTest {
 
 
         verify(passwordEncoder).encode("senha");
-        verify(funcionarioRepository).save(argThat(f -> f.getSenha().equals("senhaCriptografada")));
+        verify(funcionarioJpaRepository).save(argThat(f -> f.getSenha().equals("senhaCriptografada")));
     }
 
 
@@ -193,7 +193,7 @@ class FuncionarioTest {
 
         Authentication authenticationMock = mock(Authentication.class);
         when(authenticationManager.authenticate(token)).thenReturn(authenticationMock);
-        when(funcionarioRepository.findByEmail(funcionario.getEmail())).thenReturn(Optional.of(funcionario));
+        when(funcionarioJpaRepository.findByEmail(funcionario.getEmail())).thenReturn(Optional.of(funcionario));
         when(gerenciadorTokenJwt.generateToken(authenticationMock)).thenReturn("token.jwt.exemplo");
 
         FuncionarioTokenDto resultado = funcionarioService.autenticar(funcionario);

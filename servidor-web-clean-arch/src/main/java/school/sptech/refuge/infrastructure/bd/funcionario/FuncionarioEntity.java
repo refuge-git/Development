@@ -1,8 +1,12 @@
-package school.sptech.refuge.core.domain.funcionario;
+package school.sptech.refuge.infrastructure.bd.funcionario;
 
 import jakarta.persistence.*;
 
-public class Funcionario {
+@Entity
+public class FuncionarioEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_funcionario")
     private Integer id;
     private String nome;
     private String cpf;
@@ -10,7 +14,7 @@ public class Funcionario {
     private String email;
     private String senha;
 
-    public Funcionario(Integer id, String nome, String cpf, String telefone, String email, String senha) {
+    public FuncionarioEntity(Integer id, String nome, String cpf, String telefone, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -19,7 +23,7 @@ public class Funcionario {
         this.senha = senha;
     }
 
-    public Funcionario() {
+    public FuncionarioEntity() {
     }
 
     public Integer getId() {
