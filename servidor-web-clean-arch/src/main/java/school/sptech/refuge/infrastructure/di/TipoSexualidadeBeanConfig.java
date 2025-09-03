@@ -1,10 +1,11 @@
 package school.sptech.refuge.infrastructure.di;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import school.sptech.refuge.core.application.usecase.tiposexualidade.*;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeJpaAdapter;
 
-
+@Configuration
 public class TipoSexualidadeBeanConfig {
     @Bean
     public CriarTipoSexualidadeUseCase criarTipoSexualidadeUseCase(TipoSexualidadeJpaAdapter adapter){

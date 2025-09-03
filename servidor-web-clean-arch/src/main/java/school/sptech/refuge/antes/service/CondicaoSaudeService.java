@@ -7,7 +7,7 @@ import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
-import school.sptech.refuge.antes.repository.BeneficiarioRepository;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaRepository;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
 
@@ -17,12 +17,12 @@ import java.util.List;
 public class CondicaoSaudeService {
     private final CondicaoSaudeRepository condicaoSaudeRepository;
     private final CategoriaRepository categoriaRepository;
-    private final BeneficiarioRepository beneficiarioRepository;
+    private final BeneficiarioJpaRepository beneficiarioJpaRepository;
 
-    public CondicaoSaudeService(CondicaoSaudeRepository condicaoSaudeRepository, CategoriaRepository categoriaRepository, BeneficiarioRepository beneficiarioRepository) {
+    public CondicaoSaudeService(CondicaoSaudeRepository condicaoSaudeRepository, CategoriaRepository categoriaRepository, BeneficiarioJpaRepository beneficiarioJpaRepository) {
         this.condicaoSaudeRepository = condicaoSaudeRepository;
         this.categoriaRepository = categoriaRepository;
-        this.beneficiarioRepository = beneficiarioRepository;
+        this.beneficiarioJpaRepository = beneficiarioJpaRepository;
     }
 
     public CondicaoSaudeEntity cadastrar(CondicaoSaudeEntity condicaoSaudeEntity) {
@@ -39,7 +39,7 @@ public class CondicaoSaudeService {
     }
 
     public BeneficiarioEntity validarBeneficiario(Integer id) {
-        return beneficiarioRepository.findById(id)
+        return beneficiarioJpaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Beneficiário da condição não encontrada"));
     }
 

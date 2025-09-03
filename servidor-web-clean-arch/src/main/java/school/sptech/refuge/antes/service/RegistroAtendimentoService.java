@@ -10,7 +10,7 @@ import school.sptech.refuge.antes.exception.RegistroAtendimentoNaoEncontradoExce
 import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.exception.*;
-import school.sptech.refuge.antes.repository.BeneficiarioRepository;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
 import school.sptech.refuge.antes.repository.RegistroAtendimentoRepository;
 import school.sptech.refuge.antes.repository.TipoAtendimentoRepository;
 
@@ -21,12 +21,12 @@ public class RegistroAtendimentoService {
 
     private final RegistroAtendimentoRepository registroAtendimentoRepository;
     private final TipoAtendimentoRepository tipoAtendimentoRepository;
-    private final BeneficiarioRepository beneficiarioRepository;
+    private final BeneficiarioJpaRepository beneficiarioJpaRepository;
 
-    public RegistroAtendimentoService(RegistroAtendimentoRepository registroAtendimentoRepository, TipoAtendimentoRepository tipoAtendimentoRepository, BeneficiarioRepository beneficiarioRepository) {
+    public RegistroAtendimentoService(RegistroAtendimentoRepository registroAtendimentoRepository, TipoAtendimentoRepository tipoAtendimentoRepository, BeneficiarioJpaRepository beneficiarioJpaRepository) {
         this.registroAtendimentoRepository = registroAtendimentoRepository;
         this.tipoAtendimentoRepository = tipoAtendimentoRepository;
-        this.beneficiarioRepository = beneficiarioRepository;
+        this.beneficiarioJpaRepository = beneficiarioJpaRepository;
     }
 
     public TipoAtendimento validarTipoAtendimento(Integer id) {
@@ -35,7 +35,7 @@ public class RegistroAtendimentoService {
     }
 
     public BeneficiarioEntity validarBeneficiario(Integer id) {
-        return beneficiarioRepository.findById(id)
+        return beneficiarioJpaRepository.findById(id)
                 .orElseThrow(() -> new BeneficiarioNaoEncontradaException("Beneficiário não encontrado"));
     }
     // CREATE

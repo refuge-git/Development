@@ -11,7 +11,7 @@ import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
 import school.sptech.refuge.core.application.exception.CondicaoSaudeNaoEncontradaException;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.antes.repository.BeneficiarioRepository;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaRepository;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
 import school.sptech.refuge.antes.service.CondicaoSaudeService;
@@ -36,7 +36,7 @@ class CondicaoSaudeEntityTest {
     private CategoriaRepository categoriaRepository;
 
     @Mock
-    private BeneficiarioRepository beneficiarioRepository;
+    private BeneficiarioJpaRepository beneficiarioJpaRepository;
 
     @Test
     @DisplayName("Deve cadastrar condição de saúde com sucesso")
@@ -58,7 +58,7 @@ class CondicaoSaudeEntityTest {
         );
 
         when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoriaEntity));
-        when(beneficiarioRepository.findById(1)).thenReturn(Optional.of(beneficiarioEntity));
+        when(beneficiarioJpaRepository.findById(1)).thenReturn(Optional.of(beneficiarioEntity));
         when(condicaoSaudeRepository.save(any())).thenReturn(condicao);
 
         CondicaoSaudeEntity resultado = condicaoSaudeService.cadastrar(condicao);
@@ -67,7 +67,7 @@ class CondicaoSaudeEntityTest {
         assertEquals(1, resultado.getId());
 
         verify(categoriaRepository, times(1)).findById(1);
-        verify(beneficiarioRepository, times(1)).findById(1);
+        verify(beneficiarioJpaRepository, times(1)).findById(1);
         verify(condicaoSaudeRepository, times(1)).save(condicao);
     }
 

@@ -13,7 +13,7 @@ import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontrada
 import school.sptech.refuge.antes.exception.RegistroAtendimentoNaoEncontradoException;
 import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.service.RegistroAtendimentoService;
-import school.sptech.refuge.antes.repository.BeneficiarioRepository;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
 import school.sptech.refuge.antes.repository.RegistroAtendimentoRepository;
 import school.sptech.refuge.antes.repository.TipoAtendimentoRepository;
 
@@ -31,7 +31,7 @@ class RegistroAtendimentoTest {
     @Mock
     private TipoAtendimentoRepository tipoRepo;
     @Mock
-    private BeneficiarioRepository beneficiarioRepo;
+    private BeneficiarioJpaRepository beneficiarioRepo;
     @InjectMocks
     private RegistroAtendimentoService service;
 

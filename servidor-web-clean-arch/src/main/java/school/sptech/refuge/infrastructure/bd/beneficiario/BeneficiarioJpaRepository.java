@@ -1,17 +1,15 @@
-package school.sptech.refuge.antes.repository;
+package school.sptech.refuge.infrastructure.bd.beneficiario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
-import school.sptech.refuge.entity.*;
 
 import java.util.List;
 
 
-public interface BeneficiarioRepository extends JpaRepository<BeneficiarioEntity, Integer> {
+public interface BeneficiarioJpaRepository extends JpaRepository<BeneficiarioEntity, Integer> {
 
 
     List<BeneficiarioEntity> findByNomeSocialContainingIgnoreCase(String nome);
