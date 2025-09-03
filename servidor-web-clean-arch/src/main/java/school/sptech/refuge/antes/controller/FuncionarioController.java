@@ -11,9 +11,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
-import school.sptech.refuge.antes.dto.funcionario.*;
+import school.sptech.refuge.core.application.dto.funcionario.*;
 import school.sptech.refuge.dto.funcionario.*;
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.antes.service.FuncionarioService;
 
 import java.util.List;

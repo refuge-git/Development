@@ -1,7 +1,7 @@
 package school.sptech.refuge.antes.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 
 import java.util.Optional;
 

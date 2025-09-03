@@ -11,11 +11,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import school.sptech.refuge.antes.config.GerenciadorTokenJwt;
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioTokenDto;
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioTokenDto;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.antes.exception.FuncionarioNaoEncontradaException;
+import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.antes.repository.FuncionarioRepository;
 import school.sptech.refuge.antes.service.FuncionarioService;
 

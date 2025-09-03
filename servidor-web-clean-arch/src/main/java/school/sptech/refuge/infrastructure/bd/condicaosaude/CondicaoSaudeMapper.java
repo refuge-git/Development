@@ -6,7 +6,7 @@ import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeRequ
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
 import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;

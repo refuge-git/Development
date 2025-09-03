@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.antes.repository.FuncionarioRepository;
 import school.sptech.refuge.antes.service.AutenticacaoService;
 

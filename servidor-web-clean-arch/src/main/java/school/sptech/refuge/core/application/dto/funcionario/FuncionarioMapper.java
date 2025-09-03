@@ -1,6 +1,6 @@
-package school.sptech.refuge.antes.dto.funcionario;
+package school.sptech.refuge.core.application.dto.funcionario;
 
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 
 import java.util.List;
 

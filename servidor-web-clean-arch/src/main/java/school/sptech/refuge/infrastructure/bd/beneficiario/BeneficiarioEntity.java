@@ -6,6 +6,7 @@ import school.sptech.refuge.core.domain.beneficiario.LocalEnum;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.core.domain.beneficiario.StatusEnum;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
 

@@ -2,9 +2,9 @@ package school.sptech.refuge.antes.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.antes.entity.TipoAtendimento;
-import school.sptech.refuge.antes.exception.FuncionarioNaoEncontradaException;
+import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.exception.*;

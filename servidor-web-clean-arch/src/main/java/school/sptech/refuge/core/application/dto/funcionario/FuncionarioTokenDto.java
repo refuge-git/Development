@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.dto.funcionario;
+package school.sptech.refuge.core.application.dto.funcionario;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

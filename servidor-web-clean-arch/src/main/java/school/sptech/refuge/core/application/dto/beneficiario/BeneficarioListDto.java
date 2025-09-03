@@ -2,7 +2,7 @@ package school.sptech.refuge.core.application.dto.beneficiario;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
 

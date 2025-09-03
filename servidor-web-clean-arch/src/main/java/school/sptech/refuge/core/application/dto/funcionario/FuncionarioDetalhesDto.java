@@ -1,8 +1,8 @@
-package school.sptech.refuge.antes.dto.funcionario;
+package school.sptech.refuge.core.application.dto.funcionario;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 
 import java.util.Collection;
 

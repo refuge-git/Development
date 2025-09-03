@@ -1,21 +1,22 @@
-package school.sptech.refuge.antes.entity;
+package school.sptech.refuge.core.application.dto.funcionario;
 
-import jakarta.persistence.*;
 
-@Entity
-public class Funcionario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_funcionario")
-    private Integer id;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public class FuncionarioAtualizacaoDto {
+
+    @Schema(description = "Nome completo do funcionário", example = "Marcio Santa da Silva")
     private String nome;
+    @Schema(description = "CPF do funcionário", example = "93827345439")
     private String cpf;
+    @Schema(description = "Telefone com ddd do funcionário", example = "(11)98724-9812")
     private String telefone;
+    @Schema(description = "Email do funcionário", example = "marcio@gmail.com")
     private String email;
+    @Schema(description = "Senha de acesso do funcionário", example = "12345678")
     private String senha;
 
-    public Funcionario(Integer id, String nome, String cpf, String telefone, String email, String senha) {
-        this.id = id;
+    public FuncionarioAtualizacaoDto(String nome, String cpf, String telefone, String email, String senha) {
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
@@ -23,15 +24,7 @@ public class Funcionario {
         this.senha = senha;
     }
 
-    public Funcionario() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public FuncionarioAtualizacaoDto() {
     }
 
     public String getNome() {

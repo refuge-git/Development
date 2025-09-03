@@ -1,7 +1,7 @@
 package school.sptech.refuge.antes.dto.tipoAtendimento;
 
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.antes.entity.TipoAtendimento;
 
 import java.util.List;

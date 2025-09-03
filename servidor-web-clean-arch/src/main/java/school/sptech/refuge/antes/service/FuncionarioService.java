@@ -9,12 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import school.sptech.refuge.antes.config.GerenciadorTokenJwt;
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioMapper;
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioTokenDto;
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioMapper;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioTokenDto;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.antes.exception.FuncionarioNaoEncontradaException;
+import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.antes.repository.FuncionarioRepository;
 

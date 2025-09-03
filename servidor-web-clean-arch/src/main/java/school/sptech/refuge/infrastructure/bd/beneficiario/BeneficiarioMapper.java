@@ -1,7 +1,7 @@
 package school.sptech.refuge.infrastructure.bd.beneficiario;
 
 import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
@@ -13,6 +13,7 @@ import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.core.domain.beneficiario.StatusEnum;
 //import school.sptech.refuge.entity.*;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
 

@@ -1,8 +1,7 @@
-package school.sptech.refuge.antes.dto.funcionario;
+package school.sptech.refuge.core.application.dto.funcionario;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.br.CPF;
 
 public class FuncionarioRequestDto {
 

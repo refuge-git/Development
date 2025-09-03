@@ -1,7 +1,7 @@
 package school.sptech.refuge.antes.dto.tipoAtendimento;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import school.sptech.refuge.antes.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 
 import java.time.LocalDateTime;
 
