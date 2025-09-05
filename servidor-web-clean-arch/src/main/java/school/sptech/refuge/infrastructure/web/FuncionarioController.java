@@ -140,9 +140,7 @@ public class FuncionarioController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<FuncionarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody FuncionarioAtualizacaoDto dto) {
-        Funcionario funcionario = FuncionarioMapper.toEntity(dto, id);
-        Funcionario funcionarioAtualizado = atualizarFuncionarioUseCase.execute(funcionario);
-        FuncionarioListDto dtoAtualizado = FuncionarioMapper.toListagemDto(funcionarioAtualizado);
+        FuncionarioListDto dtoAtualizado = atualizarFuncionarioUseCase.execute(id, dto);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }
 
@@ -157,7 +155,7 @@ public class FuncionarioController {
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
-        funcionarioService.removerPorId(id);
+        deletarFuncionarioUseCase.execute(id);
         return ResponseEntity.status(204).build();
     }
 
