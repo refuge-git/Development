@@ -56,10 +56,9 @@ public class FuncionarioController {
     })
     @PostMapping
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> criar(@RequestBody @Valid FuncionarioRequestDto funcionarioRequestDto){
-        final Funcionario novoFuncionario = FuncionarioMapper.of(funcionarioRequestDto);
-        this.funcionarioService.criar(novoFuncionario);
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<FuncionarioListDto> criar(@RequestBody @Valid FuncionarioRequestDto funcionarioRequestDto){
+        FuncionarioListDto criado = criarFuncionarioUseCase.execute(funcionarioRequestDto);
+        return ResponseEntity.status(201).body(criado);
     }
 
 
@@ -106,7 +105,7 @@ public class FuncionarioController {
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<FuncionarioListDto>> listarTodos(){
 
-        List<FuncionarioListDto> funcionariosEncontrados = this.funcionarioService.listarTodos();
+        List<FuncionarioListDto> funcionariosEncontrados = listarTodosFuncionariosUseCase.execute();
 
         if(funcionariosEncontrados.isEmpty()){
             return ResponseEntity.status(204).build();
@@ -125,9 +124,8 @@ public class FuncionarioController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<FuncionarioListDto> listarPorId(@PathVariable Integer id) {
-        Funcionario funcionario = funcionarioService.buscarPorId(id);
-        FuncionarioListDto dto = FuncionarioMapper.toListagemDto(funcionario);
-        return ResponseEntity.status(200).body(dto);
+        FuncionarioListDto funcionario = buscarFuncionarioUseCase.execute(id);
+        return ResponseEntity.status(200).body(funcionario);
     }
 
 
@@ -143,7 +141,7 @@ public class FuncionarioController {
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<FuncionarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody FuncionarioAtualizacaoDto dto) {
         Funcionario funcionario = FuncionarioMapper.toEntity(dto, id);
-        Funcionario funcionarioAtualizado = funcionarioService.atualizar(funcionario);
+        Funcionario funcionarioAtualizado = atualizarFuncionarioUseCase.execute(funcionario);
         FuncionarioListDto dtoAtualizado = FuncionarioMapper.toListagemDto(funcionarioAtualizado);
         return ResponseEntity.status(200).body(dtoAtualizado);
     }
