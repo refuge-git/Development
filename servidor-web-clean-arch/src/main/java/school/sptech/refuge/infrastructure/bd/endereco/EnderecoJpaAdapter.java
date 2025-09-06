@@ -1,14 +1,13 @@
 package school.sptech.refuge.infrastructure.bd.endereco;
 
-import org.springframework.stereotype.Component;
-import school.sptech.refuge.core.adapters.endereco.EnderecoRepositoryPort;
+import school.sptech.refuge.core.adapters.EnderecoGateway;
 import school.sptech.refuge.core.domain.endereco.Endereco;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class EnderecoJpaAdapter implements EnderecoRepositoryPort {
+public class EnderecoJpaAdapter implements EnderecoGateway {
 
     private final EnderecoJpaRepository repository;
 

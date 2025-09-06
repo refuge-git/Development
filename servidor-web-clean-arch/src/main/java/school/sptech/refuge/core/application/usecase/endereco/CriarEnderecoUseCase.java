@@ -2,7 +2,7 @@ package school.sptech.refuge.core.application.usecase.endereco;
 
 import school.sptech.refuge.core.adapters.EnderecoGateway;
 import school.sptech.refuge.core.application.dto.endereco.EnderecoRequestDto;
-import school.sptech.refuge.core.application.endereco.dto.EnderecoResponseDto;
+import school.sptech.refuge.core.application.dto.endereco.EnderecoResponseDto;
 import school.sptech.refuge.core.domain.endereco.Endereco;
 
 public class CriarEnderecoUseCase {
