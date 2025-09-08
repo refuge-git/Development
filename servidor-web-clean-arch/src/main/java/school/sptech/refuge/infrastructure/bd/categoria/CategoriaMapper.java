@@ -3,10 +3,25 @@ package school.sptech.refuge.infrastructure.bd.categoria;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaRequestDto;
+import school.sptech.refuge.core.domain.categoria.Categoria;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CategoriaMapper {
+
+    public static CategoriaEntity ofDomain(Categoria categoria){
+        if (Objects.isNull(categoria)) {
+            return null;
+        }
+
+        CategoriaEntity entity = new CategoriaEntity();
+        entity.setId(categoria.getId());
+        entity.setNome(categoria.getNome());
+
+        return entity;
+    }
+
     public static CategoriaListDto toListagemDto(CategoriaEntity categoriaEntity) {
         if (categoriaEntity == null) return null;
 
@@ -43,6 +58,18 @@ public class CategoriaMapper {
                 id,
                 dto.getNome()
         );
+    }
+
+    public static Categoria ofEntity(CategoriaEntity categoriaEntity){
+        if(Objects.isNull(categoriaEntity)){
+            return null;
+        }
+
+        Categoria dominio = new Categoria();
+        dominio.setId(categoriaEntity.getId());
+        dominio.setNome(categoriaEntity.getNome());
+
+        return dominio;
     }
 
 }

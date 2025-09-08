@@ -8,7 +8,7 @@ import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaExc
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
-import school.sptech.refuge.infrastructure.bd.categoria.CategoriaRepository;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaJpaRepository;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
 
 import java.util.List;
@@ -16,12 +16,12 @@ import java.util.List;
 @Service
 public class CondicaoSaudeService {
     private final CondicaoSaudeRepository condicaoSaudeRepository;
-    private final CategoriaRepository categoriaRepository;
+    private final CategoriaJpaRepository categoriaJpaRepository;
     private final BeneficiarioJpaRepository beneficiarioJpaRepository;
 
-    public CondicaoSaudeService(CondicaoSaudeRepository condicaoSaudeRepository, CategoriaRepository categoriaRepository, BeneficiarioJpaRepository beneficiarioJpaRepository) {
+    public CondicaoSaudeService(CondicaoSaudeRepository condicaoSaudeRepository, CategoriaJpaRepository categoriaJpaRepository, BeneficiarioJpaRepository beneficiarioJpaRepository) {
         this.condicaoSaudeRepository = condicaoSaudeRepository;
-        this.categoriaRepository = categoriaRepository;
+        this.categoriaJpaRepository = categoriaJpaRepository;
         this.beneficiarioJpaRepository = beneficiarioJpaRepository;
     }
 
@@ -34,7 +34,7 @@ public class CondicaoSaudeService {
     }
 
     public CategoriaEntity validarCategoria(Integer id) {
-        return categoriaRepository.findById(id)
+        return categoriaJpaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria da condição não encontrada"));
     }
 

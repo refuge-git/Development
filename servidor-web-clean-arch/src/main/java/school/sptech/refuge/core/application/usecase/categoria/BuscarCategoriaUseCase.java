@@ -2,6 +2,8 @@ package school.sptech.refuge.core.application.usecase.categoria;
 
 import school.sptech.refuge.core.adapters.CategoriaGateway;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
+import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
+import school.sptech.refuge.core.domain.categoria.Categoria;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,13 +16,14 @@ public class BuscarCategoriaUseCase{
         this.categoriaGateway = categoriaGateway;
     }
 
-    public List<CategoriaListDto> execute(String nome) {
-        return categoriaGateway.buscarPorNome(nome)
-                .stream()
-                .map(c -> new CategoriaListDto(
-                        c.getId(),
-                        c.getNome()
-                ))
-                .collect(Collectors.toList());
+    public CategoriaListDto execute(Integer id) {
+        Categoria categoria = categoriaGateway.buscarPorId(id)
+                .orElseThrow(() -> new CategoriaNaoEncontradaException("Tipo de gênero não encontrado para o id: " + id));
+
+
+        return new CategoriaListDto(
+                categoria.getId(),
+                categoria.getNome()
+        );
     }
 }

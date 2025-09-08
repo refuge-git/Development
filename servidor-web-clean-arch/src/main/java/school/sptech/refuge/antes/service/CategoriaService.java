@@ -7,41 +7,41 @@ import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaExc
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
 //import school.sptech.refuge.exception.*;
-import school.sptech.refuge.infrastructure.bd.categoria.CategoriaRepository;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaJpaRepository;
 
 import java.util.List;
 
 @Service
 public class CategoriaService {
 
-    private final CategoriaRepository categoriaRepository;
+    private final CategoriaJpaRepository categoriaJpaRepository;
 
-    public CategoriaService(CategoriaRepository categoriaRepository) {
-        this.categoriaRepository = categoriaRepository;
+    public CategoriaService(CategoriaJpaRepository categoriaJpaRepository) {
+        this.categoriaJpaRepository = categoriaJpaRepository;
     }
 
     public CategoriaEntity cadastrar(CategoriaEntity categoriaEntity) {
-        return categoriaRepository.save(categoriaEntity);
+        return categoriaJpaRepository.save(categoriaEntity);
     }
 
     public List<CategoriaEntity> listar() {
-        return categoriaRepository.findAll(); }
+        return categoriaJpaRepository.findAll(); }
 
     public CategoriaEntity atualizar(CategoriaEntity categoriaEntity) {
-        if(categoriaRepository.existsById((categoriaEntity.getId()))) {
-            return categoriaRepository.save(categoriaEntity);
+        if(categoriaJpaRepository.existsById((categoriaEntity.getId()))) {
+            return categoriaJpaRepository.save(categoriaEntity);
         } else {
             throw new EntidadeNaoEncontradaException("Categoria com id %d não encontrada".formatted(categoriaEntity.getId()));
         }
     }
 
     public void remover(Integer id) {
-        if (!categoriaRepository.existsById(id)) {
+        if (!categoriaJpaRepository.existsById(id)) {
             throw new CategoriaNaoEncontradaException("Categoria de id %d não encontrado".formatted(id));
         }
 
         try {
-            categoriaRepository.deleteById(id);
+            categoriaJpaRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
             throw new ViolacaoDeDadosException("Não é possível excluir a categoria, pois existem registros relacionados a ele.");
         }
@@ -49,11 +49,11 @@ public class CategoriaService {
 
     public List<CategoriaEntity> buscarPorNome(String nome) {
 
-        return categoriaRepository.findAllByNome(nome);
+        return categoriaJpaRepository.findAllByNome(nome);
     }
 
     public CategoriaEntity buscarPorId(Integer id) {
-        return categoriaRepository.findById(id)
+        return categoriaJpaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria de id %d não encontrado".formatted(id)));
     }
 

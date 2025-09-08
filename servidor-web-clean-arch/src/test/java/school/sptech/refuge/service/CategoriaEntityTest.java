@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
 import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.infrastructure.bd.categoria.CategoriaRepository;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaJpaRepository;
 import school.sptech.refuge.antes.service.CategoriaService;
 
 import java.util.Collections;
@@ -26,7 +26,7 @@ class CategoriaEntityTest {
     private CategoriaService categoriaService;
 
     @Mock
-    private CategoriaRepository categoriaRepository;
+    private CategoriaJpaRepository categoriaJpaRepository;
 
     @Test
     @DisplayName("Cadastrar categoria com dados válidos deve retornar categoria salva")
@@ -35,7 +35,7 @@ class CategoriaEntityTest {
         categoriaEntity.setId(1);
         categoriaEntity.setNome("Deficiência");
 
-        when(categoriaRepository.save(categoriaEntity)).thenReturn(categoriaEntity);
+        when(categoriaJpaRepository.save(categoriaEntity)).thenReturn(categoriaEntity);
 
         CategoriaEntity categoriaEntitySalva = categoriaService.cadastrar(categoriaEntity);
 
@@ -47,7 +47,7 @@ class CategoriaEntityTest {
     void buscarPorIdComIdExistenteDeveRetornarCategoriaTeste(){
         CategoriaEntity categoriaEntity = new CategoriaEntity(2, "Doença");
 
-        when(categoriaRepository.findById(2)).thenReturn(Optional.of(categoriaEntity));
+        when(categoriaJpaRepository.findById(2)).thenReturn(Optional.of(categoriaEntity));
 
         CategoriaEntity resultado = categoriaService.buscarPorId(2);
 
@@ -58,7 +58,7 @@ class CategoriaEntityTest {
     @Test
     @DisplayName("Deve lançar exceção ao buscar categoria com ID inexistente")
     void buscarPorIdCategoriaComIdInexistenteDeveLancarExcecaoTeste() {
-        when(categoriaRepository.findById(34)).thenReturn(Optional.empty());
+        when(categoriaJpaRepository.findById(34)).thenReturn(Optional.empty());
 
         assertThrows(CategoriaNaoEncontradaException.class, () -> categoriaService.buscarPorId(34));
     }
@@ -74,7 +74,7 @@ class CategoriaEntityTest {
                 new CategoriaEntity(3, "Condição temporaria")
         );
 
-        when(categoriaRepository.findAll()).thenReturn(categoriaEntities);
+        when(categoriaJpaRepository.findAll()).thenReturn(categoriaEntities);
         List<CategoriaEntity> listaCategoriaEntities = categoriaService.listar();
         assertEquals(3, listaCategoriaEntities.size());
     }
@@ -83,7 +83,7 @@ class CategoriaEntityTest {
     @DisplayName("Listar quando acionado e não houver categoria, deve retornar lista vazia")
     void listarQuandoAcionadoComTabelaVaziaDeCategoriaDeveRetornarUmaColecaoVaziaTeste() {
 
-        when(categoriaRepository.findAll()).thenReturn(Collections.emptyList());
+        when(categoriaJpaRepository.findAll()).thenReturn(Collections.emptyList());
         List<CategoriaEntity> resultado = categoriaService.listar();
         assertTrue(resultado.isEmpty());
     }
@@ -93,8 +93,8 @@ class CategoriaEntityTest {
     void atualizarCategoriaExistenteDeveRetornarCategoriaAtualizada() {
         CategoriaEntity categoriaEntity = new CategoriaEntity(1, "Deficiência");
 
-        when(categoriaRepository.existsById(1)).thenReturn(true);
-        when(categoriaRepository.save(categoriaEntity)).thenReturn(categoriaEntity);
+        when(categoriaJpaRepository.existsById(1)).thenReturn(true);
+        when(categoriaJpaRepository.save(categoriaEntity)).thenReturn(categoriaEntity);
 
         CategoriaEntity resultado = categoriaService.atualizar(categoriaEntity);
 
@@ -107,7 +107,7 @@ class CategoriaEntityTest {
     void atualizarCategoriaInexistenteDeveLancarExcecao() {
         CategoriaEntity categoriaEntity = new CategoriaEntity(99, "Inexistente");
 
-        when(categoriaRepository.existsById(99)).thenReturn(false);
+        when(categoriaJpaRepository.existsById(99)).thenReturn(false);
 
         assertThrows(EntidadeNaoEncontradaException.class, () -> categoriaService.atualizar(categoriaEntity));
     }
@@ -115,8 +115,8 @@ class CategoriaEntityTest {
     @Test
     @DisplayName("Remover categoria existente não deve lançar exceção")
     void removerCategoriaExistenteDeveSerBemSucedido() {
-        when(categoriaRepository.existsById(1)).thenReturn(true);
-        doNothing().when(categoriaRepository).deleteById(1);
+        when(categoriaJpaRepository.existsById(1)).thenReturn(true);
+        doNothing().when(categoriaJpaRepository).deleteById(1);
 
         assertDoesNotThrow(() -> categoriaService.remover(1));
     }
@@ -124,7 +124,7 @@ class CategoriaEntityTest {
     @Test
     @DisplayName("Remover categoria inexistente deve lançar exceção")
     void removerCategoriaInexistenteDeveLancarExcecao() {
-        when(categoriaRepository.existsById(99)).thenReturn(false);
+        when(categoriaJpaRepository.existsById(99)).thenReturn(false);
 
         assertThrows(CategoriaNaoEncontradaException.class, () -> categoriaService.remover(99));
     }
@@ -137,7 +137,7 @@ class CategoriaEntityTest {
                 new CategoriaEntity(2, "Deficiência")
         );
 
-        when(categoriaRepository.findAllByNome("Deficiência")).thenReturn(categoriaEntities);
+        when(categoriaJpaRepository.findAllByNome("Deficiência")).thenReturn(categoriaEntities);
 
         List<CategoriaEntity> resultado = categoriaService.buscarPorNome("Deficiência");
 

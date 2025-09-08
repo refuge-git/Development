@@ -12,7 +12,7 @@ import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
 import school.sptech.refuge.core.application.exception.CondicaoSaudeNaoEncontradaException;
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
-import school.sptech.refuge.infrastructure.bd.categoria.CategoriaRepository;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaJpaRepository;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
 import school.sptech.refuge.antes.service.CondicaoSaudeService;
 
@@ -33,7 +33,7 @@ class CondicaoSaudeEntityTest {
     private CondicaoSaudeRepository condicaoSaudeRepository;
 
     @Mock
-    private CategoriaRepository categoriaRepository;
+    private CategoriaJpaRepository categoriaJpaRepository;
 
     @Mock
     private BeneficiarioJpaRepository beneficiarioJpaRepository;
@@ -57,7 +57,7 @@ class CondicaoSaudeEntityTest {
                 categoriaEntity
         );
 
-        when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoriaEntity));
+        when(categoriaJpaRepository.findById(1)).thenReturn(Optional.of(categoriaEntity));
         when(beneficiarioJpaRepository.findById(1)).thenReturn(Optional.of(beneficiarioEntity));
         when(condicaoSaudeRepository.save(any())).thenReturn(condicao);
 
@@ -66,7 +66,7 @@ class CondicaoSaudeEntityTest {
         assertNotNull(resultado);
         assertEquals(1, resultado.getId());
 
-        verify(categoriaRepository, times(1)).findById(1);
+        verify(categoriaJpaRepository, times(1)).findById(1);
         verify(beneficiarioJpaRepository, times(1)).findById(1);
         verify(condicaoSaudeRepository, times(1)).save(condicao);
     }
@@ -74,15 +74,15 @@ class CondicaoSaudeEntityTest {
     @Test
     @DisplayName("Deve lançar exceção ao cadastrar com categoria inexistente")
     void deveLancarExcecaoAoCadastrarSemCategoriaValida() {
-        CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(null, "Dor", LocalDate.now(), "Analgésico", "Teste", null, new CategoriaRepository(99, "Invalida") {
+        CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(null, "Dor", LocalDate.now(), "Analgésico", "Teste", null, new CategoriaJpaRepository(99, "Invalida") {
         });
 
-        when(categoriaRepository.findById(99)).thenReturn(Optional.empty());
+        when(categoriaJpaRepository.findById(99)).thenReturn(Optional.empty());
 
         RuntimeException excecao = assertThrows(RuntimeException.class, () -> condicaoSaudeService.cadastrar(condicao));
 
         assertEquals("Categoria da condição não encontrada", excecao.getMessage());
-        verify(categoriaRepository).findById(99);
+        verify(categoriaJpaRepository).findById(99);
         verify(condicaoSaudeRepository, never()).save(any());
     }
 

@@ -6,23 +6,17 @@ import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaExc
 
 public class DeletarCategoriaUseCase {
 
-        private final CategoriaGateway categoriaGateway;
+    private final CategoriaGateway categoriaGateway;
 
-        public DeletarCategoriaUseCase(CategoriaGateway categoriaGateway) {
-            this.categoriaGateway = categoriaGateway;
+    public DeletarCategoriaUseCase(CategoriaGateway categoriaGateway) {
+        this.categoriaGateway = categoriaGateway;
+    }
+
+    public void execute(Integer id){
+        if(!categoriaGateway.existePorId(id)){
+            throw new CategoriaNaoEncontradaException("Tipo de categoria não encontrada " + id);
         }
-
-        public void execute(Integer id) {
-            if (!categoriaGateway.existePorId(id)) {
-                throw new CategoriaNaoEncontradaException("Categoria de id " + id + " não encontrada");
-            }
-
-            try {
-                categoriaGateway.deletar(id);
-            } catch (ViolacaoDeDadosException e) {
-                throw new ViolacaoDeDadosException(
-                        "Não é possível excluir a categoria, pois existem registros relacionados.");
-            }
-        }
+        categoriaGateway.deletar(id);
+    }
 
 }
