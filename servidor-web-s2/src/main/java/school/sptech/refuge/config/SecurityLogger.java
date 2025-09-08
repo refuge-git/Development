@@ -10,7 +10,11 @@ import java.time.LocalDateTime;
 public class SecurityLogger {
     private static final Logger logger = LoggerFactory.getLogger(SecurityLogger.class);
 
-    public void logSecurityEvent(LocalDateTime data, String action , String local, String resource) {
-        logger.info("Horário no servidor: {} | Ação: {} | Local {} | Recurso: {}", data, action, local, resource);
+    public void logSecurityEvent(String action , String local, String resource) {
+        logger.info("Ação: {} | Local {} | Recurso: {}", action, local, resource);
+    }
+
+    public void logSecurityLogin(String action, String local, String user){
+        logger.warn("Ação: {} | Local: {} | Usuário: {}", action, local, user);
     }
 }

@@ -47,7 +47,6 @@ public class RegistroAtendimentoController {
     public ResponseEntity<RegistroAtendimentoResponseDto> cadastrar(@Valid @RequestBody RegistroAtendimentoRequestDto dto) {
         RegistroAtendimento registroAtendimento = RegistroAtendimentoMapper.toEntity(dto);
         RegistroAtendimento registroCadastrado = registroAtendimentoService.criar(registroAtendimento);
-        /*RegistroAtendimento registroCompleto = registroAtendimentoService.buscarPorId(registroCadastrado.getId());*/
         RegistroAtendimentoResponseDto dtoSalvo = RegistroAtendimentoMapper.toListagemDto(registroCadastrado);
         return ResponseEntity.status(201).body(dtoSalvo);
     }

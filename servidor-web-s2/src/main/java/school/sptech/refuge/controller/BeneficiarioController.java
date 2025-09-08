@@ -48,7 +48,7 @@ public class BeneficiarioController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "BeneficiarioController", "ACESSO POST", "Cadastrar beneficiário");
+        securityLogger.logSecurityEvent("BeneficiarioController", "ACESSO POST", "Cadastrar beneficiário");
         Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto);
         Beneficiario beneficiarioCadastrado = beneficiarioService.cadastrar(beneficiario);
         /*Beneficiario beneficiarioCompleto = beneficiarioService.buscarPorId(beneficiarioCadastrado.getId());*/
@@ -68,7 +68,7 @@ public class BeneficiarioController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listar() {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "BeneficiarioController", "ACESSO GET", "Listar Beneficiário");
+        securityLogger.logSecurityEvent("BeneficiarioController", "ACESSO GET", "Listar Beneficiário");
         List<Beneficiario> beneficiarios = beneficiarioService.listar();
         if (beneficiarios.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -89,7 +89,7 @@ public class BeneficiarioController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> listarPorId(@PathVariable Integer id) {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "BeneficiarioController", "ACESSO GET", "Listar Beneficiário por ID");
+        securityLogger.logSecurityEvent("BeneficiarioController", "ACESSO GET", "Listar Beneficiário por ID");
         Beneficiario beneficiario = beneficiarioService.buscarPorId(id);
         BeneficarioListDto dto = BeneficiarioMapper.toListagemDto(beneficiario);
         return ResponseEntity.status(200).body(dto);
@@ -107,7 +107,7 @@ public class BeneficiarioController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody BeneficiarioAtualizacaoDto dto) {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "ACESSO GET", "BeneficiarioController", "Atualização de beneficiário");
+        securityLogger.logSecurityEvent("ACESSO GET", "BeneficiarioController", "Atualização de beneficiário");
         Beneficiario beneficiario = BeneficiarioMapper.toEntity(dto, id);
         Beneficiario beneficiarioAtualizado = beneficiarioService.atualizar(beneficiario);
         BeneficarioListDto dtoAtualizado = BeneficiarioMapper.toListagemDto(beneficiarioAtualizado);
@@ -127,7 +127,7 @@ public class BeneficiarioController {
     @GetMapping("/sexo")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorSexo(@RequestParam SexoEnum sexo) {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "BeneficiarioController", "ACESSO GET", "Listar Beneficiário por sexo");
+        securityLogger.logSecurityEvent("BeneficiarioController", "ACESSO GET", "Listar Beneficiário por sexo");
         List<Beneficiario> beneficiario = beneficiarioService.listarPorSexo(sexo);
         if (beneficiario.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -149,7 +149,7 @@ public class BeneficiarioController {
     @GetMapping("/raca")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorRaca(@RequestParam RacaEnum raca) {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "BeneficiarioController", "ACESSO GET", "Listar Beneficiário por raça");
+        securityLogger.logSecurityEvent("BeneficiarioController", "ACESSO GET", "Listar Beneficiário por raça");
         List<Beneficiario> beneficiario = beneficiarioService.listarPorRaca(raca);
         if (beneficiario.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -171,7 +171,7 @@ public class BeneficiarioController {
     @GetMapping("/beneficiarios/nome-genero")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorNomeGenero(@RequestParam String nomeGenero) {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "BeneficiarioController", "ACESSO GET", "Listar Beneficiário por gênero");
+        securityLogger.logSecurityEvent("BeneficiarioController", "ACESSO GET", "Listar Beneficiário por gênero");
         List<Beneficiario> beneficiarios = beneficiarioService.listarPorTipoGenero(nomeGenero);
         if (beneficiarios.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -193,7 +193,7 @@ public class BeneficiarioController {
     @GetMapping("/beneficiarios/nome-sexualidade")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorNomeSexualidade(@RequestParam String nomeSexualidade) {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "BeneficiarioController", "ACESSO GET", "Listar Beneficiário por sexualidade");
+        securityLogger.logSecurityEvent("BeneficiarioController", "ACESSO GET", "Listar Beneficiário por sexualidade");
         List<Beneficiario> beneficiarios = beneficiarioService.listarPorTipoSexualidade(nomeSexualidade);
         if (beneficiarios.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -215,7 +215,7 @@ public class BeneficiarioController {
     @GetMapping("/nome-registro")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarContendoNomeRegistro(@RequestParam String nome) {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "BeneficiarioController", "ACESSO GET", "Listar Beneficiário por nome");
+        securityLogger.logSecurityEvent("BeneficiarioController", "ACESSO GET", "Listar Beneficiário por nome");
         List<Beneficiario> beneficiario = beneficiarioService.listarNomeRegistro(nome);
         if (beneficiario.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -237,7 +237,7 @@ public class BeneficiarioController {
     @GetMapping("/nome-social")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarContendoNomeSocial(@RequestParam String nome) {
-        securityLogger.logSecurityEvent(LocalDateTime.now(), "BeneficiarioController", "ACESSO GET", "Listar Beneficiário por nome social");
+        securityLogger.logSecurityEvent("BeneficiarioController", "ACESSO GET", "Listar Beneficiário por nome social");
         List<Beneficiario> beneficiario = beneficiarioService.listarNomeSocial(nome);
         if (beneficiario.isEmpty()) {
             return ResponseEntity.status(204).build();

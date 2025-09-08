@@ -3,13 +3,16 @@ package school.sptech.refuge.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import school.sptech.refuge.config.GerenciadorTokenJwt;
+import school.sptech.refuge.config.SecurityLogger;
 import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.dto.funcionario.FuncionarioMapper;
 import school.sptech.refuge.dto.funcionario.FuncionarioTokenDto;
@@ -24,6 +27,8 @@ import java.util.List;
 
 @Service
 public class FuncionarioService {
+    @Autowired
+    private SecurityLogger securityLogger;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -48,17 +53,23 @@ public class FuncionarioService {
     }
 
     public FuncionarioTokenDto autenticar(Funcionario funcionario) {
-        final UsernamePasswordAuthenticationToken credetials = new UsernamePasswordAuthenticationToken(funcionario.getEmail(), funcionario.getSenha());
+        try{
+            final UsernamePasswordAuthenticationToken credetials = new UsernamePasswordAuthenticationToken(funcionario.getEmail(), funcionario.getSenha());
 
-        final Authentication authentication = this.authenticationManager.authenticate(credetials);
+            final Authentication authentication = this.authenticationManager.authenticate(credetials);
 
-        Funcionario funcionarioAutenticado = funcionarioRepository.findByEmail(funcionario.getEmail()).orElseThrow(() -> new ResponseStatusException(404, "Emial do usuário não cadastrado", null));
+            Funcionario funcionarioAutenticado = funcionarioRepository.findByEmail(funcionario.getEmail()).orElseThrow(() -> new ResponseStatusException(404, "Email do usuário não cadastrado", null));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        final String token = gerenciadorTokenJwt.generateToken(authentication);
+            final String token = gerenciadorTokenJwt.generateToken(authentication);
 
-        return FuncionarioMapper.of(funcionarioAutenticado, token);
+            return FuncionarioMapper.of(funcionarioAutenticado, token);
+        } catch (BadCredentialsException | UsernameNotFoundException e) {
+            securityLogger.logSecurityLogin("Tentativa de login falha", "Método autenticar, funcionário service", funcionario.getEmail());
+            throw new ResponseStatusException(401, "Credenciais inválidas", e);
+        }
+
     }
 
     public List<FuncionarioListDto> listarTodos() {
