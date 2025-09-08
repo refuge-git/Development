@@ -68,6 +68,8 @@ public class FuncionarioService {
         } catch (BadCredentialsException | UsernameNotFoundException e) {
             securityLogger.logSecurityLogin("Tentativa de login falha", "Método autenticar, funcionário service", funcionario.getEmail());
             throw new ResponseStatusException(401, "Credenciais inválidas", e);
+        } catch (Exception e){
+            throw new ResponseStatusException(500, "Erro durante autenticação", e);
         }
 
     }
