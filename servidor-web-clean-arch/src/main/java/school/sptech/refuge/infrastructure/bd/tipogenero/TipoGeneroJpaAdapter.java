@@ -5,6 +5,7 @@ import school.sptech.refuge.core.application.exception.TipoGeneroNaoEncontradoEx
 import school.sptech.refuge.core.domain.tipogenero.TipoGenero;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ public class TipoGeneroJpaAdapter implements TipoGeneroGateway {
 
     @Override
     public TipoGenero salvar(TipoGenero tipoGenero) {
-        TipoGeneroEntity tipoGeneroEntity = tipoGeneroJpaRepository.save(TipoGeneroMapper.ofDomain(tipoGenero));
+        TipoGeneroEntity tipoGeneroEntity = tipoGeneroJpaRepository.save(Objects.requireNonNull(TipoGeneroMapper.ofDomain(tipoGenero)));
         return TipoGeneroMapper.ofEntity(tipoGeneroEntity);
     }
 
@@ -44,10 +45,11 @@ public class TipoGeneroJpaAdapter implements TipoGeneroGateway {
     @Override
     public TipoGenero atualizar(Integer id, TipoGenero tipoGenero) {
         if (!tipoGeneroJpaRepository.existsById(id)) {
-            throw new TipoGeneroNaoEncontradoException("Tipo de gênero de id:" + id);
+            throw new TipoGeneroNaoEncontradoException("Tipo de gênero não encontrado de id:" + id);
         }
 
         TipoGeneroEntity entity = TipoGeneroMapper.ofDomain(tipoGenero);
+        assert entity != null;
         entity.setId(id);
 
         TipoGeneroEntity atualizado = tipoGeneroJpaRepository.save(entity);
@@ -58,6 +60,8 @@ public class TipoGeneroJpaAdapter implements TipoGeneroGateway {
     public void deletar(Integer id) {
         if (tipoGeneroJpaRepository.existsById(id)) {
             tipoGeneroJpaRepository.deleteById(id);
+        } else {
+            throw new TipoGeneroNaoEncontradoException("Tipo de gênero não encontrado de id:" + id);
         }
     }
 }

@@ -21,7 +21,7 @@ public class AtualizarTipoGeneroUseCase {
         existente.setNome(request.getNome());
         existente.setDescricao(request.getDescricao());
 
-        TipoGenero atualizado = tipoGeneroGateway.salvar(existente);
+        TipoGenero atualizado = tipoGeneroGateway.atualizar(id, existente);
 
         return new TipoGeneroListDto(
                 atualizado.getId(),

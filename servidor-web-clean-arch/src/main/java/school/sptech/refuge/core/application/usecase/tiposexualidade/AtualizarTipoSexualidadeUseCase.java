@@ -26,7 +26,7 @@ public class AtualizarTipoSexualidadeUseCase {
         existente.setNome(request.getNome());
         existente.setDescricao(request.getDescricao());
 
-        TipoSexualidade atualizado = tipoSexualidadeGateway.salvar(existente);
+        TipoSexualidade atualizado = tipoSexualidadeGateway.atualizar(id,existente);
 
         return new TipoSexualidadeListDto(
                 atualizado.getId(),

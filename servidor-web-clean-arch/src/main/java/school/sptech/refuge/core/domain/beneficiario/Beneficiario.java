@@ -1,7 +1,7 @@
 package school.sptech.refuge.core.domain.beneficiario;
 
-import school.sptech.refuge.antes.entity.Endereco;
-import school.sptech.refuge.antes.entity.Funcionario;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.core.domain.endereco.Endereco;
 import school.sptech.refuge.core.domain.tipogenero.TipoGenero;
 import school.sptech.refuge.core.domain.tiposexualidade.TipoSexualidade;
 

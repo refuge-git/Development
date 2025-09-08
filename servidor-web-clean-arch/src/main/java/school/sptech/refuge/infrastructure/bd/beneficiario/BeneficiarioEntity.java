@@ -7,6 +7,8 @@ import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.core.domain.beneficiario.StatusEnum;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.infrastructure.bd.endereco.EnderecoEntity;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioEntity;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
 
@@ -47,11 +49,11 @@ public class BeneficiarioEntity {
 
     @ManyToOne
     @JoinColumn(name = "fk_funcionario", referencedColumnName = "id_funcionario")
-    private Funcionario funcionario;
+    private FuncionarioEntity funcionarioEntity;
 
     @ManyToOne
     @JoinColumn(name = "fk_endereco", referencedColumnName = "id_endereco")
-    private Endereco endereco;
+    private EnderecoEntity enderecoEntity;
 
     @ManyToOne
     @JoinColumn(name = "fk_genero", referencedColumnName = "id_genero")
@@ -62,7 +64,7 @@ public class BeneficiarioEntity {
     private TipoSexualidadeEntity tipoSexualidadeEntity;
 
 
-    public BeneficiarioEntity(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, RacaEnum raca, SexoEnum sexo, String nomeMae, Boolean egressoPrisional, LocalEnum localDorme, String fotoPerfil, String sisa, StatusEnum status, LocalDateTime dataAtivacao, String observacao, Funcionario funcionario, Endereco endereco, TipoGeneroEntity tipoGeneroEntity, TipoSexualidadeEntity tipoSexualidadeEntity) {
+    public BeneficiarioEntity(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, RacaEnum raca, SexoEnum sexo, String nomeMae, Boolean egressoPrisional, LocalEnum localDorme, String fotoPerfil, String sisa, StatusEnum status, LocalDateTime dataAtivacao, String observacao, FuncionarioEntity funcionarioEntity, EnderecoEntity enderecoEntity, TipoGeneroEntity tipoGeneroEntity, TipoSexualidadeEntity tipoSexualidadeEntity) {
         this.id = id;
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
@@ -79,8 +81,8 @@ public class BeneficiarioEntity {
         this.status = status;
         this.dataAtivacao = dataAtivacao;
         this.observacao = observacao;
-        this.funcionario = funcionario;
-        this.endereco = endereco;
+        this.funcionarioEntity = funcionarioEntity;
+        this.enderecoEntity = enderecoEntity;
         this.tipoGeneroEntity = tipoGeneroEntity;
         this.tipoSexualidadeEntity = tipoSexualidadeEntity;
     }
@@ -216,35 +218,35 @@ public class BeneficiarioEntity {
         this.observacao = observacao;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public FuncionarioEntity getFuncionarioEntity() {
+        return funcionarioEntity;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setFuncionarioEntity(FuncionarioEntity funcionarioEntity) {
+        this.funcionarioEntity = funcionarioEntity;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public EnderecoEntity getEnderecoEntity() {
+        return enderecoEntity;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public void setEnderecoEntity(EnderecoEntity enderecoEntity) {
+        this.enderecoEntity = enderecoEntity;
     }
 
-    public TipoGeneroEntity getTipoGenero() {
+    public TipoGeneroEntity getTipoGeneroEntity() {
         return tipoGeneroEntity;
     }
 
-    public void setTipoGenero(TipoGeneroEntity tipoGeneroEntity) {
+    public void setTipoGeneroEntity(TipoGeneroEntity tipoGeneroEntity) {
         this.tipoGeneroEntity = tipoGeneroEntity;
     }
 
-    public TipoSexualidadeEntity getTipoSexualidade() {
+    public TipoSexualidadeEntity getTipoSexualidadeEntity() {
         return tipoSexualidadeEntity;
     }
 
-    public void setTipoSexualidade(TipoSexualidadeEntity tipoSexualidadeEntity) {
+    public void setTipoSexualidadeEntity(TipoSexualidadeEntity tipoSexualidadeEntity) {
         this.tipoSexualidadeEntity = tipoSexualidadeEntity;
     }
 }

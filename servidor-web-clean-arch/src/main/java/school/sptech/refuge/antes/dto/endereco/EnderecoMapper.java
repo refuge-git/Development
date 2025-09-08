@@ -1,11 +1,52 @@
 package school.sptech.refuge.antes.dto.endereco;
 
-import school.sptech.refuge.antes.entity.Endereco;
-import school.sptech.refuge.entity.*;
+
+import school.sptech.refuge.core.domain.endereco.Endereco;
+import school.sptech.refuge.infrastructure.bd.endereco.EnderecoEntity;
+
 
 import java.util.List;
+import java.util.Objects;
 
 public class EnderecoMapper {
+
+    public static EnderecoEntity ofDomain(Endereco endereco) {
+        if (Objects.isNull(endereco)) {
+            return null;
+        }
+
+        EnderecoEntity entity = new EnderecoEntity();
+        entity.setId(endereco.getId());
+        entity.setTipoLogradouro(endereco.getTipoLogradouro());
+        entity.setNomeLogradouro(endereco.getNomeLogradouro());
+        entity.setNumero(endereco.getNumero());
+        entity.setComplemento(endereco.getComplemento());
+        entity.setBairro(endereco.getBairro());
+        entity.setCep(endereco.getCep());
+        entity.setNomeLocalidade(endereco.getNomeLocalidade());
+        entity.setSiglaCidade(endereco.getSiglaCidade());
+
+        return entity;
+    }
+
+    public static Endereco ofEntity(EnderecoEntity entity) {
+        if (Objects.isNull(entity)) {
+            return null;
+        }
+
+        Endereco endereco = new Endereco();
+        endereco.setId(entity.getId());
+        endereco.setTipoLogradouro(entity.getTipoLogradouro());
+        endereco.setNomeLogradouro(entity.getNomeLogradouro());
+        endereco.setNumero(entity.getNumero());
+        endereco.setComplemento(entity.getComplemento());
+        endereco.setBairro(entity.getBairro());
+        endereco.setCep(entity.getCep());
+        endereco.setNomeLocalidade(entity.getNomeLocalidade());
+        endereco.setSiglaCidade(entity.getSiglaCidade());
+
+        return endereco;
+    }
 
     public static EnderecoListDto toListagemDto(Endereco entity) {
 

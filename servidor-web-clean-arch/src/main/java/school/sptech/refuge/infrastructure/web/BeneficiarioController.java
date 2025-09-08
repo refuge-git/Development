@@ -12,12 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioAtualizacaoDto;
+import school.sptech.refuge.core.application.usecase.beneficiario.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
-import school.sptech.refuge.entity.*;
 import school.sptech.refuge.antes.service.BeneficiarioService;
 
 
@@ -28,10 +28,24 @@ import java.util.List;
 public class BeneficiarioController {
 
 
-    private final BeneficiarioService beneficiarioService;
+    private final CriarBeneficiarioUseCase criarBeneficiarioUseCase;
+    private final ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase;
+    private final BuscarBeneficiarioUseCase buscarBeneficiarioUseCase;
+    private final AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase;
+    private final DeletarBeneficiarioUseCase deletarBeneficiarioUseCase;
 
-    public BeneficiarioController(BeneficiarioService beneficiarioService) {
-        this.beneficiarioService = beneficiarioService;
+    public BeneficiarioController(
+            CriarBeneficiarioUseCase criarBeneficiarioUseCase,
+            ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase,
+            BuscarBeneficiarioUseCase buscarBeneficiarioUseCase,
+            AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase,
+            DeletarBeneficiarioUseCase deletarBeneficiarioUseCase
+    ) {
+        this.criarBeneficiarioUseCase = criarBeneficiarioUseCase;
+        this.listarTodosBeneficiarioUseCase = listarTodosBeneficiarioUseCase;
+        this.buscarBeneficiarioUseCase = buscarBeneficiarioUseCase;
+        this.atualizarBeneficiarioUseCase = atualizarBeneficiarioUseCase;
+        this.deletarBeneficiarioUseCase = deletarBeneficiarioUseCase;
     }
 
     @Operation(
@@ -46,11 +60,8 @@ public class BeneficiarioController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
-        BeneficiarioEntity beneficiarioEntity = BeneficiarioMapper.toEntity(dto);
-        BeneficiarioEntity beneficiarioEntityCadastrado = beneficiarioService.cadastrar(beneficiarioEntity);
-        /*Beneficiario beneficiarioCompleto = beneficiarioService.buscarPorId(beneficiarioCadastrado.getId());*/
-        BeneficarioListDto dtoSalvo = BeneficiarioMapper.toListagemDto(beneficiarioEntityCadastrado);
-        return ResponseEntity.status(201).body(dtoSalvo);
+        BeneficarioListDto criado = criarBeneficiarioUseCase.execute(dto);
+        return ResponseEntity.status(201).body(criado);
     }
 
     @Operation(
@@ -65,12 +76,9 @@ public class BeneficiarioController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listar() {
-        List<BeneficiarioEntity> beneficiarioEntities = beneficiarioService.listar();
-        if (beneficiarioEntities.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        List<BeneficarioListDto> dtos = BeneficiarioMapper.toListagemDtos(beneficiarioEntities);
-        return ResponseEntity.status(200).body(dtos);
+        List<BeneficarioListDto> dtos = listarTodosBeneficiarioUseCase.execute();
+        if (dtos.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(dtos);
     }
 
 
@@ -85,9 +93,8 @@ public class BeneficiarioController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> listarPorId(@PathVariable Integer id) {
-        BeneficiarioEntity beneficiarioEntity = beneficiarioService.buscarPorId(id);
-        BeneficarioListDto dto = BeneficiarioMapper.toListagemDto(beneficiarioEntity);
-        return ResponseEntity.status(200).body(dto);
+        BeneficarioListDto dto = buscarBeneficiarioUseCase.execute(id);
+        return ResponseEntity.ok(dto);
     }
 
 
@@ -102,14 +109,12 @@ public class BeneficiarioController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody BeneficiarioAtualizacaoDto dto) {
-        BeneficiarioEntity beneficiarioEntity = BeneficiarioMapper.toEntity(dto, id);
-        BeneficiarioEntity beneficiarioEntityAtualizado = beneficiarioService.atualizar(beneficiarioEntity);
-        BeneficarioListDto dtoAtualizado = BeneficiarioMapper.toListagemDto(beneficiarioEntityAtualizado);
-        return ResponseEntity.status(200).body(dtoAtualizado);
+        BeneficarioListDto dtoAtualizado = atualizarBeneficiarioUseCase.execute(id, dto);
+        return ResponseEntity.ok(dtoAtualizado);
     }
 
 
-    @Operation(
+    /*@Operation(
             summary = "Beneficiários por sexo",
             description = "Listar todos os beneficiários pelo sexo especificado"
     )
@@ -233,7 +238,7 @@ public class BeneficiarioController {
 
         List<BeneficarioListDto> dto = BeneficiarioMapper.toListagemDtos(beneficiarioEntity);
         return ResponseEntity.status(200).body(dto);
-    }
+    }*/
 
 
     @Operation(
@@ -246,8 +251,8 @@ public class BeneficiarioController {
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
-        beneficiarioService.removerPorId(id);
-        return ResponseEntity.status(204).build();
+        deletarBeneficiarioUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
