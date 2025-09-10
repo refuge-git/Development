@@ -9,6 +9,7 @@ import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
+import school.sptech.refuge.core.domain.condicaosaude.CondicaoSaude;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
 
@@ -16,6 +17,41 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class CondicaoSaudeMapper {
+
+    public static CondicaoSaudeEntity ofDomain(CondicaoSaude condicaoSaude) {
+        if (condicaoSaude == null) return null;
+
+        return new CondicaoSaudeEntity(
+                condicaoSaude.getId(),
+                condicaoSaude.getDiagnostico(),
+                condicaoSaude.getDescricao(),
+                condicaoSaude.getDataRegistro() != null ? condicaoSaude.getDataRegistro() : LocalDateTime.now(),
+                condicaoSaude.getDataAtualizacao() != null ? condicaoSaude.getDataAtualizacao() : LocalDateTime.now(),
+                condicaoSaude.getTratamento(),
+                condicaoSaude.getObservacoes(),
+                condicaoSaude.getBeneficiario() != null ? new BeneficiarioEntity(condicaoSaude.getBeneficiario().getId()) : null,
+                condicaoSaude.getCategoria() != null ? new CategoriaEntity(condicaoSaude.getCategoria().getId()) : null
+        );
+    }
+
+    // 🔹 Entity -> Domain
+    public static CondicaoSaude ofEntity(CondicaoSaudeEntity entity) {
+        if (entity == null) return null;
+
+        return new CondicaoSaude(
+                entity.getId(),
+                entity.getDiagnostico(),
+                entity.getDescricao(),
+                entity.getDataRegistro(),
+                entity.getDataAtualizacao(),
+                entity.getTratamento(),
+                entity.getObservacoes(),
+                entity.getBeneficiario(), // ⚠️ aqui depende: se você já tem um Mapper de Beneficiario, pode usar ele
+                entity.getCategoria()     // idem para Categoria
+        );
+    }
+
+
     public static CondicaoSaudeListDto toListagemDto(CondicaoSaudeEntity entity) {
         if (entity == null) return null;
 

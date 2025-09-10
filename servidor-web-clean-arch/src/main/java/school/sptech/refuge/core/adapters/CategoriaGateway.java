@@ -9,6 +9,7 @@ public interface CategoriaGateway {
     Categoria salvar(Categoria categoria);
     List<Categoria> listarTodos();
     Optional<Categoria> buscarPorId(Integer id);
+    Categoria atualizar(Integer id, Categoria categoria);
     List<Categoria> buscarPorNome(String nome);
     void deletar(Integer id);
     boolean existePorId(Integer id);

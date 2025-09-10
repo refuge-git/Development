@@ -1,7 +1,7 @@
 package school.sptech.refuge.core.domain.condicaosaude;
 
-import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
-import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
+import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
+import school.sptech.refuge.core.domain.categoria.Categoria;
 
 import java.time.LocalDateTime;
 
@@ -22,15 +22,15 @@ public class CondicaoSaude {
     private String observacoes;
 
 
-    private BeneficiarioEntity beneficiarioEntity;
+    private Beneficiario beneficiarioEntity;
 
 
-    private CategoriaEntity categoriaEntity;
+    private Categoria categoriaEntity;
 
     public CondicaoSaude() {
     }
 
-    public CondicaoSaude(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, BeneficiarioEntity beneficiarioEntity, CategoriaEntity categoriaEntity) {
+    public CondicaoSaude(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, Beneficiario beneficiarioEntity, Categoria categoriaEntity) {
         this.id = id;
         this.diagnostico = diagnostico;
         this.descricao = descricao;
@@ -41,6 +41,7 @@ public class CondicaoSaude {
         this.beneficiarioEntity = beneficiarioEntity;
         this.categoriaEntity = categoriaEntity;
     }
+
     /** Define a data de registro e atualização antes de persistir o registro */
     public void prePersist() {
         LocalDateTime agora = LocalDateTime.now();
@@ -110,19 +111,19 @@ public class CondicaoSaude {
         this.observacoes = observacoes;
     }
 
-    public BeneficiarioEntity getBeneficiario() {
+    public Beneficiario getBeneficiario() {
         return beneficiarioEntity;
     }
 
-    public void setBeneficiario(BeneficiarioEntity beneficiarioEntity) {
+    public void setBeneficiario(Beneficiario beneficiarioEntity) {
         this.beneficiarioEntity = beneficiarioEntity;
     }
 
-    public CategoriaEntity getCategoria() {
+    public Categoria getCategoria() {
         return categoriaEntity;
     }
 
-    public void setCategoria(CategoriaEntity categoriaEntity) {
+    public void setCategoria(Categoria categoriaEntity) {
         this.categoriaEntity = categoriaEntity;
     }
 }

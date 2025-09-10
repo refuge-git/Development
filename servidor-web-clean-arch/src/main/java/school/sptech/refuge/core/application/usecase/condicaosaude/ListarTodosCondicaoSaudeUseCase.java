@@ -17,11 +17,16 @@ public class ListarTodosCondicaoSaudeUseCase {
     public List<CondicaoSaudeListDto> execute(Integer beneficiarioId) {
         return condicaoSaudeGateway.buscarPorBeneficiarioId(beneficiarioId)
                 .stream()
-                .map(c -> new CondicaoSaudeListDto(
-                        c.getId(),
-                        c.getDescricao(),
-                        c.getCategoria().getNome(),
-                        c.getBeneficiario().getNome()
+                .map(condicaoSaude -> new CondicaoSaudeListDto(
+                        condicaoSaude.getId(),
+                        condicaoSaude.getDiagnostico(),
+                        condicaoSaude.getDescricao(),
+                        condicaoSaude.getDataRegistro(),
+                        condicaoSaude.getDataAtualizacao(),
+                        condicaoSaude.getTratamento(),
+                        condicaoSaude.getObservacoes(),
+                        condicaoSaude.getBeneficiario().getId(),
+                        condicaoSaude.getCategoria().getId()
                 ))
                 .collect(Collectors.toList());
     }

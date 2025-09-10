@@ -13,7 +13,7 @@ import school.sptech.refuge.antes.service.BeneficiarioService;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
-import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeJpaRepository;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaRepository;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
@@ -60,7 +60,7 @@ class BeneficiarioEntityTest {
     private TipoSexualidadeRepository tipoSexualidadeRepository;
 
     @Mock
-    private CondicaoSaudeRepository condicaoSaudeRepository;
+    private CondicaoSaudeJpaRepository condicaoSaudeJpaRepository;
 
     @Mock
     private RegistroAtendimentoRepository registroAtendimentoRepository;

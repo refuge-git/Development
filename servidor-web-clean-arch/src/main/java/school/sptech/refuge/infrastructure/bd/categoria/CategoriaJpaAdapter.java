@@ -1,8 +1,8 @@
 package school.sptech.refuge.infrastructure.bd.categoria;
 
 import school.sptech.refuge.core.adapters.CategoriaGateway;
+import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
 import school.sptech.refuge.core.domain.categoria.Categoria;
-import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,11 +31,29 @@ public class CategoriaJpaAdapter implements CategoriaGateway{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public boolean existePorId(Integer id){
+        return categoriaJpaRepository.existsById(id);
+    }
 
     @Override
     public Optional<Categoria> buscarPorId(Integer id) {
-        return CategoriaJpaRepository.findById(id)
+        return categoriaJpaRepository.findById(id)
                 .map(CategoriaMapper::ofEntity);
+    }
+
+    @Override
+    public Categoria atualizar(Integer id, Categoria categoria){
+        if(!categoriaJpaRepository.existsById(id)){
+            throw new CategoriaNaoEncontradaException("Tipo de Categoria de id: " + id);
+        }
+
+        CategoriaEntity entity = CategoriaMapper.ofDomain(categoria);
+        entity.setId(id);
+
+        CategoriaEntity atualizado = categoriaJpaRepository.save(entity);
+        return CategoriaMapper.ofEntity(atualizado);
+
     }
 
     @Override
@@ -49,11 +67,5 @@ public class CategoriaJpaAdapter implements CategoriaGateway{
         if(categoriaJpaRepository.existsById(id)){
             categoriaJpaRepository.deleteById(id);
         }
-
-    }
-
-    @Override
-    public boolean existePorId(Integer id) {
-        return categoriaJpaRepository.existsById(id);
     }
 }

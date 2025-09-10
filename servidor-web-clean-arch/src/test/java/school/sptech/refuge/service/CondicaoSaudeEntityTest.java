@@ -13,7 +13,7 @@ import school.sptech.refuge.core.application.exception.CondicaoSaudeNaoEncontrad
 import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaJpaRepository;
-import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeJpaRepository;
 import school.sptech.refuge.antes.service.CondicaoSaudeService;
 
 import java.time.LocalDate;
@@ -30,7 +30,7 @@ class CondicaoSaudeEntityTest {
     private CondicaoSaudeService condicaoSaudeService;
 
     @Mock
-    private CondicaoSaudeRepository condicaoSaudeRepository;
+    private CondicaoSaudeJpaRepository condicaoSaudeJpaRepository;
 
     @Mock
     private CategoriaJpaRepository categoriaJpaRepository;
@@ -59,7 +59,7 @@ class CondicaoSaudeEntityTest {
 
         when(categoriaJpaRepository.findById(1)).thenReturn(Optional.of(categoriaEntity));
         when(beneficiarioJpaRepository.findById(1)).thenReturn(Optional.of(beneficiarioEntity));
-        when(condicaoSaudeRepository.save(any())).thenReturn(condicao);
+        when(condicaoSaudeJpaRepository.save(any())).thenReturn(condicao);
 
         CondicaoSaudeEntity resultado = condicaoSaudeService.cadastrar(condicao);
 
@@ -68,7 +68,7 @@ class CondicaoSaudeEntityTest {
 
         verify(categoriaJpaRepository, times(1)).findById(1);
         verify(beneficiarioJpaRepository, times(1)).findById(1);
-        verify(condicaoSaudeRepository, times(1)).save(condicao);
+        verify(condicaoSaudeJpaRepository, times(1)).save(condicao);
     }
 
     @Test
@@ -83,19 +83,19 @@ class CondicaoSaudeEntityTest {
 
         assertEquals("Categoria da condição não encontrada", excecao.getMessage());
         verify(categoriaJpaRepository).findById(99);
-        verify(condicaoSaudeRepository, never()).save(any());
+        verify(condicaoSaudeJpaRepository, never()).save(any());
     }
 
     @Test
     @DisplayName("Deve listar todas as condições de saúde")
     void deveListarTodasCondicoes() {
         List<CondicaoSaudeEntity> condicoes = List.of(new CondicaoSaudeEntity(1, "Dor de cabeça", LocalDate.now(), "Paracetamol", "Paciente sente dor leve", beneficiarioEntity, categoriaEntity), new CondicaoSaudeEntity(1, "Dor de cabeça", LocalDate.now(), "Paracetamol", "Paciente sente dor leve", beneficiarioEntity, categoriaEntity));
-        when(condicaoSaudeRepository.findAll()).thenReturn(condicoes);
+        when(condicaoSaudeJpaRepository.findAll()).thenReturn(condicoes);
 
         List<CondicaoSaudeEntity> resultado = condicaoSaudeService.listar();
 
         assertEquals(2, resultado.size());
-        verify(condicaoSaudeRepository).findAll();
+        verify(condicaoSaudeJpaRepository).findAll();
     }
 
     @Test
@@ -103,15 +103,15 @@ class CondicaoSaudeEntityTest {
     void deveAtualizarCondicaoSaudeComSucesso() {
         CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(1, "Febre", LocalDate.now(), "Repouso", "Paciente com febre", null, null);
 
-        when(condicaoSaudeRepository.existsById(1)).thenReturn(true);
-        when(condicaoSaudeRepository.save(condicao)).thenReturn(condicao);
+        when(condicaoSaudeJpaRepository.existsById(1)).thenReturn(true);
+        when(condicaoSaudeJpaRepository.save(condicao)).thenReturn(condicao);
 
         CondicaoSaudeEntity resultado = condicaoSaudeService.atualizar(condicao);
 
         assertNotNull(resultado);
         assertEquals("Febre", resultado.getDescricao());
-        verify(condicaoSaudeRepository).existsById(1);
-        verify(condicaoSaudeRepository).save(condicao);
+        verify(condicaoSaudeJpaRepository).existsById(1);
+        verify(condicaoSaudeJpaRepository).save(condicao);
     }
 
     @Test
@@ -119,46 +119,46 @@ class CondicaoSaudeEntityTest {
     void deveLancarExcecaoAoAtualizarCondicaoInexistente() {
         CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(99, "Inexistente", LocalDate.now(), "N/A", "N/A", null, null);
 
-        when(condicaoSaudeRepository.existsById(99)).thenReturn(false);
+        when(condicaoSaudeJpaRepository.existsById(99)).thenReturn(false);
 
         EntidadeNaoEncontradaException excecao = assertThrows(EntidadeNaoEncontradaException.class, () -> condicaoSaudeService.atualizar(condicao));
 
         assertEquals("Condição de saude com id 99 não encontrada", excecao.getMessage());
-        verify(condicaoSaudeRepository).existsById(99);
-        verify(condicaoSaudeRepository, never()).save(any());
+        verify(condicaoSaudeJpaRepository).existsById(99);
+        verify(condicaoSaudeJpaRepository, never()).save(any());
     }
 
     @Test
     @DisplayName("Deve remover condição de saúde existente")
     void deveRemoverCondicaoSaude() {
-        when(condicaoSaudeRepository.existsById(1)).thenReturn(true);
+        when(condicaoSaudeJpaRepository.existsById(1)).thenReturn(true);
 
         condicaoSaudeService.removerPorId(1);
 
-        verify(condicaoSaudeRepository).deleteById(1);
+        verify(condicaoSaudeJpaRepository).deleteById(1);
     }
 
     @Test
     @DisplayName("Deve lançar exceção ao remover condição inexistente")
     void deveLancarExcecaoAoRemoverCondicaoInexistente() {
-        when(condicaoSaudeRepository.existsById(99)).thenReturn(false);
+        when(condicaoSaudeJpaRepository.existsById(99)).thenReturn(false);
 
         EntidadeNaoEncontradaException excecao = assertThrows(EntidadeNaoEncontradaException.class, () -> condicaoSaudeService.removerPorId(99));
 
         assertEquals("Condição de saude com id 99 não encontrada", excecao.getMessage());
-        verify(condicaoSaudeRepository, never()).deleteById(any());
+        verify(condicaoSaudeJpaRepository, never()).deleteById(any());
     }
 
     @Test
     @DisplayName("Deve listar condições por descrição contendo texto")
     void deveListarPorDescricao() {
-        when(condicaoSaudeRepository.findByDescricaoContainingIgnoreCase("febre"))
+        when(condicaoSaudeJpaRepository.findByDescricaoContainingIgnoreCase("febre"))
                 .thenReturn(List.of(new CondicaoSaudeEntity(1, "Dor de cabeça", LocalDate.now(), "Paracetamol", "Paciente sente dor leve", beneficiarioEntity, categoriaEntity), new CondicaoSaudeEntity(1, "Dor de cabeça", LocalDate.now(), "Paracetamol", "Paciente sente dor leve", beneficiarioEntity, categoriaEntity)));
 
         List<CondicaoSaudeEntity> resultado = condicaoSaudeService.listarPorDescricao("febre");
 
         assertEquals(2, resultado.size());
-        verify(condicaoSaudeRepository).findByDescricaoContainingIgnoreCase("febre");
+        verify(condicaoSaudeJpaRepository).findByDescricaoContainingIgnoreCase("febre");
     }
 
     @Test
@@ -166,23 +166,23 @@ class CondicaoSaudeEntityTest {
     void deveBuscarPorIdComSucesso() {
         CondicaoSaudeEntity condicao = new CondicaoSaudeEntity(1, "Teste", LocalDate.now(), "Tratamento", "Obs", null, null);
 
-        when(condicaoSaudeRepository.findById(1)).thenReturn(Optional.of(condicao));
+        when(condicaoSaudeJpaRepository.findById(1)).thenReturn(Optional.of(condicao));
 
         CondicaoSaudeEntity resultado = condicaoSaudeService.buscarPorId(1);
 
         assertNotNull(resultado);
         assertEquals(1, resultado.getId());
-        verify(condicaoSaudeRepository).findById(1);
+        verify(condicaoSaudeJpaRepository).findById(1);
     }
 
     @Test
     @DisplayName("Deve lançar exceção ao buscar por ID inexistente")
     void deveLancarExcecaoAoBuscarPorIdInexistente() {
-        when(condicaoSaudeRepository.findById(999)).thenReturn(Optional.empty());
+        when(condicaoSaudeJpaRepository.findById(999)).thenReturn(Optional.empty());
 
         CondicaoSaudeNaoEncontradaException excecao = assertThrows(CondicaoSaudeNaoEncontradaException.class, () -> condicaoSaudeService.buscarPorId(999));
 
         assertEquals("Condição de saúde de id 999 não encontrado", excecao.getMessage());
-        verify(condicaoSaudeRepository).findById(999);
+        verify(condicaoSaudeJpaRepository).findById(999);
     }
 }

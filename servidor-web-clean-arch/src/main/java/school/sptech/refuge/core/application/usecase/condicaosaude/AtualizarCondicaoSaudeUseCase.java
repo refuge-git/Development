@@ -5,12 +5,14 @@ import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeList
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeRequestDto;
 import school.sptech.refuge.core.application.exception.CondicaoSaudeNaoEncontradaException;
 import school.sptech.refuge.core.domain.condicaosaude.CondicaoSaude;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaAdapter;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaJpaAdapter;
 
 public class AtualizarCondicaoSaudeUseCase {
 
     private final CondicaoSaudeGateway condicaoSaudeGateway;
 
-    public AtualizarCondicaoSaudeUseCase(CondicaoSaudeGateway condicaoSaudeGateway) {
+    public AtualizarCondicaoSaudeUseCase(CondicaoSaudeGateway condicaoSaudeGateway, CategoriaJpaAdapter categoriaAdapter, BeneficiarioJpaAdapter beneficiarioAdapter) {
         this.condicaoSaudeGateway = condicaoSaudeGateway;
     }
 
@@ -25,9 +27,15 @@ public class AtualizarCondicaoSaudeUseCase {
 
         return new CondicaoSaudeListDto(
                 atualizada.getId(),
+                atualizada.getDiagnostico(),
                 atualizada.getDescricao(),
-                atualizada.getCategoria().getNome(),
-                atualizada.getBeneficiario().getNome()
+                atualizada.getDataRegistro(),
+                atualizada.getDataAtualizacao(),
+                atualizada.getTratamento(),
+                atualizada.getObservacoes(),
+                atualizada.getBeneficiario().getId(),
+                atualizada.getCategoria().getId()
+
         );
     }
 }

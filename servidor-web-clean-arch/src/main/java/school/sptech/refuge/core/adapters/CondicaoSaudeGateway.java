@@ -11,6 +11,9 @@ public interface CondicaoSaudeGateway {
     Optional<CondicaoSaude> buscarPorId(Integer id);
     List<CondicaoSaude> buscarPorDescricao(String descricao);
     List<CondicaoSaude> buscarPorBeneficiarioId(Integer beneficiarioId);
+
+    CondicaoSaude atualizar(Integer id, CondicaoSaude condicaoSaude);
+
     void deletar(Integer id);
     boolean existePorId(Integer id);
 }

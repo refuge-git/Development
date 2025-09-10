@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface CondicaoSaudeRepository extends JpaRepository<CondicaoSaudeEntity, Integer> {
+public interface CondicaoSaudeJpaRepository extends JpaRepository<CondicaoSaudeEntity, Integer> {
     List<CondicaoSaudeEntity> findByDescricaoContainingIgnoreCase(String descricao);
 
     List<CondicaoSaudeEntity> findAllByDataRegistro(LocalDate dataRegistro);

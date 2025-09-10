@@ -27,7 +27,7 @@ public class CondicaoSaudeListDto {
     @Schema(description = "Categoria da condição de saúde")
     private CategoriaListDto categoria;
 
-    public CondicaoSaudeListDto(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, BeneficarioListDto beneficiario, CategoriaListDto categoria) {
+    public CondicaoSaudeListDto(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, Integer beneficiario, Integer categoria) {
         this.id = id;
         this.diagnostico = diagnostico;
         this.descricao = descricao;

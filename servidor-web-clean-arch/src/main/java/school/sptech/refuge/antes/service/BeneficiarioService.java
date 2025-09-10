@@ -14,7 +14,7 @@ import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.entity.*;
 import school.sptech.refuge.exception.*;
-import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeJpaRepository;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaRepository;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
@@ -32,16 +32,16 @@ public class BeneficiarioService {
     private final EnderecoRepository enderecoRepository;
     private final TipoGeneroJpaRepository tipoGeneroJpaRepository;
     private final TipoSexualidadeRepository tipoSexualidadeRepository;
-    private final CondicaoSaudeRepository condicaoSaudeRepository;
+    private final CondicaoSaudeJpaRepository condicaoSaudeJpaRepository;
     private final RegistroAtendimentoRepository registroAtendimentoRepository;
 
-    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository, FuncionarioJpaRepository funcionarioJpaRepository, EnderecoRepository enderecoRepository, TipoGeneroJpaRepository tipoGeneroJpaRepository, TipoSexualidadeRepository tipoSexualidadeRepository, CondicaoSaudeRepository condicaoSaudeRepository, RegistroAtendimentoRepository registroAtendimentoRepository) {
+    public BeneficiarioService(BeneficiarioRepository beneficiarioRepository, FuncionarioJpaRepository funcionarioJpaRepository, EnderecoRepository enderecoRepository, TipoGeneroJpaRepository tipoGeneroJpaRepository, TipoSexualidadeRepository tipoSexualidadeRepository, CondicaoSaudeJpaRepository condicaoSaudeJpaRepository, RegistroAtendimentoRepository registroAtendimentoRepository) {
         this.beneficiarioRepository = beneficiarioRepository;
         this.funcionarioJpaRepository = funcionarioJpaRepository;
         this.enderecoRepository = enderecoRepository;
         this.tipoGeneroJpaRepository = tipoGeneroJpaRepository;
         this.tipoSexualidadeRepository = tipoSexualidadeRepository;
-        this.condicaoSaudeRepository = condicaoSaudeRepository;
+        this.condicaoSaudeJpaRepository = condicaoSaudeJpaRepository;
         this.registroAtendimentoRepository = registroAtendimentoRepository;
     }
 

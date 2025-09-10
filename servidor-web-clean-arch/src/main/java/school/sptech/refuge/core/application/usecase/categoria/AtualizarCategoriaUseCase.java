@@ -6,11 +6,11 @@ import school.sptech.refuge.core.application.dto.categoria.CategoriaRequestDto;
 import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
 import school.sptech.refuge.core.domain.categoria.Categoria;
 
-public class AtualizarCategoriaPorIdUseCase {
+public class AtualizarCategoriaUseCase {
 
     private final CategoriaGateway categoriaGateway;
 
-    public AtualizarCategoriaPorIdUseCase(CategoriaGateway categoriaGateway){
+    public AtualizarCategoriaUseCase(CategoriaGateway categoriaGateway){
         this.categoriaGateway = categoriaGateway;
     }
 

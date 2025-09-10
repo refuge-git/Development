@@ -9,18 +9,18 @@ import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaJpaRepository;
-import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeRepository;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeJpaRepository;
 
 import java.util.List;
 
 @Service
 public class CondicaoSaudeService {
-    private final CondicaoSaudeRepository condicaoSaudeRepository;
+    private final CondicaoSaudeJpaRepository condicaoSaudeJpaRepository;
     private final CategoriaJpaRepository categoriaJpaRepository;
     private final BeneficiarioJpaRepository beneficiarioJpaRepository;
 
-    public CondicaoSaudeService(CondicaoSaudeRepository condicaoSaudeRepository, CategoriaJpaRepository categoriaJpaRepository, BeneficiarioJpaRepository beneficiarioJpaRepository) {
-        this.condicaoSaudeRepository = condicaoSaudeRepository;
+    public CondicaoSaudeService(CondicaoSaudeJpaRepository condicaoSaudeJpaRepository, CategoriaJpaRepository categoriaJpaRepository, BeneficiarioJpaRepository beneficiarioJpaRepository) {
+        this.condicaoSaudeJpaRepository = condicaoSaudeJpaRepository;
         this.categoriaJpaRepository = categoriaJpaRepository;
         this.beneficiarioJpaRepository = beneficiarioJpaRepository;
     }
@@ -30,7 +30,7 @@ public class CondicaoSaudeService {
         BeneficiarioEntity beneficiarioEntity = validarBeneficiario(condicaoSaudeEntity.getBeneficiario().getId());
         condicaoSaudeEntity.setCategoria(categoriaEntity);
         condicaoSaudeEntity.setBeneficiario(beneficiarioEntity);
-        return condicaoSaudeRepository.save(condicaoSaudeEntity);
+        return condicaoSaudeJpaRepository.save(condicaoSaudeEntity);
     }
 
     public CategoriaEntity validarCategoria(Integer id) {
@@ -44,28 +44,28 @@ public class CondicaoSaudeService {
     }
 
     public List<CondicaoSaudeEntity> listar() {
-        return condicaoSaudeRepository.findAll();
+        return condicaoSaudeJpaRepository.findAll();
     }
 
     public CondicaoSaudeEntity atualizar(CondicaoSaudeEntity condicaoSaudeEntity) {
-        if(condicaoSaudeRepository.existsById(condicaoSaudeEntity.getId())) {
+        if(condicaoSaudeJpaRepository.existsById(condicaoSaudeEntity.getId())) {
             condicaoSaudeEntity.setId(condicaoSaudeEntity.getId());
-            return condicaoSaudeRepository.save(condicaoSaudeEntity);
+            return condicaoSaudeJpaRepository.save(condicaoSaudeEntity);
         } else {
             throw new EntidadeNaoEncontradaException("Condição de saude com id %d não encontrada".formatted(condicaoSaudeEntity.getId()));
         }
     }
 
     public void removerPorId(Integer id) {
-        if(condicaoSaudeRepository.existsById(id)) {
-            condicaoSaudeRepository.deleteById(id);
+        if(condicaoSaudeJpaRepository.existsById(id)) {
+            condicaoSaudeJpaRepository.deleteById(id);
         } else {
             throw new EntidadeNaoEncontradaException("Condição de saude com id %d não encontrada".formatted(id));
         }
     }
 
     public List<CondicaoSaudeEntity> listarPorDescricao(String descricao) {
-        return condicaoSaudeRepository.findByDescricaoContainingIgnoreCase(descricao);
+        return condicaoSaudeJpaRepository.findByDescricaoContainingIgnoreCase(descricao);
     }
 
     /*public List<CondicaoSaude> listarPorDataRegistro(LocalDate data) {
@@ -73,11 +73,11 @@ public class CondicaoSaudeService {
     }*/
 
     public CondicaoSaudeEntity buscarPorId(Integer id) {
-        return condicaoSaudeRepository.findById(id)
+        return condicaoSaudeJpaRepository.findById(id)
                 .orElseThrow(() -> new CondicaoSaudeNaoEncontradaException("Condição de saúde de id %d não encontrado".formatted(id)));
     }
 
     public List<CondicaoSaudeEntity> listarPorIdBeneficiario(Integer idBeneficiario) {
-        return condicaoSaudeRepository.findByBeneficiarioId(idBeneficiario);
+        return condicaoSaudeJpaRepository.findByBeneficiarioId(idBeneficiario);
     }
 }
