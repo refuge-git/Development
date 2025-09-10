@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.application.dto.funcionario.*;
 import school.sptech.refuge.core.application.usecase.funcionario.*;
-import school.sptech.refuge.dto.funcionario.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.antes.service.FuncionarioService;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioMapper;

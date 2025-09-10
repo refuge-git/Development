@@ -1,6 +1,7 @@
 package school.sptech.refuge.antes.entity;
 
 import jakarta.persistence.*;
+import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 
 import java.time.LocalDateTime;

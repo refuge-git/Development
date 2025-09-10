@@ -4,15 +4,15 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.antes.entity.RegistroAtendimento;
-import school.sptech.refuge.antes.entity.TipoAtendimento;
+import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontradaException;
-import school.sptech.refuge.antes.exception.RegistroAtendimentoNaoEncontradoException;
-import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
+import school.sptech.refuge.core.application.exception.RegistroAtendimentoNaoEncontradoException;
+import school.sptech.refuge.core.application.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.exception.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
 import school.sptech.refuge.antes.repository.RegistroAtendimentoRepository;
-import school.sptech.refuge.antes.repository.TipoAtendimentoRepository;
+import school.sptech.refuge.infrastructure.bd.tipoAtendimento.TipoAtendimentoJpaRepository;
 
 import java.util.List;
 
@@ -20,17 +20,17 @@ import java.util.List;
 public class RegistroAtendimentoService {
 
     private final RegistroAtendimentoRepository registroAtendimentoRepository;
-    private final TipoAtendimentoRepository tipoAtendimentoRepository;
+    private final TipoAtendimentoJpaRepository tipoAtendimentoJpaRepository;
     private final BeneficiarioJpaRepository beneficiarioJpaRepository;
 
-    public RegistroAtendimentoService(RegistroAtendimentoRepository registroAtendimentoRepository, TipoAtendimentoRepository tipoAtendimentoRepository, BeneficiarioJpaRepository beneficiarioJpaRepository) {
+    public RegistroAtendimentoService(RegistroAtendimentoRepository registroAtendimentoRepository, TipoAtendimentoJpaRepository tipoAtendimentoJpaRepository, BeneficiarioJpaRepository beneficiarioJpaRepository) {
         this.registroAtendimentoRepository = registroAtendimentoRepository;
-        this.tipoAtendimentoRepository = tipoAtendimentoRepository;
+        this.tipoAtendimentoJpaRepository = tipoAtendimentoJpaRepository;
         this.beneficiarioJpaRepository = beneficiarioJpaRepository;
     }
 
     public TipoAtendimento validarTipoAtendimento(Integer id) {
-        return tipoAtendimentoRepository.findById(id)
+        return tipoAtendimentoJpaRepository.findById(id)
                 .orElseThrow(() -> new TipoAtendimentoNaoEncotradoException("Tipo de atendimento não encontrado"));
     }
 

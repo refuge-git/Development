@@ -3,11 +3,12 @@ package school.sptech.refuge.antes.dto.registroAtendimento;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.antes.dto.tipoAtendimento.TipoAtendimentoResponseDto;
+import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoResponseDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
 import school.sptech.refuge.antes.entity.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 import school.sptech.refuge.entity.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 

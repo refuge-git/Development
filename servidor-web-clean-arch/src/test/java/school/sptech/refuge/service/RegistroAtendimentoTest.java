@@ -8,14 +8,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.antes.entity.RegistroAtendimento;
-import school.sptech.refuge.antes.entity.TipoAtendimento;
+import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontradaException;
-import school.sptech.refuge.antes.exception.RegistroAtendimentoNaoEncontradoException;
-import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
+import school.sptech.refuge.core.application.exception.RegistroAtendimentoNaoEncontradoException;
+import school.sptech.refuge.core.application.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.service.RegistroAtendimentoService;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
 import school.sptech.refuge.antes.repository.RegistroAtendimentoRepository;
-import school.sptech.refuge.antes.repository.TipoAtendimentoRepository;
+import school.sptech.refuge.infrastructure.bd.tipoAtendimento.TipoAtendimentoJpaRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,7 @@ class RegistroAtendimentoTest {
     @Mock
     private RegistroAtendimentoRepository registroRepo;
     @Mock
-    private TipoAtendimentoRepository tipoRepo;
+    private TipoAtendimentoJpaRepository tipoRepo;
     @Mock
     private BeneficiarioJpaRepository beneficiarioRepo;
     @InjectMocks

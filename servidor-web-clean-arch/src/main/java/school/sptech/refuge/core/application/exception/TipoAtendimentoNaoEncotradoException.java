@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.exception;
+package school.sptech.refuge.core.application.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

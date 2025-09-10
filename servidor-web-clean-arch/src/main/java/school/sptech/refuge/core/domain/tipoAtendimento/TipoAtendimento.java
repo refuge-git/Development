@@ -1,15 +1,10 @@
-package school.sptech.refuge.antes.entity;
+package school.sptech.refuge.core.domain.tipoAtendimento;
 
 import jakarta.persistence.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 
 import java.time.LocalDateTime;
-
-@Entity
 public class TipoAtendimento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tipo_atendimento")
     private Integer id;
     private String nome;
     private String descricao;

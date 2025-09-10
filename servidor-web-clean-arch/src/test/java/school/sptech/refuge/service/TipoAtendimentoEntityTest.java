@@ -7,12 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
-import school.sptech.refuge.antes.entity.TipoAtendimento;
+import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaException;
-import school.sptech.refuge.antes.exception.TipoAtendimentoNaoEncotradoException;
+import school.sptech.refuge.core.application.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.antes.exception.ViolacaoDeDadosException;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaRepository;
-import school.sptech.refuge.antes.repository.TipoAtendimentoRepository;
+import school.sptech.refuge.infrastructure.bd.tipoAtendimento.TipoAtendimentoJpaRepository;
 import school.sptech.refuge.antes.service.TipoAtendimentoService;
 
 import java.util.List;
@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TipoAtendimentoTest {
+class TipoAtendimentoEntityTest {
 
     @Mock
-    private TipoAtendimentoRepository tipoRepo;
+    private TipoAtendimentoJpaRepository tipoRepo;
 
     @Mock
     private FuncionarioJpaRepository funcionarioRepo;

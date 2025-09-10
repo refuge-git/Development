@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.dto.tipoAtendimento;
+package school.sptech.refuge.core.application.dto.tipoAtendimento;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;

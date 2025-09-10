@@ -1,9 +1,8 @@
-package school.sptech.refuge.antes.dto.tipoAtendimento;
+package school.sptech.refuge.core.application.dto.tipoAtendimento;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class TipoAtendimentoRequestDto {
     @Schema(description = "Nome de tipo de atendimentos", example = "Psicólógico")

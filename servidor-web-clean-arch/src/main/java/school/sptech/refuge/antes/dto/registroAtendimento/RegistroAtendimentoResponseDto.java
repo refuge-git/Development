@@ -2,7 +2,7 @@ package school.sptech.refuge.antes.dto.registroAtendimento;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
-import school.sptech.refuge.antes.dto.tipoAtendimento.TipoAtendimentoResponseDto;
+import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoResponseDto;
 
 import java.time.LocalDateTime;
 
