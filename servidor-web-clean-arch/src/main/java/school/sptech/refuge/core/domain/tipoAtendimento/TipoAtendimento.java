@@ -10,8 +10,6 @@ public class TipoAtendimento {
     private String descricao;
     private LocalDateTime dataCriacao;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_funcionario", referencedColumnName = "id_funcionario")
     private Funcionario funcionario;
 
     public TipoAtendimento(){

@@ -28,6 +28,8 @@ public class TipoAtendimentoResponseDto {
     public TipoAtendimentoResponseDto() {
     }
 
+
+
     public Integer getId() {
         return id;
     }

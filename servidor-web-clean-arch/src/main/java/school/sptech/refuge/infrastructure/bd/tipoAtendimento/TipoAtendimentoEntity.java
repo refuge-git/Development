@@ -2,6 +2,7 @@ package school.sptech.refuge.infrastructure.bd.tipoAtendimento;
 
 import jakarta.persistence.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioEntity;
 
 import java.time.LocalDateTime;
 
@@ -17,18 +18,18 @@ public class TipoAtendimentoEntity {
 
     @ManyToOne
     @JoinColumn(name = "fk_funcionario", referencedColumnName = "id_funcionario")
-    private Funcionario funcionario;
+    private FuncionarioEntity funcionario;
 
     public TipoAtendimentoEntity(){
     }
 
 
-    public TipoAtendimentoEntity(Integer id, String nome, String descricao, LocalDateTime dataCriacao, Funcionario funcionario) {
+    public TipoAtendimentoEntity(Integer id, String nome, String descricao, LocalDateTime dataCriacao, FuncionarioEntity funcionarioEntity) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.dataCriacao = dataCriacao;
-        this.funcionario = funcionario;
+        this.funcionario = funcionarioEntity;
     }
 
     public Integer getId() {
@@ -63,11 +64,11 @@ public class TipoAtendimentoEntity {
         this.dataCriacao = dataCriacao;
     }
 
-    public Funcionario getFuncionario() {
+    public FuncionarioEntity getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
+    public void setFuncionario(FuncionarioEntity funcionario) {
         this.funcionario = funcionario;
     }
 }

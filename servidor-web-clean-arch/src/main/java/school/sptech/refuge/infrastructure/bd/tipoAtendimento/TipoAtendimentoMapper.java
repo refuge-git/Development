@@ -115,4 +115,21 @@ public class TipoAtendimentoMapper {
         dominio.setDataCriacao(tipoAtendimentoEntity.getDataCriacao());
         return dominio;
     }
+
+    public static TipoAtendimentoResponseDto fromDomain(TipoAtendimento entity) {
+        if (Objects.isNull(entity)) {
+            return null;
+        }
+        return new TipoAtendimentoResponseDto(
+                entity.getId(),
+                entity.getNome(),
+                entity.getDescricao(),
+                entity.getDataCriacao(),
+                entity.getFuncionario().getId(),
+                entity.getFuncionario().getNome(),
+                entity.getFuncionario().getCpf(),
+                entity.getFuncionario().getTelefone(),
+                entity.getFuncionario().getEmail()
+        );
+    }
 }
