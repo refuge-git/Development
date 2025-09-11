@@ -1,7 +1,8 @@
 package school.sptech.refuge.core.application.dto.beneficiario;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
+
+import school.sptech.refuge.core.application.dto.endereco.EnderecoResponseDto;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
@@ -45,12 +46,12 @@ public class BeneficarioListDto {
     private String observacao;
 
     private FuncionarioListDto funcionario;
-    private EnderecoListDto endereco;
+    private EnderecoResponseDto endereco;
     private TipoGeneroListDto tipoGenero;
     private TipoSexualidadeListDto tipoSexualidade;
 
 
-    public BeneficarioListDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, FuncionarioListDto funcionario, EnderecoListDto endereco, TipoGeneroListDto tipoGenero, TipoSexualidadeListDto tipoSexualidade) {
+    public BeneficarioListDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, FuncionarioListDto funcionario, EnderecoResponseDto endereco, TipoGeneroListDto tipoGenero, TipoSexualidadeListDto tipoSexualidade) {
         this.id = id;
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
@@ -212,11 +213,11 @@ public class BeneficarioListDto {
         this.funcionario = funcionario;
     }
 
-    public EnderecoListDto getEndereco() {
+    public EnderecoResponseDto getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(EnderecoListDto endereco) {
+    public void setEndereco(EnderecoResponseDto endereco) {
         this.endereco = endereco;
     }
 

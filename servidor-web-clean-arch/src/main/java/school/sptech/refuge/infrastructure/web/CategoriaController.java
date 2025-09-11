@@ -15,8 +15,6 @@ import school.sptech.refuge.core.application.usecase.categoria.*;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaMapper;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaRequestDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
-import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
-import school.sptech.refuge.antes.service.CategoriaService;
 
 import java.util.List;
 

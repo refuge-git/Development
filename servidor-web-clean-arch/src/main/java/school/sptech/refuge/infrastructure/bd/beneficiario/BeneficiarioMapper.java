@@ -1,17 +1,17 @@
 package school.sptech.refuge.infrastructure.bd.beneficiario;
 
-import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
-import school.sptech.refuge.antes.dto.endereco.EnderecoMapper;
+
+import school.sptech.refuge.core.application.dto.endereco.EnderecoResponseDto;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
-import school.sptech.refuge.antes.entity.*;
 import school.sptech.refuge.core.domain.beneficiario.*;
 //import school.sptech.refuge.entity.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.infrastructure.bd.endereco.EnderecoMapper;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioMapper;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroMapper;
@@ -52,7 +52,7 @@ public class BeneficiarioMapper {
                         beneficiario.getFuncionario().getTelefone(),
                         beneficiario.getFuncionario().getEmail()
                 ) : null,
-                beneficiario.getEndereco() != null ? new EnderecoListDto(
+                beneficiario.getEndereco() != null ? new EnderecoResponseDto(
                         beneficiario.getEndereco().getId(),
                         beneficiario.getEndereco().getTipoLogradouro(),
                         beneficiario.getEndereco().getNomeLogradouro(),

@@ -60,4 +60,19 @@ public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
             throw new BeneficiarioNaoEncontradaException("Bendeficiário não encontrado de id:" + id);
         }
     }
+
+    @Override
+    public List<Beneficiario> buscarPorRaca(String raca) {
+        return beneficiarioJpaRepository.findByRaca(raca).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Beneficiario> buscarPorStatus(String status) {
+        return beneficiarioJpaRepository.findByStatus(status).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Beneficiario> buscarPorNomeRegistroOuNomeSocial(String nome) {
+        return beneficiarioJpaRepository.findByNomeRegistroOrNomeSocialContainingIgnoreCase(nome).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
+    }
 }

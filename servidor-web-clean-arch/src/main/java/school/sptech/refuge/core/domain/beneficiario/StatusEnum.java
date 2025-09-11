@@ -1,6 +1,7 @@
 package school.sptech.refuge.core.domain.beneficiario;
 
-import school.sptech.refuge.antes.exception.StatusInvalidoExeption;
+
+import school.sptech.refuge.core.application.exception.StatusInvalidoExeption;
 
 public enum StatusEnum {
     ATIVO ("Usuário Ativo"),

@@ -15,7 +15,7 @@ import school.sptech.refuge.core.application.usecase.condicaosaude.*;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeMapper;
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeRequestDto;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
-import school.sptech.refuge.antes.service.CondicaoSaudeService;
+
 
 import java.util.List;
 

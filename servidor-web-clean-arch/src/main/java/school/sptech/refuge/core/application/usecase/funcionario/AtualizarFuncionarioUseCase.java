@@ -1,6 +1,6 @@
 package school.sptech.refuge.core.application.usecase.funcionario;
 
-import school.sptech.refuge.antes.exception.EntidadeNaoEncontradaException;
+
 import school.sptech.refuge.core.adapters.FuncionarioGateway;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;

@@ -4,10 +4,7 @@ import school.sptech.refuge.core.adapters.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
-import school.sptech.refuge.core.application.exception.EnderecoNaoEncontradoException;
-import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaException;
-import school.sptech.refuge.core.application.exception.TipoGeneroNaoEncontradoException;
-import school.sptech.refuge.core.application.exception.TipoSexualidadeNaoEncontradoException;
+import school.sptech.refuge.core.application.exception.*;
 import school.sptech.refuge.core.domain.beneficiario.*;
 import school.sptech.refuge.core.domain.endereco.Endereco;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
@@ -37,7 +34,7 @@ public class AtualizarBeneficiarioUseCase {
 
     public BeneficarioListDto execute(Integer id, BeneficiarioAtualizacaoDto dto) {
         if (!beneficiarioGateway.existePorId(id)) {
-            throw new IllegalArgumentException("Beneficiário não encontrado para atualização");
+            throw new BeneficiarioNaoEncontradaException("Beneficiário não encontrado para atualização");
         }
 
         Funcionario funcionario = funcionarioGateway.buscarPorId(dto.getIdFuncionario())

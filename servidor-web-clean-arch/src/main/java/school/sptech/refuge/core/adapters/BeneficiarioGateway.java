@@ -11,6 +11,9 @@ public interface BeneficiarioGateway {
     List<Beneficiario> listarTodos();
     boolean existePorId(Integer id);
     Optional<Beneficiario> buscarPorId(Integer id);
+    List<Beneficiario> buscarPorRaca(String raca);
+    List<Beneficiario> buscarPorStatus(String status);
+    List<Beneficiario> buscarPorNomeRegistroOuNomeSocial(String nome);
     Beneficiario atualizar(Integer id, Beneficiario beneficiario);
     void deletar(Integer id);
 }

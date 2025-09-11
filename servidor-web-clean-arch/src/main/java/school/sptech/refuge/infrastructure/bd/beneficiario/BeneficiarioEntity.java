@@ -1,12 +1,10 @@
 package school.sptech.refuge.infrastructure.bd.beneficiario;
 
 import jakarta.persistence.*;
-import school.sptech.refuge.antes.entity.*;
 import school.sptech.refuge.core.domain.beneficiario.LocalEnum;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.core.domain.beneficiario.StatusEnum;
-import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.infrastructure.bd.endereco.EnderecoEntity;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioEntity;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;

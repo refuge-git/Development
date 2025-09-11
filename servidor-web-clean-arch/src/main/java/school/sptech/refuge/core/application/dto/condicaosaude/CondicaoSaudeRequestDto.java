@@ -2,14 +2,16 @@ package school.sptech.refuge.core.application.dto.condicaosaude;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDate;
+
 public class CondicaoSaudeRequestDto {
 
     @Schema(description = "Diagnóstico da condição de saúde")
     private  String diagnostico;
     @Schema(description = "Descrição da condição de saúde")
     private String descricao;
-    /*@Schema(description = "Data de registro da condição de saúde")
-    private LocalDate dataRegistro;*/
+    @Schema(description = "Data de registro da condição de saúde")
+    private LocalDate dataRegistro;
     @Schema(description = "Tratamento da condição de saúde")
     private String tratamento;
     @Schema(description = "Observações da condição de saúde")
@@ -22,9 +24,10 @@ public class CondicaoSaudeRequestDto {
     public CondicaoSaudeRequestDto() {
     }
 
-    public CondicaoSaudeRequestDto(String diagnostico, String descricao, String tratamento, String observacoes, Integer idBeneficiario, Integer idCategoria) {
+    public CondicaoSaudeRequestDto(String diagnostico, String descricao, LocalDate dataRegistro, String tratamento, String observacoes, Integer idBeneficiario, Integer idCategoria) {
         this.diagnostico = diagnostico;
         this.descricao = descricao;
+        this.dataRegistro = dataRegistro;
         this.tratamento = tratamento;
         this.observacoes = observacoes;
         this.idBeneficiario = idBeneficiario;
@@ -43,13 +46,13 @@ public class CondicaoSaudeRequestDto {
         this.descricao = descricao;
     }
 
-//    public LocalDate getDataRegistro() {
-//        return dataRegistro;
-//    }
-//
-//    public void setDataRegistro(LocalDate dataRegistro) {
-//        this.dataRegistro = dataRegistro;
-//    }
+    public LocalDate getDataRegistro() {
+        return dataRegistro;
+    }
+
+    public void setDataRegistro(LocalDate dataRegistro) {
+        this.dataRegistro = dataRegistro;
+    }
 
     public String getTratamento() {
         return tratamento;

@@ -1,6 +1,7 @@
 package school.sptech.refuge.core.domain.beneficiario;
 
-import school.sptech.refuge.antes.exception.RacaInvalidaException;
+
+import school.sptech.refuge.core.application.exception.RacaInvalidaException;
 
 public enum RacaEnum {
         BRANCO("Branco(a)"),

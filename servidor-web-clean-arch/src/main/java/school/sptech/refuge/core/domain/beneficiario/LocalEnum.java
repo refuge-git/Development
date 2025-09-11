@@ -1,7 +1,7 @@
 package school.sptech.refuge.core.domain.beneficiario;
 
 
-import school.sptech.refuge.antes.exception.LocalInvalidoException;
+import school.sptech.refuge.core.application.exception.LocalInvalidoException;
 
 public enum LocalEnum {
     CASA("Casa"),

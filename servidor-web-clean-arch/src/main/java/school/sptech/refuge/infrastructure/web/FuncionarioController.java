@@ -14,7 +14,6 @@ import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioReques
 import school.sptech.refuge.core.application.dto.funcionario.*;
 import school.sptech.refuge.core.application.usecase.funcionario.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
-import school.sptech.refuge.antes.service.FuncionarioService;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioMapper;
 
 import java.util.List;
@@ -61,7 +60,7 @@ public class FuncionarioController {
     }
 
 
-    @Operation(
+    /*@Operation(
             summary = "Login do funcionário",
             description = "Autentica o funcionário a partir do email e senha"
     )
@@ -76,7 +75,7 @@ public class FuncionarioController {
         FuncionarioTokenDto funcionarioTokenDto = this.funcionarioService.autenticar(funcionario);
 
         return ResponseEntity.status(200).body(funcionarioTokenDto);
-    }
+    }*/
 
 //    @GetMapping
 //    public ResponseEntity<List<FuncionarioListDto>> listar() {

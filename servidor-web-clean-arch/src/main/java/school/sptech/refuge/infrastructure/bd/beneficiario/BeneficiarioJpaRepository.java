@@ -12,20 +12,13 @@ import java.util.List;
 public interface BeneficiarioJpaRepository extends JpaRepository<BeneficiarioEntity, Integer> {
 
 
-    List<BeneficiarioEntity> findByNomeSocialContainingIgnoreCase(String nome);
+    List<BeneficiarioEntity> findByNomeRegistroOrNomeSocialContainingIgnoreCase(String nome);
 
-    List<BeneficiarioEntity> findByNomeRegistroContainingIgnoreCase(String nome);
+    @Query("SELECT b FROM BeneficiarioEntity b WHERE b.raca = :raca")
+    List<BeneficiarioEntity> findByRaca(@Param("raca") String raca);
 
-    @Query("SELECT b FROM Beneficiario b WHERE b.raca = :raca")
-    List<BeneficiarioEntity> findByRaca(@Param("raca") RacaEnum raca);
+    @Query("SELECT b FROM BeneficiarioEntity b WHERE b.status = :status")
+    List<BeneficiarioEntity> findByStatus(@Param("status") String status);
 
-    @Query("SELECT b FROM Beneficiario b WHERE b.sexo = :sexo")
-    List<BeneficiarioEntity> findBySexo(@Param("sexo") SexoEnum sexo);
-
-    @Query("SELECT b FROM Beneficiario b WHERE b.tipoGenero.nome = :nomeGenero")
-    List<BeneficiarioEntity> findByNomeTipoGenero(@Param("nomeGenero") String nomeGenero);
-
-    @Query("SELECT b FROM Beneficiario b WHERE b.tipoSexualidade.nome = :nomeSexualidade")
-    List<BeneficiarioEntity> findByNomeTipoSexualidade(@Param("nomeSexualidade") String nomeSexualidade);
 
 }
