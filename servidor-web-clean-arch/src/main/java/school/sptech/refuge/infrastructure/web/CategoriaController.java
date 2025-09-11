@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
+import school.sptech.refuge.core.application.usecase.categoria.*;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaMapper;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaRequestDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
@@ -23,10 +24,18 @@ import java.util.List;
 @RequestMapping("/categorias")
 public class CategoriaController {
 
-    private final CategoriaService categoriaService;
+    private final CriarCategoriaUseCase criarCategoriaUseCase;
+    private final BuscarCategoriaUseCase buscarCategoriaUseCase;
+    private final AtualizarCategoriaUseCase atualizarCategoriaUseCase;
+    private final ListarTodasCategoriaUseCase listarTodasCategoriaUseCase;
+    private final DeletarCategoriaUseCase deletarCategoriaUseCase;
 
-    public CategoriaController(CategoriaService categoriaService) {
-        this.categoriaService = categoriaService;
+    public CategoriaController(CriarCategoriaUseCase criarCategoriaUseCase, BuscarCategoriaUseCase buscarCategoriaUseCase, AtualizarCategoriaUseCase atualizarCategoriaUseCase, ListarTodasCategoriaUseCase listarTodasCategoriaUseCase, DeletarCategoriaUseCase deletarCategoriaUseCase) {
+        this.criarCategoriaUseCase = criarCategoriaUseCase;
+        this.buscarCategoriaUseCase = buscarCategoriaUseCase;
+        this.atualizarCategoriaUseCase = atualizarCategoriaUseCase;
+        this.listarTodasCategoriaUseCase = listarTodasCategoriaUseCase;
+        this.deletarCategoriaUseCase = deletarCategoriaUseCase;
     }
 
     @Operation(
@@ -40,10 +49,8 @@ public class CategoriaController {
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CategoriaListDto> cadastrar(@Valid @RequestBody CategoriaRequestDto dto) {
-        CategoriaEntity categoriaEntity = CategoriaMapper.toEntity(dto);
-        CategoriaEntity categoriaEntityCadastrada = categoriaService.cadastrar(categoriaEntity);
-        CategoriaListDto dtoSalvo = CategoriaMapper.toListagemDto(categoriaEntityCadastrada);
-        return ResponseEntity.status(201).body(dtoSalvo);
+        CategoriaListDto criado = criarCategoriaUseCase.execute(dto);
+        return ResponseEntity.status(201).body(criado);
     }
 
     @Operation(
@@ -58,12 +65,11 @@ public class CategoriaController {
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<CategoriaListDto>> listar() {
-        List<CategoriaEntity> categoriaEntities = categoriaService.listar();
-        if (categoriaEntities.isEmpty()) {
-            return ResponseEntity.status(204).build();
+        List<CategoriaListDto> categoriaListDtos = listarTodasCategoriaUseCase.execute();
+        if(categoriaListDtos.isEmpty()){
+            return ResponseEntity.noContent().build();
         }
-        List<CategoriaListDto> dtos = CategoriaMapper.toListagemDto(categoriaEntities);
-        return ResponseEntity.status(200).body(dtos);
+        return ResponseEntity.ok(categoriaListDtos);
     }
 
 
@@ -78,9 +84,8 @@ public class CategoriaController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CategoriaListDto> listarPorId(@PathVariable Integer id) {
-        CategoriaEntity categoriaEntity = categoriaService.buscarPorId(id);
-        CategoriaListDto dto = CategoriaMapper.toListagemDto(categoriaEntity);
-        return ResponseEntity.status(200).body(dto);
+        CategoriaListDto dto = buscarCategoriaUseCase.execute(id);
+        return ResponseEntity.ok(dto);
     }
 
 
@@ -95,10 +100,9 @@ public class CategoriaController {
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CategoriaListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody CategoriaAtualizacaoDto dto) {
-        CategoriaEntity categoriaEntity = CategoriaMapper.toEntity(dto, id);
-        CategoriaEntity categotiaAtualizada = categoriaService.atualizar(categoriaEntity);
-        CategoriaListDto dtoAtualizado = CategoriaMapper.toListagemDto(categotiaAtualizada);
-        return ResponseEntity.status(200).body(dtoAtualizado);
+        CategoriaListDto dtoAtualizado = atualizarCategoriaUseCase.execute(id, dto);
+        return ResponseEntity.ok(dtoAtualizado);
+
     }
 
 
@@ -112,7 +116,7 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
-        categoriaService.remover(id);
-        return ResponseEntity.status(204).build();
+        deletarCategoriaUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,7 @@
 package school.sptech.refuge.core.application.usecase.categoria;
 
 import school.sptech.refuge.core.adapters.CategoriaGateway;
+import school.sptech.refuge.core.application.dto.categoria.CategoriaAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaRequestDto;
 import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
@@ -14,12 +15,12 @@ public class AtualizarCategoriaUseCase {
         this.categoriaGateway = categoriaGateway;
     }
 
-    public CategoriaListDto execute(Integer id, CategoriaRequestDto request){
+    public CategoriaListDto execute(Integer id, CategoriaAtualizacaoDto request){
         Categoria existente = categoriaGateway.buscarPorId(id)
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Tipo de Categoria não encontrado para o id: " + id));
         existente.setNome(request.getNome());
 
-        Categoria atualizado = categoriaGateway.salvar(existente);
+        Categoria atualizado = categoriaGateway.atualizar(id, existente);
 
         return new CategoriaListDto(
                 atualizado.getId(),

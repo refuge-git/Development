@@ -45,16 +45,6 @@ public class CondicaoSaudeJpaAdapter implements CondicaoSaudeGateway {
     }
 
     @Override
-    public List<CondicaoSaude> buscarPorDescricao(String descricao) {
-        return List.of();
-    }
-
-    @Override
-    public List<CondicaoSaude> buscarPorBeneficiarioId(Integer beneficiarioId) {
-        return List.of();
-    }
-
-    @Override
     public CondicaoSaude atualizar(Integer id, CondicaoSaude condicaoSaude) {
         if (!condicaoSaudeJpaRepository.existsById(id)) {
             throw new CondicaoSaudeNaoEncontradaException("Condição de saúde não encontrada de id: " + id);

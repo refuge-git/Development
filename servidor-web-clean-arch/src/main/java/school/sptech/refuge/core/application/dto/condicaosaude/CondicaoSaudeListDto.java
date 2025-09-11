@@ -3,6 +3,7 @@ package school.sptech.refuge.core.application.dto.condicaosaude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
+import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
 
 import java.time.LocalDateTime;
 
@@ -23,9 +24,9 @@ public class CondicaoSaudeListDto {
     @Schema(description = "Observações da condição de saúde")
     private String observacoes;
 
-    private BeneficarioListDto beneficiario;
+    private Integer beneficiario;
     @Schema(description = "Categoria da condição de saúde")
-    private CategoriaListDto categoria;
+    private Integer categoria;
 
     public CondicaoSaudeListDto(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, Integer beneficiario, Integer categoria) {
         this.id = id;
@@ -97,19 +98,19 @@ public class CondicaoSaudeListDto {
         this.observacoes = observacoes;
     }
 
-    public BeneficarioListDto getBeneficiario() {
+    public Integer getBeneficiario() {
         return beneficiario;
     }
 
-    public void setBeneficiario(BeneficarioListDto beneficiario) {
+    public void setBeneficiario(Integer beneficiario) {
         this.beneficiario = beneficiario;
     }
 
-    public CategoriaListDto getCategoria() {
+    public Integer getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(CategoriaListDto categoria) {
+    public void setCategoria(Integer categoria) {
         this.categoria = categoria;
     }
 }

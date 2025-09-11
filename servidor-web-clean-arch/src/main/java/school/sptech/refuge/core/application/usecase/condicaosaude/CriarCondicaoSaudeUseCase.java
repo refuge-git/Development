@@ -29,19 +29,18 @@ public class CriarCondicaoSaudeUseCase {
 
 
     public CondicaoSaudeListDto execute(CondicaoSaudeRequestDto requestDto) {
-        // 1. Buscar dependências obrigatórias
+
         Categoria categoria = categoriaGateway.buscarPorId(requestDto.getIdCategoria())
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria não encontrada"));
 
         Beneficiario beneficiario = beneficiarioGateway.buscarPorId(requestDto.getIdBeneficiario())
                 .orElseThrow(() -> new BeneficiarioNaoEncontradaException("Beneficiário não encontrado"));
 
-        // 2. Criar domínio CondicaoSaude
         CondicaoSaude condicaoSaude = new CondicaoSaude(
                 null,
                 requestDto.getDiagnostico(),
                 requestDto.getDescricao(),
-                null, // será setado em prePersist()
+                null,
                 null,
                 requestDto.getTratamento(),
                 requestDto.getObservacoes(),
@@ -50,7 +49,6 @@ public class CriarCondicaoSaudeUseCase {
         );
 
         condicaoSaude.prePersist();
-
 
         CondicaoSaude criada = condicaoSaudeGateway.salvar(condicaoSaude);
 

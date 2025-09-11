@@ -9,15 +9,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface CondicaoSaudeJpaRepository extends JpaRepository<CondicaoSaudeEntity, Integer> {
-    List<CondicaoSaudeEntity> findByDescricaoContainingIgnoreCase(String descricao);
-
-    List<CondicaoSaudeEntity> findAllByDataRegistro(LocalDate dataRegistro);
-
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM CondicaoSaude c WHERE c.beneficiario.id = :id")
-    void deleteAllByBeneficiarioId(Integer id);
-
-
-    List<CondicaoSaudeEntity> findByBeneficiarioId(Integer idBeneficiario);
+    /*List<CondicaoSaudeEntity> findByDescricaoContainingIgnoreCase(String descricao);
+    List<CondicaoSaudeEntity> findByBeneficiarioId(Integer idBeneficiario);*/
 }

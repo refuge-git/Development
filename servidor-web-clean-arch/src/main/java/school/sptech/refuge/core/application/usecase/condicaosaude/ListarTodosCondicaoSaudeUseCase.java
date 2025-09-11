@@ -14,8 +14,8 @@ public class ListarTodosCondicaoSaudeUseCase {
         this.condicaoSaudeGateway = condicaoSaudeGateway;
     }
 
-    public List<CondicaoSaudeListDto> execute(Integer beneficiarioId) {
-        return condicaoSaudeGateway.buscarPorBeneficiarioId(beneficiarioId)
+    public List<CondicaoSaudeListDto> execute() {
+        return condicaoSaudeGateway.listarTodos()
                 .stream()
                 .map(condicaoSaude -> new CondicaoSaudeListDto(
                         condicaoSaude.getId(),

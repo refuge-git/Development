@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CondicaoSaudeMapper {
 
-    public static CondicaoSaudeEntity ofDomain(CondicaoSaude condicaoSaude) {
+    /*public static CondicaoSaudeEntity ofDomain(CondicaoSaude condicaoSaude) {
         if (condicaoSaude == null) return null;
 
         return new CondicaoSaudeEntity(
@@ -49,10 +49,10 @@ public class CondicaoSaudeMapper {
                 entity.getBeneficiario(), // ⚠️ aqui depende: se você já tem um Mapper de Beneficiario, pode usar ele
                 entity.getCategoria()     // idem para Categoria
         );
-    }
+    }*/
 
 
-    public static CondicaoSaudeListDto toListagemDto(CondicaoSaudeEntity entity) {
+    /*public static CondicaoSaudeListDto toListagemDto(CondicaoSaudeEntity entity) {
         if (entity == null) return null;
 
         CategoriaListDto categoriaListDto = new CategoriaListDto(
@@ -139,7 +139,7 @@ public class CondicaoSaudeMapper {
                 .toList();
     }
 
-    /* Converte um objeto que veio da requisição (CondicaoSaudeRequestDto) em um objeto de entidade (CondicaoSaudez) que pode ser salvo no banco. */
+    *//* Converte um objeto que veio da requisição (CondicaoSaudeRequestDto) em um objeto de entidade (CondicaoSaudez) que pode ser salvo no banco. *//*
     public static CondicaoSaudeEntity toEntity(CondicaoSaudeRequestDto request) {
         if (request == null) return null;
 
@@ -184,5 +184,5 @@ public class CondicaoSaudeMapper {
                 beneficiarioEntity,
                 categoriaEntity
         );
-    }
+    }*/
 }

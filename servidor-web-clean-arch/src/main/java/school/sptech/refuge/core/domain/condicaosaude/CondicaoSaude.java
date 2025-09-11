@@ -21,16 +21,14 @@ public class CondicaoSaude {
 
     private String observacoes;
 
+    private Beneficiario beneficiario;
 
-    private Beneficiario beneficiarioEntity;
-
-
-    private Categoria categoriaEntity;
+    private Categoria categoria;
 
     public CondicaoSaude() {
     }
 
-    public CondicaoSaude(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, Beneficiario beneficiarioEntity, Categoria categoriaEntity) {
+    public CondicaoSaude(Integer id, String diagnostico, String descricao, LocalDateTime dataRegistro, LocalDateTime dataAtualizacao, String tratamento, String observacoes, Beneficiario beneficiario, Categoria categoria) {
         this.id = id;
         this.diagnostico = diagnostico;
         this.descricao = descricao;
@@ -38,8 +36,8 @@ public class CondicaoSaude {
         this.dataAtualizacao = dataAtualizacao;
         this.tratamento = tratamento;
         this.observacoes = observacoes;
-        this.beneficiarioEntity = beneficiarioEntity;
-        this.categoriaEntity = categoriaEntity;
+        this.beneficiario = beneficiario;
+        this.categoria = categoria;
     }
 
     /** Define a data de registro e atualização antes de persistir o registro */
@@ -112,18 +110,18 @@ public class CondicaoSaude {
     }
 
     public Beneficiario getBeneficiario() {
-        return beneficiarioEntity;
+        return beneficiario;
     }
 
-    public void setBeneficiario(Beneficiario beneficiarioEntity) {
-        this.beneficiarioEntity = beneficiarioEntity;
+    public void setBeneficiario(Beneficiario beneficiario) {
+        this.beneficiario = beneficiario;
     }
 
     public Categoria getCategoria() {
-        return categoriaEntity;
+        return categoria;
     }
 
-    public void setCategoria(Categoria categoriaEntity) {
-        this.categoriaEntity = categoriaEntity;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }

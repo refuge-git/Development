@@ -30,7 +30,7 @@ public class CondicaoSaudeBeanConfig {
     public AtualizarCondicaoSaudeUseCase atualizarCondicaoSaudeUseCase(CondicaoSaudeJpaAdapter adapter,
                                                                        BeneficiarioJpaAdapter beneficiarioAdapter,
                                                                        CategoriaJpaAdapter categoriaAdapter){
-        return new AtualizarCondicaoSaudeUseCase(adapter, categoriaAdapter ,beneficiarioAdapter);
+        return new AtualizarCondicaoSaudeUseCase(adapter, beneficiarioAdapter , categoriaAdapter);
     }
 
     @Bean
