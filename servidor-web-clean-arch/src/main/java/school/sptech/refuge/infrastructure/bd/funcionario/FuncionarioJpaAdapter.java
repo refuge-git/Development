@@ -47,4 +47,10 @@ public class FuncionarioJpaAdapter implements FuncionarioGateway {
     public boolean existePorId(Integer id) {
         return funcionarioJpaRepository.existsById(id);
     }
+
+    @Override
+    public Optional<Funcionario> buscarPorEmail(String email) {
+        return funcionarioJpaRepository.findByEmail(email)
+                .map(FuncionarioMapper::ofEntity);
+    }
 }

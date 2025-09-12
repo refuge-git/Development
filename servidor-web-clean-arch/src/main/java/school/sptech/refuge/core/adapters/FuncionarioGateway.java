@@ -11,6 +11,7 @@ public interface FuncionarioGateway {
     Optional<Funcionario> buscarPorId(Integer id);
     void deletar(Integer id);
     boolean existePorId(Integer id);
+    Optional<Funcionario> buscarPorEmail(String email);
 
 
 }
