@@ -15,11 +15,7 @@ import school.sptech.refuge.core.application.usecase.tipoAtendimento.AtualizarTi
 import school.sptech.refuge.core.application.usecase.tipoAtendimento.CriarTipoAtendimentoUseCase;
 import school.sptech.refuge.core.application.usecase.tipoAtendimento.DeletarTipoAtendimentoUseCase;
 import school.sptech.refuge.core.application.usecase.tipoAtendimento.ListarTodosTipoAtendimentoUseCase;
-import school.sptech.refuge.dto.tipoAtendimento.TipoAtendimentoMapper;
-import school.sptech.refuge.dto.tipoAtendimento.TipoAtendimentoRequestDto;
-import school.sptech.refuge.dto.tipoAtendimento.TipoAtendimentoResponseDto;
-import school.sptech.refuge.entity.TipoAtendimento;
-import school.sptech.refuge.service.TipoAtendimentoService;
+
 
 import java.util.List;
 
