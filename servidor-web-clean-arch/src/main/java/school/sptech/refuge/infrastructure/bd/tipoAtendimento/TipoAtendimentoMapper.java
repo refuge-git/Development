@@ -125,11 +125,19 @@ public class TipoAtendimentoMapper {
                 entity.getNome(),
                 entity.getDescricao(),
                 entity.getDataCriacao(),
-                entity.getFuncionario().getId(),
-                entity.getFuncionario().getNome(),
-                entity.getFuncionario().getCpf(),
-                entity.getFuncionario().getTelefone(),
-                entity.getFuncionario().getEmail()
+                entity.getFuncionario().getId()
         );
     }
+
+    public static TipoAtendimentoResponseDto of(TipoAtendimento tipoAtendimento) {
+        TipoAtendimentoResponseDto tipoAtendimentDto = new TipoAtendimentoResponseDto();
+
+        tipoAtendimentDto.setId(tipoAtendimento.getId());
+        tipoAtendimentDto.setNome(tipoAtendimento.getNome());
+        tipoAtendimentDto.setDescricao(tipoAtendimento.getDescricao());
+        tipoAtendimentDto.setFuncionario(tipoAtendimento.getFuncionario().getId());
+
+        return tipoAtendimentDto;
+    }
+
 }

@@ -1,6 +1,7 @@
 package school.sptech.refuge.core.application.usecase.tipoAtendimento;
 
 import school.sptech.refuge.core.adapters.TipoAtendimentoGateway;
+import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoResponseDto;
 import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 import school.sptech.refuge.infrastructure.bd.tipoAtendimento.TipoAtendimentoMapper;
 
@@ -13,7 +14,7 @@ public class ListarTodosTipoAtendimentoUseCase {
         this.tipoAtendimentoGateway = tipoAtendimentoGateway;
     }
 
-    public List<TipoAtendimento> execute() {
+    public List<TipoAtendimentoResponseDto> execute() {
         List<TipoAtendimento> lista = tipoAtendimentoGateway.listar();
         return lista
                 .stream()

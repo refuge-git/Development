@@ -5,6 +5,7 @@ import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TipoAtendimentoJpaAdapter implements TipoAtendimentoGateway {
     private final TipoAtendimentoJpaRepository tipoAtendimentoJpaRepository;
@@ -23,17 +24,22 @@ public class TipoAtendimentoJpaAdapter implements TipoAtendimentoGateway {
 
     @Override
     public List<TipoAtendimento> listar() {
-        return List.of();
+        return tipoAtendimentoJpaRepository.findAll()
+                .stream().map(TipoAtendimentoMapper::ofEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<TipoAtendimento> buscarPorId(Integer id) {
-        return Optional.empty();
+        return tipoAtendimentoJpaRepository.findById(id)
+                .map(TipoAtendimentoMapper::ofEntity);
     }
 
     @Override
-    public void deletar(TipoAtendimento tipoAtendimento) {
-
+    public void deletar(Integer id) {
+    if (tipoAtendimentoJpaRepository.existsById(id)) {
+        tipoAtendimentoJpaRepository.deleteById(id);
+    }
     }
 
     @Override

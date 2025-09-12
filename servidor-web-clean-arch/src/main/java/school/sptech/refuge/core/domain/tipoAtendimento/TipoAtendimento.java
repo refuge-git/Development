@@ -9,7 +9,6 @@ public class TipoAtendimento {
     private String nome;
     private String descricao;
     private LocalDateTime dataCriacao;
-
     private Funcionario funcionario;
 
     public TipoAtendimento(){

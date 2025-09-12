@@ -15,9 +15,9 @@ public class TipoAtendimentoResponseDto {
     @Schema(description = "Data de criação desse atendimento", example = "2025-06-07T14:30:00")
     private LocalDateTime dtCriacao;
     @Schema(description = "Funcionário associado ao registro do atendimento")
-    private FuncionarioListDto funcionario;
+    private Integer funcionario;
 
-    public TipoAtendimentoResponseDto(Integer id, String nome, String descricao, LocalDateTime dtCriacao, FuncionarioListDto funcionario) {
+    public TipoAtendimentoResponseDto(Integer id, String nome, String descricao, LocalDateTime dtCriacao, Integer funcionario) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -62,11 +62,11 @@ public class TipoAtendimentoResponseDto {
         this.descricao = descricao;
     }
 
-    public FuncionarioListDto getFuncionario() {
+    public Integer getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(FuncionarioListDto funcionario) {
+    public void setFuncionario(Integer funcionario) {
         this.funcionario = funcionario;
     }
 }

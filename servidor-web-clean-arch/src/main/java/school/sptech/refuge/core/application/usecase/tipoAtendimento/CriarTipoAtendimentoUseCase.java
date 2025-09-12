@@ -21,7 +21,7 @@ public class CriarTipoAtendimentoUseCase {
 
     public TipoAtendimentoResponseDto execute(TipoAtendimentoRequestDto dto) {
         Funcionario funcionario = funcionarioGateway.buscarPorId(dto.getIdFuncionario())
-                .orElseThrow(() -> new FuncionarioNaoEncontradaException("Funcionário não encontrado de ID: " + dto.getFuncionario().getId()));
+                .orElseThrow(() -> new FuncionarioNaoEncontradaException("Funcionário não encontrado de ID: " + dto.getIdFuncionario()));
 
         TipoAtendimento tipoAtendimento = new TipoAtendimento(
                 null,
@@ -31,6 +31,8 @@ public class CriarTipoAtendimentoUseCase {
                 funcionario
         );
 
+
+
         TipoAtendimento tipoAtendimentoCriado = tipoAtendimentoGateway.salvar(tipoAtendimento);
 
         return new TipoAtendimentoResponseDto(
@@ -38,10 +40,7 @@ public class CriarTipoAtendimentoUseCase {
                 tipoAtendimentoCriado.getNome(),
                 tipoAtendimentoCriado.getDescricao(),
                 tipoAtendimentoCriado.getDataCriacao(),
-                tipoAtendimentoCriado.getFuncionario().getId(),
-                tipoAtendimentoCriado.getFuncionario().getNome(),
-                tipoAtendimentoCriado.getFuncionario().getCpf(),
-                tipoAtendimentoCriado.getFuncionario().getEmail()
+                tipoAtendimentoCriado.getFuncionario().getId()
         );
     }
 }
