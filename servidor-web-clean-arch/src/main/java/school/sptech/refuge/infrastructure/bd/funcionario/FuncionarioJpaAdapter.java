@@ -1,6 +1,7 @@
 package school.sptech.refuge.infrastructure.bd.funcionario;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.FuncionarioGateway;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Configuration
+@Service
 public class FuncionarioJpaAdapter implements FuncionarioGateway {
     private final FuncionarioJpaRepository funcionarioJpaRepository;
 

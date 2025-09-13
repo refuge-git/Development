@@ -7,6 +7,7 @@ import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioEntity;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "tipo_atendimento")
 public class TipoAtendimentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,6 +3,7 @@ package school.sptech.refuge.infrastructure.bd.funcionario;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "funcionario")
 public class FuncionarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

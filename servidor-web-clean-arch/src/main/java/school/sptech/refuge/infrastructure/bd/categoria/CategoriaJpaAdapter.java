@@ -1,5 +1,6 @@
 package school.sptech.refuge.infrastructure.bd.categoria;
 
+import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.CategoriaGateway;
 import school.sptech.refuge.core.application.exception.CategoriaNaoEncontradaException;
 import school.sptech.refuge.core.domain.categoria.Categoria;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+@Service
 public class CategoriaJpaAdapter implements CategoriaGateway{
 
     private final CategoriaJpaRepository categoriaJpaRepository;

@@ -1,5 +1,6 @@
 package school.sptech.refuge.infrastructure.bd.tipoAtendimento;
 
+import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.TipoAtendimentoGateway;
 import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class TipoAtendimentoJpaAdapter implements TipoAtendimentoGateway {
     private final TipoAtendimentoJpaRepository tipoAtendimentoJpaRepository;
 

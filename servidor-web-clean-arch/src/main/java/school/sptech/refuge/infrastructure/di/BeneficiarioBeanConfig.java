@@ -55,5 +55,10 @@ public class BeneficiarioBeanConfig {
         return new ListarBeneficiarioPorStatusUseCase(adapter);
     }
 
+    @Bean
+    public ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiariosPorNomeRegistroOuSocialUseCase(BeneficiarioJpaAdapter adapter) {
+        return new ListarBeneficiariosPorNomeRegistroOuSocialUseCase(adapter);
+    }
+
 
 }

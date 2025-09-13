@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "beneficiario")
 public class BeneficiarioEntity {
 
     @Id

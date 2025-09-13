@@ -1,12 +1,14 @@
 package school.sptech.refuge.infrastructure.di;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import school.sptech.refuge.core.application.usecase.condicaosaude.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeJpaRepository;
 
+@Configuration
 public class CondicaoSaudeBeanConfig {
 
     @Bean

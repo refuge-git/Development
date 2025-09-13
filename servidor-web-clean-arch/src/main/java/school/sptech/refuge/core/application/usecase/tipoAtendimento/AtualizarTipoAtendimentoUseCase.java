@@ -23,7 +23,7 @@ public class AtualizarTipoAtendimentoUseCase {
                 .orElseThrow(() -> new TipoAtendimentoNaoEncotradoException("Tipo Atendimento não encontrado de ID: " + id));
 
         Funcionario funcionarioExistente = funcionarioGateway.buscarPorId(tipoAtendimento.getIdFuncionario())
-                        .orElseThrow(() -> new FuncionarioNaoEncontradaException("Funcionário não encontrado de ID " + tipoAtendimento.getFuncionario().getId()));
+                        .orElseThrow(() -> new FuncionarioNaoEncontradaException("Funcionário não encontrado de ID " + tipoAtendimento.getIdFuncionario()));
 
 
         atendimentoExistente.setNome(tipoAtendimento.getNome());
@@ -37,7 +37,7 @@ public class AtualizarTipoAtendimentoUseCase {
                 tipoAtendimentoAtualizado.getNome(),
                 tipoAtendimentoAtualizado.getDescricao(),
                 tipoAtendimentoAtualizado.getDataCriacao(),
-                funcionarioExistente
+                funcionarioExistente.getId()
         );
     }
 }

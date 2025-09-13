@@ -1,5 +1,6 @@
 package school.sptech.refuge.infrastructure.bd.condicaosaude;
 
+import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.CondicaoSaudeGateway;
 import school.sptech.refuge.core.application.exception.CondicaoSaudeNaoEncontradaException;
 import school.sptech.refuge.core.domain.condicaosaude.CondicaoSaude;
@@ -9,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class CondicaoSaudeJpaAdapter implements CondicaoSaudeGateway {
 
     private final CondicaoSaudeJpaRepository condicaoSaudeJpaRepository;

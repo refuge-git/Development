@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "condicao_saude")
 public class CondicaoSaudeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +47,10 @@ public class CondicaoSaudeEntity {
         this.beneficiarioEntity = beneficiarioEntity;
         this.categoriaEntity = categoriaEntity;
     }
+
+    public CondicaoSaudeEntity() {
+    }
+
     /** Define a data de registro e atualização antes de persistir o registro */
     @PrePersist
     public void prePersist() {

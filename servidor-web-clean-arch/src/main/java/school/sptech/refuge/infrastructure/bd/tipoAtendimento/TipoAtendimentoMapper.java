@@ -77,7 +77,7 @@ public class TipoAtendimentoMapper {
                 entity.getNome(),
                 entity.getDescricao(),
                 entity.getDataCriacao(),
-                funcionarioDto
+                funcionarioDto.getId()
         );
     }
 

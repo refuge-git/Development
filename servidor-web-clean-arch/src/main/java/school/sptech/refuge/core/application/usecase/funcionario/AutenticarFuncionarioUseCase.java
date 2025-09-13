@@ -13,17 +13,14 @@ public class AutenticarFuncionarioUseCase {
     private final FuncionarioGateway funcionarioGateway;
     private final AutenticacaoGateway autenticacaoGateway;
 
-    public AutenticarFuncionarioUseCase(FuncionarioGateway funcionarioGateway, AutenticacaoGateway autenticacaoGateway) {
+    public AutenticarFuncionarioUseCase(FuncionarioGateway funcionarioGateway,
+                                        AutenticacaoGateway autenticacaoGateway) {
         this.funcionarioGateway = funcionarioGateway;
         this.autenticacaoGateway = autenticacaoGateway;
     }
 
     public FuncionarioTokenDto autenticar(String email, String senha) {
-        UserDetails userDetails = autenticacaoGateway.loadUserByUsername(email);
-
-        if (!autenticacaoGateway.validarSenha(senha, userDetails.getPassword())) {
-            throw new RuntimeException("Usuário ou senha inválidos");
-        }
+        UserDetails userDetails = autenticacaoGateway.autenticar(email, senha);
 
         Funcionario funcionario = funcionarioGateway.buscarPorEmail(email)
                 .orElseThrow(() -> new FuncionarioNaoEncontradaException("Funcionário não encontrado"));

@@ -2,6 +2,7 @@ package school.sptech.refuge.infrastructure.bd.tiposexualidade;
 
 
 
+import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.TipoSexualidadeGateway;
 import school.sptech.refuge.core.application.exception.TipoSexualidadeNaoEncontradoException;
 import school.sptech.refuge.core.domain.tiposexualidade.TipoSexualidade;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class TipoSexualidadeJpaAdapter implements TipoSexualidadeGateway {
 
     private final TipoSexualidadeJpaRepository tipoSexualidadeJpaRepository;

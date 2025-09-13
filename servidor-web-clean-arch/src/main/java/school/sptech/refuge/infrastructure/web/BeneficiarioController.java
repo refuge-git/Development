@@ -114,15 +114,15 @@ public class BeneficiarioController {
 
 
     @Operation(
-            summary = "Beneficiários por raça",
-            description = "Listar todos os beneficiários pela raça especificada"
+            summary = "Beneficiários por status",
+            description = "Listar todos os beneficiários pelo status especificado"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Beneficiários por raça encontrados",
+            @ApiResponse(responseCode = "200", description = "Beneficiários por status encontrados",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
-            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com a raça especificada foi encontrado", content = @Content)
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o status especificado foi encontrado", content = @Content)
     })
-    @GetMapping("/raca")
+    @GetMapping("/status")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorStatus(@RequestParam String raca) {
         List<BeneficarioListDto> dtos = listarBeneficiarioPorRacaUseCase.execute(raca);
