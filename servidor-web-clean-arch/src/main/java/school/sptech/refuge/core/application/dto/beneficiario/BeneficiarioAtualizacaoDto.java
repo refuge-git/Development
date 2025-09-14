@@ -2,7 +2,6 @@ package school.sptech.refuge.core.application.dto.beneficiario;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import school.sptech.refuge.entity.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.config;
+package school.sptech.refuge.infrastructure.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

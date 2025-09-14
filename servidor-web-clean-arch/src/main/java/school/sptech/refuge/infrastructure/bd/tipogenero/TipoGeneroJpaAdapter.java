@@ -1,5 +1,7 @@
 package school.sptech.refuge.infrastructure.bd.tipogenero;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.TipoGeneroGateway;
 import school.sptech.refuge.core.application.exception.TipoGeneroNaoEncontradoException;
 import school.sptech.refuge.core.domain.tipogenero.TipoGenero;
@@ -9,6 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class TipoGeneroJpaAdapter implements TipoGeneroGateway {
 
     private final TipoGeneroJpaRepository tipoGeneroJpaRepository;

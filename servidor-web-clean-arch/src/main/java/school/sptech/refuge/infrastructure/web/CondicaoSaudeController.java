@@ -11,23 +11,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeListDto;
+import school.sptech.refuge.core.application.usecase.condicaosaude.*;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeMapper;
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeRequestDto;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
-import school.sptech.refuge.antes.service.CondicaoSaudeService;
+
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/condicoes-saude")
 public class CondicaoSaudeController {
-private final CondicaoSaudeService condicaoSaudeService;
 
-    public CondicaoSaudeController(CondicaoSaudeService condicaoSaudeService) {
-        this.condicaoSaudeService = condicaoSaudeService;
+    private final CriarCondicaoSaudeUseCase criarCondicaoSaudeUseCase;
+    private final ListarTodosCondicaoSaudeUseCase listarTodosCondicaoSaudeUseCase;
+    private final AtualizarCondicaoSaudeUseCase atualizarCondicaoSaudeUseCase;
+    private final DeletarCondicaoSaudeUseCase deletarCondicaoSaudeUseCase;
+    private final BuscarCondicaoSaudeUseCase buscarCondicaoSaudeUseCase;
+
+    public CondicaoSaudeController(CriarCondicaoSaudeUseCase criarCondicaoSaudeUseCase, ListarTodosCondicaoSaudeUseCase listarTodosCondicaoSaudeUseCase, AtualizarCondicaoSaudeUseCase atualizarCondicaoSaudeUseCase, DeletarCondicaoSaudeUseCase deletarCondicaoSaudeUseCase, BuscarCondicaoSaudeUseCase buscarCondicaoSaudeUseCase) {
+        this.criarCondicaoSaudeUseCase = criarCondicaoSaudeUseCase;
+        this.listarTodosCondicaoSaudeUseCase = listarTodosCondicaoSaudeUseCase;
+        this.atualizarCondicaoSaudeUseCase = atualizarCondicaoSaudeUseCase;
+        this.deletarCondicaoSaudeUseCase = deletarCondicaoSaudeUseCase;
+        this.buscarCondicaoSaudeUseCase = buscarCondicaoSaudeUseCase;
     }
 
-     @Operation(
+    @Operation(
              summary = "Cadastro de condição de saúde",
              description = "Recebe dados da condição de saúde e o transforma em entidade posteriormente"
      )
@@ -36,13 +46,12 @@ private final CondicaoSaudeService condicaoSaudeService;
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = CondicaoSaudeRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "Dados da condição de saúde inválidos ou ausentes", content = @Content)
     })
+
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CondicaoSaudeListDto> cadastrar(@Valid @RequestBody CondicaoSaudeRequestDto dto) {
-         CondicaoSaudeEntity condicaoSaudeEntity = CondicaoSaudeMapper.toEntity(dto);
-         CondicaoSaudeEntity condicaoSaudeEntityCadastrada = condicaoSaudeService.cadastrar(condicaoSaudeEntity);
-         CondicaoSaudeListDto dtoSalvo = CondicaoSaudeMapper.toListagemDto(condicaoSaudeEntityCadastrada);
-         return ResponseEntity.status(201).body(dtoSalvo);
+        CondicaoSaudeListDto dtoCriada = criarCondicaoSaudeUseCase.execute(dto);
+        return ResponseEntity.status(201).body(dtoCriada);
      }
 
      @Operation(
@@ -57,12 +66,8 @@ private final CondicaoSaudeService condicaoSaudeService;
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<CondicaoSaudeListDto>> listar() {
-        List<CondicaoSaudeEntity> condicoesSaude = condicaoSaudeService.listar();
-        if (condicoesSaude.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        List<CondicaoSaudeListDto> dtos = CondicaoSaudeMapper.toListagemDtos(condicoesSaude);
-         return ResponseEntity.status(200).body(dtos);
+        List<CondicaoSaudeListDto> dtoListadas = listarTodosCondicaoSaudeUseCase.execute();
+        return ResponseEntity.ok(dtoListadas);
      }
 
     @Operation(
@@ -76,9 +81,8 @@ private final CondicaoSaudeService condicaoSaudeService;
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CondicaoSaudeListDto> listarPorId(@PathVariable Integer id) {
-        CondicaoSaudeEntity condicaoSaudeEntity = condicaoSaudeService.buscarPorId(id);
-        CondicaoSaudeListDto dto = CondicaoSaudeMapper.toListagemDto(condicaoSaudeEntity);
-        return ResponseEntity.status(200).body(dto);
+        CondicaoSaudeListDto dto = buscarCondicaoSaudeUseCase.execute(id);
+        return ResponseEntity.ok(dto);
     }
 
     @Operation(
@@ -92,31 +96,8 @@ private final CondicaoSaudeService condicaoSaudeService;
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CondicaoSaudeListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody CondicaoSaudeAtualizacaoDto dto) {
-        CondicaoSaudeEntity condicaoSaudeEntity = CondicaoSaudeMapper.toEntity(dto, id);
-        CondicaoSaudeEntity condicaoSaudeEntityAtualizado = condicaoSaudeService.atualizar(condicaoSaudeEntity);
-        CondicaoSaudeListDto dtoAtualizado = CondicaoSaudeMapper.toListagemDto(condicaoSaudeEntityAtualizado);
-        return ResponseEntity.status(200).body(dtoAtualizado);
-    }
-
-    @Operation(
-            summary = "Condição de saúde por descrição",
-            description = "Listar todas as condições de saúde pela descrição"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Condições de saúde pela descrição encontradas",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CondicaoSaudeRequestDto.class))),
-            @ApiResponse(responseCode = "204", description = "Nenhuma condição de saúde com a descrição especificada foi encontrado", content = @Content)
-    })
-    @GetMapping("/descricao")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<CondicaoSaudeListDto>> listarPorDescricao(@RequestParam String descricao) {
-        List<CondicaoSaudeEntity> condicoesSaude = condicaoSaudeService.listarPorDescricao(descricao);
-        if (condicoesSaude.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-
-        List<CondicaoSaudeListDto> dto = CondicaoSaudeMapper.toListagemDtos(condicoesSaude);
-        return ResponseEntity.status(200).body(dto);
+        CondicaoSaudeListDto dtoAtualizado = atualizarCondicaoSaudeUseCase.execute(id, dto);
+        return ResponseEntity.ok(dtoAtualizado);
     }
 
     @Operation(
@@ -129,31 +110,7 @@ private final CondicaoSaudeService condicaoSaudeService;
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
-        condicaoSaudeService.removerPorId(id);
-        return ResponseEntity.status(204).build();
+        deletarCondicaoSaudeUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
-
-    @Operation(
-            summary = "Condição de saúde por id do beneficiário",
-            description = "Listar todas as condições de saúde pelo id do beneficiário"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Condições de saúde pelo id do beneficiário encontradas",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CondicaoSaudeRequestDto.class))),
-            @ApiResponse(responseCode = "204", description = "Nenhuma condição de saúde com o id do beneficiário especificado foi encontrado", content = @Content)
-    })
-    @GetMapping("/beneficiario/{idBeneficiario}")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<CondicaoSaudeListDto>> listarPorBeneficiarioId(@PathVariable Integer idBeneficiario) {
-        List<CondicaoSaudeEntity> condicoesSaude = condicaoSaudeService.listarPorIdBeneficiario(idBeneficiario);
-        if (condicoesSaude.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-
-        List<CondicaoSaudeListDto> dto = CondicaoSaudeMapper.toListagemDtos(condicoesSaude);
-        return ResponseEntity.status(200).body(dto);
-    }
-
-
-
 }

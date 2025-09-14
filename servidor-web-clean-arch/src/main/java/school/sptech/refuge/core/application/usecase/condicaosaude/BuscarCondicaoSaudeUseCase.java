@@ -2,6 +2,8 @@ package school.sptech.refuge.core.application.usecase.condicaosaude;
 
 import school.sptech.refuge.core.adapters.CondicaoSaudeGateway;
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeListDto;
+import school.sptech.refuge.core.application.exception.CondicaoSaudeNaoEncontradaException;
+import school.sptech.refuge.core.domain.condicaosaude.CondicaoSaude;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,15 +15,21 @@ public class BuscarCondicaoSaudeUseCase {
         this.condicaoSaudeGateway = condicaoSaudeGateway;
     }
 
-    public List<CondicaoSaudeListDto> execute(String descricao) {
-        return condicaoSaudeGateway.buscarPorDescricao(descricao)
-                .stream()
-                .map(c -> new CondicaoSaudeListDto(
-                        c.getId(),
-                        c.getDescricao(),
-                        c.getCategoria().getNome(),
-                        c.getBeneficiario().getNome()
-                ))
-                .collect(Collectors.toList());
+    public CondicaoSaudeListDto execute(Integer id){
+        CondicaoSaude condicaoSaude = condicaoSaudeGateway.buscarPorId(id)
+                .orElseThrow(() -> new CondicaoSaudeNaoEncontradaException("Tipo de Condição de Saúde não encontrada para o id: " + id));
+
+        return new CondicaoSaudeListDto(
+                condicaoSaude.getId(),
+                condicaoSaude.getDiagnostico(),
+                condicaoSaude.getDescricao(),
+                condicaoSaude.getDataRegistro(),
+                condicaoSaude.getDataAtualizacao(),
+                condicaoSaude.getTratamento(),
+                condicaoSaude.getObservacoes(),
+                condicaoSaude.getBeneficiario().getId(),
+                condicaoSaude.getCategoria().getId()
+        );
     }
+
 }

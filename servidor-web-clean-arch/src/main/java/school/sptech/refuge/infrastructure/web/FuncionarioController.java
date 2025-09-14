@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.application.dto.funcionario.*;
 import school.sptech.refuge.core.application.usecase.funcionario.*;
-import school.sptech.refuge.dto.funcionario.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
-import school.sptech.refuge.antes.service.FuncionarioService;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioMapper;
 
 import java.util.List;
@@ -29,22 +27,16 @@ public class FuncionarioController {
     private final BuscarFuncionarioUseCase buscarFuncionarioUseCase;
     private final ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase;
     private final DeletarFuncionarioUseCase deletarFuncionarioUseCase;
+    private final AutenticarFuncionarioUseCase autenticarFuncionarioUseCase;
 
-    public FuncionarioController(CriarFuncionarioUseCase criarFuncionarioUseCase, AtualizarFuncionarioUseCase atualizarFuncionarioUseCase, BuscarFuncionarioUseCase buscarFuncionarioUseCase, ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase, DeletarFuncionarioUseCase deletarFuncionarioUseCase) {
+    public FuncionarioController(CriarFuncionarioUseCase criarFuncionarioUseCase, AtualizarFuncionarioUseCase atualizarFuncionarioUseCase, BuscarFuncionarioUseCase buscarFuncionarioUseCase, ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase, DeletarFuncionarioUseCase deletarFuncionarioUseCase, AutenticarFuncionarioUseCase autenticarFuncionarioUseCase) {
         this.criarFuncionarioUseCase = criarFuncionarioUseCase;
         this.atualizarFuncionarioUseCase = atualizarFuncionarioUseCase;
         this.buscarFuncionarioUseCase = buscarFuncionarioUseCase;
         this.listarTodosFuncionariosUseCase = listarTodosFuncionariosUseCase;
         this.deletarFuncionarioUseCase = deletarFuncionarioUseCase;
+        this.autenticarFuncionarioUseCase = autenticarFuncionarioUseCase;
     }
-
-//    @PostMapping
-//    public ResponseEntity<FuncionarioListDto> cadastrar(@Valid @RequestBody FuncionarioRequestDto dto) {
-//        Funcionario funcionario = FuncionarioMapper.toEntity(dto);
-//        Funcionario funcionarioCadastrado = funcionarioService.cadastrar(funcionario);
-//        FuncionarioListDto dtoSalvo = FuncionarioMapper.toListagemDto(funcionarioCadastrado);
-//        return ResponseEntity.status(201).body(dtoSalvo);
-//    }
 
     @Operation(
             summary = "Cadastro de funcionário",
@@ -72,25 +64,10 @@ public class FuncionarioController {
     })
     @PostMapping("/login")
     public  ResponseEntity<FuncionarioTokenDto> login (@RequestBody FuncionarioLoginDto funcionarioLoginDto){
-
-        final Funcionario funcionario = FuncionarioMapper.of(funcionarioLoginDto);
-        FuncionarioTokenDto funcionarioTokenDto = this.funcionarioService.autenticar(funcionario);
-
-        return ResponseEntity.status(200).body(funcionarioTokenDto);
+        FuncionarioTokenDto dto = autenticarFuncionarioUseCase.autenticar(funcionarioLoginDto.getEmail(), funcionarioLoginDto.getSenha());
+        return ResponseEntity.ok(dto);
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<FuncionarioListDto>> listar() {
-//
-//        List<Funcionario> funcionarios = funcionarioService.listar();
-//
-//        if (funcionarios.isEmpty()) {
-//            return ResponseEntity.status(204).build();
-//        }
-//
-//        List<FuncionarioListDto> dtos = FuncionarioMapper.toListagemDtos(funcionarios);
-//        return ResponseEntity.status(200).body(dtos);
-//    }
 
     @Operation(
             summary = "Listagem de funcionários",

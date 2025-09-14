@@ -8,9 +8,11 @@ import school.sptech.refuge.core.domain.funcionario.Funcionario;
 
 public class CriarFuncionarioUseCase {
     private final FuncionarioGateway funcionarioGateway;
+    private final PasswordEncoder passwordEncoder;
 
-    public CriarFuncionarioUseCase(FuncionarioGateway funcionarioGateway) {
+    public CriarFuncionarioUseCase(FuncionarioGateway funcionarioGateway, PasswordEncoder passwordEncoder) {
         this.funcionarioGateway = funcionarioGateway;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public FuncionarioListDto execute(FuncionarioRequestDto funcionarioRequestDto) {
@@ -19,14 +21,18 @@ public class CriarFuncionarioUseCase {
         funcionario.setCpf(funcionarioRequestDto.getCpf());
         funcionario.setTelefone(funcionarioRequestDto.getTelefone());
         funcionario.setEmail(funcionarioRequestDto.getEmail());
-        funcionario.setSenha(funcionarioRequestDto.getSenha());
+
+        // 🔐 Criptografando a senha antes de salvar
+        funcionario.setSenha(passwordEncoder.encode(funcionarioRequestDto.getSenha()));
+
         Funcionario funcionarioCriado = funcionarioGateway.salvar(funcionario);
+
         return new FuncionarioListDto(
                 funcionarioCriado.getId(),
-                funcionario.getNome(),
-                funcionario.getCpf(),
-                funcionario.getTelefone(),
-                funcionario.getEmail()
+                funcionarioCriado.getNome(),
+                funcionarioCriado.getCpf(),
+                funcionarioCriado.getTelefone(),
+                funcionarioCriado.getEmail()
         );
     }
 

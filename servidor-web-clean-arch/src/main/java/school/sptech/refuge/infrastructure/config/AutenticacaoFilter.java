@@ -1,4 +1,4 @@
-package school.sptech.refuge.antes.config;
+package school.sptech.refuge.infrastructure.config;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import school.sptech.refuge.antes.service.AutenticacaoService;
+
 
 import java.io.IOException;
 import java.util.Objects;

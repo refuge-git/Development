@@ -5,7 +5,6 @@ import school.sptech.refuge.core.adapters.EnderecoGateway;
 import school.sptech.refuge.core.adapters.FuncionarioGateway;
 import school.sptech.refuge.core.adapters.TipoGeneroGateway;
 import school.sptech.refuge.core.adapters.TipoSexualidadeGateway;
-import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
 
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;

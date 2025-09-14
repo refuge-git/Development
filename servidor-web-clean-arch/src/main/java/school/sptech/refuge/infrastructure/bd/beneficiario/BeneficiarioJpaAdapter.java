@@ -1,5 +1,6 @@
 package school.sptech.refuge.infrastructure.bd.beneficiario;
 
+import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.BeneficiarioGateway;
 import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
@@ -9,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
 
     private final BeneficiarioJpaRepository beneficiarioJpaRepository;
@@ -59,5 +61,20 @@ public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
         } else {
             throw new BeneficiarioNaoEncontradaException("Bendeficiário não encontrado de id:" + id);
         }
+    }
+
+    @Override
+    public List<Beneficiario> buscarPorRaca(String raca) {
+        return beneficiarioJpaRepository.findByRaca(raca).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Beneficiario> buscarPorStatus(String status) {
+        return beneficiarioJpaRepository.findByStatus(status).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Beneficiario> buscarPorNomeRegistroOuNomeSocial(String nomeR) {
+        return beneficiarioJpaRepository.findByNomeRegistroContainingIgnoreCase(nomeR).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
     }
 }

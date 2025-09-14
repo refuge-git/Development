@@ -1,5 +1,6 @@
 package school.sptech.refuge.infrastructure.bd.endereco;
 
+import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.EnderecoGateway;
 import school.sptech.refuge.core.domain.endereco.Endereco;
 
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class EnderecoJpaAdapter implements EnderecoGateway {
 
     private final EnderecoJpaRepository repository;

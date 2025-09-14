@@ -44,4 +44,21 @@ public class BeneficiarioBeanConfig {
     public DeletarBeneficiarioUseCase deletarBeneficiarioUseCase(BeneficiarioJpaAdapter adapter) {
         return new DeletarBeneficiarioUseCase(adapter);
     }
+
+    @Bean
+    public ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase(BeneficiarioJpaAdapter adapter) {
+        return new ListarBeneficiarioPorRacaUseCase(adapter);
+    }
+
+    @Bean
+    public ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase(BeneficiarioJpaAdapter adapter) {
+        return new ListarBeneficiarioPorStatusUseCase(adapter);
+    }
+
+    @Bean
+    public ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiariosPorNomeRegistroOuSocialUseCase(BeneficiarioJpaAdapter adapter) {
+        return new ListarBeneficiariosPorNomeRegistroOuSocialUseCase(adapter);
+    }
+
+
 }

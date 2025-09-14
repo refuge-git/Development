@@ -5,18 +5,55 @@ import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeList
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeRequestDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
-import school.sptech.refuge.antes.dto.endereco.EnderecoListDto;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
+import school.sptech.refuge.core.domain.condicaosaude.CondicaoSaude;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaEntity;
+import school.sptech.refuge.infrastructure.bd.categoria.CategoriaMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class CondicaoSaudeMapper {
-    public static CondicaoSaudeListDto toListagemDto(CondicaoSaudeEntity entity) {
+
+    public static CondicaoSaudeEntity ofDomain(CondicaoSaude condicaoSaude) {
+        if (condicaoSaude == null) return null;
+
+        return new CondicaoSaudeEntity(
+                condicaoSaude.getId(),
+                condicaoSaude.getDiagnostico(),
+                condicaoSaude.getDescricao(),
+                condicaoSaude.getDataRegistro() != null ? condicaoSaude.getDataRegistro() : LocalDateTime.now(),
+                condicaoSaude.getDataAtualizacao() != null ? condicaoSaude.getDataAtualizacao() : LocalDateTime.now(),
+                condicaoSaude.getTratamento(),
+                condicaoSaude.getObservacoes(),
+                BeneficiarioMapper.ofDomain(condicaoSaude.getBeneficiario()),
+                CategoriaMapper.ofDomain(condicaoSaude.getCategoria())
+        );
+    }
+
+
+    public static CondicaoSaude ofEntity(CondicaoSaudeEntity entity) {
+        if (entity == null) return null;
+
+        return new CondicaoSaude(
+                entity.getId(),
+                entity.getDiagnostico(),
+                entity.getDescricao(),
+                entity.getDataRegistro(),
+                entity.getDataAtualizacao(),
+                entity.getTratamento(),
+                entity.getObservacoes(),
+                BeneficiarioMapper.ofEntity(entity.getBeneficiario()),
+                CategoriaMapper.ofEntity(entity.getCategoria())
+        );
+    }
+
+
+    /*public static CondicaoSaudeListDto toListagemDto(CondicaoSaudeEntity entity) {
         if (entity == null) return null;
 
         CategoriaListDto categoriaListDto = new CategoriaListDto(
@@ -103,7 +140,7 @@ public class CondicaoSaudeMapper {
                 .toList();
     }
 
-    /* Converte um objeto que veio da requisição (CondicaoSaudeRequestDto) em um objeto de entidade (CondicaoSaudez) que pode ser salvo no banco. */
+     Converte um objeto que veio da requisição (CondicaoSaudeRequestDto) em um objeto de entidade (CondicaoSaudez) que pode ser salvo no banco.
     public static CondicaoSaudeEntity toEntity(CondicaoSaudeRequestDto request) {
         if (request == null) return null;
 
@@ -148,5 +185,5 @@ public class CondicaoSaudeMapper {
                 beneficiarioEntity,
                 categoriaEntity
         );
-    }
+    }*/
 }
