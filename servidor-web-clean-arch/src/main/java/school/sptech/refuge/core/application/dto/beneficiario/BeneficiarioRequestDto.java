@@ -16,8 +16,7 @@ public class BeneficiarioRequestDto {
     @Schema(description = "Nome de registro do beneficiário", example = "Carolina Santos")
     private String nomeRegistro;
 
-    @NotNull
-    @NotBlank
+
     @Schema(description = "Nome social do beneficiário", example = "Julia Santos")
     private String nomeSocial;
 
@@ -65,13 +64,6 @@ public class BeneficiarioRequestDto {
     @Schema(description = "Número de indentificação sisar do beneficiário", example = "92817")
     private String sisa;
 
-    @Schema(description = "Status atual do beneficiário", example = "ATIVO")
-    private String status;
-
-    @CurrentTimestamp
-    @Schema(description = "Data de registro do beneficiário", example = "01/05/2025")
-    private LocalDateTime data_ativacao;
-
     @NotNull
     @Schema(description = "Observações sobre o beneficiário")
     private String observacao;
@@ -80,7 +72,7 @@ public class BeneficiarioRequestDto {
     @Schema(description = "ID do funcionário responsável", example = "1")
     private Integer idFuncionario;
 
-    @NotNull
+
     @Schema(description = "ID do endereço do beneficiário", example = "3")
     private Integer idEndereco;
 
@@ -93,7 +85,7 @@ public class BeneficiarioRequestDto {
     private Integer idTipoSexualidade;
 
 
-    public BeneficiarioRequestDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade) {
+    public BeneficiarioRequestDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade) {
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
@@ -106,8 +98,6 @@ public class BeneficiarioRequestDto {
         this.localDorme = localDorme;
         this.fotoPerfil = fotoPerfil;
         this.sisa = sisa;
-        this.status = status;
-        this.data_ativacao = data_ativacao;
         this.observacao = observacao;
         this.idFuncionario = idFuncionario;
         this.idEndereco = idEndereco;
@@ -122,11 +112,11 @@ public class BeneficiarioRequestDto {
         return nomeRegistro;
     }
 
-    public void setNomeRegistro(@NotNull @NotBlank String nomeRegistro) {
+    public void setNomeRegistro(String nomeRegistro) {
         this.nomeRegistro = nomeRegistro;
     }
 
-    public @NotNull @NotBlank String getNomeSocial() {
+    public String getNomeSocial() {
         return nomeSocial;
     }
 
@@ -214,22 +204,6 @@ public class BeneficiarioRequestDto {
         this.sisa = sisa;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getData_ativacao() {
-        return data_ativacao;
-    }
-
-    public void setData_ativacao(LocalDateTime data_ativacao) {
-        this.data_ativacao = data_ativacao;
-    }
-
     public @NotNull String getObservacao() {
         return observacao;
     }
@@ -242,11 +216,11 @@ public class BeneficiarioRequestDto {
         return idFuncionario;
     }
 
-    public void setIdFuncionario(@NotNull Integer idFuncionario) {
+    public void setIdFuncionario(Integer idFuncionario) {
         this.idFuncionario = idFuncionario;
     }
 
-    public @NotNull Integer getIdEndereco() {
+    public Integer getIdEndereco() {
         return idEndereco;
     }
 

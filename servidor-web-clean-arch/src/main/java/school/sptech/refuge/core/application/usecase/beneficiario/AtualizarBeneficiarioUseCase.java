@@ -33,15 +33,17 @@ public class AtualizarBeneficiarioUseCase {
     }
 
     public BeneficarioListDto execute(Integer id, BeneficiarioAtualizacaoDto dto) {
-        if (!beneficiarioGateway.existePorId(id)) {
-            throw new BeneficiarioNaoEncontradaException("Beneficiário não encontrado para atualização");
-        }
+        Beneficiario beneficiarioExistente = beneficiarioGateway.buscarPorId(id)
+                .orElseThrow(() -> new BeneficiarioNaoEncontradaException("Beneficiário não encontrado para atualização"));
 
         Funcionario funcionario = funcionarioGateway.buscarPorId(dto.getIdFuncionario())
                 .orElseThrow(() -> new FuncionarioNaoEncontradaException("Funcionário não encontrado"));
 
-        Endereco endereco = enderecoGateway.findById(dto.getIdEndereco())
-                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado"));
+        Endereco endereco = null;
+        if (dto.getIdEndereco() != null) {
+            endereco = enderecoGateway.findById(dto.getIdEndereco())
+                    .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado"));
+        }
 
         TipoGenero tipoGenero = tipoGeneroGateway.buscarPorId(dto.getIdTipoGenero())
                 .orElseThrow(() -> new TipoGeneroNaoEncontradoException("Tipo de gênero não encontrado"));
@@ -63,8 +65,8 @@ public class AtualizarBeneficiarioUseCase {
                 LocalEnum.valueOf(dto.getLocalDorme().toUpperCase()),
                 dto.getFotoPerfil(),
                 dto.getSisa(),
-                dto.getStatus() != null ? StatusEnum.valueOf(dto.getStatus().toUpperCase()) : StatusEnum.ATIVO,
-                dto.getData_ativacao(),
+                dto.getStatus() != null ? StatusEnum.valueOf(dto.getStatus().toUpperCase()) : beneficiarioExistente.getStatus(),
+                beneficiarioExistente.getDataAtivacao(),
                 dto.getObservacao(),
                 funcionario,
                 endereco,

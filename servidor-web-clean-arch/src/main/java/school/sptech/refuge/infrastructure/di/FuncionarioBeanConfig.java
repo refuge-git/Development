@@ -39,4 +39,9 @@ public class FuncionarioBeanConfig {
     public AutenticarFuncionarioUseCase autenticarFuncionarioUseCase(FuncionarioJpaAdapter adapter, AutenticacaoGatewayImpl autenticacaoGateway) {
         return new AutenticarFuncionarioUseCase(adapter, autenticacaoGateway);
     }
+
+    @Bean
+    public BuscarFuncionarioPorEmailUseCase buscarFuncionarioPorEmailUseCase(FuncionarioJpaAdapter adapter) {
+        return new BuscarFuncionarioPorEmailUseCase(adapter);
+    }
 }

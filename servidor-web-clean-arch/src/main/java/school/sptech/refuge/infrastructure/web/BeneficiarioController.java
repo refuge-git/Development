@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioAtualizacaoDto;
 import school.sptech.refuge.core.application.usecase.beneficiario.*;
+import school.sptech.refuge.core.domain.beneficiario.LocalEnum;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
@@ -20,7 +21,10 @@ import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/beneficiarios") // URI do servidor
@@ -178,6 +182,72 @@ public class BeneficiarioController {
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         deletarBeneficiarioUseCase.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/opcoes_racas")
+    @Operation(
+            summary = "Listar opções de raças",
+            description = "Retorna todas as opções possíveis de raça para beneficiário"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Opções de raças retornadas com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class)))
+    })
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<Map<String, String>>> listarOpcoesRacas() {
+        List<Map<String, String>> racas = Arrays.stream(RacaEnum.values())
+                .map(racaEnum -> {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("value", racaEnum.name());
+                    map.put("descricao", racaEnum.getDescricaoRaca());
+                    return map;
+                })
+                .toList();
+        return ResponseEntity.ok(racas);
+    }
+
+    @GetMapping("/opcoes_sexo")
+    @Operation(
+            summary = "Listar opções de sexo",
+            description = "Retorna todas as opções possíveis de sexo para beneficiário"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Opções de sexo retornadas com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class)))
+    })
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<Map<String, String>>> listarOpcoesSexo() {
+        List<Map<String, String>> sexos = Arrays.stream(SexoEnum.values())
+                .map(sexoEnum -> {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("value", sexoEnum.name());
+                    map.put("descricao", sexoEnum.getDescricaoSexo());
+                    return map;
+                })
+                .toList();
+        return ResponseEntity.ok(sexos);
+    }
+
+    @GetMapping("/opcoes_local")
+    @Operation(
+            summary = "Listar opções de local",
+            description = "Retorna todas as opções possíveis de local para beneficiário"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Opções de local retornadas com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class)))
+    })
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<Map<String, String>>> listarOpcoesLocal() {
+        List<Map<String, String>> locais = Arrays.stream(LocalEnum.values())
+                .map(localEnum -> {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("value", localEnum.name());
+                    map.put("descricao", localEnum.getDescricaoLocal());
+                    return map;
+                })
+                .toList();
+        return ResponseEntity.ok(locais);
     }
 
 }

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.application.dto.funcionario.*;
@@ -28,14 +29,16 @@ public class FuncionarioController {
     private final ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase;
     private final DeletarFuncionarioUseCase deletarFuncionarioUseCase;
     private final AutenticarFuncionarioUseCase autenticarFuncionarioUseCase;
+    private final BuscarFuncionarioPorEmailUseCase buscarFuncionarioPorEmailUseCase;
 
-    public FuncionarioController(CriarFuncionarioUseCase criarFuncionarioUseCase, AtualizarFuncionarioUseCase atualizarFuncionarioUseCase, BuscarFuncionarioUseCase buscarFuncionarioUseCase, ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase, DeletarFuncionarioUseCase deletarFuncionarioUseCase, AutenticarFuncionarioUseCase autenticarFuncionarioUseCase) {
+    public FuncionarioController(CriarFuncionarioUseCase criarFuncionarioUseCase, AtualizarFuncionarioUseCase atualizarFuncionarioUseCase, BuscarFuncionarioUseCase buscarFuncionarioUseCase, ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase, DeletarFuncionarioUseCase deletarFuncionarioUseCase, AutenticarFuncionarioUseCase autenticarFuncionarioUseCase, BuscarFuncionarioPorEmailUseCase buscarFuncionarioPorEmailUseCase) {
         this.criarFuncionarioUseCase = criarFuncionarioUseCase;
         this.atualizarFuncionarioUseCase = atualizarFuncionarioUseCase;
         this.buscarFuncionarioUseCase = buscarFuncionarioUseCase;
         this.listarTodosFuncionariosUseCase = listarTodosFuncionariosUseCase;
         this.deletarFuncionarioUseCase = deletarFuncionarioUseCase;
         this.autenticarFuncionarioUseCase = autenticarFuncionarioUseCase;
+        this.buscarFuncionarioPorEmailUseCase = buscarFuncionarioPorEmailUseCase;
     }
 
     @Operation(
@@ -105,6 +108,22 @@ public class FuncionarioController {
         return ResponseEntity.status(200).body(funcionario);
     }
 
+    @Operation(
+            summary = "Listar funcionário por email",
+            description = "Lista o funcionário especificado dado o email"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioTokenDto.class)))
+    })
+    @GetMapping("/me")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<FuncionarioListDto> buscarFuncionarioLogado(Authentication authentication) {
+        // Pega o email do usuário autenticado pelo token JWT
+        String email = authentication.getName();
+        FuncionarioListDto funcionario = buscarFuncionarioPorEmailUseCase.execute(email);
+        return ResponseEntity.status(200).body(funcionario);
+    }
 
     @Operation(
             summary = "Atualiza o funcionário",

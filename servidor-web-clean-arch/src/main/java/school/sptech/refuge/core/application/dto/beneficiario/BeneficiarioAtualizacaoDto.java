@@ -34,8 +34,6 @@ public class BeneficiarioAtualizacaoDto {
     private String sisa;
     @Schema(description = "Status de atividade do usuário", example = "ATIVO - INATIVO")
     private String status;
-    @Schema(description = "Data de ativação do usuário", example = "25/07/2020")
-    private LocalDateTime data_ativacao;
     @Schema(description = "Observações sobre o beneficiário")
     private String observacao;
 
@@ -53,7 +51,7 @@ public class BeneficiarioAtualizacaoDto {
     @Schema(description = "ID do tipo de sexualidade", example = "2")
     private Integer idTipoSexualidade;
 
-    public BeneficiarioAtualizacaoDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade) {
+    public BeneficiarioAtualizacaoDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade) {
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
@@ -67,7 +65,6 @@ public class BeneficiarioAtualizacaoDto {
         this.fotoPerfil = fotoPerfil;
         this.sisa = sisa;
         this.status = status;
-        this.data_ativacao = data_ativacao;
         this.observacao = observacao;
         this.idFuncionario = idFuncionario;
         this.idEndereco = idEndereco;
@@ -180,14 +177,6 @@ public class BeneficiarioAtualizacaoDto {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public LocalDateTime getData_ativacao() {
-        return data_ativacao;
-    }
-
-    public void setData_ativacao(LocalDateTime data_ativacao) {
-        this.data_ativacao = data_ativacao;
     }
 
     public String getObservacao() {

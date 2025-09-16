@@ -42,7 +42,7 @@ public class BeneficiarioMapper {
                 beneficiario.getLocalDorme() != null ? beneficiario.getLocalDorme().name() : null,
                 beneficiario.getFotoPerfil(),
                 beneficiario.getSisa(),
-                beneficiario.getStatus() != null ? beneficiario.getStatus().name() : null,
+                beneficiario.getStatus().name(),
                 beneficiario.getDataAtivacao(),
                 beneficiario.getObservacao(),
                 beneficiario.getFuncionario() != null ? new FuncionarioListDto(
@@ -95,7 +95,7 @@ public class BeneficiarioMapper {
         entity.setLocalDorme(beneficiario.getLocalDorme() != null ? beneficiario.getLocalDorme() : null);
         entity.setFotoPerfil(beneficiario.getFotoPerfil());
         entity.setSisa(beneficiario.getSisa());
-        entity.setStatus(beneficiario.getStatus() != null ? beneficiario.getStatus() : null);
+        entity.setStatus(beneficiario.getStatus());
         entity.setDataAtivacao(beneficiario.getDataAtivacao());
         entity.setObservacao(beneficiario.getObservacao());
 
