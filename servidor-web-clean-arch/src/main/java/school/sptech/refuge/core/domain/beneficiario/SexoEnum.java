@@ -4,7 +4,7 @@ package school.sptech.refuge.core.domain.beneficiario;
 import school.sptech.refuge.core.application.exception.SexoInvalidoException;
 
 public enum SexoEnum {
-    FEMININO("Femino"),
+    FEMININO("Feminino"),
     MASCULINO("Masculino"),
     NAO_DECLARADO("Não Declarado");
 

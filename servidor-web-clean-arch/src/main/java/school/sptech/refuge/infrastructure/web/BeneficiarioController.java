@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioAtualizacaoDto;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioStatusDto;
 import school.sptech.refuge.core.application.usecase.beneficiario.*;
+import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
 import school.sptech.refuge.core.domain.beneficiario.LocalEnum;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
@@ -126,7 +128,7 @@ public class BeneficiarioController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
             @ApiResponse(responseCode = "204", description = "Nenhum beneficiário com o status especificado foi encontrado", content = @Content)
     })
-    @GetMapping("/status")
+    @GetMapping("/statusteste")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listarPorStatus(@RequestParam String raca) {
         List<BeneficarioListDto> dtos = listarBeneficiarioPorRacaUseCase.execute(raca);
@@ -248,6 +250,25 @@ public class BeneficiarioController {
                 })
                 .toList();
         return ResponseEntity.ok(locais);
+    }
+
+    @GetMapping("/status")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<BeneficiarioStatusDto>> listarTodosStatus() {
+        List<BeneficarioListDto> beneficiarios = listarTodosBeneficiarioUseCase.execute();
+
+        if (beneficiarios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<BeneficiarioStatusDto> dtos = beneficiarios.stream()
+                .map(b -> new BeneficiarioStatusDto(
+                        b.getNomeRegistro(),
+                        b.getStatus() != null ? b.getStatus() : "INATIVO"
+                ))
+                .toList();
+
+        return ResponseEntity.ok(dtos);
     }
 
 }

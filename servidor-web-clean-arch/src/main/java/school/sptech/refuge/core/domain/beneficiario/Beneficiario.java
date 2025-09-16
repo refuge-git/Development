@@ -65,8 +65,8 @@ public class Beneficiario {
         this.localDorme = localDorme;
         this.fotoPerfil = fotoPerfil;
         this.sisa = sisa;
-        this.status = StatusEnum.ATIVO;
-        this.dataAtivacao = LocalDateTime.now();
+        this.status = status;
+        this.dataAtivacao = dataAtivacao;
         this.observacao = observacao;
         this.funcionario = funcionario;
         this.endereco = endereco;

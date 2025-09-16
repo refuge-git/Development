@@ -65,15 +65,12 @@ public class SecurityConfiguracao {
                 .cors(Customizer.withDefaults())
                 .csrf(CsrfConfigurer<HttpSecurity>::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(URLS_PERMITIDAS)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/funcionarios")
-                        .permitAll()
-                        .requestMatchers("/funcionarios/**")
-                        .authenticated()
-                        .anyRequest()
-                        .authenticated()
+                        .requestMatchers(URLS_PERMITIDAS).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/funcionarios/**").permitAll() // libera cadastro
+                        .requestMatchers("/funcionarios/**").authenticated()
+                        .anyRequest().authenticated()
                 )
+
                 .exceptionHandling(handling -> handling
                         .authenticationEntryPoint(autenticacaoJwtEntryPoint))  // Ponto de entrada de autenticação em caso de falha
                 .sessionManagement(management -> management

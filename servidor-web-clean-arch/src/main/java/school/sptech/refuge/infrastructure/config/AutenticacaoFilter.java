@@ -32,6 +32,15 @@ public class AutenticacaoFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/funcionarios/login") ||
+                (path.startsWith("/funcionarios") && request.getMethod().equals("POST"))) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String username = null;
         String jwtToken = null;
 

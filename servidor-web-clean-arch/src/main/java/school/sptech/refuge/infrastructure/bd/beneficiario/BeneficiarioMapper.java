@@ -42,7 +42,8 @@ public class BeneficiarioMapper {
                 beneficiario.getLocalDorme() != null ? beneficiario.getLocalDorme().name() : null,
                 beneficiario.getFotoPerfil(),
                 beneficiario.getSisa(),
-                beneficiario.getStatus().name(),
+                // beneficiario.getStatus().name(),
+                beneficiario.getStatus() != null ? beneficiario.getStatus().name() : "ATIVO",
                 beneficiario.getDataAtivacao(),
                 beneficiario.getObservacao(),
                 beneficiario.getFuncionario() != null ? new FuncionarioListDto(
