@@ -22,6 +22,8 @@ import school.sptech.refuge.core.domain.tipogenero.TipoGenero;
 import school.sptech.refuge.core.domain.tiposexualidade.TipoSexualidade;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
 
+import java.time.LocalDateTime;
+
 public class CriarBeneficiarioUseCase {
 
     private final BeneficiarioGateway beneficiarioGateway;
@@ -73,8 +75,8 @@ public class CriarBeneficiarioUseCase {
                 LocalEnum.valueOf(dto.getLocalDorme().toUpperCase()),
                 dto.getFotoPerfil(),
                 dto.getSisa(),
-                null,
-                null,
+                StatusEnum.ATIVO,
+                LocalDateTime.now(),
                 dto.getObservacao(),
                 funcionario,
                 endereco,
