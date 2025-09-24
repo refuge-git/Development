@@ -1,5 +1,6 @@
 package school.sptech.refuge.core.application.usecase.beneficiario;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import school.sptech.refuge.core.adapters.BeneficiarioGateway;
 import school.sptech.refuge.core.adapters.EnderecoGateway;
 import school.sptech.refuge.core.adapters.FuncionarioGateway;
@@ -21,6 +22,7 @@ import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.core.domain.tipogenero.TipoGenero;
 import school.sptech.refuge.core.domain.tiposexualidade.TipoSexualidade;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
+import school.sptech.refuge.infrastructure.config.bucketS3.S3UploadService;
 
 import java.time.LocalDateTime;
 
@@ -31,6 +33,9 @@ public class CriarBeneficiarioUseCase {
     private final EnderecoGateway enderecoGateway;
     private final TipoGeneroGateway tipoGeneroGateway;
     private final TipoSexualidadeGateway tipoSexualidadeGateway;
+    @Autowired
+    private S3UploadService s3UploadService;
+
 
     public CriarBeneficiarioUseCase(BeneficiarioGateway beneficiarioGateway,
                                     FuncionarioGateway funcionarioGateway,
@@ -61,6 +66,10 @@ public class CriarBeneficiarioUseCase {
         TipoSexualidade tipoSexualidade = tipoSexualidadeGateway.buscarPorId(dto.getIdTipoSexualidade())
                 .orElseThrow(() -> new TipoSexualidadeNaoEncontradoException("Tipo de sexualidade não encontrado"));
 
+
+        // Geração de id único para imagem:
+        String urlPerfil = s3UploadService.uploadFile(dto.getIdFuncionario() + "_" + System.currentTimeMillis() + ".jpg", dto.getImagem());
+
         Beneficiario beneficiario = new Beneficiario(
                 null,
                 dto.getNomeRegistro(),
@@ -73,7 +82,7 @@ public class CriarBeneficiarioUseCase {
                 dto.getNomeMae(),
                 dto.getEgressoPrisional(),
                 LocalEnum.valueOf(dto.getLocalDorme().toUpperCase()),
-                dto.getFotoPerfil(),
+                urlPerfil,
                 dto.getSisa(),
                 StatusEnum.ATIVO,
                 LocalDateTime.now(),

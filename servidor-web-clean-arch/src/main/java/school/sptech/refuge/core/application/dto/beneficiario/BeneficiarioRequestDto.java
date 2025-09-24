@@ -84,8 +84,12 @@ public class BeneficiarioRequestDto {
     @Schema(description = "ID do tipo de sexualidade", example = "2")
     private Integer idTipoSexualidade;
 
+    @NotNull
+    @Schema(description = "Imagem salva no bucket", example = "2")
+    private byte[] imagem;
 
-    public BeneficiarioRequestDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade) {
+
+    public BeneficiarioRequestDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade, byte[] imagem) {
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
@@ -103,6 +107,7 @@ public class BeneficiarioRequestDto {
         this.idEndereco = idEndereco;
         this.idTipoGenero = idTipoGenero;
         this.idTipoSexualidade = idTipoSexualidade;
+        this.imagem = imagem;
     }
 
     public BeneficiarioRequestDto() {
@@ -242,5 +247,13 @@ public class BeneficiarioRequestDto {
 
     public void setIdTipoSexualidade(@NotNull Integer idTipoSexualidade) {
         this.idTipoSexualidade = idTipoSexualidade;
+    }
+
+    public void setImagem(@NotNull byte[] imagem){
+        this.imagem = imagem;
+    }
+
+    public @NotNull byte[] getImagem(){
+        return imagem;
     }
 }

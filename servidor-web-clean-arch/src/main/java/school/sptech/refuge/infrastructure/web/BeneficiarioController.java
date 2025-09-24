@@ -64,6 +64,7 @@ public class BeneficiarioController {
     })
     @PostMapping
     @SecurityRequirement(name = "Bearer")
+    // NOVO ATRIBUTO PARA SALVAR ENDEREÇO DE IMAGEM (id do bucket)
     public ResponseEntity<BeneficarioListDto> cadastrar(@Valid @RequestBody BeneficiarioRequestDto dto) {
         BeneficarioListDto criado = criarBeneficiarioUseCase.execute(dto);
         return ResponseEntity.status(201).body(criado);
