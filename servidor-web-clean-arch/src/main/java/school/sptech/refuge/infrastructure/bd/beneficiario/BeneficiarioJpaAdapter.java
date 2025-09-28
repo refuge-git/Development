@@ -77,4 +77,9 @@ public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
     public List<Beneficiario> buscarPorNomeRegistroOuNomeSocial(String nomeR) {
         return beneficiarioJpaRepository.findByNomeRegistroContainingIgnoreCase(nomeR).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Beneficiario> buscarPorPresencaNoDiaAtual(int diaSemana) {
+        return beneficiarioJpaRepository.findBeneficiariosComMaisPresencasPorDiaSemana(diaSemana).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
+    }
 }

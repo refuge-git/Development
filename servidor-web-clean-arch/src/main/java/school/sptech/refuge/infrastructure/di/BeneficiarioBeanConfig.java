@@ -60,5 +60,10 @@ public class BeneficiarioBeanConfig {
         return new ListarBeneficiariosPorNomeRegistroOuSocialUseCase(adapter);
     }
 
+    @Bean
+    public ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase(BeneficiarioJpaAdapter adapter) {
+        return new ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase(adapter);
+    }
+
 
 }

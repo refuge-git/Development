@@ -22,7 +22,7 @@ public class CriarFuncionarioUseCase {
         funcionario.setTelefone(funcionarioRequestDto.getTelefone());
         funcionario.setEmail(funcionarioRequestDto.getEmail());
 
-        // 🔐 Criptografando a senha antes de salvar
+        // Criptografando a senha antes de salvar
         funcionario.setSenha(passwordEncoder.encode(funcionarioRequestDto.getSenha()));
 
         Funcionario funcionarioCriado = funcionarioGateway.salvar(funcionario);

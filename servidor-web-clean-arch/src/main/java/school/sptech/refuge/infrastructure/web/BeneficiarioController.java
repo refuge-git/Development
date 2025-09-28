@@ -23,6 +23,7 @@ import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +42,17 @@ public class BeneficiarioController {
     private final ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase;
     private final ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase;
     private final ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse;
+    private final ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
 
-    public BeneficiarioController(CriarBeneficiarioUseCase criarBeneficiarioUseCase, ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase, BuscarBeneficiarioUseCase buscarBeneficiarioUseCase, AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase, DeletarBeneficiarioUseCase deletarBeneficiarioUseCase, ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase, ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase, ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse) {
+    public BeneficiarioController(CriarBeneficiarioUseCase criarBeneficiarioUseCase,
+                                 ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase,
+                                 BuscarBeneficiarioUseCase buscarBeneficiarioUseCase,
+                                 AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase,
+                                 DeletarBeneficiarioUseCase deletarBeneficiarioUseCase,
+                                 ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase,
+                                 ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase,
+                                 ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse,
+                                 ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase) {
         this.criarBeneficiarioUseCase = criarBeneficiarioUseCase;
         this.listarTodosBeneficiarioUseCase = listarTodosBeneficiarioUseCase;
         this.buscarBeneficiarioUseCase = buscarBeneficiarioUseCase;
@@ -51,6 +61,7 @@ public class BeneficiarioController {
         this.listarBeneficiarioPorRacaUseCase = listarBeneficiarioPorRacaUseCase;
         this.listarBeneficiarioPorStatusUseCase = listarBeneficiarioPorStatusUseCase;
         this.listarBeneficiarioPorNomeUse = listarBeneficiarioPorNomeUse;
+        this.listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase = listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
     }
 
     @Operation(
@@ -269,6 +280,15 @@ public class BeneficiarioController {
                 ))
                 .toList();
 
+        return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/frequencia-dia-semana")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<BeneficarioListDto>> listarPorFrequenciaNoDiaDaSemana() {
+        int diaSemana = LocalDate.now().getDayOfWeek().getValue();
+        List<BeneficarioListDto> dtos = listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase.execute(diaSemana);
+        if (dtos.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(dtos);
     }
 

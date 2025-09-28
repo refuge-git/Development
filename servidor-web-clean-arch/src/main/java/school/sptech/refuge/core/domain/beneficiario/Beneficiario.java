@@ -114,7 +114,11 @@ public class Beneficiario {
     }
 
     public void setCpf(String cpf) {
-        this.cpf = cpf;
+        if (cpf != null) {
+            this.cpf = cpf.replaceAll("[\\.\\-]", "");
+        } else {
+            this.cpf = null;
+        }
     }
 
     public Boolean getEstrangeiro() {

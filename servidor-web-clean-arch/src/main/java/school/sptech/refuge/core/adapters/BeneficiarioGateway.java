@@ -16,4 +16,5 @@ public interface BeneficiarioGateway {
     List<Beneficiario> buscarPorNomeRegistroOuNomeSocial(String nome);
     Beneficiario atualizar(Integer id, Beneficiario beneficiario);
     void deletar(Integer id);
+    List<Beneficiario> buscarPorPresencaNoDiaAtual(int diaSemana);
 }
