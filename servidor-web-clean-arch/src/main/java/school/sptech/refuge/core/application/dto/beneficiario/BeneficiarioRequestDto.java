@@ -84,7 +84,6 @@ public class BeneficiarioRequestDto {
     @Schema(description = "ID do tipo de sexualidade", example = "2")
     private Integer idTipoSexualidade;
 
-    @NotNull
     @Schema(description = "Imagem salva no bucket", example = "2")
     private byte[] imagem;
 
@@ -249,11 +248,11 @@ public class BeneficiarioRequestDto {
         this.idTipoSexualidade = idTipoSexualidade;
     }
 
-    public void setImagem(@NotNull byte[] imagem){
+    public void setImagem( byte[] imagem){
         this.imagem = imagem;
     }
 
-    public @NotNull byte[] getImagem(){
+    public  byte[] getImagem(){
         return imagem;
     }
 }

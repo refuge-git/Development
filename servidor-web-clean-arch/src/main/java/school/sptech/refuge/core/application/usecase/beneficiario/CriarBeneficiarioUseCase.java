@@ -68,7 +68,18 @@ public class CriarBeneficiarioUseCase {
 
 
         // Geração de id único para imagem:
-        String urlPerfil = s3UploadService.uploadFile(dto.getIdFuncionario() + "_" + System.currentTimeMillis() + ".jpg", dto.getImagem());
+        // String urlPerfil = s3UploadService.uploadFile(dto.getIdFuncionario() + "_" + System.currentTimeMillis() + ".jpg", dto.getImagem());
+
+        String urlPerfil = null;
+        if (dto.getImagem() != null && dto.getImagem().length > 0) {
+            urlPerfil = s3UploadService.uploadFile(
+                    dto.getIdFuncionario() + "_" + System.currentTimeMillis() + ".jpg",
+                    dto.getImagem()
+            );
+        } else {
+            // Se quiser um avatar padrão
+            urlPerfil = "https://meu-bucket/imagens/default-avatar.jpg";
+        }
 
         Beneficiario beneficiario = new Beneficiario(
                 null,

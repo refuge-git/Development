@@ -21,9 +21,9 @@ public class S3UploadService {
     private String bucketName;
 
     public String uploadFile(String fileName, byte[] fileContent) {
-        if (fileContent == null || fileContent.length == 0) {
-            throw new ResponseStatusException(400, "O arquivo de imagem não pode ser nulo ou vazio", null);
-        }
+     //   if (fileContent == null || fileContent.length == 0) {
+      //      throw new ResponseStatusException(400, "O arquivo de imagem não pode ser nulo ou vazio", null);
+       // }
         String s3Key = fileName;
 
         try {
