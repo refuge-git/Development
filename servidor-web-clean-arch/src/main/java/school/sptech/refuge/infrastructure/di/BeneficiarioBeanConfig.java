@@ -65,5 +65,8 @@ public class BeneficiarioBeanConfig {
         return new ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase(adapter);
     }
 
-
+    @Bean
+    public  ListagemBeneficiarioUseCase listagemBeneficiarioUseCase(BeneficiarioJpaAdapter adapter){
+        return new ListagemBeneficiarioUseCase(adapter);
+    }
 }

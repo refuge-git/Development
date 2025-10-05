@@ -170,7 +170,7 @@ public class FuncionarioController {
             @ApiResponse(responseCode = "204", description = "Nenhum funcionario  foi encontrado", content = @Content)
     })
 
-    @GetMapping
+    @GetMapping("listar-page")
     public Page<FuncionarioListDto> listarFuncionarios(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {

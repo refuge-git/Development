@@ -44,4 +44,9 @@ public class FuncionarioBeanConfig {
     public BuscarFuncionarioPorEmailUseCase buscarFuncionarioPorEmailUseCase(FuncionarioJpaAdapter adapter) {
         return new BuscarFuncionarioPorEmailUseCase(adapter);
     }
+
+    @Bean
+    public ListagemFuncionarioUseCase listagemFuncionarioUseCase(FuncionarioJpaAdapter adapter){
+        return new ListagemFuncionarioUseCase(adapter);
+    }
 }

@@ -295,7 +295,7 @@ public class BeneficiarioController {
             @ApiResponse(responseCode = "204", description = "Nenhum beneficiário  foi encontrado", content = @Content)
     })
 
-    @GetMapping
+    @GetMapping("/listar-page")
     public Page<BeneficarioListDto> listarBeneficiarios(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
