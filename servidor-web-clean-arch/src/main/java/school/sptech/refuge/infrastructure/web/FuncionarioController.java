@@ -11,10 +11,12 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.application.dto.funcionario.*;
 import school.sptech.refuge.core.application.usecase.funcionario.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.core.domain.paginacao.Page;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioMapper;
 
 import java.util.List;
@@ -30,8 +32,9 @@ public class FuncionarioController {
     private final DeletarFuncionarioUseCase deletarFuncionarioUseCase;
     private final AutenticarFuncionarioUseCase autenticarFuncionarioUseCase;
     private final BuscarFuncionarioPorEmailUseCase buscarFuncionarioPorEmailUseCase;
+    private final ListagemFuncionarioUseCase listagemFuncionarioUseCase;
 
-    public FuncionarioController(CriarFuncionarioUseCase criarFuncionarioUseCase, AtualizarFuncionarioUseCase atualizarFuncionarioUseCase, BuscarFuncionarioUseCase buscarFuncionarioUseCase, ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase, DeletarFuncionarioUseCase deletarFuncionarioUseCase, AutenticarFuncionarioUseCase autenticarFuncionarioUseCase, BuscarFuncionarioPorEmailUseCase buscarFuncionarioPorEmailUseCase) {
+    public FuncionarioController(CriarFuncionarioUseCase criarFuncionarioUseCase, AtualizarFuncionarioUseCase atualizarFuncionarioUseCase, BuscarFuncionarioUseCase buscarFuncionarioUseCase, ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase, DeletarFuncionarioUseCase deletarFuncionarioUseCase, AutenticarFuncionarioUseCase autenticarFuncionarioUseCase, BuscarFuncionarioPorEmailUseCase buscarFuncionarioPorEmailUseCase, ListagemFuncionarioUseCase listagemFuncionarioUseCase) {
         this.criarFuncionarioUseCase = criarFuncionarioUseCase;
         this.atualizarFuncionarioUseCase = atualizarFuncionarioUseCase;
         this.buscarFuncionarioUseCase = buscarFuncionarioUseCase;
@@ -39,6 +42,7 @@ public class FuncionarioController {
         this.deletarFuncionarioUseCase = deletarFuncionarioUseCase;
         this.autenticarFuncionarioUseCase = autenticarFuncionarioUseCase;
         this.buscarFuncionarioPorEmailUseCase = buscarFuncionarioPorEmailUseCase;
+        this.listagemFuncionarioUseCase = listagemFuncionarioUseCase;
     }
 
     @Operation(
@@ -153,6 +157,24 @@ public class FuncionarioController {
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         deletarFuncionarioUseCase.execute(id);
         return ResponseEntity.status(204).build();
+    }
+
+
+    @Operation(
+            summary = "Listando quantidade limitada de Funcionarios.",
+            description = "Listar quantidade limitada dos Funcionarios"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Funcionarios encontrados",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum funcionario  foi encontrado", content = @Content)
+    })
+
+    @GetMapping
+    public Page<FuncionarioListDto> listarFuncionarios(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return listagemFuncionarioUseCase.execute(page, size);
     }
 
 }

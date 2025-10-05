@@ -1,6 +1,7 @@
 package school.sptech.refuge.core.adapters;
 
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.core.domain.paginacao.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,6 @@ public interface FuncionarioGateway {
     void deletar(Integer id);
     boolean existePorId(Integer id);
     Optional<Funcionario> buscarPorEmail(String email);
-
+    Page<Funcionario> listarPaginado(int page, int size);
 
 }

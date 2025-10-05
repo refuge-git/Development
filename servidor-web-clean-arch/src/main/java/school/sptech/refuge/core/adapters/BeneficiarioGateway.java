@@ -1,7 +1,7 @@
 package school.sptech.refuge.core.adapters;
 
 import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
-import school.sptech.refuge.core.domain.tipogenero.TipoGenero;
+import school.sptech.refuge.core.domain.paginacao.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +17,5 @@ public interface BeneficiarioGateway {
     Beneficiario atualizar(Integer id, Beneficiario beneficiario);
     void deletar(Integer id);
     List<Beneficiario> buscarPorPresencaNoDiaAtual(int diaSemana);
+    Page<Beneficiario> listarPaginado(int page, int size);
 }

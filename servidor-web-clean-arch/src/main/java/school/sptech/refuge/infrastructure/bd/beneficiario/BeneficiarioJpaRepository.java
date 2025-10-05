@@ -12,6 +12,7 @@ import java.util.List;
 public interface BeneficiarioJpaRepository extends JpaRepository<BeneficiarioEntity, Integer> {
 
 
+
     List<BeneficiarioEntity> findByNomeRegistroContainingIgnoreCase(String nomeRegistro);
 
     @Query("SELECT b FROM BeneficiarioEntity b WHERE b.raca = :raca")

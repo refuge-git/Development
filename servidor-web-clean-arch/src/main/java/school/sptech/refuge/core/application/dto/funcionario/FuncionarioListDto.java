@@ -2,6 +2,7 @@ package school.sptech.refuge.core.application.dto.funcionario;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 
 public class FuncionarioListDto {
 
@@ -25,6 +26,9 @@ public class FuncionarioListDto {
     }
 
     public FuncionarioListDto() {
+    }
+
+    public FuncionarioListDto(Funcionario funcionario) {
     }
 
     public Integer getId() {

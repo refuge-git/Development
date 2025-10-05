@@ -6,6 +6,7 @@ import school.sptech.refuge.core.application.dto.endereco.EnderecoResponseDto;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
 import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
+import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -75,6 +76,9 @@ public class BeneficarioListDto {
     }
 
     public BeneficarioListDto() {
+    }
+
+    public BeneficarioListDto(Beneficiario beneficiario) {
     }
 
     public Integer getId() {

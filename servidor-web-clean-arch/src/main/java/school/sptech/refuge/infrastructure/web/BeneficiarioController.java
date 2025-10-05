@@ -14,11 +14,9 @@ import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioStatusDto;
 import school.sptech.refuge.core.application.usecase.beneficiario.*;
-import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
 import school.sptech.refuge.core.domain.beneficiario.LocalEnum;
-import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
+import school.sptech.refuge.core.domain.paginacao.Page;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
-import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 
@@ -43,16 +41,9 @@ public class BeneficiarioController {
     private final ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase;
     private final ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse;
     private final ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
+    private final ListagemBeneficiarioUseCase listagemBeneficiarioUseCase;
 
-    public BeneficiarioController(CriarBeneficiarioUseCase criarBeneficiarioUseCase,
-                                 ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase,
-                                 BuscarBeneficiarioUseCase buscarBeneficiarioUseCase,
-                                 AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase,
-                                 DeletarBeneficiarioUseCase deletarBeneficiarioUseCase,
-                                 ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase,
-                                 ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase,
-                                 ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse,
-                                 ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase) {
+    public BeneficiarioController(CriarBeneficiarioUseCase criarBeneficiarioUseCase, ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase, BuscarBeneficiarioUseCase buscarBeneficiarioUseCase, AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase, DeletarBeneficiarioUseCase deletarBeneficiarioUseCase, ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase, ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase, ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse, ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase, ListagemBeneficiarioUseCase listagemBeneficiarioUseCase) {
         this.criarBeneficiarioUseCase = criarBeneficiarioUseCase;
         this.listarTodosBeneficiarioUseCase = listarTodosBeneficiarioUseCase;
         this.buscarBeneficiarioUseCase = buscarBeneficiarioUseCase;
@@ -62,6 +53,7 @@ public class BeneficiarioController {
         this.listarBeneficiarioPorStatusUseCase = listarBeneficiarioPorStatusUseCase;
         this.listarBeneficiarioPorNomeUse = listarBeneficiarioPorNomeUse;
         this.listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase = listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
+        this.listagemBeneficiarioUseCase = listagemBeneficiarioUseCase;
     }
 
     @Operation(
@@ -290,6 +282,24 @@ public class BeneficiarioController {
         List<BeneficarioListDto> dtos = listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase.execute(diaSemana);
         if (dtos.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(dtos);
+    }
+
+
+    @Operation(
+            summary = "Listando quantidade limitada de beneficiário.",
+            description = "Listar quantidade limitada dos beneficiários"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Beneficiários encontrados",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário  foi encontrado", content = @Content)
+    })
+
+    @GetMapping
+    public Page<BeneficarioListDto> listarBeneficiarios(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return listagemBeneficiarioUseCase.execute(page, size);
     }
 
 }

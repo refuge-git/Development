@@ -1,9 +1,12 @@
 package school.sptech.refuge.infrastructure.bd.beneficiario;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.BeneficiarioGateway;
 import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
+import school.sptech.refuge.core.domain.paginacao.Page;
 
 import java.util.List;
 import java.util.Objects;
@@ -81,5 +84,17 @@ public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
     @Override
     public List<Beneficiario> buscarPorPresencaNoDiaAtual(int diaSemana) {
         return beneficiarioJpaRepository.findBeneficiariosComMaisPresencasPorDiaSemana(diaSemana).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<Beneficiario> listarPaginado(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        org.springframework.data.domain.Page<BeneficiarioEntity> result = beneficiarioJpaRepository.findAll(pageable);
+
+        List<Beneficiario> beneficiarios = result.getContent().stream()
+                .map(BeneficiarioMapper::ofEntity)
+                .toList();
+
+        return new Page<>(beneficiarios, result.getTotalElements(), page, size);
     }
 }

@@ -1,9 +1,15 @@
 package school.sptech.refuge.infrastructure.bd.funcionario;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.FuncionarioGateway;
+import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.core.domain.paginacao.Page;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,4 +62,17 @@ public class FuncionarioJpaAdapter implements FuncionarioGateway {
         return funcionarioJpaRepository.findByEmail(email)
                 .map(FuncionarioMapper::ofEntity);
     }
+
+    @Override
+    public Page<Funcionario> listarPaginado(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        org.springframework.data.domain.Page<FuncionarioEntity> result = funcionarioJpaRepository.findAll(pageable);
+
+        List<Funcionario> funcionarios = result.getContent().stream()
+                .map(FuncionarioMapper::ofEntity)
+                .toList();
+
+        return new Page<>(funcionarios, result.getTotalElements(), page, size);
+    }
+
 }
