@@ -180,8 +180,7 @@ public class RegistroAtendimentoMapper {
                 endereco.getComplemento(),
                 endereco.getBairro(),
                 endereco.getCep(),
-                endereco.getNomeLocalidade(),
-                endereco.getSiglaCidade()
+                endereco.getNomeLocalidade()
         );
     }
 

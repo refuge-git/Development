@@ -16,10 +16,9 @@ public class EnderecoEntity {
     private String bairro;
     private String cep;
     private String nomeLocalidade;
-    private String siglaCidade;
 
     public EnderecoEntity(Integer id, String tipoLogradouro, String nomeLogradouro, Integer numero,
-                          String complemento, String bairro, String cep, String nomeLocalidade, String siglaCidade) {
+                          String complemento, String bairro, String cep, String nomeLocalidade) {
         this.id = id;
         this.tipoLogradouro = tipoLogradouro;
         this.nomeLogradouro = nomeLogradouro;
@@ -28,7 +27,6 @@ public class EnderecoEntity {
         this.bairro = bairro;
         this.cep = cep;
         this.nomeLocalidade = nomeLocalidade;
-        this.siglaCidade = siglaCidade;
     }
 
     public EnderecoEntity() {
@@ -98,11 +96,4 @@ public class EnderecoEntity {
         this.nomeLocalidade = nomeLocalidade;
     }
 
-    public String getSiglaCidade() {
-        return siglaCidade;
-    }
-
-    public void setSiglaCidade(String siglaCidade) {
-        this.siglaCidade = siglaCidade;
-    }
 }

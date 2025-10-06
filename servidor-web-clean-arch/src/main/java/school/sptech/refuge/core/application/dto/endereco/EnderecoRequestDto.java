@@ -18,7 +18,6 @@ public class EnderecoRequestDto {
     private String nomeLogradouro;
 
     @NotNull
-    @NotBlank
     @Schema(description = "Número do endereço do beneficiário", example = "314")
     private Integer numero;
 
@@ -39,13 +38,9 @@ public class EnderecoRequestDto {
     @NotNull
     private String nomeLocalidade;
 
-    @NotBlank
-    @NotNull
-    private String siglaCidade;
-
     public EnderecoRequestDto(String tipoLogradouro, String nomeLogradouro, Integer numero,
                               String complemento, String bairro, String cep,
-                              String nomeLocalidade, String siglaCidade) {
+                              String nomeLocalidade  ) {
         this.tipoLogradouro = tipoLogradouro;
         this.nomeLogradouro = nomeLogradouro;
         this.numero = numero;
@@ -53,7 +48,6 @@ public class EnderecoRequestDto {
         this.bairro = bairro;
         this.cep = cep;
         this.nomeLocalidade = nomeLocalidade;
-        this.siglaCidade = siglaCidade;
     }
 
     public EnderecoRequestDto() {
@@ -115,11 +109,4 @@ public class EnderecoRequestDto {
         this.nomeLocalidade = nomeLocalidade;
     }
 
-    public String getSiglaCidade() {
-        return siglaCidade;
-    }
-
-    public void setSiglaCidade(String siglaCidade) {
-        this.siglaCidade = siglaCidade;
-    }
 }

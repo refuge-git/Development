@@ -24,8 +24,7 @@ public class ListarTodosEnderecosUseCase {
                         e.getComplemento(),
                         e.getBairro(),
                         e.getCep(),
-                        e.getNomeLocalidade(),
-                        e.getSiglaCidade()
+                        e.getNomeLocalidade()
                 ))
                 .collect(Collectors.toList());
     }

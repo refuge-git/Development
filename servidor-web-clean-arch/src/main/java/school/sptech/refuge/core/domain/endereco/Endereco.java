@@ -10,10 +10,9 @@ public class Endereco {
     private String bairro;
     private String cep;
     private String nomeLocalidade;
-    private String siglaCidade;
 
     public Endereco(Integer id, String tipoLogradouro, String nomeLogradouro, Integer numero, String complemento,
-                    String bairro, String cep, String nomeLocalidade, String siglaCidade) {
+                    String bairro, String cep, String nomeLocalidade) {
         this.id = id;
         this.tipoLogradouro = tipoLogradouro;
         this.nomeLogradouro = nomeLogradouro;
@@ -22,11 +21,11 @@ public class Endereco {
         this.bairro = bairro;
         this.cep = cep;
         this.nomeLocalidade = nomeLocalidade;
-        this.siglaCidade = siglaCidade;
     }
 
     public Endereco() {
     }
+
 
     public Integer getId() {
         return id;
@@ -84,10 +83,4 @@ public class Endereco {
         this.nomeLocalidade = nomeLocalidade;
     }
 
-    public String getSiglaCidade() {
-        return siglaCidade;
-    }
-    public void setSiglaCidade(String siglaCidade) {
-        this.siglaCidade = siglaCidade;
-    }
 }

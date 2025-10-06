@@ -15,8 +15,7 @@ public class EnderecoMapper {
                 endereco.getComplemento(),
                 endereco.getBairro(),
                 endereco.getCep(),
-                endereco.getNomeLocalidade(),
-                endereco.getSiglaCidade()
+                endereco.getNomeLocalidade()
         );
     }
 
@@ -30,8 +29,7 @@ public class EnderecoMapper {
                 entity.getComplemento(),
                 entity.getBairro(),
                 entity.getCep(),
-                entity.getNomeLocalidade(),
-                entity.getSiglaCidade()
+                entity.getNomeLocalidade()
         );
     }
 
@@ -45,8 +43,7 @@ public class EnderecoMapper {
                 endereco.getComplemento(),
                 endereco.getBairro(),
                 endereco.getCep(),
-                endereco.getNomeLocalidade(),
-                endereco.getSiglaCidade()
+                endereco.getNomeLocalidade()
         );
     }
 
@@ -60,8 +57,7 @@ public class EnderecoMapper {
                 entity.getComplemento(),
                 entity.getBairro(),
                 entity.getCep(),
-                entity.getNomeLocalidade(),
-                entity.getSiglaCidade()
+                entity.getNomeLocalidade()
         );
     }
 }

@@ -9,10 +9,9 @@ public class EnderecoResponseDto {
     private String bairro;
     private String cep;
     private String nomeLocalidade;
-    private String siglaCidade;
 
     public EnderecoResponseDto(Integer id, String tipoLogradouro, String nomeLogradouro, Integer numero,
-                               String complemento, String bairro, String cep, String nomeLocalidade, String siglaCidade) {
+                               String complemento, String bairro, String cep, String nomeLocalidade) {
         this.id = id;
         this.tipoLogradouro = tipoLogradouro;
         this.nomeLogradouro = nomeLogradouro;
@@ -21,7 +20,6 @@ public class EnderecoResponseDto {
         this.bairro = bairro;
         this.cep = cep;
         this.nomeLocalidade = nomeLocalidade;
-        this.siglaCidade = siglaCidade;
     }
 
     public EnderecoResponseDto() {
@@ -90,13 +88,5 @@ public class EnderecoResponseDto {
 
     public void setNomeLocalidade(String nomeLocalidade) {
         this.nomeLocalidade = nomeLocalidade;
-    }
-
-    public String getSiglaCidade() {
-        return siglaCidade;
-    }
-
-    public void setSiglaCidade(String siglaCidade) {
-        this.siglaCidade = siglaCidade;
     }
 }

@@ -26,8 +26,7 @@ public class AtualizarEnderecoUseCase {
                 dto.getComplemento(),
                 dto.getBairro(),
                 dto.getCep(),
-                dto.getNomeLocalidade(),
-                dto.getSiglaCidade()
+                dto.getNomeLocalidade()
         );
         Endereco atualizado = enderecoRepository.save(endereco);
         return new EnderecoResponseDto(
@@ -38,8 +37,7 @@ public class AtualizarEnderecoUseCase {
                 atualizado.getComplemento(),
                 atualizado.getBairro(),
                 atualizado.getCep(),
-                atualizado.getNomeLocalidade(),
-                atualizado.getSiglaCidade()
+                atualizado.getNomeLocalidade()
         );
     }
 }

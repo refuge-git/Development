@@ -22,8 +22,7 @@ public class CriarEnderecoUseCase {
                 dto.getComplemento(),
                 dto.getBairro(),
                 dto.getCep(),
-                dto.getNomeLocalidade(),
-                dto.getSiglaCidade()
+                dto.getNomeLocalidade()
         );
         Endereco salvo = enderecoRepository.save(endereco);
         return new EnderecoResponseDto(
@@ -34,8 +33,7 @@ public class CriarEnderecoUseCase {
                 salvo.getComplemento(),
                 salvo.getBairro(),
                 salvo.getCep(),
-                salvo.getNomeLocalidade(),
-                salvo.getSiglaCidade()
+                salvo.getNomeLocalidade()
         );
     }
 }

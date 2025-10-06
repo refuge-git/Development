@@ -22,8 +22,7 @@ public class BuscarEnderecoPorIdUseCase {
                         e.getComplemento(),
                         e.getBairro(),
                         e.getCep(),
-                        e.getNomeLocalidade(),
-                        e.getSiglaCidade()
+                        e.getNomeLocalidade()
                 ))
                 .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço de id " + id + " não encontrado"));
     }

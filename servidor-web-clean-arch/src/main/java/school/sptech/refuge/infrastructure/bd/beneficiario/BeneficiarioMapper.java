@@ -61,8 +61,7 @@ public class BeneficiarioMapper {
                         beneficiario.getEndereco().getComplemento(),
                         beneficiario.getEndereco().getBairro(),
                         beneficiario.getEndereco().getCep(),
-                        beneficiario.getEndereco().getNomeLocalidade(),
-                        beneficiario.getEndereco().getSiglaCidade()
+                        beneficiario.getEndereco().getNomeLocalidade()
                 ) : null,
                 beneficiario.getTipoGenero() != null ? new TipoGeneroListDto(
                         beneficiario.getTipoGenero().getId(),
