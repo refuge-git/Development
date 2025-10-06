@@ -35,4 +35,14 @@ public class RegistroAtendimentoBeanConfig {
         return new BuscarRegistroAtendimentoUseCase(adapter, beneficiario, tipoAtendimento);
     }
 
+    @Bean
+    public ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase(RegistroAtendimentoJpaAdapter adapter) {
+        return new ContarBeneficiariosAtendidosNoMesUseCase(adapter);
+    }
+
+    @Bean
+    public ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase(RegistroAtendimentoJpaAdapter adapter) {
+        return new ContarPresencasPorDiaNoMesUseCase(adapter);
+    }
+
 }

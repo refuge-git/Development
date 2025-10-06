@@ -25,13 +25,17 @@ public class RegistroAtendimentoController {
     private final DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase;
     private final ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase;
     private final BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase;
+    private final ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase;
+    private final ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase;
 
-    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase) {
+    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase) {
         this.atualizarRegistroAtendimentoUseCase = atualizarRegistroAtendimentoUseCase;
         this.criarRegistroAtendimentoUseCase = criarRegistroAtendimentoUseCase;
         this.deletarRegistroAtendimentoUseCase = deletarRegistroAtendimentoUseCase;
         this.listarTodosRegistroAtendimentoUseCase = listarTodosRegistroAtendimentoUseCase;
         this.buscarRegistroAtendimentoUseCase = buscarRegistroAtendimentoUseCase;
+        this.contarBeneficiariosAtendidosNoMesUseCase = contarBeneficiariosAtendidosNoMesUseCase;
+        this.contarPresencasPorDiaNoMesUseCase = contarPresencasPorDiaNoMesUseCase;
     }
 
     @Operation(
@@ -113,5 +117,44 @@ public class RegistroAtendimentoController {
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
         deletarRegistroAtendimentoUseCase.execute(id);
         return ResponseEntity.status(204).build();
+    }
+
+    /*@GetMapping("/relatorios/atendimentos-mes")
+    public ResponseEntity<byte[]> gerarRelatorioMensal() {
+        byte[] pdf = relatorioService.gerarRelatorioMensal();
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=relatorio-atendimentos.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
+    }*/
+
+
+    @Operation(
+            summary = "Contar beneficiários atendidos no mês atual",
+            description = "Retorna a quantidade de beneficiários que tiveram pelo menos um atendimento no mês atual"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contagem realizada com sucesso")
+    })
+    @GetMapping("/relatorios/beneficiarios-atendidos-mes")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Long> contarBeneficiariosNoMes() {
+        Long total = contarBeneficiariosAtendidosNoMesUseCase.execute();
+        return ResponseEntity.ok(total);
+    }
+
+    @Operation(
+            summary = "Contagem de presenças por dia do mês atual",
+            description = "Retorna uma lista de arrays [dia, qtd_pessoas] representando a quantidade de beneficiários distintos atendidos por dia do mês atual"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contagem realizada com sucesso")
+    })
+    @GetMapping("/relatorios/presencas-por-dia")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<Object[]>> contarPresencasPorDia() {
+        List<Object[]> resultado = contarPresencasPorDiaNoMesUseCase.execute();
+        return ResponseEntity.ok(resultado);
     }
 }

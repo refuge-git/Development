@@ -11,4 +11,6 @@ public interface RegistroAtendimentoGateway {
     Optional<RegistroAtendimento> buscarPorId(Integer id);
     void deletar(Integer id);
     boolean existePorId(Integer id);
+    Long contarBeneficiariosAtendidosNoMes();
+    List<Object[]> contarPresencasPorDiaNoMes();
 }

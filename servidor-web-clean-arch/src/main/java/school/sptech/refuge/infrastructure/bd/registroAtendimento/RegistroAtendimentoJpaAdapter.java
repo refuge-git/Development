@@ -49,4 +49,14 @@ public class RegistroAtendimentoJpaAdapter implements RegistroAtendimentoGateway
     public boolean existePorId(Integer id) {
         return false;
     }
+
+    @Override
+    public Long contarBeneficiariosAtendidosNoMes() {
+        return registroAtendimentoJpaRepository.countBeneficiariosAtendidosNoMes();
+    }
+
+    @Override
+    public List<Object[]> contarPresencasPorDiaNoMes() {
+        return registroAtendimentoJpaRepository.countPresencasPorDiaNoMes();
+    }
 }
