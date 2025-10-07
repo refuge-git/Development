@@ -22,4 +22,6 @@ public interface EnderecoGateway {
     List<Endereco> findByNomeLogradouroContainingIgnoreCase(String rua);
 
     Optional<Endereco> findByCep(String cep);
+
+    Optional<Endereco> findByCepAndNumero(String cep, Integer numero);
 }

@@ -63,4 +63,12 @@ public class EnderecoJpaAdapter implements EnderecoGateway {
     public Optional<Endereco> findByCep(String cep) {
         return repository.findByCep(cep).map(EnderecoMapper::toDomain);
     }
+
+    @Override
+    public Optional<Endereco> findByCepAndNumero(String cep, Integer numero) {
+        return repository.findByCepAndNumero(cep, numero)
+                .map(EnderecoMapper::toDomain);
+    }
+
+
 }

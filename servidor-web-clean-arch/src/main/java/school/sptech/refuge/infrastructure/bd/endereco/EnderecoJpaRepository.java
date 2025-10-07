@@ -9,4 +9,5 @@ public interface EnderecoJpaRepository extends JpaRepository<EnderecoEntity, Int
     List<EnderecoEntity> findByTipoLogradouroContainingIgnoreCase(String logradouro);
     List<EnderecoEntity> findByNomeLogradouroContainingIgnoreCase(String rua);
     Optional<EnderecoEntity> findByCep(String cep);
+    Optional<EnderecoEntity> findByCepAndNumero(String cep, Integer numero);
 }

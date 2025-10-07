@@ -6,6 +6,8 @@ import school.sptech.refuge.core.application.dto.endereco.EnderecoRequestDto;
 import school.sptech.refuge.core.application.dto.endereco.EnderecoResponseDto;
 import school.sptech.refuge.core.domain.endereco.Endereco;
 
+import java.util.Optional;
+
 public class CriarEnderecoUseCase {
 
     private final EnderecoGateway enderecoRepository;
@@ -17,18 +19,27 @@ public class CriarEnderecoUseCase {
     }
 
     public EnderecoResponseDto executar(EnderecoRequestDto dto) {
-        Endereco endereco = new Endereco(
-                null,
-                dto.getTipoLogradouro(),
-                dto.getNomeLogradouro(),
-                dto.getNumero(),
-                dto.getComplemento(),
-                dto.getBairro(),
-                dto.getCep(),
-                dto.getNomeLocalidade()
-        );
 
-        Endereco salvo = enderecoRepository.save(endereco);
+        Optional<Endereco> enderecoExistente = enderecoRepository.findByCepAndNumero(dto.getCep(), dto.getNumero());
+
+        Endereco salvo;
+
+        if (enderecoExistente.isPresent()) {
+            salvo = enderecoExistente.get();
+        } else {
+            Endereco endereco = new Endereco(
+                    null,
+                    dto.getTipoLogradouro(),
+                    dto.getNomeLogradouro(),
+                    dto.getNumero(),
+                    dto.getComplemento(),
+                    dto.getBairro(),
+                    dto.getCep(),
+                    dto.getNomeLocalidade()
+            );
+            salvo = enderecoRepository.save(endereco);
+        }
+
         beneficiarioGateway.linkEndereco(dto.getIdBeneficiario(), salvo.getId());
 
         return new EnderecoResponseDto(
