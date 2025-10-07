@@ -1,5 +1,6 @@
 package school.sptech.refuge.core.adapters;
 
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface RegistroAtendimentoGateway {
     void deletar(Integer id);
     boolean existePorId(Integer id);
     Long contarBeneficiariosAtendidosNoMes();
-    List<Object[]> contarPresencasPorDiaNoMes();
+    List<PresencaDia> contarPresencasPorDiaNoMes();
 }

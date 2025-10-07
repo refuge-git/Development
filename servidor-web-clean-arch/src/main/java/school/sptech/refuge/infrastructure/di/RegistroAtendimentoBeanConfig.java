@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import school.sptech.refuge.core.application.usecase.registroAtendimento.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaAdapter;
+import school.sptech.refuge.infrastructure.bd.registroAtendimento.RabbitMqRelatorioAdapter;
 import school.sptech.refuge.infrastructure.bd.registroAtendimento.RegistroAtendimentoJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.tipoAtendimento.TipoAtendimentoJpaAdapter;
 
@@ -41,8 +42,8 @@ public class RegistroAtendimentoBeanConfig {
     }
 
     @Bean
-    public ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase(RegistroAtendimentoJpaAdapter adapter) {
-        return new ContarPresencasPorDiaNoMesUseCase(adapter);
+    public ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase(RegistroAtendimentoJpaAdapter adapter, RabbitMqRelatorioAdapter relatorioAdapter) {
+        return new ContarPresencasPorDiaNoMesUseCase(adapter, relatorioAdapter);
     }
 
 }

@@ -2,6 +2,7 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
         GROUP BY DAY(data_hora)
         ORDER BY dia
         """, nativeQuery = true)
-    List<Object[]> countPresencasPorDiaNoMes();
+    List<PresencaDia> countPresencasPorDiaNoMes();
 
 
     @Query(value = """

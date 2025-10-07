@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.registroAtendimento.RegistroAtendimentoMapper;
 import school.sptech.refuge.core.application.dto.registroAtendimento.RegistroAtendimentoRequestDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.RegistroAtendimentoResponseDto;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.application.usecase.registroAtendimento.*;
 
 import java.util.List;
@@ -153,8 +154,8 @@ public class RegistroAtendimentoController {
     })
     @GetMapping("/relatorios/presencas-por-dia")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<Object[]>> contarPresencasPorDia() {
-        List<Object[]> resultado = contarPresencasPorDiaNoMesUseCase.execute();
+    public ResponseEntity<List<PresencaDia>> contarPresencasPorDia() {
+        List<PresencaDia> resultado = contarPresencasPorDiaNoMesUseCase.execute();
         return ResponseEntity.ok(resultado);
     }
 }

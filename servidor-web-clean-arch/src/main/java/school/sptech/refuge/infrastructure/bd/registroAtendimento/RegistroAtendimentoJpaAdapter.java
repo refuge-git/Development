@@ -3,6 +3,7 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.RegistroAtendimentoGateway;
 import school.sptech.refuge.core.application.dto.registroAtendimento.RegistroAtendimentoMapper;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class RegistroAtendimentoJpaAdapter implements RegistroAtendimentoGateway
     }
 
     @Override
-    public List<Object[]> contarPresencasPorDiaNoMes() {
+    public List<PresencaDia> contarPresencasPorDiaNoMes() {
         return registroAtendimentoJpaRepository.countPresencasPorDiaNoMes();
     }
 }
