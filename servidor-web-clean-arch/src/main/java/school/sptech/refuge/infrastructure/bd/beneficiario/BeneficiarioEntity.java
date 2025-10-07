@@ -63,6 +63,7 @@ public class BeneficiarioEntity {
     private TipoSexualidadeEntity tipoSexualidadeEntity;
 
 
+
     public BeneficiarioEntity(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, RacaEnum raca, SexoEnum sexo, String nomeMae, Boolean egressoPrisional, LocalEnum localDorme, String fotoPerfil, String sisa, StatusEnum status, LocalDateTime dataAtivacao, String observacao, FuncionarioEntity funcionarioEntity, EnderecoEntity enderecoEntity, TipoGeneroEntity tipoGeneroEntity, TipoSexualidadeEntity tipoSexualidadeEntity) {
         this.id = id;
         this.nomeRegistro = nomeRegistro;

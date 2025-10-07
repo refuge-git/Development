@@ -3,14 +3,16 @@ package school.sptech.refuge.infrastructure.di;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import school.sptech.refuge.core.application.usecase.endereco.*;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.endereco.EnderecoJpaAdapter;
 
 @Configuration
 public class EnderecoBeanConfig {
 
     @Bean
-    public CriarEnderecoUseCase criarEnderecoUseCase(EnderecoJpaAdapter adapter) {
-        return new CriarEnderecoUseCase(adapter);
+    public CriarEnderecoUseCase criarEnderecoUseCase(EnderecoJpaAdapter enderecoAdapter,
+                                                     BeneficiarioJpaAdapter beneficiarioAdapter) {
+        return new CriarEnderecoUseCase(enderecoAdapter, beneficiarioAdapter);
     }
 
     @Bean

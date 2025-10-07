@@ -1,6 +1,7 @@
 package school.sptech.refuge.infrastructure.bd.endereco;
 
 import jakarta.persistence.*;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
 
 @Entity
 @Table(name = "endereco")

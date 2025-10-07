@@ -1,5 +1,6 @@
 package school.sptech.refuge.core.application.usecase.endereco;
 
+import school.sptech.refuge.core.adapters.BeneficiarioGateway;
 import school.sptech.refuge.core.adapters.EnderecoGateway;
 import school.sptech.refuge.core.application.dto.endereco.EnderecoRequestDto;
 import school.sptech.refuge.core.application.dto.endereco.EnderecoResponseDto;
@@ -8,9 +9,11 @@ import school.sptech.refuge.core.domain.endereco.Endereco;
 public class CriarEnderecoUseCase {
 
     private final EnderecoGateway enderecoRepository;
+    private final BeneficiarioGateway beneficiarioGateway;
 
-    public CriarEnderecoUseCase(EnderecoGateway enderecoRepository) {
+    public CriarEnderecoUseCase(EnderecoGateway enderecoRepository, BeneficiarioGateway beneficiarioGateway) {
         this.enderecoRepository = enderecoRepository;
+        this.beneficiarioGateway = beneficiarioGateway;
     }
 
     public EnderecoResponseDto executar(EnderecoRequestDto dto) {
@@ -24,7 +27,10 @@ public class CriarEnderecoUseCase {
                 dto.getCep(),
                 dto.getNomeLocalidade()
         );
+
         Endereco salvo = enderecoRepository.save(endereco);
+        beneficiarioGateway.linkEndereco(dto.getIdBeneficiario(), salvo.getId());
+
         return new EnderecoResponseDto(
                 salvo.getId(),
                 salvo.getTipoLogradouro(),

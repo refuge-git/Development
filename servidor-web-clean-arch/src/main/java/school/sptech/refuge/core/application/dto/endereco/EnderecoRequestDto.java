@@ -38,9 +38,13 @@ public class EnderecoRequestDto {
     @NotNull
     private String nomeLocalidade;
 
+    @NotNull
+    @Schema(description = "ID do beneficiário que receberá o endereço", example = "1")
+    private Integer idBeneficiario;
+
     public EnderecoRequestDto(String tipoLogradouro, String nomeLogradouro, Integer numero,
                               String complemento, String bairro, String cep,
-                              String nomeLocalidade  ) {
+                              String nomeLocalidade, Integer idBeneficiario  ) {
         this.tipoLogradouro = tipoLogradouro;
         this.nomeLogradouro = nomeLogradouro;
         this.numero = numero;
@@ -48,6 +52,7 @@ public class EnderecoRequestDto {
         this.bairro = bairro;
         this.cep = cep;
         this.nomeLocalidade = nomeLocalidade;
+        this.idBeneficiario = idBeneficiario;
     }
 
     public EnderecoRequestDto() {
@@ -109,4 +114,11 @@ public class EnderecoRequestDto {
         this.nomeLocalidade = nomeLocalidade;
     }
 
+    public Integer getIdBeneficiario() {
+        return idBeneficiario;
+    }
+
+    public void setIdBeneficiario(Integer idBeneficiario) {
+        this.idBeneficiario = idBeneficiario;
+    }
 }

@@ -18,4 +18,6 @@ public interface BeneficiarioGateway {
     void deletar(Integer id);
     List<Beneficiario> buscarPorPresencaNoDiaAtual(int diaSemana);
     Page<Beneficiario> listarPaginado(int page, int size);
+
+    void linkEndereco(Integer idBeneficiario, Integer id);
 }

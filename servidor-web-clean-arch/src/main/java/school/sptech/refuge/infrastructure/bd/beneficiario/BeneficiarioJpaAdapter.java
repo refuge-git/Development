@@ -3,10 +3,13 @@ package school.sptech.refuge.infrastructure.bd.beneficiario;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import school.sptech.refuge.core.adapters.BeneficiarioGateway;
 import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
 import school.sptech.refuge.core.domain.paginacao.Page;
+import school.sptech.refuge.infrastructure.bd.endereco.EnderecoEntity;
+import school.sptech.refuge.infrastructure.bd.endereco.EnderecoJpaRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,9 +20,11 @@ import java.util.stream.Collectors;
 public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
 
     private final BeneficiarioJpaRepository beneficiarioJpaRepository;
+    private final EnderecoJpaRepository enderecoJpaRepository;
 
-    public BeneficiarioJpaAdapter(BeneficiarioJpaRepository beneficiarioJpaRepository) {
+    public BeneficiarioJpaAdapter(BeneficiarioJpaRepository beneficiarioJpaRepository, EnderecoJpaRepository enderecoJpaRepository) {
         this.beneficiarioJpaRepository = beneficiarioJpaRepository;
+        this.enderecoJpaRepository = enderecoJpaRepository;
     }
 
     @Override
@@ -96,5 +101,17 @@ public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
                 .toList();
 
         return new Page<>(beneficiarios, result.getTotalElements(), page, size);
+    }
+
+    @Override
+    public void linkEndereco(Integer idBeneficiario, Integer idEndereco) {
+        BeneficiarioEntity beneficiario = beneficiarioJpaRepository.findById(idBeneficiario)
+                .orElseThrow(() -> new RuntimeException("Beneficiário não encontrado"));
+
+        EnderecoEntity endereco = enderecoJpaRepository.findById(idEndereco)
+                .orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
+
+        beneficiario.setEnderecoEntity(endereco);
+        beneficiarioJpaRepository.save(beneficiario);
     }
 }
