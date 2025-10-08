@@ -8,6 +8,7 @@ import org.hibernate.annotations.CurrentTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class BeneficiarioRequestDto {
 
@@ -85,10 +86,10 @@ public class BeneficiarioRequestDto {
     private Integer idTipoSexualidade;
 
     @Schema(description = "Imagem salva no bucket", example = "2")
-    private byte[] imagem;
+    private String imagem;
 
 
-    public BeneficiarioRequestDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade, byte[] imagem) {
+    public BeneficiarioRequestDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade, String imagem) {
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
@@ -248,11 +249,11 @@ public class BeneficiarioRequestDto {
         this.idTipoSexualidade = idTipoSexualidade;
     }
 
-    public void setImagem( byte[] imagem){
+    public void setImagem(String imagem){
         this.imagem = imagem;
     }
 
-    public  byte[] getImagem(){
+    public  String getImagem(){
         return imagem;
     }
 }

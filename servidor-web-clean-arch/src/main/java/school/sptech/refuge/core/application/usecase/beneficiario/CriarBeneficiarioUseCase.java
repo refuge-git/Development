@@ -25,6 +25,7 @@ import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
 import school.sptech.refuge.infrastructure.config.bucketS3.S3UploadService;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 
 public class CriarBeneficiarioUseCase {
 
@@ -70,15 +71,38 @@ public class CriarBeneficiarioUseCase {
         // Geração de id único para imagem:
         // String urlPerfil = s3UploadService.uploadFile(dto.getIdFuncionario() + "_" + System.currentTimeMillis() + ".jpg", dto.getImagem());
 
+
+        /* !!!!!!!!!!!!
+        * Lembrar de deixar imagem default no bucket,
+        * para fazer get padrão no bucket com benficiários com
+        * urlPerfil = "padrao";
+        */
+
         String urlPerfil = null;
-        if (dto.getImagem() != null && dto.getImagem().length > 0) {
-            urlPerfil = s3UploadService.uploadFile(
-                    dto.getIdFuncionario() + "_" + System.currentTimeMillis() + ".jpg",
-                    dto.getImagem()
-            );
-        } else {
-            // Se quiser um avatar padrão
-            urlPerfil = "https://meu-bucket/imagens/default-avatar.jpg";
+        try {
+
+            if (dto.getImagem() == null || dto.getImagem().isBlank()) {
+                urlPerfil = "padrao";
+            } else {
+                byte[] imagemConvertida = Base64.getDecoder().decode(dto.getImagem());
+
+                if (imagemConvertida.length > 0) {
+                    urlPerfil = s3UploadService.uploadFile(
+                            dto.getIdFuncionario() + "_" + System.currentTimeMillis() + ".jpg",
+                            imagemConvertida
+                    );
+                } else {
+                    System.out.println("\n\n\n\n\nImagem vazia, usando padrão.");
+                    urlPerfil = "padrao";
+                }
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao decodificar imagem Base64: " + e.getMessage());
+            urlPerfil = "padrao";
+        } catch (Exception e) {
+            System.out.println("Erro inesperado: " + e.getMessage());
+            urlPerfil = "padrao";
         }
 
         Beneficiario beneficiario = new Beneficiario(
