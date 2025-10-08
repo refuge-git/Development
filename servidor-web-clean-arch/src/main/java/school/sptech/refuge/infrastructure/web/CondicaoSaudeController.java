@@ -9,9 +9,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeAtualizacaoDto;
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeListDto;
 import school.sptech.refuge.core.application.usecase.condicaosaude.*;
+import school.sptech.refuge.core.domain.paginacao.Page;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeMapper;
 import school.sptech.refuge.core.application.dto.condicaosaude.CondicaoSaudeRequestDto;
 import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
@@ -28,13 +31,15 @@ public class CondicaoSaudeController {
     private final AtualizarCondicaoSaudeUseCase atualizarCondicaoSaudeUseCase;
     private final DeletarCondicaoSaudeUseCase deletarCondicaoSaudeUseCase;
     private final BuscarCondicaoSaudeUseCase buscarCondicaoSaudeUseCase;
+    private final ListagemCondicaoDeSaudeUseCase listagemCondicaoDeSaudeUseCase;
 
-    public CondicaoSaudeController(CriarCondicaoSaudeUseCase criarCondicaoSaudeUseCase, ListarTodosCondicaoSaudeUseCase listarTodosCondicaoSaudeUseCase, AtualizarCondicaoSaudeUseCase atualizarCondicaoSaudeUseCase, DeletarCondicaoSaudeUseCase deletarCondicaoSaudeUseCase, BuscarCondicaoSaudeUseCase buscarCondicaoSaudeUseCase) {
+    public CondicaoSaudeController(CriarCondicaoSaudeUseCase criarCondicaoSaudeUseCase, ListarTodosCondicaoSaudeUseCase listarTodosCondicaoSaudeUseCase, AtualizarCondicaoSaudeUseCase atualizarCondicaoSaudeUseCase, DeletarCondicaoSaudeUseCase deletarCondicaoSaudeUseCase, BuscarCondicaoSaudeUseCase buscarCondicaoSaudeUseCase, ListagemCondicaoDeSaudeUseCase listagemCondicaoDeSaudeUseCase) {
         this.criarCondicaoSaudeUseCase = criarCondicaoSaudeUseCase;
         this.listarTodosCondicaoSaudeUseCase = listarTodosCondicaoSaudeUseCase;
         this.atualizarCondicaoSaudeUseCase = atualizarCondicaoSaudeUseCase;
         this.deletarCondicaoSaudeUseCase = deletarCondicaoSaudeUseCase;
         this.buscarCondicaoSaudeUseCase = buscarCondicaoSaudeUseCase;
+        this.listagemCondicaoDeSaudeUseCase = listagemCondicaoDeSaudeUseCase;
     }
 
     @Operation(
@@ -113,4 +118,23 @@ public class CondicaoSaudeController {
         deletarCondicaoSaudeUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    @Operation(
+            summary = "Listando quantidade limitada de condicão de saúde.",
+            description = "Listar quantidade limitada de condicão de saúde com paginação."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Condição de saúde encontradas",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhuma condição de saúde  foi encontrada", content = @Content)
+    })
+
+    @GetMapping("/listar-page")
+    public Page<CondicaoSaudeListDto> listarCondicaoSaude(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return listagemCondicaoDeSaudeUseCase.execute(page, size);
+    }
+
 }

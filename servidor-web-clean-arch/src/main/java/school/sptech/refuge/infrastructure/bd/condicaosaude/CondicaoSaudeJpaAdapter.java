@@ -1,9 +1,15 @@
 package school.sptech.refuge.infrastructure.bd.condicaosaude;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.CondicaoSaudeGateway;
 import school.sptech.refuge.core.application.exception.CondicaoSaudeNaoEncontradaException;
+import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
 import school.sptech.refuge.core.domain.condicaosaude.CondicaoSaude;
+import school.sptech.refuge.core.domain.paginacao.Page;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioMapper;
 
 import java.util.List;
 import java.util.Objects;
@@ -67,5 +73,17 @@ public class CondicaoSaudeJpaAdapter implements CondicaoSaudeGateway {
         } else {
             throw new CondicaoSaudeNaoEncontradaException("Condição de saúde não encontrada de id: " + id);
         }
+    }
+
+    @Override
+    public Page<CondicaoSaude> listarPaginado(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        org.springframework.data.domain.Page<CondicaoSaudeEntity> result = condicaoSaudeJpaRepository.findAll(pageable);
+
+        List<CondicaoSaude> condicaoSaudes = result.getContent().stream()
+                .map(CondicaoSaudeMapper::ofEntity)
+                .toList();
+
+        return new Page<>(condicaoSaudes, result.getTotalElements(), page, size);
     }
 }

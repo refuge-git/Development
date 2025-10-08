@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
 import school.sptech.refuge.core.application.dto.categoria.CategoriaListDto;
 import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
+import school.sptech.refuge.core.domain.condicaosaude.CondicaoSaude;
 
 import java.time.LocalDateTime;
 
@@ -41,6 +42,9 @@ public class CondicaoSaudeListDto {
     }
 
     public CondicaoSaudeListDto() {
+    }
+
+    public CondicaoSaudeListDto(CondicaoSaude condicaoSaude) {
     }
 
     /*public CondicaoSaudeListDto(Integer id, String descricao, LocalDate dataRegistro, Categoria categoria, String tratamento, String observacoes) {

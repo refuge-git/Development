@@ -2,6 +2,7 @@ package school.sptech.refuge.infrastructure.di;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import school.sptech.refuge.core.application.usecase.beneficiario.ListagemBeneficiarioUseCase;
 import school.sptech.refuge.core.application.usecase.condicaosaude.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.categoria.CategoriaJpaAdapter;
@@ -38,6 +39,11 @@ public class CondicaoSaudeBeanConfig {
     @Bean
     public DeletarCondicaoSaudeUseCase deletarCondicaoSaudeUseCase(CondicaoSaudeJpaAdapter adapter){
         return new DeletarCondicaoSaudeUseCase(adapter);
+    }
+
+    @Bean
+    public ListagemCondicaoDeSaudeUseCase listagemCondicaoDeSaudeUseCase(CondicaoSaudeJpaAdapter adapter){
+        return new ListagemCondicaoDeSaudeUseCase(adapter);
     }
 
 }
