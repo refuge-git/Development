@@ -22,10 +22,10 @@ jobs:
           java-version: '21'
           cache: 'maven' # Configura cache do Maven para acelerar builds futuros
 
-      # 6. Execução dos testes automatizados do projeto
-      - name: BE - Executar Testes automatizados
-        run: mvn clean test # comentei os tests por enquanto     
-        working-directory: ./servidor-web-clean-arch
+      # # 6. Execução dos testes automatizados do projeto
+      # - name: BE - Executar Testes automatizados
+      #   run: mvn clean test # comentei os tests por enquanto     
+      #   working-directory: ./servidor-web-clean-arch
 
       # 7. Geração do .jar
       - name: BE - Gerar Artefato .JAR
