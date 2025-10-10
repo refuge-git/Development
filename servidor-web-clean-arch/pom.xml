@@ -110,11 +110,6 @@
             <scope>test</scope>
         </dependency>
 		<dependency>
-			<groupId>com.itextpdf</groupId>
-			<artifactId>itext7-core</artifactId>
-			<version>7.2.5</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit-test</artifactId>
 			<scope>test</scope>
