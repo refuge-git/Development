@@ -90,6 +90,10 @@ jobs:
             USUARIO_IP=${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST_PRIVADO }}
             echo "usuario@ip configurado: $USUARIO_IP"
 
+            # Verifica se o JAR existe na EC2 antes de tentar enviar para a privada
+            echo "Listando arquivos em /home/${{ secrets.REMOTE_USER }}/servidor-web-clean-arch/ na EC2 pública:"
+            ls -l /home/${{ secrets.REMOTE_USER }}/servidor-web-clean-arch/
+        
                   
             # enviando o arquivo .jar via scp para o ec2 privado (essa instância precisa ter o diretório /usr/share/api/)
             echo "Tentando enviar arquivo /home/${{ secrets.REMOTE_USER }}/servidor-web-clean-arch/app_loko.jar"
