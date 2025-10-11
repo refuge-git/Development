@@ -45,14 +45,15 @@ public class BeneficarioListDto {
     private LocalDateTime data_ativacao;
     @Schema(description = "Observações sobre o beneficiário")
     private String observacao;
+    @Schema(description = "Imagem em base 64 do beneficiário")
+    private String imagemUrl;
 
     private FuncionarioListDto funcionario;
     private EnderecoResponseDto endereco;
     private TipoGeneroListDto tipoGenero;
     private TipoSexualidadeListDto tipoSexualidade;
 
-
-    public BeneficarioListDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, FuncionarioListDto funcionario, EnderecoResponseDto endereco, TipoGeneroListDto tipoGenero, TipoSexualidadeListDto tipoSexualidade) {
+    public BeneficarioListDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, FuncionarioListDto funcionario, EnderecoResponseDto endereco, TipoGeneroListDto tipoGenero, TipoSexualidadeListDto tipoSexualidade, String imagemUrl) {
         this.id = id;
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
@@ -73,6 +74,7 @@ public class BeneficarioListDto {
         this.endereco = endereco;
         this.tipoGenero = tipoGenero;
         this.tipoSexualidade = tipoSexualidade;
+        this.imagemUrl = imagemUrl;
     }
 
     public BeneficarioListDto() {
@@ -239,5 +241,13 @@ public class BeneficarioListDto {
 
     public void setTipoSexualidade(TipoSexualidadeListDto tipoSexualidade) {
         this.tipoSexualidade = tipoSexualidade;
+    }
+
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
 }

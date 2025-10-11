@@ -1,6 +1,7 @@
 package school.sptech.refuge.infrastructure.bd.beneficiario;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import school.sptech.refuge.core.application.dto.endereco.EnderecoResponseDto;
 import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
@@ -17,11 +18,14 @@ import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroMapper;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeMapper;
+import school.sptech.refuge.infrastructure.config.bucketS3.S3UploadService;
 
 import java.util.List;
 import java.util.Objects;
 
 public class BeneficiarioMapper {
+    @Autowired
+    S3UploadService s3UploadService;
 
     public static BeneficarioListDto fromDomain(Beneficiario beneficiario) {
         if (beneficiario == null) {
@@ -72,7 +76,8 @@ public class BeneficiarioMapper {
                         beneficiario.getTipoSexualidade().getId(),
                         beneficiario.getTipoSexualidade().getNome(),
                         beneficiario.getTipoSexualidade().getDescricao()
-                ) : null
+                ) : null,
+                beneficiario.getFotoPerfil()
         );
     }
 
