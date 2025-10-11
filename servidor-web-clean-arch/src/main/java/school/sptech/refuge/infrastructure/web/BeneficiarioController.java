@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
@@ -19,6 +20,7 @@ import school.sptech.refuge.core.domain.paginacao.Page;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
+import school.sptech.refuge.infrastructure.config.bucketS3.S3UploadService;
 
 
 import java.time.LocalDate;
@@ -26,12 +28,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/beneficiarios") // URI do servidor
 public class BeneficiarioController {
 
-
+    @Autowired
+    private S3UploadService s3UploadService;
     private final CriarBeneficiarioUseCase criarBeneficiarioUseCase;
     private final ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase;
     private final BuscarBeneficiarioUseCase buscarBeneficiarioUseCase;
@@ -86,8 +90,20 @@ public class BeneficiarioController {
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<BeneficarioListDto>> listar() {
         List<BeneficarioListDto> dtos = listarTodosBeneficiarioUseCase.execute();
+
         if (dtos.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(dtos);
+
+        // Mapeia a lista para adicionar a URL da imagem usando o S3UploadService
+        List<BeneficarioListDto> dtosComImagem = dtos.stream()
+                .peek(dto -> {
+                    if (dto.getFotoPerfil() != null && !dto.getFotoPerfil().isEmpty()) {
+                        String imagemUrl = s3UploadService.getFile(dto.getFotoPerfil());
+                        dto.setImagemUrl(imagemUrl);
+                    }
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtosComImagem);
     }
 
 
