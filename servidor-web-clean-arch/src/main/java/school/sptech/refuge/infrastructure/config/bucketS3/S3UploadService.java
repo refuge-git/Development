@@ -7,8 +7,8 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+// import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+// import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
 import java.time.Duration;
 
@@ -16,54 +16,55 @@ import java.time.Duration;
 public class S3UploadService {
 
     private final S3Client s3Client;
-    private final S3Presigner s3Presigner;
+    // private final S3Presigner s3Presigner;
 
-    public S3UploadService(S3Client s3Client, S3Presigner s3Presigner) {
+    // Comentado para evitar erro de bean ausente
+    // public S3UploadService(S3Client s3Client, S3Presigner s3Presigner) {
+    //     this.s3Client = s3Client;
+    //     this.s3Presigner = s3Presigner;
+    // }
+
+    // Construtor alternativo sem S3Presigner
+    public S3UploadService(S3Client s3Client) {
         this.s3Client = s3Client;
-        this.s3Presigner = s3Presigner;
     }
 
     @Value("${aws.s3.bucket-refuge}")
     private String bucketName;
 
     public String uploadFile(String fileName, byte[] fileContent) {
-     //   if (fileContent == null || fileContent.length == 0) {
-      //      throw new ResponseStatusException(400, "O arquivo de imagem não pode ser nulo ou vazio", null);
-       // }
         String s3Key = fileName;
 
         try {
-            //Cria a requisição para enviar o objeto
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(s3Key)
                     .build();
 
-            //Envia o array de bytes diretamente usando o RequestBody.fromBytes
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(fileContent));
 
-            //Retorna a URL do objeto recem criado (opcional)
             String fileUrl = s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(s3Key)).toString();
             return fileUrl;
         } catch (S3Exception exception) {
             throw new ResponseStatusException(500, "Error uploading file to S3: " + exception.awsErrorDetails().errorMessage(), exception);
         }
-
     }
 
     public String getFile(String key) {
         try {
-            GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-                    .getObjectRequest(r -> r.bucket(bucketName).key(key))
-                    .signatureDuration(Duration.ofMinutes(10)) // tempo que a URL ficará válida
-                    .build();
+            // Comentado para evitar erro de bean ausente
+            // GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+            //         .getObjectRequest(r -> r.bucket(bucketName).key(key))
+            //         .signatureDuration(Duration.ofMinutes(10))
+            //         .build();
 
-            return s3Presigner.presignGetObject(presignRequest).url().toString();
+            // return s3Presigner.presignGetObject(presignRequest).url().toString();
+
+            return "Pré-assinatura desativada temporariamente.";
         } catch (S3Exception e) {
             throw new ResponseStatusException(500,
                     "Erro ao gerar URL pré-assinada do S3: " + e.awsErrorDetails().errorMessage(),
                     e);
         }
     }
-
 }

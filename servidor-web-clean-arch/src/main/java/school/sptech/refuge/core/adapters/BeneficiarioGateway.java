@@ -20,4 +20,5 @@ public interface BeneficiarioGateway {
     Page<Beneficiario> listarPaginado(int page, int size);
 
     void linkEndereco(Integer idBeneficiario, Integer id);
+
 }
