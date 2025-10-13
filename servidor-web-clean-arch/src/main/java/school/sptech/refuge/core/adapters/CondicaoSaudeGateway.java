@@ -15,5 +15,7 @@ public interface CondicaoSaudeGateway {
     void deletar(Integer id);
     boolean existePorId(Integer id);
     Page<CondicaoSaude> listarPaginado(int page, int size);
+    List<CondicaoSaude> buscarPorBeneficiarioId(Integer idBeneficiario);
+
 }
 

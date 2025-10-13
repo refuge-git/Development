@@ -45,8 +45,23 @@ public class CondicaoSaudeListDto {
     }
 
     public CondicaoSaudeListDto(CondicaoSaude condicaoSaude) {
-    }
+        this.id = condicaoSaude.getId();
+        this.diagnostico = condicaoSaude.getDiagnostico();
+        this.descricao = condicaoSaude.getDescricao();
+        this.dataRegistro = condicaoSaude.getDataRegistro();
+        this.dataAtualizacao = condicaoSaude.getDataAtualizacao();
+        this.tratamento = condicaoSaude.getTratamento();
+        this.observacoes = condicaoSaude.getObservacoes();
 
+        // Verificações de null para evitar NullPointerException
+        if (condicaoSaude.getBeneficiario() != null) {
+            this.beneficiario = condicaoSaude.getBeneficiario().getId();
+        }
+
+        if (condicaoSaude.getCategoria() != null) {
+            this.categoria = condicaoSaude.getCategoria().getId();
+        }
+    }
     /*public CondicaoSaudeListDto(Integer id, String descricao, LocalDate dataRegistro, Categoria categoria, String tratamento, String observacoes) {
     }*/
 

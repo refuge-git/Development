@@ -32,23 +32,25 @@ public class CondicaoSaudeController {
     private final DeletarCondicaoSaudeUseCase deletarCondicaoSaudeUseCase;
     private final BuscarCondicaoSaudeUseCase buscarCondicaoSaudeUseCase;
     private final ListagemCondicaoDeSaudeUseCase listagemCondicaoDeSaudeUseCase;
+    private final ListarCondicaoSaudePorBeneficiarioUseCase listarCondicaoSaudePorBeneficiarioUseCase;
 
-    public CondicaoSaudeController(CriarCondicaoSaudeUseCase criarCondicaoSaudeUseCase, ListarTodosCondicaoSaudeUseCase listarTodosCondicaoSaudeUseCase, AtualizarCondicaoSaudeUseCase atualizarCondicaoSaudeUseCase, DeletarCondicaoSaudeUseCase deletarCondicaoSaudeUseCase, BuscarCondicaoSaudeUseCase buscarCondicaoSaudeUseCase, ListagemCondicaoDeSaudeUseCase listagemCondicaoDeSaudeUseCase) {
+    public CondicaoSaudeController(CriarCondicaoSaudeUseCase criarCondicaoSaudeUseCase, ListarTodosCondicaoSaudeUseCase listarTodosCondicaoSaudeUseCase, AtualizarCondicaoSaudeUseCase atualizarCondicaoSaudeUseCase, DeletarCondicaoSaudeUseCase deletarCondicaoSaudeUseCase, BuscarCondicaoSaudeUseCase buscarCondicaoSaudeUseCase, ListagemCondicaoDeSaudeUseCase listagemCondicaoDeSaudeUseCase, ListarCondicaoSaudePorBeneficiarioUseCase listarCondicaoSaudePorBeneficiarioUseCase) {
         this.criarCondicaoSaudeUseCase = criarCondicaoSaudeUseCase;
         this.listarTodosCondicaoSaudeUseCase = listarTodosCondicaoSaudeUseCase;
         this.atualizarCondicaoSaudeUseCase = atualizarCondicaoSaudeUseCase;
         this.deletarCondicaoSaudeUseCase = deletarCondicaoSaudeUseCase;
         this.buscarCondicaoSaudeUseCase = buscarCondicaoSaudeUseCase;
         this.listagemCondicaoDeSaudeUseCase = listagemCondicaoDeSaudeUseCase;
+        this.listarCondicaoSaudePorBeneficiarioUseCase = listarCondicaoSaudePorBeneficiarioUseCase;
     }
 
     @Operation(
-             summary = "Cadastro de condição de saúde",
-             description = "Recebe dados da condição de saúde e o transforma em entidade posteriormente"
-     )
+            summary = "Cadastro de condição de saúde",
+            description = "Recebe dados da condição de saúde e o transforma em entidade posteriormente"
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Condição de saúde cadastrada",
-                content = @Content(mediaType = "application/json", schema = @Schema(implementation = CondicaoSaudeRequestDto.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CondicaoSaudeRequestDto.class))),
             @ApiResponse(responseCode = "400", description = "Dados da condição de saúde inválidos ou ausentes", content = @Content)
     })
 
@@ -57,12 +59,12 @@ public class CondicaoSaudeController {
     public ResponseEntity<CondicaoSaudeListDto> cadastrar(@Valid @RequestBody CondicaoSaudeRequestDto dto) {
         CondicaoSaudeListDto dtoCriada = criarCondicaoSaudeUseCase.execute(dto);
         return ResponseEntity.status(201).body(dtoCriada);
-     }
+    }
 
-     @Operation(
-             summary = "Listar condições de saúde",
-             description = "Retorna todas as condições de saúde cadastradas"
-     )
+    @Operation(
+            summary = "Listar condições de saúde",
+            description = "Retorna todas as condições de saúde cadastradas"
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Solicitação bem-sucedida",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = CondicaoSaudeListDto.class))),
@@ -73,7 +75,7 @@ public class CondicaoSaudeController {
     public ResponseEntity<List<CondicaoSaudeListDto>> listar() {
         List<CondicaoSaudeListDto> dtoListadas = listarTodosCondicaoSaudeUseCase.execute();
         return ResponseEntity.ok(dtoListadas);
-     }
+    }
 
     @Operation(
             summary = "Buscar condição de saúde por id",
@@ -136,5 +138,18 @@ public class CondicaoSaudeController {
             @RequestParam(defaultValue = "10") int size) {
         return listagemCondicaoDeSaudeUseCase.execute(page, size);
     }
+
+    @GetMapping("/beneficiario/{idBeneficiario}")
+    public ResponseEntity<List<CondicaoSaudeListDto>> listarPorBeneficiario(@PathVariable Integer idBeneficiario) {
+        List<CondicaoSaudeListDto> condicoes = listarCondicaoSaudePorBeneficiarioUseCase.execute(idBeneficiario);
+
+        if (condicoes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(condicoes);
+    }
+
+
 
 }
