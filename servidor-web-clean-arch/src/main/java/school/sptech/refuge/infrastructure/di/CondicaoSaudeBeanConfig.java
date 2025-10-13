@@ -2,6 +2,7 @@ package school.sptech.refuge.infrastructure.di;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import school.sptech.refuge.core.adapters.CondicaoSaudeGateway;
 import school.sptech.refuge.core.application.usecase.beneficiario.ListagemBeneficiarioUseCase;
 import school.sptech.refuge.core.application.usecase.condicaosaude.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaAdapter;
@@ -44,6 +45,12 @@ public class CondicaoSaudeBeanConfig {
     @Bean
     public ListagemCondicaoDeSaudeUseCase listagemCondicaoDeSaudeUseCase(CondicaoSaudeJpaAdapter adapter){
         return new ListagemCondicaoDeSaudeUseCase(adapter);
+    }
+
+    @Bean
+    public ListarCondicaoSaudePorBeneficiarioUseCase listarCondicaoSaudePorBeneficiarioUseCase(
+            CondicaoSaudeGateway condicaoSaudeGateway) {
+        return new ListarCondicaoSaudePorBeneficiarioUseCase(condicaoSaudeGateway);
     }
 
 }

@@ -86,4 +86,14 @@ public class CondicaoSaudeJpaAdapter implements CondicaoSaudeGateway {
 
         return new Page<>(condicaoSaudes, result.getTotalElements(), page, size);
     }
+
+    @Override
+    public List<CondicaoSaude> buscarPorBeneficiarioId(Integer idBeneficiario) {
+        List<CondicaoSaudeEntity> entities = condicaoSaudeJpaRepository.findByBeneficiarioEntityId(idBeneficiario);
+        return entities.stream()
+                .map(CondicaoSaudeMapper::ofEntity)
+                .collect(Collectors.toList());
+    }
+
+
 }
