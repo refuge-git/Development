@@ -2,12 +2,15 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.RegistroAtendimentoGateway;
+import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosPorDiaDto;
+import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosPorMesDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.RegistroAtendimentoMapper;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RegistroAtendimentoJpaAdapter implements RegistroAtendimentoGateway {
@@ -60,4 +63,26 @@ public class RegistroAtendimentoJpaAdapter implements RegistroAtendimentoGateway
     public List<PresencaDia> contarPresencasPorDiaNoMes() {
         return registroAtendimentoJpaRepository.countPresencasPorDiaNoMes();
     }
+
+    @Override
+    public List<AtendimentosPorMesDto> buscarAtendimentosPorMes() {
+        return List.of();
+    }
+
+
+    @Override
+    public List<AtendimentosPorDiaDto> buscarAtendimentosPorSemana() {
+        List<Object[]> resultados = registroAtendimentoJpaRepository.buscarAtendimentosPorSemana();
+
+        return resultados.stream()
+                .map(obj -> new AtendimentosPorDiaDto(
+                        (String) obj[0],
+                        ((Number) obj[1]).intValue(),
+                        ((Number) obj[2]).intValue(),
+                        ((Number) obj[3]).intValue()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
 }

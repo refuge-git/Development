@@ -2,6 +2,7 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosPorMesDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 import java.util.List;
@@ -114,4 +115,22 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
         WHERE b.estrangeiro = true
         """, nativeQuery = true)
     Long contarBeneficiariosEstrangeiros();
+
+
+
+    @Query(value = """
+    SELECT DATE_FORMAT(ra.data_hora, '%a') AS label,
+           SUM(CASE WHEN ta.nome = 'banho' THEN 1 ELSE 0 END) AS quantidade_banhos,
+           SUM(CASE WHEN ta.nome = 'refeicao' THEN 1 ELSE 0 END) AS quantidade_refeicoes,
+           SUM(CASE WHEN ta.nome NOT IN ('banho', 'refeicao') THEN 1 ELSE 0 END) AS quantidade_outros
+    FROM registro_atendimento ra
+    JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+    WHERE ra.data_hora BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+                          AND DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 6 DAY)
+    GROUP BY label
+    ORDER BY FIELD(label, 'Mon','Tue','Wed','Thu','Fri','Sat','Sun')
+""", nativeQuery = true)
+    List<Object[]> buscarAtendimentosPorSemana();
+
+
 }

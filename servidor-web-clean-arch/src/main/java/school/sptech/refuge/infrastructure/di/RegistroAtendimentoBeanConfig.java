@@ -46,4 +46,16 @@ public class RegistroAtendimentoBeanConfig {
         return new ContarPresencasPorDiaNoMesUseCase(adapter, relatorioAdapter);
     }
 
+    @Bean
+    public BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase(RegistroAtendimentoJpaAdapter adapter) {
+        return new BuscarAtendimentosPorMesUseCase(adapter);
+    }
+
+    @Bean
+    public BuscarAtendimentosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase(RegistroAtendimentoJpaAdapter adapter) {
+        return new BuscarAtendimentosPorSemanaUseCase(adapter);
+    }
+
+
+
 }

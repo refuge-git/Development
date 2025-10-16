@@ -1,5 +1,7 @@
 package school.sptech.refuge.core.adapters;
 
+import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosPorDiaDto;
+import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosPorMesDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
@@ -14,4 +16,7 @@ public interface RegistroAtendimentoGateway {
     boolean existePorId(Integer id);
     Long contarBeneficiariosAtendidosNoMes();
     List<PresencaDia> contarPresencasPorDiaNoMes();
+    List<AtendimentosPorMesDto> buscarAtendimentosPorMes();
+    List<AtendimentosPorDiaDto> buscarAtendimentosPorSemana();
+
 }

@@ -9,9 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.core.application.dto.registroAtendimento.RegistroAtendimentoMapper;
-import school.sptech.refuge.core.application.dto.registroAtendimento.RegistroAtendimentoRequestDto;
-import school.sptech.refuge.core.application.dto.registroAtendimento.RegistroAtendimentoResponseDto;
+import school.sptech.refuge.core.application.dto.registroAtendimento.*;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.application.usecase.registroAtendimento.*;
 
@@ -28,8 +26,11 @@ public class RegistroAtendimentoController {
     private final BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase;
     private final ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase;
     private final ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase;
+    private final BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase;
+    private final BuscarAtendimentosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase;
 
-    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase) {
+
+    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarAtendimentosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase) {
         this.atualizarRegistroAtendimentoUseCase = atualizarRegistroAtendimentoUseCase;
         this.criarRegistroAtendimentoUseCase = criarRegistroAtendimentoUseCase;
         this.deletarRegistroAtendimentoUseCase = deletarRegistroAtendimentoUseCase;
@@ -37,6 +38,8 @@ public class RegistroAtendimentoController {
         this.buscarRegistroAtendimentoUseCase = buscarRegistroAtendimentoUseCase;
         this.contarBeneficiariosAtendidosNoMesUseCase = contarBeneficiariosAtendidosNoMesUseCase;
         this.contarPresencasPorDiaNoMesUseCase = contarPresencasPorDiaNoMesUseCase;
+        this.buscarAtendimentosPorMesUseCase = buscarAtendimentosPorMesUseCase;
+        this.buscarAtendimentosPorSemanaUseCase = buscarAtendimentosPorSemanaUseCase;
     }
 
     @Operation(
@@ -158,4 +161,34 @@ public class RegistroAtendimentoController {
         List<PresencaDia> resultado = contarPresencasPorDiaNoMesUseCase.execute();
         return ResponseEntity.ok(resultado);
     }
+
+    @Operation(
+            summary = "Retorna a quantidade de atendimentos por mês",
+            description = "Lista os atendimentos agrupados por mês para o gráfico do dashboard"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    })
+    @GetMapping("/relatorios/atendimentos-mes")
+    @CrossOrigin(origins = "http://localhost:5173") // ajuste conforme porta do seu React
+    public ResponseEntity<List<AtendimentosPorMesDto>> listarAtendimentosPorMes() {
+        List<AtendimentosPorMesDto> atendimentos = buscarAtendimentosPorMesUseCase.executar();
+        return ResponseEntity.ok(atendimentos);
+    }
+
+    @Operation(
+            summary = "Quantidade de atendimentos por dia da semana",
+            description = "Retorna uma lista de dias da semana e quantidade de atendimentos para a semana atual"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    })
+    @GetMapping("/relatorios/atendimentos-semana")
+    @CrossOrigin(origins = "http://localhost:5173") // ajuste conforme porta do seu React
+    public ResponseEntity<List<AtendimentosPorDiaDto>> listarAtendimentosPorSemana() {
+        List<AtendimentosPorDiaDto> atendimentos = buscarAtendimentosPorSemanaUseCase.executar();
+        return ResponseEntity.ok(atendimentos);
+    }
+
+
 }
