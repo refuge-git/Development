@@ -1,16 +1,59 @@
 import pika
 import json
 import threading
+import smtplib
+import traceback
 from flask import Flask, jsonify
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 
 relatorios_presencas = []
 
-RABBITMQ_HOST = "localhost"       
-RABBITMQ_USER = "myuser"            
-RABBITMQ_PASS = "secret"            
-QUEUE_NAME = "refuge.direct.queue"  
+# RabbitMQ
+RABBITMQ_HOST = "localhost"
+RABBITMQ_USER = "myuser"
+RABBITMQ_PASS = "secret"
+QUEUE_NAME = "refuge.direct.queue"
+
+# E-mail
+EMAIL_SENDER = "fernandes.bia0703@gmail.com"
+EMAIL_PASSWORD = "senha do app Gmail"
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+EMAIL_DESTINO_TESTE = "fernandes.bia0703@gmail.com"
+
+def send_email(to_email, report_json):
+    """Envia um e-mail com os dados recebidos em formato legível"""
+    try:
+        if isinstance(report_json, list):
+            total = sum(int(item['quantidadePessoas']) for item in report_json)
+            dias_funcionamento = len(report_json)
+            media_diaria = round(total / dias_funcionamento, 2) if dias_funcionamento else 0
+            linhas = []
+            for item in report_json:
+                linhas.append(
+                    f"Informe o número de pessoas que frequentaram o serviço por dia. Total no mês:Dias de funcionamento: {dias_funcionamento} Média Diária: [{item['dia']}][Qtd pessoas]\n{item['quantidadePessoas']}"
+                )
+            email_body = "\n".join(linhas)
+        else:
+            email_body = f"Dados do relatório:\n{json.dumps(report_json, indent=2, ensure_ascii=False)}"
+
+        email_body += "\n\n---\nEste é um e-mail automático gerado pelo sistema."
+
+        msg = MIMEText(email_body, 'plain', 'utf-8')
+        msg['Subject'] = 'Relatório de Presença Recebido'
+        msg['From'] = EMAIL_SENDER
+        msg['To'] = to_email
+
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            server.send_message(msg)
+            print(f"[SUCCESS] E-mail enviado para {to_email}")
+    except Exception as e:
+        print(f"[ERRO] Falha ao enviar e-mail: {e}")
+        traceback.print_exc()
 
 def conectar_rabbitmq():
     """Conecta ao RabbitMQ e retorna conexão e canal."""
@@ -22,7 +65,6 @@ def conectar_rabbitmq():
         )
         channel = connection.channel()
         print("[DEBUG] Conexão estabelecida com sucesso.")
-        # Garante que a fila existe
         channel.queue_declare(queue=QUEUE_NAME, durable=True)
         print(f"[DEBUG] Fila '{QUEUE_NAME}' declarada.")
         return connection, channel
@@ -32,14 +74,28 @@ def conectar_rabbitmq():
 
 def callback(ch, method, properties, body):
     """Função chamada quando chega uma mensagem na fila."""
+    print(f"[DEBUG] Mensagem recebida! Body: {body}")
     try:
         mensagem = json.loads(body)  # decodifica JSON
-    except json.JSONDecodeError:
+        print(f"[DEBUG] Mensagem decodificada como JSON: {type(mensagem)}")
+    except json.JSONDecodeError as e:
+        print(f"[DEBUG] Erro ao decodificar JSON: {e}")
         mensagem = body.decode()
+        print(f"[DEBUG] Mensagem decodificada como string: {mensagem}")
+    
     relatorios_presencas.append(mensagem)
-    print(f"✅ Relatório recebido ({len(mensagem)} registros):")
+    print(f"[DEBUG] Total de relatórios armazenados: {len(relatorios_presencas)}")
+    
+    print(f"✅ Relatório recebido ({len(mensagem) if isinstance(mensagem, list) else 1} registros):")
     print(json.dumps(mensagem, indent=2, ensure_ascii=False))
 
+    # Envia e-mail
+    if isinstance(mensagem, list) and all('dia' in item and 'quantidadePessoas' in item for item in mensagem):
+        send_email(EMAIL_DESTINO_TESTE, mensagem)
+    else:
+        send_email(EMAIL_DESTINO_TESTE, {"relatorios": mensagem})
+
+# Conecta ao RabbitMQ
 connection, channel = conectar_rabbitmq()
 
 def iniciar_consumidor():
@@ -54,10 +110,21 @@ def iniciar_consumidor():
 # Executa o consumidor em uma thread separada
 threading.Thread(target=iniciar_consumidor, daemon=True).start()
 
-# Endpoint para visualizar relatórios recebidos via browser ou Postman
+# Endpoint para visualizar relatórios recebidos
 @app.route("/relatorios/recebidos", methods=["GET"])
 def obter_relatorios():
+    print(f"[DEBUG] Endpoint /relatorios/recebidos chamado. Total de relatórios: {len(relatorios_presencas)}")
     return jsonify(relatorios_presencas), 200
+
+# Endpoint para verificar o status da conexão
+@app.route("/status", methods=["GET"])
+def status():
+    return jsonify({
+        "status": "running",
+        "relatorios_count": len(relatorios_presencas),
+        "queue": QUEUE_NAME,
+        "host": RABBITMQ_HOST
+    }), 200
 
 if __name__ == "__main__":
     print("Consumidor Flask rodando na porta 5000")

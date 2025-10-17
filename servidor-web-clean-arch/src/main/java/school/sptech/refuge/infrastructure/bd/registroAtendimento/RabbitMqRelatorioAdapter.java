@@ -12,17 +12,22 @@ import java.util.List;
 public class RabbitMqRelatorioAdapter implements PublicarRelatorioGateway {
 
     private final RabbitTemplate rabbitTemplate;
-    private final String queueName;
+    private final String exchangeName;
+    private final String routingKeyName;
 
-    public RabbitMqRelatorioAdapter(RabbitTemplate rabbitTemplate,
-                                    @Value("${broker.queue.name}") String queueName) {
+    public RabbitMqRelatorioAdapter(
+            RabbitTemplate rabbitTemplate,
+            @Value("${broker.exchange.name}") String exchangeName,
+            @Value("${broker.routing.key.name}") String routingKeyName
+    ) {
         this.rabbitTemplate = rabbitTemplate;
-        this.queueName = queueName;
+        this.exchangeName = exchangeName;
+        this.routingKeyName = routingKeyName;
     }
 
     @Override
     public void publicarPresencasPorDia(List<PresencaDia> relatorio) {
-        rabbitTemplate.convertAndSend(queueName, relatorio);
-        System.out.println("✅ Relatório publicado na fila '" + queueName + "' com " + relatorio.size() + " registros.");
+        rabbitTemplate.convertAndSend(exchangeName, routingKeyName, relatorio);
+        System.out.println("✅ Relatório publicado no exchange '" + exchangeName + "' com routingKey '" + routingKeyName + "' e " + relatorio.size() + " registros.");
     }
 }
