@@ -27,10 +27,10 @@ public class RegistroAtendimentoController {
     private final ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase;
     private final ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase;
     private final BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase;
-    private final BuscarAtendimentosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase;
+    private final BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase;
 
 
-    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarAtendimentosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase) {
+    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase) {
         this.atualizarRegistroAtendimentoUseCase = atualizarRegistroAtendimentoUseCase;
         this.criarRegistroAtendimentoUseCase = criarRegistroAtendimentoUseCase;
         this.deletarRegistroAtendimentoUseCase = deletarRegistroAtendimentoUseCase;
@@ -171,8 +171,8 @@ public class RegistroAtendimentoController {
     })
     @GetMapping("/relatorios/atendimentos-mes")
     @CrossOrigin(origins = "http://localhost:5173") // ajuste conforme porta do seu React
-    public ResponseEntity<List<AtendimentosPorMesDto>> listarAtendimentosPorMes() {
-        List<AtendimentosPorMesDto> atendimentos = buscarAtendimentosPorMesUseCase.executar();
+    public ResponseEntity<List<AtendimentosMesDto>> listarAtendimentosPorMes() {
+        List<AtendimentosMesDto> atendimentos = buscarAtendimentosPorMesUseCase.obterAtendimentosMes();
         return ResponseEntity.ok(atendimentos);
     }
 
@@ -185,10 +185,58 @@ public class RegistroAtendimentoController {
     })
     @GetMapping("/relatorios/atendimentos-semana")
     @CrossOrigin(origins = "http://localhost:5173") // ajuste conforme porta do seu React
-    public ResponseEntity<List<AtendimentosPorDiaDto>> listarAtendimentosPorSemana() {
-        List<AtendimentosPorDiaDto> atendimentos = buscarAtendimentosPorSemanaUseCase.executar();
+    public ResponseEntity<List<ServicosPorSemanaDto>> listarAtendimentosPorSemana() {
+        List<ServicosPorSemanaDto> atendimentos = buscarAtendimentosPorSemanaUseCase.executar();
         return ResponseEntity.ok(atendimentos);
     }
+
+    @Operation(
+            summary = "Quantidade de atendimentos por hora no dia atual",
+            description = "Retorna a quantidade de atendimentos agrupados por hora, entre 07:00 e 20:00 do dia atual"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    })
+    @GetMapping("/dia")
+    @CrossOrigin(origins = "http://localhost:5173") // ajuste conforme sua porta do React
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<AtendimentosDiaDto>> getAtendimentosDia() {
+        List<AtendimentosDiaDto> atendimentos = buscarAtendimentosPorMesUseCase.obterAtendimentosDia();
+        return ResponseEntity.ok(atendimentos);
+    }
+
+
+    @Operation(
+            summary = "Quantidade de atendimentos por dia da semana",
+            description = "Retorna uma lista de dias da semana e quantidade de atendimentos para a semana atual"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    })
+    @GetMapping("/semana")
+    @CrossOrigin(origins = "http://localhost:5173")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<AtendimentosSemanaDto>> getAtendimentosSemana() {
+        List<AtendimentosSemanaDto> atendimentos = buscarAtendimentosPorMesUseCase.obterAtendimentosSemana();
+        return ResponseEntity.ok(atendimentos);
+    }
+
+
+    @Operation(
+            summary = "Quantidade de atendimentos por dia do mês atual",
+            description = "Retorna a lista de atendimentos agrupados por dia do mês"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    })
+    @GetMapping("/mes")
+    @CrossOrigin(origins = "http://localhost:5173")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<AtendimentosMesDto>> getAtendimentosMes() {
+        List<AtendimentosMesDto> atendimentos = buscarAtendimentosPorMesUseCase.obterAtendimentosMes();
+        return ResponseEntity.ok(atendimentos);
+    }
+
 
 
 }

@@ -2,9 +2,8 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosPorMesDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
-import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
+
 import java.util.List;
 
 public interface RegistroAtendimentoJpaRepository extends JpaRepository<RegistroAtendimentoEntity, Integer> {
@@ -119,18 +118,59 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
 
 
     @Query(value = """
-    SELECT DATE_FORMAT(ra.data_hora, '%a') AS label,
+    SELECT DATE_FORMAT(ra.data_hora, '%b') AS mes,
+           MONTH(ra.data_hora) AS mes_numero,
            SUM(CASE WHEN ta.nome = 'banho' THEN 1 ELSE 0 END) AS quantidade_banhos,
            SUM(CASE WHEN ta.nome = 'refeicao' THEN 1 ELSE 0 END) AS quantidade_refeicoes,
            SUM(CASE WHEN ta.nome NOT IN ('banho', 'refeicao') THEN 1 ELSE 0 END) AS quantidade_outros
     FROM registro_atendimento ra
     JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
-    WHERE ra.data_hora BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
-                          AND DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 6 DAY)
-    GROUP BY label
-    ORDER BY FIELD(label, 'Mon','Tue','Wed','Thu','Fri','Sat','Sun')
+    WHERE YEAR(ra.data_hora) = YEAR(CURDATE())
+    GROUP BY mes, mes_numero
+    ORDER BY mes_numero;
 """, nativeQuery = true)
-    List<Object[]> buscarAtendimentosPorSemana();
+    List<Object[]> buscarServicosPorSemana();
+
+    @Query(value = """
+      SELECT DATE_FORMAT(data_hora, '%H:00') AS hora,
+             COUNT(*) AS quantidade_atendimentos
+      FROM registro_atendimento
+      WHERE data_hora BETWEEN CONCAT(CURDATE(), ' 07:00:00')
+                         AND CONCAT(CURDATE(), ' 20:00:00')
+      GROUP BY DATE_FORMAT(data_hora, '%H:00')
+      ORDER BY hora;
+    """, nativeQuery = true)
+    List<Object[]> buscarAtendimentosDia();
+
+    @Query(value = """
+      SELECT DATE_FORMAT(data_hora, '%a') AS dia_semana,
+             COUNT(*) AS quantidade_atendimentos
+      FROM registro_atendimento
+      WHERE data_hora >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+        AND data_hora <  DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+      GROUP BY DATE_FORMAT(data_hora, '%a'), DAYOFWEEK(data_hora)
+      ORDER BY DAYOFWEEK(data_hora);
+    """, nativeQuery = true)
+    List<Object[]> buscarAtendimentosSemana();
+
+    @Query(value = """
+            SELECT\s
+                DATE_FORMAT(dia, '%d/%m') AS dia_mes,
+                quantidade_atendimentos
+            FROM (
+                SELECT\s
+                    DATE(data_hora) AS dia,
+                    COUNT(*) AS quantidade_atendimentos
+                FROM registro_atendimento
+                WHERE MONTH(data_hora) = MONTH(CURRENT_DATE())
+                  AND YEAR(data_hora) = YEAR(CURRENT_DATE())
+                GROUP BY DATE(data_hora)
+            ) AS sub
+            ORDER BY dia;
+""", nativeQuery = true)
+    List<Object[]> buscarAtendimentosMes();
+
+
 
 
 }
