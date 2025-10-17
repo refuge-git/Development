@@ -1,13 +1,13 @@
 package school.sptech.refuge.core.application.dto.registroAtendimento;
 
-public class AtendimentosPorDiaDto {
+public class ServicosPorSemanaDto {
 
     private String label; // ex: "Mon", "Tue"
     private Integer quantidadeBanhos;
     private Integer quantidadeRefeicoes;
     private Integer quantidadeOutros;
 
-    public AtendimentosPorDiaDto(String label, Integer quantidadeBanhos, Integer quantidadeRefeicoes, Integer quantidadeOutros) {
+    public ServicosPorSemanaDto(String label, Integer quantidadeBanhos, Integer quantidadeRefeicoes, Integer quantidadeOutros) {
         this.label = label;
         this.quantidadeBanhos = quantidadeBanhos;
         this.quantidadeRefeicoes = quantidadeRefeicoes;

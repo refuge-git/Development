@@ -52,8 +52,8 @@ public class RegistroAtendimentoBeanConfig {
     }
 
     @Bean
-    public BuscarAtendimentosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase(RegistroAtendimentoJpaAdapter adapter) {
-        return new BuscarAtendimentosPorSemanaUseCase(adapter);
+    public BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase(RegistroAtendimentoJpaAdapter adapter) {
+        return new BuscarServicosPorSemanaUseCase(adapter);
     }
 
 

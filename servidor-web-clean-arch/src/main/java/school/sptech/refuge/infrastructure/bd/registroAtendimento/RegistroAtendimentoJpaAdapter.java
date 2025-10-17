@@ -2,9 +2,7 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.RegistroAtendimentoGateway;
-import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosPorDiaDto;
-import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosPorMesDto;
-import school.sptech.refuge.core.application.dto.registroAtendimento.RegistroAtendimentoMapper;
+import school.sptech.refuge.core.application.dto.registroAtendimento.*;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
@@ -65,24 +63,48 @@ public class RegistroAtendimentoJpaAdapter implements RegistroAtendimentoGateway
     }
 
     @Override
-    public List<AtendimentosPorMesDto> buscarAtendimentosPorMes() {
-        return List.of();
+    public List<AtendimentosMesDto> buscarAtendimentosMes() {
+        return registroAtendimentoJpaRepository.buscarAtendimentosMes().stream()
+                .map(r -> new AtendimentosMesDto((String) r[0], ((Number) r[1]).longValue()))
+                .collect(Collectors.toList());
     }
 
 
+
     @Override
-    public List<AtendimentosPorDiaDto> buscarAtendimentosPorSemana() {
-        List<Object[]> resultados = registroAtendimentoJpaRepository.buscarAtendimentosPorSemana();
+    public List<ServicosPorSemanaDto> buscarServicosPorSemana() {
+        List<Object[]> resultados = registroAtendimentoJpaRepository.buscarServicosPorSemana();
 
         return resultados.stream()
-                .map(obj -> new AtendimentosPorDiaDto(
+                .map(obj -> new ServicosPorSemanaDto(
                         (String) obj[0],
-                        ((Number) obj[1]).intValue(),
                         ((Number) obj[2]).intValue(),
-                        ((Number) obj[3]).intValue()
+                        ((Number) obj[3]).intValue(),
+                        ((Number) obj[4]).intValue()
                 ))
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<AtendimentosDiaDto> buscarAtendimentosDia() {
+        return registroAtendimentoJpaRepository.buscarAtendimentosDia().stream()
+                .map(r -> {
+                    Long qtd = null;
+                    if (r[1] instanceof Number) {
+                        qtd = ((Number) r[1]).longValue();
+                    } else if (r[1] != null) {
+                        qtd = Long.parseLong(r[1].toString());
+                    }
+                    return new AtendimentosDiaDto((String) r[0], qtd);
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AtendimentosSemanaDto> buscarAtendimentosSemana() {
+        return registroAtendimentoJpaRepository.buscarAtendimentosSemana().stream()
+                .map(r -> new AtendimentosSemanaDto((String) r[0], ((Number) r[1]).longValue()))
+                .collect(Collectors.toList());
+    }
 
 }
