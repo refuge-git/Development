@@ -94,16 +94,16 @@ public class BeneficiarioController {
         if (dtos.isEmpty()) return ResponseEntity.noContent().build();
 
         // Mapeia a lista para adicionar a URL da imagem usando o S3UploadService
-        List<BeneficarioListDto> dtosComImagem = dtos.stream()
+        /*List<BeneficarioListDto> dtosComImagem = dtos.stream()
                 .peek(dto -> {
                     if (dto.getFotoPerfil() != null && !dto.getFotoPerfil().isEmpty()) {
                         String imagemUrl = s3UploadService.getFile(dto.getFotoPerfil());
                         dto.setImagemUrl(imagemUrl);
                     }
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
 
-        return ResponseEntity.ok(dtosComImagem);
+        return ResponseEntity.ok(dtos);
     }
 
 

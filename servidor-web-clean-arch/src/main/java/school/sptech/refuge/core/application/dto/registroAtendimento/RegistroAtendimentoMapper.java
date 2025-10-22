@@ -61,8 +61,7 @@ public class RegistroAtendimentoMapper {
                 funcionarioDto,
                 enderecoDto,
                 generoDto,
-                sexualidadeDto,
-                entity.getBeneficiario().getFotoPerfil()
+                sexualidadeDto
         );
 
         TipoAtendimentoResponseDto tipoAtendimentoDto = new TipoAtendimentoResponseDto(
