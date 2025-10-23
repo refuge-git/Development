@@ -75,7 +75,8 @@ jobs:
             echo "usuario@ip configurado: $USUARIO_IP"
 
             echo "Tentando enviar arquivo /home/${{ secrets.REMOTE_USER }}/servidor-web-clean-arch/app_loko.jar"
-            scp -o StrictHostKeyChecking=no -i $ARQUIVO_PEM /home/${{ secrets.REMOTE_USER }}/servidor-web-clean-arch/app_loko.jar $USUARIO_IP:/usr/share/api/app_loko.jar
+            scp -o StrictHostKeyChecking=no -i $ARQUIVO_PEM ./servidor-web-clean-arch/target/app_loko.jar $USUARIO_IP:/usr/share/api/app_loko.jar
+
             echo "Arquivo jar enviado ao ec2 privado"
 
             ssh -i $ARQUIVO_PEM $USUARIO_IP 'sudo docker compose restart api'
