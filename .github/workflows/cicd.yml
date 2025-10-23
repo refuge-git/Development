@@ -49,7 +49,7 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: /home/${{ secrets.REMOTE_USER }}/servidor-web-clean-arch
           ARGS: "-rltgoDzvO --delete"
-          SOURCE: "./servidor-web-clean-arch/target/*.jar"
+          SOURCE: "./servidor-web-clean-arch/target/app_loko.jar"
 
       # 8. Enviar o arquivo da EC2 pública para a EC2 privada
       - name: BE - Enviar para EC2 privada e reiniciar serviço
@@ -60,7 +60,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             set -e
-            ARQUIVO_PEM="/home/${{ secrets.REMOTE_USER }}/chavetmp.pem"
+            ARQUIVO_PEM="/home/${{ secrets.REMOTE_USER }}/labsuser.pem"
             echo "Arquivo pem que sera criado: $ARQUIVO_PEM"
 
             rm $ARQUIVO_PEM -f
