@@ -14,7 +14,7 @@ jobs:
       - name: Checkout do Repositório
         uses: actions/checkout@v4
 
-      # 2. Configuração do ambiente Java/Maven
+      # 5. Configuração do ambiente Java/Maven
       - name: BE - Configurar JDK
         uses: actions/setup-java@v4
         with:
@@ -22,12 +22,17 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
-      # 3. Geração do .jar
+      # 6. (opcional) Testes automatizados
+      # - name: BE - Executar Testes automatizados
+      #   run: mvn clean test
+      #   working-directory: ./servidor-web-clean-arch
+
+      # 7. Geração do .jar
       - name: BE - Gerar Artefato .JAR
         run: mvn package -DskipTests=true
         working-directory: ./servidor-web-clean-arch
 
-      # 4. Padronizar o nome do JAR
+      # 7. Padronizar o nome do JAR
       - name: BE - Renomear JAR para app_loko.jar
         run: |
           JAR_NAME=$(ls target/*.jar)
@@ -35,7 +40,7 @@ jobs:
           echo "Renomeado para: target/app_loko.jar"
         working-directory: ./servidor-web-clean-arch
 
-      # 5. Enviar artefato para EC2 pública via rsync
+      # 7. Enviar artefato para EC2 pública via rsync
       - name: BE - Copiar arquivos para EC2 pública
         uses: easingthemes/ssh-deploy@main
         with:
@@ -46,7 +51,7 @@ jobs:
           ARGS: "-rltgoDzvO --delete"
           SOURCE: "./servidor-web-clean-arch/target/app_loko.jar"
 
-      # 6. Enviar o arquivo da EC2 pública para a EC2 privada e reiniciar serviço
+      # 8. Enviar o arquivo da EC2 pública para a EC2 privada
       - name: BE - Enviar para EC2 privada e reiniciar serviço
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -55,33 +60,24 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             set -e
+            ARQUIVO_PEM="/home/${{ secrets.REMOTE_USER }}/chavetmp.pem"
+            echo "Arquivo pem que sera criado: $ARQUIVO_PEM"
 
-            # Diretório na EC2 pública
-            PUBLIC_DIR="/home/${{ secrets.REMOTE_USER }}/servidor-web-clean-arch"
-            mkdir -p $PUBLIC_DIR
-            echo "Diretório público garantido: $PUBLIC_DIR"
+            rm $ARQUIVO_PEM -f
+            echo "Arquivo .pem excluído"
 
-            # Verificar se o JAR existe no diretório público
-            if [ ! -f $PUBLIC_DIR/app_loko.jar ]; then
-              echo "Arquivo JAR não encontrado em $PUBLIC_DIR!"
-              exit 1
-            fi
-            echo "Arquivo JAR disponível em $PUBLIC_DIR/app_loko.jar"
+            echo "${{ secrets.EC2_SSH_KEY }}" > $ARQUIVO_PEM || true
+            echo "Arquivo pem criado"
+            chmod 400 $ARQUIVO_PEM || true
+            echo "Permissões ao pem concedidas"
 
-            # Criar arquivo PEM temporário
-            ARQUIVO_PEM="/tmp/labsuser.pem"
-            echo "${{ secrets.EC2_SSH_KEY }}" > $ARQUIVO_PEM
-            chmod 400 $ARQUIVO_PEM
-            echo "Arquivo PEM criado em $ARQUIVO_PEM"
-
-            # Configurar usuário e host da EC2 privada
             USUARIO_IP=${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST_PRIVADO }}
             echo "usuario@ip configurado: $USUARIO_IP"
 
-            # Enviar JAR da EC2 pública para EC2 privada
-            scp -o StrictHostKeyChecking=no -i $ARQUIVO_PEM $PUBLIC_DIR/app_loko.jar $USUARIO_IP:/usr/share/api/app_loko.jar
-            echo "Arquivo JAR enviado à EC2 privada"
+            echo "Tentando enviar arquivo /home/${{ secrets.REMOTE_USER }}/servidor-web-clean-arch/app_loko.jar"
+            scp -o StrictHostKeyChecking=no -i $ARQUIVO_PEM ./servidor-web-clean-arch/target/app_loko.jar $USUARIO_IP:/usr/share/api/app_loko.jar
 
-            # Reiniciar serviço via Docker Compose
+            echo "Arquivo jar enviado ao ec2 privado"
+
             ssh -i $ARQUIVO_PEM $USUARIO_IP 'sudo docker compose restart api'
-            echo "Serviço reiniciado via Docker Compose"
+            echo "serviço reiniciado via docker compose"
