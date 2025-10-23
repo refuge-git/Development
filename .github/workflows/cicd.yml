@@ -3,7 +3,7 @@ name: CI/CD para EC2 pública e privada
 on:
   push:
     branches:
-      - main # O branch que acionará o deploy
+      - main
 
 jobs:
   build_and_deploy:
@@ -39,7 +39,7 @@ jobs:
       - name: Debug - Listar arquivos do target
         run: |
           echo "Diretório atual: $(pwd)"
-          ls -l ./servidor-web-clean-arch/target
+          ls -l $GITHUB_WORKSPACE/servidor-web-clean-arch/target
 
       # 6. Enviar artefato para EC2 pública via rsync
       - name: BE - Copiar arquivos para EC2 pública
@@ -50,7 +50,7 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: /home/${{ secrets.REMOTE_USER }}/servidor-web-clean-arch
           ARGS: "-rltgoDzvO --delete"
-          SOURCE: "./servidor-web-clean-arch/target/app_loko.jar"
+          SOURCE: "$GITHUB_WORKSPACE/servidor-web-clean-arch/target/app_loko.jar"
 
       # 7. Enviar o arquivo da EC2 pública para a EC2 privada
       - name: BE - Enviar para EC2 privada e reiniciar serviço
@@ -71,14 +71,14 @@ jobs:
             USUARIO_IP=${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST_PRIVADO }}
             echo "usuario@ip configurado: $USUARIO_IP"
 
-            # Debug: listar arquivo do runner antes do envio
-            if [ ! -f ./servidor-web-clean-arch/target/app_loko.jar ]; then
-              echo "ERRO: arquivo ./servidor-web-clean-arch/target/app_loko.jar não encontrado!"
+            # Debug: verificar se o JAR existe no runner
+            if [ ! -f $GITHUB_WORKSPACE/servidor-web-clean-arch/target/app_loko.jar ]; then
+              echo "ERRO: arquivo $GITHUB_WORKSPACE/servidor-web-clean-arch/target/app_loko.jar não encontrado!"
               exit 1
             fi
 
             # Enviar JAR para EC2 privada
-            scp -o StrictHostKeyChecking=no -i $ARQUIVO_PEM ./servidor-web-clean-arch/target/app_loko.jar $USUARIO_IP:/usr/share/api/app_loko.jar
+            scp -o StrictHostKeyChecking=no -i $ARQUIVO_PEM $GITHUB_WORKSPACE/servidor-web-clean-arch/target/app_loko.jar $USUARIO_IP:/usr/share/api/app_loko.jar
             echo "Arquivo JAR enviado ao EC2 privada"
 
             # Reiniciar serviço via Docker Compose
