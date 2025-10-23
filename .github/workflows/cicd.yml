@@ -60,7 +60,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             set -e
-            ARQUIVO_PEM="/home/${{ secrets.REMOTE_USER }}/labsuser.pem"
+            ARQUIVO_PEM="/home/${{ secrets.REMOTE_USER }}/chavetmp.pem"
             echo "Arquivo pem que sera criado: $ARQUIVO_PEM"
 
             rm $ARQUIVO_PEM -f
