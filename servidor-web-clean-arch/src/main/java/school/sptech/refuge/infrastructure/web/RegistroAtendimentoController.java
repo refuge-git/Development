@@ -8,9 +8,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.registroAtendimento.*;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDiaResponse;
 import school.sptech.refuge.core.application.usecase.registroAtendimento.*;
 
 import java.util.List;
@@ -159,9 +160,10 @@ public class RegistroAtendimentoController {
     })
     @GetMapping("/relatorios/presencas-por-dia")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<PresencaDia>> contarPresencasPorDia() {
-        List<PresencaDia> resultado = contarPresencasPorDiaNoMesUseCase.execute();
-        return ResponseEntity.ok(resultado);
+    public ResponseEntity<PresencaDiaResponse> contarPresencasPorDia(Authentication authentication) {
+        String email = authentication.getName();
+        PresencaDiaResponse response = contarPresencasPorDiaNoMesUseCase.execute(email);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(
@@ -223,28 +225,5 @@ public class RegistroAtendimentoController {
         return ResponseEntity.ok(atendimentos);
     }
 
-
-    @Operation(
-            summary = "Quantidade de atendimentos por dia do mês atual",
-            description = "Retorna a lista de atendimentos agrupados por dia do mês"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
-    })
-    @GetMapping("/mes")
-    @CrossOrigin(origins = "http://localhost:5173")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<AtendimentosMesDto>> getAtendimentosMes() {
-        List<AtendimentosMesDto> atendimentos = buscarAtendimentosPorMesUseCase.obterAtendimentosMes();
-        return ResponseEntity.ok(atendimentos);
-    }
-
-    @GetMapping("/indicadores")
-    @CrossOrigin(origins = "http://localhost:5173")
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<IndicadoresDashboardDto> getIndicadores() {
-        IndicadoresDashboardDto indicadores = buscarIndicadoresDashboardUseCase.executar();
-        return ResponseEntity.ok(indicadores);
-    }
 
 }

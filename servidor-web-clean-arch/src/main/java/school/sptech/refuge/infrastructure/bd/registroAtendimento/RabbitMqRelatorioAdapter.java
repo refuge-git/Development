@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import school.sptech.refuge.core.adapters.PublicarRelatorioGateway;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDiaResponse;
 
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class RabbitMqRelatorioAdapter implements PublicarRelatorioGateway {
     }
 
     @Override
-    public void publicarPresencasPorDia(List<PresencaDia> relatorio) {
+    public void publicarPresencasPorDia(PresencaDiaResponse relatorio) {
         rabbitTemplate.convertAndSend(exchangeName, routingKeyName, relatorio);
-        System.out.println("✅ Relatório publicado no exchange '" + exchangeName + "' com routingKey '" + routingKeyName + "' e " + relatorio.size() + " registros.");
+        System.out.println("✅ Relatório publicado no exchange '" + exchangeName + "' com routingKey '" + routingKeyName + "' e " + relatorio + " registros.");
     }
 }
