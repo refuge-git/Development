@@ -28,9 +28,10 @@ public class RegistroAtendimentoController {
     private final ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase;
     private final BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase;
     private final BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase;
+    private final BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase;
 
 
-    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase) {
+    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase, BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase) {
         this.atualizarRegistroAtendimentoUseCase = atualizarRegistroAtendimentoUseCase;
         this.criarRegistroAtendimentoUseCase = criarRegistroAtendimentoUseCase;
         this.deletarRegistroAtendimentoUseCase = deletarRegistroAtendimentoUseCase;
@@ -40,6 +41,7 @@ public class RegistroAtendimentoController {
         this.contarPresencasPorDiaNoMesUseCase = contarPresencasPorDiaNoMesUseCase;
         this.buscarAtendimentosPorMesUseCase = buscarAtendimentosPorMesUseCase;
         this.buscarAtendimentosPorSemanaUseCase = buscarAtendimentosPorSemanaUseCase;
+        this.buscarIndicadoresDashboardUseCase = buscarIndicadoresDashboardUseCase;
     }
 
     @Operation(
@@ -237,6 +239,12 @@ public class RegistroAtendimentoController {
         return ResponseEntity.ok(atendimentos);
     }
 
-
+    @GetMapping("/indicadores")
+    @CrossOrigin(origins = "http://localhost:5173")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<IndicadoresDashboardDto> getIndicadores() {
+        IndicadoresDashboardDto indicadores = buscarIndicadoresDashboardUseCase.executar();
+        return ResponseEntity.ok(indicadores);
+    }
 
 }

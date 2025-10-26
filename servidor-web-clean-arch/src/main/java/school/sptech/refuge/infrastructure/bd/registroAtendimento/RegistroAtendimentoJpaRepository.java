@@ -171,6 +171,123 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
     List<Object[]> buscarAtendimentosMes();
 
 
+    //Total de atendimentos no mês atual
+    @Query(value = """
+        SELECT COUNT(*) 
+        FROM registro_atendimento 
+        WHERE MONTH(data_hora) = MONTH(CURDATE())
+          AND YEAR(data_hora) = YEAR(CURDATE())
+        """, nativeQuery = true)
+    long countAtendimentosMesAtual();
 
+    @Query(value = """
+            SELECT\s
+                AVG(total_atendimentos) AS media_mensal_esperada
+            FROM (
+                SELECT\s
+                    YEAR(data_hora) AS ano,
+                    MONTH(data_hora) AS mes,
+                    COUNT(*) AS total_atendimentos
+                FROM registro_atendimento
+                GROUP BY ano, mes
+            ) AS medias;
+        """, nativeQuery = true)
+    long countMediaAtendimentosMesAtual();
+
+    //Total de novos cadastros no mês atual
+    @Query(value = """
+        SELECT COUNT(*) 
+        FROM beneficiario 
+        WHERE MONTH(data_ativacao) = MONTH(CURDATE())
+          AND YEAR(data_ativacao) = YEAR(CURDATE())
+        """, nativeQuery = true)
+    long countNovosCadastrosMes();
+
+    //Atividade mais requisitada do mês
+    @Query(value = """
+        SELECT ta.nome AS atividade_mais_requisitada, COUNT(*) AS total
+        FROM registro_atendimento ra
+        JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+        WHERE MONTH(ra.data_hora) = MONTH(CURDATE())
+          AND YEAR(ra.data_hora) = YEAR(CURDATE())
+        GROUP BY ta.nome
+        ORDER BY total DESC
+        LIMIT 1
+        """, nativeQuery = true)
+    List<Object[]> findAtividadeMaisRequisitadaMes();
+
+    @Query(value = """
+        SELECT ta.nome AS atividade_mais_requisitada, COUNT(*) AS total
+        FROM registro_atendimento ra
+        JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+        WHERE MONTH(ra.data_hora) = MONTH(CURDATE())
+          AND YEAR(ra.data_hora) = YEAR(CURDATE())
+        GROUP BY ta.nome
+        ORDER BY total DESC
+        LIMIT 1 OFFSET 1
+        """, nativeQuery = true)
+    List<Object[]> findSegundaAtividadeMaisRequisitadaMes();
+
+
+
+    @Query(value = """
+    SELECT COUNT(*)
+    FROM registro_atendimento
+    WHERE MONTH(data_hora) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+      AND YEAR(data_hora) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+    """, nativeQuery = true)
+    long countAtendimentosMesAnterior();
+
+    // Total de novos cadastros no mês anterior
+    @Query(value = """
+    SELECT COUNT(*)
+    FROM beneficiario
+    WHERE MONTH(data_ativacao) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+      AND YEAR(data_ativacao) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+    """, nativeQuery = true)
+    long countNovosCadastrosMesAnterior();
+
+
+    @Query(value = """
+            SELECT\s
+                nome AS atividade,
+                ROUND(AVG(total_por_mes), 2) AS media_mensal_esperada
+            FROM (
+                SELECT\s
+                    ta.id_tipo_atendimento,
+                    ta.nome,
+                    YEAR(ra.data_hora) AS ano,
+                    MONTH(ra.data_hora) AS mes,
+                    COUNT(*) AS total_por_mes
+                FROM registro_atendimento ra
+                JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+                GROUP BY ta.id_tipo_atendimento, ta.nome, ano, mes
+            ) AS historico
+            GROUP BY id_tipo_atendimento, nome
+            ORDER BY media_mensal_esperada DESC
+            LIMIT 1;
+        """, nativeQuery = true)
+    List<Object[]> findMediaAtividadeMaisRequisitada();
+
+    @Query(value = """
+            SELECT\s
+                nome AS atividade,
+                ROUND(AVG(total_por_mes), 2) AS media_mensal_esperada
+            FROM (
+                SELECT\s
+                    ta.id_tipo_atendimento,
+                    ta.nome,
+                    YEAR(ra.data_hora) AS ano,
+                    MONTH(ra.data_hora) AS mes,
+                    COUNT(*) AS total_por_mes
+                FROM registro_atendimento ra
+                JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+                GROUP BY ta.id_tipo_atendimento, ta.nome, ano, mes
+            ) AS historico
+            GROUP BY id_tipo_atendimento, nome
+            ORDER BY media_mensal_esperada DESC
+            LIMIT 1 OFFSET 1;
+        """, nativeQuery = true)
+    List<Object[]> findMediaSegundaAtividadeMaisRequisitada();
 
 }

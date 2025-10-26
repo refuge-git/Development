@@ -56,6 +56,9 @@ public class RegistroAtendimentoBeanConfig {
         return new BuscarServicosPorSemanaUseCase(adapter);
     }
 
-
+    @Bean
+    public BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase(RegistroAtendimentoJpaAdapter adapter) {
+        return new BuscarIndicadoresDashboardUseCase(adapter);
+    }
 
 }

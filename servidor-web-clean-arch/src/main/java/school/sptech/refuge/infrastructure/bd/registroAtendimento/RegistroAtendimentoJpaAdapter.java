@@ -107,4 +107,75 @@ public class RegistroAtendimentoJpaAdapter implements RegistroAtendimentoGateway
                 .collect(Collectors.toList());
     }
 
+    public long getAtendimentosMesAtual() {
+        return registroAtendimentoJpaRepository.countAtendimentosMesAtual();
+    }
+
+    public long getMediaAtendimentoMesAtual() {
+        return registroAtendimentoJpaRepository.countMediaAtendimentosMesAtual();
+    }
+
+    @Override
+    public long getAtendimentosMesAnterior() {
+        return registroAtendimentoJpaRepository.countAtendimentosMesAnterior();
+    }
+
+    @Override
+    public long getNovosCadastrosMes() {
+        return registroAtendimentoJpaRepository.countNovosCadastrosMes();
+    }
+
+    @Override
+    public long getNovosCadastrosMesAnterior() {
+        return registroAtendimentoJpaRepository.countNovosCadastrosMesAnterior();
+    }
+
+    @Override
+    public String getAtividadeMaisRequisitadaMes() {
+        List<Object[]> resultados = registroAtendimentoJpaRepository.findAtividadeMaisRequisitadaMes();
+
+        if (resultados != null && !resultados.isEmpty()) {
+            Object[] linha = resultados.get(0);
+            if (linha != null && linha.length > 0 && linha[0] != null) {
+                return (String) linha[0]; // apenas o nome da atividade
+            }
+        }
+
+        return "Nenhuma atividade encontrada";
+    }
+
+    @Override
+    public String getSegundaAtividadeMaisRequisitadaMes() {
+        List<Object[]> resultados = registroAtendimentoJpaRepository.findSegundaAtividadeMaisRequisitadaMes();
+
+        if (resultados != null && !resultados.isEmpty()) {
+            Object[] linha = resultados.get(0);
+            if (linha != null && linha.length > 0 && linha[0] != null) {
+                return (String) linha[0]; // apenas o nome da atividade
+            }
+        }
+
+        return "Nenhuma atividade encontrada";
+    }
+
+    @Override
+    public Double getMediaAtividadeMaisRequisitada() {
+        List<Object[]> resultado = registroAtendimentoJpaRepository.findMediaAtividadeMaisRequisitada();
+        if (resultado != null && !resultado.isEmpty()) {
+            Object[] linha = resultado.get(0);
+            return linha[1] != null ? ((Number) linha[1]).doubleValue() : 0.0;
+        }
+        return 0.0;
+    }
+
+    @Override
+    public Double getMediaSegundaAtividadeMaisRequisitada() {
+        List<Object[]> resultado = registroAtendimentoJpaRepository.findMediaSegundaAtividadeMaisRequisitada();
+        if (resultado != null && !resultado.isEmpty()) {
+            Object[] linha = resultado.get(0);
+            return linha[1] != null ? ((Number) linha[1]).doubleValue() : 0.0;
+        }
+        return 0.0;
+    }
+
 }
