@@ -18,10 +18,10 @@ QUEUE_NAME = "refuge.direct.queue"
 
 # E-mail
 EMAIL_SENDER = "fernandes.bia0703@gmail.com"
-EMAIL_PASSWORD = "senha do app Gmail"
+EMAIL_PASSWORD = "ihni eqso tkxb vunc"
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL_DESTINO_TESTE = "fernandes.bia0703@gmail.com"
+EMAIL_DESTINO_TESTE = ""
 
 def send_email(to_email, report_json):
     """Envia um e-mail com os dados recebidos em formato legível"""
@@ -86,14 +86,17 @@ def callback(ch, method, properties, body):
     relatorios_presencas.append(mensagem)
     print(f"[DEBUG] Total de relatórios armazenados: {len(relatorios_presencas)}")
     
-    print(f"✅ Relatório recebido ({len(mensagem) if isinstance(mensagem, list) else 1} registros):")
+    print(f"✅ Relatório recebido ({len(mensagem['presencas']) if 'presencas' in mensagem else 1} registros):")
     print(json.dumps(mensagem, indent=2, ensure_ascii=False))
 
-    # Envia e-mail
-    if isinstance(mensagem, list) and all('dia' in item and 'quantidadePessoas' in item for item in mensagem):
-        send_email(EMAIL_DESTINO_TESTE, mensagem)
+    # Envia e-mail para o destinatário correto com a lista de presenças
+    if isinstance(mensagem, dict) and 'email' in mensagem and 'presencas' in mensagem:
+        destinatario = mensagem['email']
+        presencas = mensagem['presencas']
+        print(f"[DEBUG] Destinatário do e-mail: {destinatario}")
+        send_email(destinatario, presencas)
     else:
-        send_email(EMAIL_DESTINO_TESTE, {"relatorios": mensagem})
+        print("[ERRO] Mensagem recebida não tem os campos esperados ('email' e 'presencas'). E-mail não enviado.")
 
 # Conecta ao RabbitMQ
 connection, channel = conectar_rabbitmq()
