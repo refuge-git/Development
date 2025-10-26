@@ -53,7 +53,7 @@ public class BeneficarioListDto {
     private TipoGeneroListDto tipoGenero;
     private TipoSexualidadeListDto tipoSexualidade;
 
-    public BeneficarioListDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, FuncionarioListDto funcionario, EnderecoResponseDto endereco, TipoGeneroListDto tipoGenero, TipoSexualidadeListDto tipoSexualidade, String imagemUrl) {
+    public BeneficarioListDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, LocalDateTime data_ativacao, String observacao, FuncionarioListDto funcionario, EnderecoResponseDto endereco, TipoGeneroListDto tipoGenero, TipoSexualidadeListDto tipoSexualidade) {
         this.id = id;
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
@@ -74,7 +74,6 @@ public class BeneficarioListDto {
         this.endereco = endereco;
         this.tipoGenero = tipoGenero;
         this.tipoSexualidade = tipoSexualidade;
-        this.imagemUrl = imagemUrl;
     }
 
     public BeneficarioListDto() {

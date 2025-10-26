@@ -76,8 +76,7 @@ public class BeneficiarioMapper {
                         beneficiario.getTipoSexualidade().getId(),
                         beneficiario.getTipoSexualidade().getNome(),
                         beneficiario.getTipoSexualidade().getDescricao()
-                ) : null,
-                beneficiario.getFotoPerfil()
+                ) : null
         );
     }
 

@@ -46,7 +46,9 @@ public class S3UploadService {
     }
 
     public String getFile(String key) {
-        try {
+        System.out.println("Gerando URL para key: " + key);
+
+        /*try {
             GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
                     .getObjectRequest(r -> r.bucket(bucketName).key(key))
                     .signatureDuration(Duration.ofMinutes(10))
@@ -58,5 +60,7 @@ public class S3UploadService {
                     "Erro ao gerar URL pré-assinada do S3: " + e.awsErrorDetails().errorMessage(),
                     e);
         }
+    }*/
+        return "https://bucket-refuge-img.s3.amazonaws.com/" + key;
     }
 }
