@@ -1,5 +1,6 @@
 package school.sptech.refuge.infrastructure.bd.tipoAtendimento;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioEntity;
@@ -19,7 +20,10 @@ public class TipoAtendimentoEntity {
 
     @ManyToOne
     @JoinColumn(name = "fk_funcionario", referencedColumnName = "id_funcionario")
+    @JsonIgnoreProperties({"tiposAtendimento"}) // ignora a lista de tipos de atendimento do funcionário
     private FuncionarioEntity funcionario;
+
+
 
     public TipoAtendimentoEntity(){
     }

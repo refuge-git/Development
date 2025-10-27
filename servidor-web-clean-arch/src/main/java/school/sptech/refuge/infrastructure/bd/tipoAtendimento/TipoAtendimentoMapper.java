@@ -2,7 +2,6 @@ package school.sptech.refuge.infrastructure.bd.tipoAtendimento;
 
 import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoRequestDto;
 import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoResponseDto;
-import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 import school.sptech.refuge.infrastructure.bd.tipoAtendimento.TipoAtendimentoEntity;
@@ -11,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class TipoAtendimentoMapper {
+
+    // Converte DTO de request para domínio
     public static TipoAtendimento toEntity(TipoAtendimentoRequestDto dto){
         if (dto == null) {
             return null;
@@ -19,15 +20,13 @@ public class TipoAtendimentoMapper {
         Funcionario funcionario = new Funcionario();
         funcionario.setId(dto.getIdFuncionario());
 
-        TipoAtendimento entity = new TipoAtendimento(
+        return new TipoAtendimento(
                 null,
                 dto.getNome(),
                 dto.getDescricao(),
                 dto.getDtCriacao(),
                 funcionario
         );
-
-        return entity;
     }
 
     public static TipoAtendimento toEntity(TipoAtendimentoRequestDto dto, Integer id){
@@ -38,49 +37,29 @@ public class TipoAtendimentoMapper {
         Funcionario funcionario = new Funcionario();
         funcionario.setId(dto.getIdFuncionario());
 
-        TipoAtendimento entity = new TipoAtendimento(
+        return new TipoAtendimento(
                 id,
                 dto.getNome(),
                 dto.getDescricao(),
                 dto.getDtCriacao(),
                 funcionario
         );
-
-        return entity;
     }
 
-    /*public TipoAtendimentoResponseDto toDto(TipoAtendimento entity){
-        TipoAtendimentoResponseDto dto = new TipoAtendimentoResponseDto();
-
-        dto.setId(entity.getId_TipoAtendimento());
-        dto.setNome(entity.getNome());
-
-        return dto;
-    }*/
-
+    // Converte domínio para DTO de response (apenas id do funcionário)
     public static TipoAtendimentoResponseDto toListagemDto(TipoAtendimento entity) {
-
         if (entity == null) {
             return null;
         }
-
-        FuncionarioListDto funcionarioDto = new FuncionarioListDto(
-                entity.getFuncionario().getId(),
-                entity.getFuncionario().getNome(),
-                entity.getFuncionario().getCpf(),
-                entity.getFuncionario().getEmail(),
-                entity.getFuncionario().getTelefone()
-        );
 
         return new TipoAtendimentoResponseDto(
                 entity.getId(),
                 entity.getNome(),
                 entity.getDescricao(),
                 entity.getDataCriacao(),
-                funcionarioDto.getId()
+                entity.getFuncionario() != null ? entity.getFuncionario().getId() : null
         );
     }
-
 
     public static List<TipoAtendimentoResponseDto> toListagemDtos(List<TipoAtendimento> atendimentos){
         if (atendimentos == null) {
@@ -92,6 +71,7 @@ public class TipoAtendimentoMapper {
                 .toList();
     }
 
+    // Converte domínio para entidade JPA
     public static TipoAtendimentoEntity ofDomain(TipoAtendimento tipoAtendimento) {
         if (Objects.isNull(tipoAtendimento)) {
             return null;
@@ -104,6 +84,7 @@ public class TipoAtendimentoMapper {
         return entity;
     }
 
+    // Converte entidade JPA para domínio
     public static TipoAtendimento ofEntity(TipoAtendimentoEntity tipoAtendimentoEntity) {
         if (Objects.isNull(tipoAtendimentoEntity)) {
             return null;
@@ -116,6 +97,7 @@ public class TipoAtendimentoMapper {
         return dominio;
     }
 
+    // Converte domínio para DTO de response (apenas id do funcionário)
     public static TipoAtendimentoResponseDto fromDomain(TipoAtendimento entity) {
         if (Objects.isNull(entity)) {
             return null;
@@ -125,19 +107,19 @@ public class TipoAtendimentoMapper {
                 entity.getNome(),
                 entity.getDescricao(),
                 entity.getDataCriacao(),
-                entity.getFuncionario().getId()
+                entity.getFuncionario() != null ? entity.getFuncionario().getId() : null
         );
     }
 
     public static TipoAtendimentoResponseDto of(TipoAtendimento tipoAtendimento) {
-        TipoAtendimentoResponseDto tipoAtendimentDto = new TipoAtendimentoResponseDto();
+        if (tipoAtendimento == null) return null;
 
-        tipoAtendimentDto.setId(tipoAtendimento.getId());
-        tipoAtendimentDto.setNome(tipoAtendimento.getNome());
-        tipoAtendimentDto.setDescricao(tipoAtendimento.getDescricao());
-        tipoAtendimentDto.setFuncionario(tipoAtendimento.getFuncionario().getId());
+        TipoAtendimentoResponseDto dto = new TipoAtendimentoResponseDto();
+        dto.setId(tipoAtendimento.getId());
+        dto.setNome(tipoAtendimento.getNome());
+        dto.setDescricao(tipoAtendimento.getDescricao());
+        dto.setFuncionario(tipoAtendimento.getFuncionario() != null ? tipoAtendimento.getFuncionario().getId() : null);
 
-        return tipoAtendimentDto;
+        return dto;
     }
-
 }
