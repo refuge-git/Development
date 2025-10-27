@@ -21,7 +21,7 @@ public class CondicaoSaudeEntity {
     private String descricao;
     @Column(name = "data_registro")
     private LocalDateTime dataRegistro;
-    @Column(name = "data_atualizacao")
+    @Transient
     private LocalDateTime dataAtualizacao;
     @Size(min = 0, max = 100)
     private String tratamento;
