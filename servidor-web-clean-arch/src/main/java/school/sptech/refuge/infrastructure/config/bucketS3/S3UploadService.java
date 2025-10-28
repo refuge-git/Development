@@ -38,8 +38,7 @@ public class S3UploadService {
 
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(fileContent));
 
-            String fileUrl = s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(s3Key)).toString();
-            return fileUrl;
+            return fileName;
         } catch (S3Exception exception) {
             throw new ResponseStatusException(500, "Error uploading file to S3: " + exception.awsErrorDetails().errorMessage(), exception);
         }
@@ -61,6 +60,6 @@ public class S3UploadService {
                     e);
         }
     }*/
-        return "https://bucket-refuge-img-trusted.s3.amazonaws.com/" + key;
+        return "https://bucket-refuge-img-trusted.s3.amazonaws.com/" + key + ".jpg";
     }
 }

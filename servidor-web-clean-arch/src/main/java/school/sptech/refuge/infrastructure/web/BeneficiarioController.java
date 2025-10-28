@@ -94,16 +94,19 @@ public class BeneficiarioController {
         if (dtos.isEmpty()) return ResponseEntity.noContent().build();
 
         // Mapeia a lista para adicionar a URL da imagem usando o S3UploadService
-        /*List<BeneficarioListDto> dtosComImagem = dtos.stream()
+        List<BeneficarioListDto> dtosComImagem = dtos.stream()
                 .peek(dto -> {
                     if (dto.getFotoPerfil() != null && !dto.getFotoPerfil().isEmpty()) {
+                        System.out.println("🔹 Gerando URL para: " + dto.getFotoPerfil());
                         String imagemUrl = s3UploadService.getFile(dto.getFotoPerfil());
                         dto.setImagemUrl(imagemUrl);
+                    } else{
+                        System.out.println("⚠️ DTO sem fotoPerfil: " + dto.getNomeRegistro());
                     }
                 })
-                .collect(Collectors.toList());*/
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(dtos);
+        return ResponseEntity.ok(dtosComImagem);
     }
 
 
@@ -296,8 +299,21 @@ public class BeneficiarioController {
     public ResponseEntity<List<BeneficarioListDto>> listarPorFrequenciaNoDiaDaSemana() {
         int diaSemana = LocalDate.now().getDayOfWeek().getValue();
         List<BeneficarioListDto> dtos = listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase.execute(diaSemana);
+
+        List<BeneficarioListDto> dtosComImagem = dtos.stream()
+                .peek(dto -> {
+                    if (dto.getFotoPerfil() != null && !dto.getFotoPerfil().isEmpty()) {
+                        System.out.println("🔹 Gerando URL para: " + dto.getFotoPerfil());
+                        String imagemUrl = s3UploadService.getFile(dto.getFotoPerfil());
+                        dto.setImagemUrl(imagemUrl);
+                    } else{
+                        System.out.println("⚠️ DTO sem fotoPerfil: " + dto.getNomeRegistro());
+                    }
+                })
+                .collect(Collectors.toList());
+
         if (dtos.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(dtos);
+        return ResponseEntity.ok(dtosComImagem);
     }
 
 
