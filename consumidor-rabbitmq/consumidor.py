@@ -30,7 +30,7 @@ def send_email(to_email, report_json):
             total = sum(int(item['quantidadePessoas']) for item in report_json)
             dias_funcionamento = len(report_json)
             media_diaria = round(total / dias_funcionamento, 2) if dias_funcionamento else 0
-            linhas = []
+            linhas = ["Relatório de Serviços do Espaço Social D'Achiropita\n"]
             for item in report_json:
                 linhas.append(
                     f"Informe o número de pessoas que frequentaram o serviço por dia. Total no mês:Dias de funcionamento: {dias_funcionamento} Média Diária: [{item['dia']}][Qtd pessoas]\n{item['quantidadePessoas']}"
@@ -42,7 +42,7 @@ def send_email(to_email, report_json):
         email_body += "\n\n---\nEste é um e-mail automático gerado pelo sistema."
 
         msg = MIMEText(email_body, 'plain', 'utf-8')
-        msg['Subject'] = 'Relatório de Presença Recebido'
+        msg['Subject'] = 'Relatório de Serviços Achiropita'
         msg['From'] = EMAIL_SENDER
         msg['To'] = to_email
 
