@@ -61,6 +61,6 @@ public class S3UploadService {
                     e);
         }
     }*/
-        return "https://bucket-refuge-img.s3.amazonaws.com/" + key;
+        return "https://bucket-refuge-img-trusted.s3.amazonaws.com/" + key;
     }
 }
