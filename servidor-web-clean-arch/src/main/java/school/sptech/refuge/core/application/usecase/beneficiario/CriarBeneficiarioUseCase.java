@@ -88,7 +88,7 @@ public class CriarBeneficiarioUseCase {
 
                 if (imagemConvertida.length > 0) {
                     urlPerfil = s3UploadService.uploadFile(
-                            dto.getIdFuncionario() + "_" + System.currentTimeMillis() + ".jpg",
+                            dto.getIdFuncionario() + "_" + System.currentTimeMillis(),
                             imagemConvertida
                     );
                 } else {
