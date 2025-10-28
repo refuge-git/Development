@@ -4,6 +4,7 @@ import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimento
 import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoResponseDto;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
 import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioEntity;
 import school.sptech.refuge.infrastructure.bd.tipoAtendimento.TipoAtendimentoEntity;
 
 import java.util.List;
@@ -81,6 +82,14 @@ public class TipoAtendimentoMapper {
         entity.setNome(tipoAtendimento.getNome());
         entity.setDescricao(tipoAtendimento.getDescricao());
         entity.setDataCriacao(tipoAtendimento.getDataCriacao());
+
+        if (tipoAtendimento.getFuncionario() != null) {
+            FuncionarioEntity funcionarioEntity = new FuncionarioEntity();
+            funcionarioEntity.setId(tipoAtendimento.getFuncionario().getId());
+            entity.setFuncionario(funcionarioEntity);
+        }
+
+
         return entity;
     }
 
@@ -94,6 +103,14 @@ public class TipoAtendimentoMapper {
         dominio.setNome(tipoAtendimentoEntity.getNome());
         dominio.setDescricao(tipoAtendimentoEntity.getDescricao());
         dominio.setDataCriacao(tipoAtendimentoEntity.getDataCriacao());
+
+        if (tipoAtendimentoEntity.getFuncionario() != null) {
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(tipoAtendimentoEntity.getFuncionario().getId());
+            dominio.setFuncionario(funcionario);
+        }
+
+
         return dominio;
     }
 
