@@ -21,7 +21,6 @@ EMAIL_SENDER = "fernandes.bia0703@gmail.com"
 EMAIL_PASSWORD = "ihni eqso tkxb vunc"
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL_DESTINO_TESTE = ""
 
 def send_email(to_email, report_json):
     """Envia um e-mail com os dados recebidos em formato legível"""
@@ -42,7 +41,7 @@ def send_email(to_email, report_json):
         email_body += "\n\n---\nEste é um e-mail automático gerado pelo sistema."
 
         msg = MIMEText(email_body, 'plain', 'utf-8')
-        msg['Subject'] = 'Relatório de Serviços Achiropita'
+        msg['Subject'] = 'Relatório de Serviços Espaço Social Achiropita'
         msg['From'] = EMAIL_SENDER
         msg['To'] = to_email
 
@@ -86,15 +85,19 @@ def callback(ch, method, properties, body):
     relatorios_presencas.append(mensagem)
     print(f"[DEBUG] Total de relatórios armazenados: {len(relatorios_presencas)}")
     
-    print(f"✅ Relatório recebido ({len(mensagem['presencas']) if 'presencas' in mensagem else 1} registros):")
-    print(json.dumps(mensagem, indent=2, ensure_ascii=False))
-
-    # Envia e-mail para o destinatário correto com a lista de presenças
     if isinstance(mensagem, dict) and 'email' in mensagem and 'presencas' in mensagem:
         destinatario = mensagem['email']
         presencas = mensagem['presencas']
+        
         print(f"[DEBUG] Destinatário do e-mail: {destinatario}")
-        send_email(destinatario, presencas)
+        print(f"✅ Relatório recebido ({len(presencas)} registros):")
+        print(json.dumps(mensagem, indent=2, ensure_ascii=False))
+        
+        if destinatario and '@' in destinatario:
+            print(f"[DEBUG] Enviando e-mail para: {destinatario}")
+            send_email(destinatario, presencas)
+        else:
+            print(f"[ERRO] Destinatário inválido: {destinatario}. E-mail não enviado.")
     else:
         print("[ERRO] Mensagem recebida não tem os campos esperados ('email' e 'presencas'). E-mail não enviado.")
 
