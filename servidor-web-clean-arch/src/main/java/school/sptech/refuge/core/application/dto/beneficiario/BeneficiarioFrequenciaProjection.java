@@ -5,6 +5,4 @@ public interface BeneficiarioFrequenciaProjection {
     String getNomeRegistro();
     String getNomeSocial();
     Integer getQuantidadePresencas();
-    String getFotoPerfil();
-    String getImagemUrl();
 }

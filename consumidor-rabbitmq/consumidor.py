@@ -29,7 +29,12 @@ def send_email(to_email, report_json):
             total = sum(int(item['quantidadePessoas']) for item in report_json)
             dias_funcionamento = len(report_json)
             media_diaria = round(total / dias_funcionamento, 2) if dias_funcionamento else 0
-            linhas = []
+            from datetime import datetime
+            mes_referencia = datetime.now().strftime('%m/%Y')
+            linhas = [
+                "Relatório de Serviços do Espaço Social D'Achiropita",
+                f"Mês de referência: {mes_referencia}\n"
+            ]
             for item in report_json:
                 linhas.append(
                     f"Informe o número de pessoas que frequentaram o serviço por dia. Total no mês:Dias de funcionamento: {dias_funcionamento} Média Diária: [{item['dia']}][Qtd pessoas]\n{item['quantidadePessoas']}"
@@ -41,7 +46,7 @@ def send_email(to_email, report_json):
         email_body += "\n\n---\nEste é um e-mail automático gerado pelo sistema."
 
         msg = MIMEText(email_body, 'plain', 'utf-8')
-        msg['Subject'] = 'Relatório de Presença Recebido'
+        msg['Subject'] = 'Relatório de Serviços Espaço Social Achiropita'
         msg['From'] = EMAIL_SENDER
         msg['To'] = to_email
 
@@ -85,14 +90,21 @@ def callback(ch, method, properties, body):
     relatorios_presencas.append(mensagem)
     print(f"[DEBUG] Total de relatórios armazenados: {len(relatorios_presencas)}")
     
-    print(f"✅ Relatório recebido ({len(mensagem) if isinstance(mensagem, list) else 1} registros):")
-    print(json.dumps(mensagem, indent=2, ensure_ascii=False))
-
-    # Envia e-mail
-    if isinstance(mensagem, list) and all('dia' in item and 'quantidadePessoas' in item for item in mensagem):
-        send_email(EMAIL_DESTINO_TESTE, mensagem)
+    if isinstance(mensagem, dict) and 'email' in mensagem and 'presencas' in mensagem:
+        destinatario = mensagem['email']
+        presencas = mensagem['presencas']
+        
+        print(f"[DEBUG] Destinatário do e-mail: {destinatario}")
+        print(f"✅ Relatório recebido ({len(presencas)} registros):")
+        print(json.dumps(mensagem, indent=2, ensure_ascii=False))
+        
+        if destinatario and '@' in destinatario:
+            print(f"[DEBUG] Enviando e-mail para: {destinatario}")
+            send_email(destinatario, presencas)
+        else:
+            print(f"[ERRO] Destinatário inválido: {destinatario}. E-mail não enviado.")
     else:
-        send_email(EMAIL_DESTINO_TESTE, {"relatorios": mensagem})
+        print("[ERRO] Mensagem recebida não tem os campos esperados ('email' e 'presencas'). E-mail não enviado.")
 
 # Conecta ao RabbitMQ
 connection, channel = conectar_rabbitmq()
