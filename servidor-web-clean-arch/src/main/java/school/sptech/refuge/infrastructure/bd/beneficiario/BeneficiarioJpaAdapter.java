@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import school.sptech.refuge.core.adapters.BeneficiarioGateway;
+import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioFrequenciaProjection;
 import school.sptech.refuge.core.application.exception.BeneficiarioNaoEncontradaException;
 import school.sptech.refuge.core.domain.beneficiario.Beneficiario;
 import school.sptech.refuge.core.domain.paginacao.Page;
@@ -91,6 +92,8 @@ public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
         return beneficiarioJpaRepository.findBeneficiariosComMaisPresencasPorDiaSemana(diaSemana).stream().map(BeneficiarioMapper::ofEntity).collect(Collectors.toList());
     }
 
+
+
     @Override
     public Page<Beneficiario> listarPaginado(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -104,6 +107,21 @@ public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
     }
 
     @Override
+    public Page<BeneficiarioFrequenciaProjection> listarPaginadoPorFrequencia(int page, int size, int diaSemana, String search) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        org.springframework.data.domain.Page<BeneficiarioFrequenciaProjection> result =
+                beneficiarioJpaRepository.findBeneficiariosComMaisPresencasPorDiaSemanaPaginado(diaSemana, search, pageable);
+
+        return new Page<>(
+                result.getContent(),
+                result.getTotalElements(),
+                page,
+                size
+        );
+    }
+
+    @Override
     public void linkEndereco(Integer idBeneficiario, Integer idEndereco) {
         BeneficiarioEntity beneficiario = beneficiarioJpaRepository.findById(idBeneficiario)
                 .orElseThrow(() -> new RuntimeException("Beneficiário não encontrado"));
@@ -114,4 +132,17 @@ public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
         beneficiario.setEnderecoEntity(endereco);
         beneficiarioJpaRepository.save(beneficiario);
     }
-}
+
+    @Override
+    public Page<Beneficiario> listarPaginadoPorStatus(int page, int size, String status, String search) {
+ Pageable pageable = PageRequest.of(Math.max(0, page - 1), Math.max(1, size));
+            org.springframework.data.domain.Page<BeneficiarioEntity> result = beneficiarioJpaRepository.findByStatusByNome(status, search, pageable);
+
+            List<Beneficiario> beneficiarios = result.getContent().stream()
+                    .map(BeneficiarioMapper::ofEntity)
+                    .collect(Collectors.toList());
+
+            return new Page<>(beneficiarios, result.getTotalElements(), page, size);
+        }
+    }
+

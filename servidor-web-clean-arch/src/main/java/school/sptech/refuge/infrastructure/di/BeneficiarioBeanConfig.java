@@ -69,4 +69,14 @@ public class BeneficiarioBeanConfig {
     public  ListagemBeneficiarioUseCase listagemBeneficiarioUseCase(BeneficiarioJpaAdapter adapter){
         return new ListagemBeneficiarioUseCase(adapter);
     }
+
+    @Bean
+    public PaginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase(BeneficiarioJpaAdapter adapter){
+        return new PaginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase(adapter);
+    }
+
+    @Bean
+    public PaginarListagemBeneficiarioPorStatusUseCase paginarListagemBeneficiarioPorStatusUseCase(BeneficiarioJpaAdapter adapter){
+        return new PaginarListagemBeneficiarioPorStatusUseCase(adapter);
+    }
 }

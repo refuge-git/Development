@@ -11,13 +11,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
-import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioAtualizacaoDto;
-import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioStatusDto;
+import school.sptech.refuge.core.application.dto.beneficiario.*;
 import school.sptech.refuge.core.application.usecase.beneficiario.*;
 import school.sptech.refuge.core.domain.beneficiario.LocalEnum;
 import school.sptech.refuge.core.domain.paginacao.Page;
-import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.infrastructure.config.bucketS3.S3UploadService;
@@ -46,18 +43,24 @@ public class BeneficiarioController {
     private final ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse;
     private final ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
     private final ListagemBeneficiarioUseCase listagemBeneficiarioUseCase;
+    private final PaginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
+    private final PaginarListagemBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusPaginado;
 
-    public BeneficiarioController(CriarBeneficiarioUseCase criarBeneficiarioUseCase, ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase, BuscarBeneficiarioUseCase buscarBeneficiarioUseCase, AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase, DeletarBeneficiarioUseCase deletarBeneficiarioUseCase, ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase, ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase, ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse, ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase, ListagemBeneficiarioUseCase listagemBeneficiarioUseCase) {
-        this.criarBeneficiarioUseCase = criarBeneficiarioUseCase;
-        this.listarTodosBeneficiarioUseCase = listarTodosBeneficiarioUseCase;
-        this.buscarBeneficiarioUseCase = buscarBeneficiarioUseCase;
-        this.atualizarBeneficiarioUseCase = atualizarBeneficiarioUseCase;
-        this.deletarBeneficiarioUseCase = deletarBeneficiarioUseCase;
-        this.listarBeneficiarioPorRacaUseCase = listarBeneficiarioPorRacaUseCase;
-        this.listarBeneficiarioPorStatusUseCase = listarBeneficiarioPorStatusUseCase;
-        this.listarBeneficiarioPorNomeUse = listarBeneficiarioPorNomeUse;
-        this.listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase = listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
+
+    public BeneficiarioController(PaginarListagemBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusPaginado, PaginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase, ListagemBeneficiarioUseCase listagemBeneficiarioUseCase, ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase, ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse, ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase, ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase, DeletarBeneficiarioUseCase deletarBeneficiarioUseCase, AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase, BuscarBeneficiarioUseCase buscarBeneficiarioUseCase, ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase, CriarBeneficiarioUseCase criarBeneficiarioUseCase, S3UploadService s3UploadService) {
+        this.listarBeneficiarioPorStatusPaginado = listarBeneficiarioPorStatusPaginado;
+        this.paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase = paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
         this.listagemBeneficiarioUseCase = listagemBeneficiarioUseCase;
+        this.listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase = listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
+        this.listarBeneficiarioPorNomeUse = listarBeneficiarioPorNomeUse;
+        this.listarBeneficiarioPorStatusUseCase = listarBeneficiarioPorStatusUseCase;
+        this.listarBeneficiarioPorRacaUseCase = listarBeneficiarioPorRacaUseCase;
+        this.deletarBeneficiarioUseCase = deletarBeneficiarioUseCase;
+        this.atualizarBeneficiarioUseCase = atualizarBeneficiarioUseCase;
+        this.buscarBeneficiarioUseCase = buscarBeneficiarioUseCase;
+        this.listarTodosBeneficiarioUseCase = listarTodosBeneficiarioUseCase;
+        this.criarBeneficiarioUseCase = criarBeneficiarioUseCase;
+        this.s3UploadService = s3UploadService;
     }
 
     @Operation(
@@ -94,19 +97,16 @@ public class BeneficiarioController {
         if (dtos.isEmpty()) return ResponseEntity.noContent().build();
 
         // Mapeia a lista para adicionar a URL da imagem usando o S3UploadService
-        List<BeneficarioListDto> dtosComImagem = dtos.stream()
+        /*List<BeneficarioListDto> dtosComImagem = dtos.stream()
                 .peek(dto -> {
                     if (dto.getFotoPerfil() != null && !dto.getFotoPerfil().isEmpty()) {
-                        System.out.println("🔹 Gerando URL para: " + dto.getFotoPerfil());
                         String imagemUrl = s3UploadService.getFile(dto.getFotoPerfil());
                         dto.setImagemUrl(imagemUrl);
-                    } else{
-                        System.out.println("⚠️ DTO sem fotoPerfil: " + dto.getNomeRegistro());
                     }
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
 
-        return ResponseEntity.ok(dtosComImagem);
+        return ResponseEntity.ok(dtos);
     }
 
 
@@ -299,21 +299,8 @@ public class BeneficiarioController {
     public ResponseEntity<List<BeneficarioListDto>> listarPorFrequenciaNoDiaDaSemana() {
         int diaSemana = LocalDate.now().getDayOfWeek().getValue();
         List<BeneficarioListDto> dtos = listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase.execute(diaSemana);
-
-        List<BeneficarioListDto> dtosComImagem = dtos.stream()
-                .peek(dto -> {
-                    if (dto.getFotoPerfil() != null && !dto.getFotoPerfil().isEmpty()) {
-                        System.out.println("🔹 Gerando URL para: " + dto.getFotoPerfil());
-                        String imagemUrl = s3UploadService.getFile(dto.getFotoPerfil());
-                        dto.setImagemUrl(imagemUrl);
-                    } else{
-                        System.out.println("⚠️ DTO sem fotoPerfil: " + dto.getNomeRegistro());
-                    }
-                })
-                .collect(Collectors.toList());
-
         if (dtos.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(dtosComImagem);
+        return ResponseEntity.ok(dtos);
     }
 
 
@@ -333,5 +320,51 @@ public class BeneficiarioController {
             @RequestParam(defaultValue = "10") int size) {
         return listagemBeneficiarioUseCase.execute(page, size);
     }
+
+
+    @Operation(
+            summary = "Listando quantidade limitada de beneficiário por frequencia.",
+            description = "Listar quantidade limitada dos beneficiários por frequencia."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Beneficiários encontrados",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficiarioRequestDto.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum beneficiário  foi encontrado", content = @Content)
+    })
+
+    @GetMapping("/listar-page-frequencia")
+    public ResponseEntity<Page<BeneficiarioFrequenciaDto>> listarBeneficiariosPorFrequencia(
+            @RequestParam int diaSemana,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam (defaultValue = "") String search) {
+
+        if (diaSemana < 1 || diaSemana > 7) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Page<BeneficiarioFrequenciaDto> resultado = paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase.execute(diaSemana, page, size, search);
+        if (resultado.getItems() == null || resultado.getItems().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resultado);
+    }
+
+    @GetMapping("/status/page")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Page<BeneficiarioStatusDto>> listarBeneficiarioPorStatusPaginado(
+            @RequestParam(required = false) String status,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam (defaultValue = "") String search
+    ) {
+        Page<BeneficiarioStatusDto> resultado = listarBeneficiarioPorStatusPaginado.execute(search, status, page, size);
+        if (resultado.getItems() == null || resultado.getItems().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resultado);
+
+    }
+
 
 }
