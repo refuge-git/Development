@@ -31,5 +31,4 @@ public class BeneficiarioFrequenciaDto {
         return totalPresencas;
     }
 
-    // setters são opcionais se você só precisar de leitura (DTO imutável)
 }
