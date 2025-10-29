@@ -181,15 +181,22 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
     long countAtendimentosMesAtual();
 
     @Query(value = """
-            SELECT\s
-                AVG(total_atendimentos) AS media_mensal_esperada
+        SELECT COUNT(*)
+        FROM registro_atendimento
+        WHERE DATE(data_hora) = CURDATE()
+        """, nativeQuery = true)
+    long countAtendimentosDiaAtual();
+
+    @Query(value = """
+            SELECT
+            AVG(total_atendimentos) AS media_diaria_esperada
             FROM (
-                SELECT\s
-                    YEAR(data_hora) AS ano,
-                    MONTH(data_hora) AS mes,
-                    COUNT(*) AS total_atendimentos
-                FROM registro_atendimento
-                GROUP BY ano, mes
+            SELECT
+            DATE(data_hora) AS dia,
+            COUNT(*) AS total_atendimentos
+            FROM registro_atendimento
+            WHERE DAYOFWEEK(data_hora) = DAYOFWEEK(CURDATE())
+            GROUP BY dia
             ) AS medias;
         """, nativeQuery = true)
     long countMediaAtendimentosMesAtual();
@@ -215,6 +222,17 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
         LIMIT 1
         """, nativeQuery = true)
     List<Object[]> findAtividadeMaisRequisitadaMes();
+
+    @Query(value = """
+            SELECT ta.nome AS atividade_mais_requisitada, COUNT(*) AS total
+                FROM registro_atendimento ra
+                JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+                WHERE DATE(ra.data_hora) = CURDATE()
+                GROUP BY ta.nome
+                ORDER BY total DESC
+                LIMIT 1
+        """, nativeQuery = true)
+    List<Object[]> findAtividadeMaisRequisitadaDia();
 
     @Query(value = """
         SELECT ta.nome AS atividade_mais_requisitada, COUNT(*) AS total
@@ -249,44 +267,62 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
 
 
     @Query(value = """
-            SELECT\s
-                nome AS atividade,
-                ROUND(AVG(total_por_mes), 2) AS media_mensal_esperada
+            SELECT
+            nome AS atividade,
+            ROUND(AVG(total_por_dia), 2) AS media_diaria_esperada
             FROM (
-                SELECT\s
-                    ta.id_tipo_atendimento,
-                    ta.nome,
-                    YEAR(ra.data_hora) AS ano,
-                    MONTH(ra.data_hora) AS mes,
-                    COUNT(*) AS total_por_mes
-                FROM registro_atendimento ra
-                JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
-                GROUP BY ta.id_tipo_atendimento, ta.nome, ano, mes
-            ) AS historico
-            GROUP BY id_tipo_atendimento, nome
-            ORDER BY media_mensal_esperada DESC
-            LIMIT 1;
+            SELECT
+            ta.id_tipo_atendimento,
+            ta.nome,
+            DATE(ra.data_hora) AS dia,
+            COUNT(*) AS total_por_dia
+            FROM registro_atendimento ra
+            JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+                           WHERE DAYOFWEEK(ra.data_hora) = DAYOFWEEK(CURDATE())  -- Filtra apenas o mesmo dia da semana de hoje
+                           GROUP BY ta.id_tipo_atendimento, ta.nome, dia
+                       ) AS historico
+                       WHERE id_tipo_atendimento = (
+                           -- Subquery para descobrir o tipo de atendimento mais requisitado hoje (mesmo dia da semana)
+                           SELECT ta2.id_tipo_atendimento
+                           FROM registro_atendimento ra2
+                           JOIN tipo_atendimento ta2 ON ra2.fk_tipo = ta2.id_tipo_atendimento
+                           WHERE DAYOFWEEK(ra2.data_hora) = DAYOFWEEK(CURDATE())
+                           GROUP BY ta2.id_tipo_atendimento
+                           ORDER BY COUNT(*) DESC
+                           LIMIT 1
+                       )
+                       GROUP BY nome
+                       ;
         """, nativeQuery = true)
     List<Object[]> findMediaAtividadeMaisRequisitada();
 
     @Query(value = """
-            SELECT\s
-                nome AS atividade,
-                ROUND(AVG(total_por_mes), 2) AS media_mensal_esperada
-            FROM (
-                SELECT\s
-                    ta.id_tipo_atendimento,
-                    ta.nome,
-                    YEAR(ra.data_hora) AS ano,
-                    MONTH(ra.data_hora) AS mes,
-                    COUNT(*) AS total_por_mes
-                FROM registro_atendimento ra
-                JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
-                GROUP BY ta.id_tipo_atendimento, ta.nome, ano, mes
-            ) AS historico
-            GROUP BY id_tipo_atendimento, nome
-            ORDER BY media_mensal_esperada DESC
-            LIMIT 1 OFFSET 1;
+            SELECT
+                                     nome AS atividade,
+                                     ROUND(AVG(total_por_dia), 2) AS media_diaria_esperada
+                                 FROM (
+                                     SELECT
+                                         ta.id_tipo_atendimento,
+                                         ta.nome,
+                                         DATE(ra.data_hora) AS dia,
+                                         COUNT(*) AS total_por_dia
+                                     FROM registro_atendimento ra
+                                     JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+                                     WHERE DAYOFWEEK(ra.data_hora) = DAYOFWEEK(CURDATE())
+                                     GROUP BY ta.id_tipo_atendimento, ta.nome, dia
+                                 ) AS historico
+                                 WHERE id_tipo_atendimento = (
+                                     -- Subquery para descobrir o segundo tipo de atendimento mais requisitado hoje (mesmo dia da semana)
+                                     SELECT ta2.id_tipo_atendimento
+                                     FROM registro_atendimento ra2
+                                     JOIN tipo_atendimento ta2 ON ra2.fk_tipo = ta2.id_tipo_atendimento
+                                     WHERE DAYOFWEEK(ra2.data_hora) = DAYOFWEEK(CURDATE())
+                                     GROUP BY ta2.id_tipo_atendimento
+                                     ORDER BY COUNT(*) DESC
+                                     LIMIT 1 OFFSET 1  -- Pega o segundo mais requisitado
+                                 )
+                                 GROUP BY nome;
+            
         """, nativeQuery = true)
     List<Object[]> findMediaSegundaAtividadeMaisRequisitada();
 

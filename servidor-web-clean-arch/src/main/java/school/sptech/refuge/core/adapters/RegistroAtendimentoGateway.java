@@ -23,6 +23,7 @@ public interface RegistroAtendimentoGateway {
     List<AtendimentosDiaDto> buscarAtendimentosDia();
     List<AtendimentosSemanaDto> buscarAtendimentosSemana();
     long getAtendimentosMesAtual();
+    long getAtendimentosDiaAtual();
     long getAtendimentosMesAnterior();
     long getNovosCadastrosMes();
     long getNovosCadastrosMesAnterior();
@@ -30,5 +31,6 @@ public interface RegistroAtendimentoGateway {
     Double getMediaAtividadeMaisRequisitada();
     Double getMediaSegundaAtividadeMaisRequisitada();
     String getAtividadeMaisRequisitadaMes();
+    String getAtividadeMaisRequisitadaDia();
     String getSegundaAtividadeMaisRequisitadaMes();
 }

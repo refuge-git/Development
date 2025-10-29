@@ -15,6 +15,7 @@ public class BuscarIndicadoresDashboardUseCase {
 
     public IndicadoresDashboardDto executar() {
         long atendimentosMesAtual = gateway.getAtendimentosMesAtual();
+        long atendimentosDiaAtual = gateway.getAtendimentosDiaAtual();
         long atendimentosMesAnterior = gateway.getAtendimentosMesAnterior();
         long novosCadastrosMes = gateway.getNovosCadastrosMes();
         long novosCadastrosMesAnterior = gateway.getNovosCadastrosMesAnterior();
@@ -22,6 +23,7 @@ public class BuscarIndicadoresDashboardUseCase {
         Double mediaAtividadeMaisRequisitada = gateway.getMediaAtividadeMaisRequisitada();
         Double mediaSegundaAtividadeMaisRequisitada = gateway.getMediaSegundaAtividadeMaisRequisitada();
         String atividadeMaisRequisitada = gateway.getAtividadeMaisRequisitadaMes();
+        String atividadeMaisRequisitadaDia = gateway.getAtividadeMaisRequisitadaDia();
         String SegundaAtividadeMaisRequisitada = gateway.getSegundaAtividadeMaisRequisitadaMes();
 
         double percentualAtendimentos = calcularPercentual(atendimentosMesAtual, atendimentosMesAnterior);
@@ -29,11 +31,13 @@ public class BuscarIndicadoresDashboardUseCase {
 
         return new IndicadoresDashboardDto(
                 atendimentosMesAtual,
+                atendimentosDiaAtual,
                 novosCadastrosMes,
                 mediaAtendimentosMesAtual,
                 mediaAtividadeMaisRequisitada,
                 mediaSegundaAtividadeMaisRequisitada,
                 atividadeMaisRequisitada,
+                atividadeMaisRequisitadaDia,
                 SegundaAtividadeMaisRequisitada,
                 percentualAtendimentos,
                 percentualCadastros

@@ -11,7 +11,7 @@ app = Flask(__name__)
 relatorios_presencas = []
 
 # RabbitMQ
-RABBITMQ_HOST = "localhost"
+RABBITMQ_HOST = "13.222.51.1"
 RABBITMQ_USER = "myuser"
 RABBITMQ_PASS = "secret"
 QUEUE_NAME = "refuge.direct.queue"
@@ -29,7 +29,12 @@ def send_email(to_email, report_json):
             total = sum(int(item['quantidadePessoas']) for item in report_json)
             dias_funcionamento = len(report_json)
             media_diaria = round(total / dias_funcionamento, 2) if dias_funcionamento else 0
-            linhas = ["Relatório de Serviços do Espaço Social D'Achiropita\n"]
+            from datetime import datetime
+            mes_referencia = datetime.now().strftime('%m/%Y')
+            linhas = [
+                "Relatório de Serviços do Espaço Social D'Achiropita",
+                f"Mês de referência: {mes_referencia}\n"
+            ]
             for item in report_json:
                 linhas.append(
                     f"Informe o número de pessoas que frequentaram o serviço por dia. Total no mês:Dias de funcionamento: {dias_funcionamento} Média Diária: [{item['dia']}][Qtd pessoas]\n{item['quantidadePessoas']}"

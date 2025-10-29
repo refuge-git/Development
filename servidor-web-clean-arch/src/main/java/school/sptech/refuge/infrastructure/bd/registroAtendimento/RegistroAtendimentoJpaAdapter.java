@@ -111,6 +111,11 @@ public class RegistroAtendimentoJpaAdapter implements RegistroAtendimentoGateway
         return registroAtendimentoJpaRepository.countAtendimentosMesAtual();
     }
 
+    @Override
+    public long getAtendimentosDiaAtual() {
+        return registroAtendimentoJpaRepository.countAtendimentosDiaAtual();
+    }
+
     public long getMediaAtendimentoMesAtual() {
         return registroAtendimentoJpaRepository.countMediaAtendimentosMesAtual();
     }
@@ -133,6 +138,19 @@ public class RegistroAtendimentoJpaAdapter implements RegistroAtendimentoGateway
     @Override
     public String getAtividadeMaisRequisitadaMes() {
         List<Object[]> resultados = registroAtendimentoJpaRepository.findAtividadeMaisRequisitadaMes();
+
+        if (resultados != null && !resultados.isEmpty()) {
+            Object[] linha = resultados.get(0);
+            if (linha != null && linha.length > 0 && linha[0] != null) {
+                return (String) linha[0]; // apenas o nome da atividade
+            }
+        }
+
+        return "Nenhuma atividade encontrada";
+    }
+
+    public String getAtividadeMaisRequisitadaDia() {
+        List<Object[]> resultados = registroAtendimentoJpaRepository.findAtividadeMaisRequisitadaDia();
 
         if (resultados != null && !resultados.isEmpty()) {
             Object[] linha = resultados.get(0);
