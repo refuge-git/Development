@@ -11,17 +11,16 @@ app = Flask(__name__)
 relatorios_presencas = []
 
 # RabbitMQ
-RABBITMQ_HOST = "localhost"
-RABBITMQ_USER = "arthurejulia"
-RABBITMQ_PASS = "segredo"
+RABBITMQ_HOST = "13.222.51.1"
+RABBITMQ_USER = "myuser"
+RABBITMQ_PASS = "secret"
 QUEUE_NAME = "refuge.direct.queue"
 
 # E-mail
-EMAIL_SENDER = "tutu9rocha@gmail.com"
-EMAIL_PASSWORD = "4rthurh3rcul4n0r0ch419abril2005"
+EMAIL_SENDER = "fernandes.bia0703@gmail.com"
+EMAIL_PASSWORD = "ihni eqso tkxb vunc"
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL_DESTINO_TESTE = "tutu9rocha@gmail.com"
 
 def send_email(to_email, report_json):
     """Envia um e-mail com os dados recebidos em formato legível"""
