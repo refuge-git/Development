@@ -225,5 +225,23 @@ public class RegistroAtendimentoController {
         return ResponseEntity.ok(atendimentos);
     }
 
+    @Operation(
+            summary = "Cadastro em lote de registros de atendimento",
+            description = "Recebe uma lista de registros de atendimento e salva todos no banco"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Registros de atendimento cadastrados com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RegistroAtendimentoResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content)
+    })
+    @PostMapping("/lote")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<RegistroAtendimentoResponseDto>> cadastrarLote(
+            @Valid @RequestBody List<RegistroAtendimentoRequestDto> dtos) {
+        List<RegistroAtendimentoResponseDto> registrosCriados = criarRegistroAtendimentoUseCase.executeBatch(dtos);
+        return ResponseEntity.status(201).body(registrosCriados);
+    }
+
+
 
 }

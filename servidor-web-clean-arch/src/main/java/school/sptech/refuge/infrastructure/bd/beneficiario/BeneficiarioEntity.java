@@ -5,13 +5,17 @@ import school.sptech.refuge.core.domain.beneficiario.LocalEnum;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
 import school.sptech.refuge.core.domain.beneficiario.StatusEnum;
+import school.sptech.refuge.infrastructure.bd.condicaosaude.CondicaoSaudeEntity;
 import school.sptech.refuge.infrastructure.bd.endereco.EnderecoEntity;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioEntity;
+import school.sptech.refuge.infrastructure.bd.registroAtendimento.RegistroAtendimentoEntity;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroEntity;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeEntity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "beneficiario")
@@ -249,4 +253,11 @@ public class BeneficiarioEntity {
     public void setTipoSexualidadeEntity(TipoSexualidadeEntity tipoSexualidadeEntity) {
         this.tipoSexualidadeEntity = tipoSexualidadeEntity;
     }
+
+    @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RegistroAtendimentoEntity> registrosAtendimento = new ArrayList<>();
+
+    @OneToMany(mappedBy = "beneficiarioEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CondicaoSaudeEntity> condicoesSaude = new ArrayList<>();
+
 }
