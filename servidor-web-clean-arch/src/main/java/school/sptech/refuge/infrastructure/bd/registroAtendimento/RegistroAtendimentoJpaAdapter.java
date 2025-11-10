@@ -3,6 +3,7 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.RegistroAtendimentoGateway;
 import school.sptech.refuge.core.application.dto.registroAtendimento.*;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
@@ -196,4 +197,9 @@ public class RegistroAtendimentoJpaAdapter implements RegistroAtendimentoGateway
         return 0.0;
     }
 
+
+    @Override
+    public List<AtendimentosPorFaixaEtaria> contarAtendimentosPorFaixaEtaria() {
+        return registroAtendimentoJpaRepository.contarBeneficiariosPorFaixaEtaria();
+    }
 }

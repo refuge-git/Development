@@ -4,6 +4,7 @@ import school.sptech.refuge.core.application.dto.registroAtendimento.Atendimento
 import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosSemanaDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.ServicosPorSemanaDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosMesDto;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
@@ -18,6 +19,7 @@ public interface RegistroAtendimentoGateway {
     boolean existePorId(Integer id);
     Long contarBeneficiariosAtendidosNoMes();
     List<PresencaDia> contarPresencasPorDiaNoMes();
+    List<AtendimentosPorFaixaEtaria> contarAtendimentosPorFaixaEtaria();
     List<AtendimentosMesDto> buscarAtendimentosMes();
     List<ServicosPorSemanaDto> buscarServicosPorSemana();
     List<AtendimentosDiaDto> buscarAtendimentosDia();

@@ -41,10 +41,6 @@ public class RegistroAtendimentoBeanConfig {
         return new ContarBeneficiariosAtendidosNoMesUseCase(adapter);
     }
 
-    @Bean
-    public ContarPresencasPorDiaNoMesUseCase contarPresencasPorDiaNoMesUseCase(RegistroAtendimentoJpaAdapter adapter, RabbitMqRelatorioAdapter relatorioAdapter) {
-        return new ContarPresencasPorDiaNoMesUseCase(adapter, relatorioAdapter);
-    }
 
     @Bean
     public BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase(RegistroAtendimentoJpaAdapter adapter) {
@@ -59,6 +55,11 @@ public class RegistroAtendimentoBeanConfig {
     @Bean
     public BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase(RegistroAtendimentoJpaAdapter adapter) {
         return new BuscarIndicadoresDashboardUseCase(adapter);
+    }
+
+    @Bean
+    public GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase(RegistroAtendimentoJpaAdapter adapter, RabbitMqRelatorioAdapter rabbitMqRelatorioAdapter) {
+        return new GerarRelatorioCompletoUseCase(adapter, rabbitMqRelatorioAdapter);
     }
 
 }
