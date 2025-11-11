@@ -3,9 +3,12 @@ package school.sptech.refuge.infrastructure.bd.tipoAtendimento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioEntity;
+import school.sptech.refuge.infrastructure.bd.registroAtendimento.RegistroAtendimentoEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tipo_atendimento")
@@ -23,7 +26,9 @@ public class TipoAtendimentoEntity {
     @JsonIgnoreProperties({"tiposAtendimento"}) // ignora a lista de tipos de atendimento do funcionário
     private FuncionarioEntity funcionario;
 
-
+    @OneToMany(mappedBy = "tipoAtendimento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("tipoAtendimento")
+    private List<RegistroAtendimentoEntity> registrosAtendimento;
 
     public TipoAtendimentoEntity(){
     }
@@ -76,4 +81,6 @@ public class TipoAtendimentoEntity {
     public void setFuncionario(FuncionarioEntity funcionario) {
         this.funcionario = funcionario;
     }
+
+
 }

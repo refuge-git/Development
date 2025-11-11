@@ -51,6 +51,6 @@ public class TipoAtendimentoJpaAdapter implements TipoAtendimentoGateway {
 
     @Override
     public boolean existePorId(Integer id) {
-        return false;
+        return tipoAtendimentoJpaRepository.existsById(id);
     }
 }

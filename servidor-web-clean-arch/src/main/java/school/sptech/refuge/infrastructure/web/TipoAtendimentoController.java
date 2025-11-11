@@ -7,10 +7,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoRequestDto;
 import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoResponseDto;
+import school.sptech.refuge.core.application.exception.TipoAtendimentoNaoEncotradoException;
 import school.sptech.refuge.core.application.usecase.tipoAtendimento.AtualizarTipoAtendimentoUseCase;
 import school.sptech.refuge.core.application.usecase.tipoAtendimento.CriarTipoAtendimentoUseCase;
 import school.sptech.refuge.core.application.usecase.tipoAtendimento.DeletarTipoAtendimentoUseCase;
@@ -113,7 +115,13 @@ public class TipoAtendimentoController {
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Void> remover(@PathVariable Integer id) {
-        deletarTipoAtendimentoUseCase.execute(id);
-        return ResponseEntity.status(204).build();
+        try {
+            deletarTipoAtendimentoUseCase.execute(id);
+            return ResponseEntity.noContent().build();
+        } catch (TipoAtendimentoNaoEncotradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
