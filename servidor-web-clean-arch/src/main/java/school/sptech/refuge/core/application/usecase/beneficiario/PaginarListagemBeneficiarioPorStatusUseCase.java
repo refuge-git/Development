@@ -28,6 +28,7 @@ public class PaginarListagemBeneficiarioPorStatusUseCase {
 
         List<BeneficiarioStatusDto> dtos = pageResult.getItems().stream()
                 .map(b -> new BeneficiarioStatusDto(
+                        b.getId(),
                         b.getNomeRegistro(),
                         b.getStatus().name(),
                         b.getFotoPerfil(),

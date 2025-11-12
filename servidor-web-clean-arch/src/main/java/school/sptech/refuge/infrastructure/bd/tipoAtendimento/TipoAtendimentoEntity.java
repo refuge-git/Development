@@ -26,7 +26,7 @@ public class TipoAtendimentoEntity {
     @JsonIgnoreProperties({"tiposAtendimento"}) // ignora a lista de tipos de atendimento do funcionário
     private FuncionarioEntity funcionario;
 
-    @OneToMany(mappedBy = "tipoAtendimento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "tipoAtendimento")
     @JsonIgnoreProperties("tipoAtendimento")
     private List<RegistroAtendimentoEntity> registrosAtendimento;
 

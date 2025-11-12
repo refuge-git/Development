@@ -304,6 +304,7 @@ public class BeneficiarioController {
                     }
 
                     return new BeneficiarioStatusDto(
+                            b.getId(),
                             b.getNomeRegistro(),
                             b.getStatus() != null ? b.getStatus() : "INATIVO",
                             b.getFotoPerfil(),
