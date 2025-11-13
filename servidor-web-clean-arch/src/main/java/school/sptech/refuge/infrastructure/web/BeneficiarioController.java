@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.beneficiario.*;
 import school.sptech.refuge.core.application.usecase.beneficiario.*;
 import school.sptech.refuge.core.domain.beneficiario.LocalEnum;
+import school.sptech.refuge.core.domain.beneficiario.StatusEnum;
 import school.sptech.refuge.core.domain.paginacao.Page;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
@@ -352,6 +353,13 @@ public class BeneficiarioController {
                 .toList();
 
         return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/statusEnum")
+    public List<String> listarStatus() {
+        return Arrays.stream(StatusEnum.values())
+                .map(StatusEnum::name) // retorna "ATIVO", "INATIVO"...
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/frequencia-dia-semana")
