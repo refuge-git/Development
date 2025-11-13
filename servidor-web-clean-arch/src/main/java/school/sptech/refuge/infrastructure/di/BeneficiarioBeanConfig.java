@@ -2,6 +2,7 @@ package school.sptech.refuge.infrastructure.di;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import school.sptech.refuge.core.adapters.BeneficiarioGateway;
 import school.sptech.refuge.core.application.usecase.beneficiario.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.endereco.EnderecoJpaAdapter;
@@ -11,6 +12,13 @@ import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeJpa
 
 @Configuration
 public class BeneficiarioBeanConfig {
+
+    @Bean
+    public AtualizarStatusBeneficiarioUseCase atualizarStatusBeneficiarioUseCase(
+            BeneficiarioGateway beneficiarioGateway
+    ) {
+        return new AtualizarStatusBeneficiarioUseCase(beneficiarioGateway);
+    }
 
     @Bean
     public CriarBeneficiarioUseCase criarBeneficiarioUseCase(BeneficiarioJpaAdapter adapter,

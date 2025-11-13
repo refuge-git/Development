@@ -51,8 +51,9 @@ public class BeneficiarioController {
     private final PaginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
     @Autowired
     private ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase;
+    private final AtualizarStatusBeneficiarioUseCase atualizarStatusBeneficiarioUseCase;
 
-    public BeneficiarioController(CriarBeneficiarioUseCase criarBeneficiarioUseCase, ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase, BuscarBeneficiarioUseCase buscarBeneficiarioUseCase, AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase, DeletarBeneficiarioUseCase deletarBeneficiarioUseCase, ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase, ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase, ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse, ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase, ListagemBeneficiarioUseCase listagemBeneficiarioUseCase, PaginarListagemBeneficiarioPorStatusUseCase listagemBeneficiarioPorStatusUseCase, PaginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase) {
+    public BeneficiarioController(CriarBeneficiarioUseCase criarBeneficiarioUseCase, ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase, BuscarBeneficiarioUseCase buscarBeneficiarioUseCase, AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase, DeletarBeneficiarioUseCase deletarBeneficiarioUseCase, ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase, ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase, ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse, ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase, ListagemBeneficiarioUseCase listagemBeneficiarioUseCase, PaginarListagemBeneficiarioPorStatusUseCase listagemBeneficiarioPorStatusUseCase, PaginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase, AtualizarStatusBeneficiarioUseCase atualizarStatusBeneficiarioUseCase) {
         this.criarBeneficiarioUseCase = criarBeneficiarioUseCase;
         this.listarTodosBeneficiarioUseCase = listarTodosBeneficiarioUseCase;
         this.buscarBeneficiarioUseCase = buscarBeneficiarioUseCase;
@@ -65,6 +66,7 @@ public class BeneficiarioController {
         this.listagemBeneficiarioUseCase = listagemBeneficiarioUseCase;
         this.listagemBeneficiarioPorStatusUseCase = listagemBeneficiarioPorStatusUseCase;
         this.paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase = paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase;
+        this.atualizarStatusBeneficiarioUseCase = atualizarStatusBeneficiarioUseCase;
     }
 
     @Operation(
@@ -141,12 +143,48 @@ public class BeneficiarioController {
             @ApiResponse(responseCode = "200", description = "Beneficiário atualizado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BeneficarioListDto.class)))
     })
+
     @PutMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<BeneficarioListDto> atualizar(@PathVariable Integer id, @Valid @RequestBody BeneficiarioAtualizacaoDto dto) {
         BeneficarioListDto dtoAtualizado = atualizarBeneficiarioUseCase.execute(id, dto);
         return ResponseEntity.ok(dtoAtualizado);
     }
+
+    @Operation(
+            summary = "Atualiza apenas o status do beneficiário",
+            description = "Permite atualizar o status (por exemplo: ATIVO / INATIVO) de um beneficiário específico"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Status atualizado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Beneficiário não encontrado"),
+            @ApiResponse(responseCode = "400", description = "Status inválido")
+    })
+    @PutMapping("/{id}/status")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<?> atualizarStatus(
+            @PathVariable Integer id,
+            @RequestBody Map<String, String> body
+    ) {
+        String novoStatus = body.get("status");
+
+        if (novoStatus == null || novoStatus.isBlank()) {
+            return ResponseEntity.badRequest().body("O campo 'status' é obrigatório.");
+        }
+
+        try {
+            atualizarStatusBeneficiarioUseCase.execute(id, novoStatus);
+            return ResponseEntity.ok("Status atualizado com sucesso!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Status inválido: " + novoStatus);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao atualizar status: " + e.getMessage());
+        }
+    }
+
+
+
+
 
 
     @Operation(

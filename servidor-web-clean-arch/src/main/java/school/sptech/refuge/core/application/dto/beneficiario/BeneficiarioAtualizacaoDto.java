@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public class BeneficiarioAtualizacaoDto {
 
+    private Integer id;
     @Schema(description = "Nome completo do usuário", example = "Raul Reis")
     private String nomeRegistro;
     @Schema(description = "Nome social do usuário", example = "Roberta Reis")
@@ -51,7 +52,8 @@ public class BeneficiarioAtualizacaoDto {
     @Schema(description = "ID do tipo de sexualidade", example = "2")
     private Integer idTipoSexualidade;
 
-    public BeneficiarioAtualizacaoDto(String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade) {
+    public BeneficiarioAtualizacaoDto(Integer id, String nomeRegistro, String nomeSocial, LocalDate dtNasc, String cpf, Boolean estrangeiro, String raca, String sexo, String nomeMae, Boolean egressoPrisional, String localDorme, String fotoPerfil, String sisa, String status, String observacao, Integer idFuncionario, Integer idEndereco, Integer idTipoGenero, Integer idTipoSexualidade) {
+        this.id = id;
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.dtNasc = dtNasc;
@@ -72,6 +74,13 @@ public class BeneficiarioAtualizacaoDto {
         this.idTipoSexualidade = idTipoSexualidade;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
     public BeneficiarioAtualizacaoDto() {
     }
 
