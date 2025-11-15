@@ -2,10 +2,7 @@ package school.sptech.refuge.core.application.usecase.registroAtendimento;
 
 import school.sptech.refuge.core.adapters.PublicarRelatorioGateway;
 import school.sptech.refuge.core.adapters.RegistroAtendimentoGateway;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDiaResponse;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.RelatorioCompleto;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.*;
 
 import java.util.List;
 
@@ -23,7 +20,8 @@ public class GerarRelatorioCompletoUseCase {
         List<PresencaDia> resultadoPresenca = gateway.contarPresencasPorDiaNoMes();
         PresencaDiaResponse responsePresenca = new PresencaDiaResponse(email, resultadoPresenca);
         List<AtendimentosPorFaixaEtaria> resultadoIdades = gateway.contarAtendimentosPorFaixaEtaria();
-        RelatorioCompleto relatorioCompleto = new RelatorioCompleto(responsePresenca, resultadoIdades);
+        List<AtendimentosPorRacaSexo> resultadoRacaSexo = gateway.contarAtendimentosRacaSexoNoMes();
+        RelatorioCompleto relatorioCompleto = new RelatorioCompleto(responsePresenca, resultadoIdades, resultadoRacaSexo);
         publicarRelatorioGateway.publicarRelatorioCompleto(relatorioCompleto);
         return relatorioCompleto;
     }

@@ -3,6 +3,7 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorRacaSexo;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 
 import java.util.List;
@@ -88,6 +89,45 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
                                   FIELD(s.sexo, 'FEMININO','MASCULINO');
         """, nativeQuery = true)
     List<AtendimentosPorFaixaEtaria> contarBeneficiariosPorFaixaEtaria();
+
+    @Query(value = """
+            WITH sexos AS (
+                SELECT 'FEMININO' AS sexo
+                UNION ALL SELECT 'MASCULINO'
+            ),
+            racas AS (
+                SELECT 'BRANCO' AS raca
+                UNION ALL SELECT 'PRETO'
+                UNION ALL SELECT 'PARDO'
+                UNION ALL SELECT 'AMARELA'
+                UNION ALL SELECT 'INDIGENA'
+                UNION ALL SELECT 'NAO_DECLARADO'
+            ),
+            atendimentos_mes AS (
+                SELECT DISTINCT ra.fk_beneficiario
+                FROM registro_atendimento ra
+                WHERE DATE_FORMAT(ra.data_hora, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
+            )
+            SELECT
+                s.sexo,
+                r.raca,
+                COALESCE(COUNT(DISTINCT b.id_beneficiario), 0) AS numero_pessoas_atendidas
+            FROM sexos s
+            CROSS JOIN racas r
+            LEFT JOIN atendimentos_mes am
+                ON 1 = 1
+            LEFT JOIN beneficiario b
+                ON b.id_beneficiario = am.fk_beneficiario
+               AND b.sexo = s.sexo
+               AND b.raca = r.raca
+            GROUP BY
+                s.sexo,
+                r.raca
+            ORDER BY
+                FIELD(s.sexo, 'FEMININO','MASCULINO'),
+                FIELD(r.raca,'BRANCO','PRETO','PARDO','AMARELA','INDIGENA','NAO_DECLARADO');
+        """, nativeQuery = true)
+    List<AtendimentosPorRacaSexo> contarBeneficiariosPorRacaSexo();
 
 
     @Query(value = """
