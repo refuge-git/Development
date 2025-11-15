@@ -85,4 +85,5 @@ jobs:
             scp -o StrictHostKeyChecking=no -i $ARQUIVO_PEM /home/${{ secrets.REMOTE_USER }}/backend/app_loko.jar $USUARIO_IP:/usr/share/api/app_loko.jar
 
             # Reiniciar serviço na privada
-            ssh -i $ARQUIVO_PEM $USUARIO_IP 'sudo docker compose restart api'
+            ssh -i $ARQUIVO_PEM $USUARIO_IP 'sudo docker-compose restart api'
+
