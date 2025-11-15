@@ -31,7 +31,8 @@ public class PaginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase {
                         p.getNomeSocial(),
                         p.getQuantidadePresencas().intValue(),
                         p.getFotoPerfil(),
-                        p.getImagemUrl()
+                        p.getImagemUrl(),
+                        p.getStatus()
                 ))
                 .collect(Collectors.toList());
 

@@ -22,6 +22,8 @@ import school.sptech.refuge.core.domain.paginacao.Page;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.domain.beneficiario.RacaEnum;
 import school.sptech.refuge.core.domain.beneficiario.SexoEnum;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioEntity;
+import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaRepository;
 import school.sptech.refuge.infrastructure.config.bucketS3.S3UploadService;
 
 
@@ -53,6 +55,7 @@ public class BeneficiarioController {
     @Autowired
     private ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase;
     private final AtualizarStatusBeneficiarioUseCase atualizarStatusBeneficiarioUseCase;
+
 
     public BeneficiarioController(CriarBeneficiarioUseCase criarBeneficiarioUseCase, ListarTodosBeneficiarioUseCase listarTodosBeneficiarioUseCase, BuscarBeneficiarioUseCase buscarBeneficiarioUseCase, AtualizarBeneficiarioUseCase atualizarBeneficiarioUseCase, DeletarBeneficiarioUseCase deletarBeneficiarioUseCase, ListarBeneficiarioPorRacaUseCase listarBeneficiarioPorRacaUseCase, ListarBeneficiarioPorStatusUseCase listarBeneficiarioPorStatusUseCase, ListarBeneficiariosPorNomeRegistroOuSocialUseCase listarBeneficiarioPorNomeUse, ListarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase listarBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase, ListagemBeneficiarioUseCase listagemBeneficiarioUseCase, PaginarListagemBeneficiarioPorStatusUseCase listagemBeneficiarioPorStatusUseCase, PaginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase paginarListagemBeneficiarioPorFrequenciaNoDiaDaSemanaUseCase, AtualizarStatusBeneficiarioUseCase atualizarStatusBeneficiarioUseCase) {
         this.criarBeneficiarioUseCase = criarBeneficiarioUseCase;
@@ -484,5 +487,39 @@ public class BeneficiarioController {
 
         return ResponseEntity.ok(novaPage);
     }
+
+    @GetMapping("/status/{id}")
+    public ResponseEntity<BeneficiarioStatusDto> buscarStatusPorId(@PathVariable Integer id) {
+        List<BeneficarioListDto> beneficiarios = listarTodosBeneficiarioUseCase.execute();
+
+        // Procura pelo beneficiário com o id solicitado
+        BeneficarioListDto b = beneficiarios.stream()
+                .filter(ben -> ben.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (b == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String imagemUrl = null;
+        if (b.getFotoPerfil() != null && !b.getFotoPerfil().isEmpty()) {
+            imagemUrl = s3UploadService.getFile(b.getFotoPerfil());
+        }
+
+        BeneficiarioStatusDto dto = new BeneficiarioStatusDto(
+                b.getId(),
+                b.getNomeRegistro(),
+                b.getStatus() != null ? b.getStatus() : "INATIVO",
+                b.getFotoPerfil(),
+                imagemUrl
+        );
+
+        return ResponseEntity.ok(dto);
+    }
+
+
+
+
 
 }

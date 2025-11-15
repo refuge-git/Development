@@ -21,4 +21,7 @@ public class ListarTodosBeneficiarioUseCase {
                 .map(BeneficiarioMapper::fromDomain)
                 .collect(Collectors.toList());
     }
+
+
+
 }

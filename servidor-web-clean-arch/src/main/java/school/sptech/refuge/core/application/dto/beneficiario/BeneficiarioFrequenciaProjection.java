@@ -7,4 +7,5 @@ public interface BeneficiarioFrequenciaProjection {
     Integer getQuantidadePresencas();
     String getFotoPerfil();
     String getImagemUrl();
+    String getStatus();
 }

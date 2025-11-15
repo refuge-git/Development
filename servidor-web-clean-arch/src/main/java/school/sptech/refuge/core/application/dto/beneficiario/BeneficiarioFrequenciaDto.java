@@ -8,15 +8,19 @@ public class BeneficiarioFrequenciaDto {
     private Integer totalPresencas;
     private String fotoPerfil;
     private String imagemUrl;
+    private String status;
+
+
 
     public BeneficiarioFrequenciaDto(Integer id, String nomeRegistro, String nomeSocial,
-                                     Integer totalPresencas, String fotoPerfil, String imagemUrl) {
+                                     Integer totalPresencas, String fotoPerfil, String imagemUrl, String status) {
         this.id = id;
         this.nomeRegistro = nomeRegistro;
         this.nomeSocial = nomeSocial;
         this.totalPresencas = totalPresencas;
         this.fotoPerfil = fotoPerfil;
         this.imagemUrl = imagemUrl;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -67,4 +71,11 @@ public class BeneficiarioFrequenciaDto {
         this.imagemUrl = imagemUrl;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

@@ -80,6 +80,20 @@ public class BeneficarioListDto {
     }
 
     public BeneficarioListDto(Beneficiario beneficiario) {
+        this.id = beneficiario.getId();
+        this.nomeRegistro = beneficiario.getNomeRegistro();
+        this.nomeSocial = beneficiario.getNomeSocial();
+        this.dtNasc = beneficiario.getDtNasc();
+        this.cpf = beneficiario.getCpf();
+        this.estrangeiro = beneficiario.getEstrangeiro();
+        this.nomeMae = beneficiario.getNomeMae();
+        this.egressoPrisional = beneficiario.getEgressoPrisional();
+        this.fotoPerfil = beneficiario.getFotoPerfil();
+        this.sisa = beneficiario.getSisa();
+        this.status = beneficiario.getStatus() != null ? beneficiario.getStatus().name() : "INATIVO";
+        this.data_ativacao = beneficiario.getDataAtivacao();
+        this.observacao = beneficiario.getObservacao();
+        this.funcionario = beneficiario.getFuncionario() != null ? new FuncionarioListDto(beneficiario.getFuncionario()) : null;
     }
 
     public Integer getId() {
