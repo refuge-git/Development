@@ -31,8 +31,14 @@ public class AtualizarFuncionarioUseCase {
         funcionarioExistente
                 .setEmail(funcionarioAtualizacaoDto.getEmail());
 
-        funcionarioExistente
-                .setSenha(funcionarioAtualizacaoDto.getSenha());
+       // funcionarioExistente
+         //       .setSenha(funcionarioAtualizacaoDto.getSenha());
+
+        if (funcionarioAtualizacaoDto.getSenha() != null &&
+                !funcionarioAtualizacaoDto.getSenha().isBlank()) {
+
+            funcionarioExistente.setSenha(funcionarioAtualizacaoDto.getSenha());
+        }
 
         Funcionario funcionarioAtualizado = funcionarioGateway.salvar(funcionarioExistente);
 

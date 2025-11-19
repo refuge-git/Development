@@ -177,4 +177,31 @@ public class FuncionarioController {
         return listagemFuncionarioUseCase.execute(page, size);
     }
 
+    @Operation(
+            summary = "Atualiza os dados do funcionário logado",
+            description = "Atualiza nome, email ou outros dados do funcionário autenticado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Funcionário atualizado com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FuncionarioListDto.class)))
+    })
+    @PutMapping("/me")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<FuncionarioListDto> atualizarFuncionarioLogado(
+            Authentication authentication,
+            @Valid @RequestBody FuncionarioAtualizacaoDto dto) {
+
+        // Email do usuário autenticado pelo token
+        String email = authentication.getName();
+
+        // Buscar o funcionário logado
+        FuncionarioListDto funcionarioAtual = buscarFuncionarioPorEmailUseCase.execute(email);
+
+        // Atualizar usando o id encontrado
+        FuncionarioListDto atualizado = atualizarFuncionarioUseCase.execute(funcionarioAtual.getId(), dto);
+
+        return ResponseEntity.ok(atualizado);
+    }
+
+
 }
