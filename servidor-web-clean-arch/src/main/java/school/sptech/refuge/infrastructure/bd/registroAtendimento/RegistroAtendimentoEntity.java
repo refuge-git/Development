@@ -7,6 +7,7 @@ import school.sptech.refuge.infrastructure.bd.tipoAtendimento.TipoAtendimentoEnt
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "registro_atendimento")
 public class RegistroAtendimentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
