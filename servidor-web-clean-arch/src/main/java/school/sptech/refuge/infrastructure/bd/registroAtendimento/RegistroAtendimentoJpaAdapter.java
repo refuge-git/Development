@@ -123,7 +123,7 @@
         }
 
         @Override
-        public long getAtendimentosMesAnterior() {
+        public Long getAtendimentosMesAnterior() {
             return registroAtendimentoJpaRepository.countAtendimentosMesAnterior();
         }
 

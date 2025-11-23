@@ -28,7 +28,7 @@ public interface RegistroAtendimentoGateway {
     List<AtendimentosSemanaDto> buscarAtendimentosSemana();
     long getAtendimentosMesAtual();
     long getAtendimentosDiaAtual();
-    long getAtendimentosMesAnterior();
+    Long getAtendimentosMesAnterior();
     long getNovosCadastrosMes();
     long getNovosCadastrosMesAnterior();
     long getMediaAtendimentoMesAtual();

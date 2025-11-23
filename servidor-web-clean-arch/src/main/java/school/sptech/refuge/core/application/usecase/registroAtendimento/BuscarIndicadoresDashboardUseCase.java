@@ -16,7 +16,7 @@ public class BuscarIndicadoresDashboardUseCase {
     public IndicadoresDashboardDto executar() {
         long atendimentosMesAtual = gateway.getAtendimentosMesAtual();
         long atendimentosDiaAtual = gateway.getAtendimentosDiaAtual();
-        long atendimentosMesAnterior = gateway.getAtendimentosMesAnterior();
+        Long atendimentosMesAnterior = gateway.getAtendimentosMesAnterior();
         long novosCadastrosMes = gateway.getNovosCadastrosMes();
         long novosCadastrosMesAnterior = gateway.getNovosCadastrosMesAnterior();
         long mediaAtendimentosMesAtual = gateway.getMediaAtendimentoMesAtual();

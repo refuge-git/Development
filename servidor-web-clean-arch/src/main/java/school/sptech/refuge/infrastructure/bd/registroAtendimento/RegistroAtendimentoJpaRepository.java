@@ -317,7 +317,7 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
     WHERE MONTH(data_hora) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
       AND YEAR(data_hora) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
     """, nativeQuery = true)
-    long countAtendimentosMesAnterior();
+    Long countAtendimentosMesAnterior();
 
     // Total de novos cadastros no mês anterior
     @Query(value = """
