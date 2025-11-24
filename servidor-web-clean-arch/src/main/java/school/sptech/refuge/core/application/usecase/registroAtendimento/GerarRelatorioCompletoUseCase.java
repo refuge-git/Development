@@ -16,11 +16,11 @@ public class GerarRelatorioCompletoUseCase {
         this.publicarRelatorioGateway = publicarRelatorioGateway;
     }
 
-    public RelatorioCompleto execute(String email) {
-        List<PresencaDia> resultadoPresenca = gateway.contarPresencasPorDiaNoMes();
+    public RelatorioCompleto execute(String email, String mesReferencia) {
+        List<PresencaDia> resultadoPresenca = gateway.contarPresencasPorDiaNoMes(mesReferencia);
         PresencaDiaResponse responsePresenca = new PresencaDiaResponse(email, resultadoPresenca);
-        List<AtendimentosPorFaixaEtaria> resultadoIdades = gateway.contarAtendimentosPorFaixaEtaria();
-        List<AtendimentosPorRacaSexo> resultadoRacaSexo = gateway.contarAtendimentosRacaSexoNoMes();
+        List<AtendimentosPorFaixaEtaria> resultadoIdades = gateway.contarAtendimentosPorFaixaEtaria(mesReferencia);
+        List<AtendimentosPorRacaSexo> resultadoRacaSexo = gateway.contarAtendimentosRacaSexoNoMes(mesReferencia);
         RelatorioCompleto relatorioCompleto = new RelatorioCompleto(responsePresenca, resultadoIdades, resultadoRacaSexo);
         publicarRelatorioGateway.publicarRelatorioCompleto(relatorioCompleto);
         return relatorioCompleto;

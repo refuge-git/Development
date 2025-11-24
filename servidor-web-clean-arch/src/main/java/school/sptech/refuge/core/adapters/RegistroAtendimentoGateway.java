@@ -6,6 +6,7 @@ import school.sptech.refuge.core.application.dto.registroAtendimento.ServicosPor
 import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosMesDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorRacaSexo;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.MesDisponivelRelatorio;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
@@ -19,9 +20,9 @@ public interface RegistroAtendimentoGateway {
     void deletar(Integer id);
     boolean existePorId(Integer id);
     Long contarBeneficiariosAtendidosNoMes();
-    List<PresencaDia> contarPresencasPorDiaNoMes();
-    List<AtendimentosPorFaixaEtaria> contarAtendimentosPorFaixaEtaria();
-    List<AtendimentosPorRacaSexo> contarAtendimentosRacaSexoNoMes();
+    List<PresencaDia> contarPresencasPorDiaNoMes(String mesReferencia);
+    List<AtendimentosPorFaixaEtaria> contarAtendimentosPorFaixaEtaria(String mesReferencia);
+    List<AtendimentosPorRacaSexo> contarAtendimentosRacaSexoNoMes(String mesReferencia);
     List<AtendimentosMesDto> buscarAtendimentosMes();
     List<ServicosPorSemanaDto> buscarServicosPorSemana();
     List<AtendimentosDiaDto> buscarAtendimentosDia();
@@ -37,4 +38,5 @@ public interface RegistroAtendimentoGateway {
     String getAtividadeMaisRequisitadaMes();
     String getAtividadeMaisRequisitadaDia();
     String getSegundaAtividadeMaisRequisitadaMes();
+    List<MesDisponivelRelatorio> getMesesDisponiveisRelatorio();
 }

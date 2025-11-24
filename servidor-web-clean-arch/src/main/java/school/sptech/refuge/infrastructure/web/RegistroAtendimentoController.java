@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.registroAtendimento.*;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.MesDisponivelRelatorio;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDiaResponse;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.RelatorioCompleto;
 import school.sptech.refuge.core.application.usecase.registroAtendimento.*;
@@ -31,9 +32,10 @@ public class RegistroAtendimentoController {
     private final BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase;
     private final BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase;
     private final GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase;
+    private final BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase;
 
 
-    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase, BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase, GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase) {
+    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase, BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase, GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase, BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase) {
         this.atualizarRegistroAtendimentoUseCase = atualizarRegistroAtendimentoUseCase;
         this.criarRegistroAtendimentoUseCase = criarRegistroAtendimentoUseCase;
         this.deletarRegistroAtendimentoUseCase = deletarRegistroAtendimentoUseCase;
@@ -44,6 +46,7 @@ public class RegistroAtendimentoController {
         this.buscarAtendimentosPorSemanaUseCase = buscarAtendimentosPorSemanaUseCase;
         this.buscarIndicadoresDashboardUseCase = buscarIndicadoresDashboardUseCase;
         this.gerarRelatorioCompletoUseCase = gerarRelatorioCompletoUseCase;
+        this.buscarMesesDisponiveisRelatorioUseCase = buscarMesesDisponiveisRelatorioUseCase;
     }
 
     @Operation(
@@ -161,9 +164,9 @@ public class RegistroAtendimentoController {
     })
     @GetMapping("/relatorios/geral")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<RelatorioCompleto> contarPresencasPorDia(Authentication authentication) {
+    public ResponseEntity<RelatorioCompleto> contarPresencasPorDia(Authentication authentication, @RequestParam String mes) {
         String email = authentication.getName();
-        RelatorioCompleto response = gerarRelatorioCompletoUseCase.execute(email);
+        RelatorioCompleto response = gerarRelatorioCompletoUseCase.execute(email, mes);
         return ResponseEntity.ok(response);
     }
 
@@ -243,6 +246,11 @@ public class RegistroAtendimentoController {
         return ResponseEntity.status(201).body(registrosCriados);
     }
 
-
+    @GetMapping("/relatorios/meses-disponiveis")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<MesDisponivelRelatorio>> listarMesesDisponiveis() {
+        List<MesDisponivelRelatorio> mesDisponivelRelatorios = buscarMesesDisponiveisRelatorioUseCase.execute();
+        return ResponseEntity.ok(mesDisponivelRelatorios);
+    }
 
 }

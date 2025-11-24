@@ -62,4 +62,9 @@ public class RegistroAtendimentoBeanConfig {
         return new GerarRelatorioCompletoUseCase(adapter, rabbitMqRelatorioAdapter);
     }
 
+    @Bean
+    public BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase(RegistroAtendimentoJpaAdapter adapter) {
+        return new BuscarMesesDisponiveisRelatorioUseCase(adapter);
+    }
+
 }

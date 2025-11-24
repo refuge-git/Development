@@ -2,8 +2,10 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorRacaSexo;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.MesDisponivelRelatorio;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
 
 import java.util.List;
@@ -21,15 +23,15 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
 
 
     @Query(value = """
-        SELECT DAY(data_hora) AS dia,
-               COUNT(DISTINCT fk_beneficiario) AS qtd_pessoas
-        FROM registro_atendimento
-        WHERE MONTH(data_hora) = MONTH(CURRENT_DATE())
-          AND YEAR(data_hora) = YEAR(CURRENT_DATE())
-        GROUP BY DAY(data_hora)
-        ORDER BY dia
-        """, nativeQuery = true)
-    List<PresencaDia> countPresencasPorDiaNoMes();
+    SELECT DAY(data_hora) AS dia,
+           COUNT(DISTINCT fk_beneficiario) AS qtd_pessoas
+    FROM registro_atendimento
+    WHERE DATE_FORMAT(data_hora, '%Y-%m') = :mes
+    GROUP BY DAY(data_hora)
+    ORDER BY dia
+    """, nativeQuery = true)
+    List<PresencaDia> countPresencasPorDiaNoMes(@Param("mes") String mes);
+
 
 
     @Query(value = """
@@ -48,86 +50,92 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
 
 
     @Query(value = """
-            WITH faixas AS (
-                                     SELECT '0 a 5 anos' AS faixa_etaria
-                                     UNION ALL SELECT '6 a 11 anos'
-                                     UNION ALL SELECT '12 a 14 anos'
-                                     UNION ALL SELECT '15 a 17 anos'
-                                     UNION ALL SELECT '18 a 29 anos'
-                                     UNION ALL SELECT '30 a 59 anos'
-                                     UNION ALL SELECT '60 anos ou mais'
-                                 ),
-                                 sexos AS (
-                                     SELECT 'FEMININO' AS sexo
-                                     UNION ALL SELECT 'MASCULINO'
-                                 )
-                                 SELECT\s
-                                     f.faixa_etaria,
-                                     s.sexo,
-                                     COALESCE(COUNT(DISTINCT b.id_beneficiario), 0) AS numero_pessoas_atendidas
-                                 FROM faixas f
-                                 CROSS JOIN sexos s
-                                 LEFT JOIN registro_atendimento ra\s
-                                     ON DATE_FORMAT(ra.data_hora, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
-                                 LEFT JOIN beneficiario b\s
-                                     ON ra.fk_beneficiario = b.id_beneficiario
-                                    AND (
-                                         (f.faixa_etaria = '0 a 5 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 0 AND 5) OR
-                                         (f.faixa_etaria = '6 a 11 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 6 AND 11) OR
-                                         (f.faixa_etaria = '12 a 14 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 12 AND 14) OR
-                                         (f.faixa_etaria = '15 a 17 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 15 AND 17) OR
-                                         (f.faixa_etaria = '18 a 29 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 18 AND 29) OR
-                                         (f.faixa_etaria = '30 a 59 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 30 AND 59) OR
-                                         (f.faixa_etaria = '60 anos ou mais' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) >= 60)
-                                     )
-                                    AND b.sexo = s.sexo
-                                 GROUP BY f.faixa_etaria, s.sexo
-                                 ORDER BY\s
-                                     FIELD(f.faixa_etaria,\s
-                                         '0 a 5 anos','6 a 11 anos','12 a 14 anos','15 a 17 anos',
-                                         '18 a 29 anos','30 a 59 anos','60 anos ou mais'),
-                                  FIELD(s.sexo, 'FEMININO','MASCULINO');
-        """, nativeQuery = true)
-    List<AtendimentosPorFaixaEtaria> contarBeneficiariosPorFaixaEtaria();
+    WITH faixas AS (
+        SELECT '0 a 5 anos' AS faixa_etaria
+        UNION ALL SELECT '6 a 11 anos'
+        UNION ALL SELECT '12 a 14 anos'
+        UNION ALL SELECT '15 a 17 anos'
+        UNION ALL SELECT '18 a 29 anos'
+        UNION ALL SELECT '30 a 59 anos'
+        UNION ALL SELECT '60 anos ou mais'
+    ),
+    sexos AS (
+        SELECT 'FEMININO' AS sexo
+        UNION ALL SELECT 'MASCULINO'
+    )
+    SELECT
+        f.faixa_etaria,
+        s.sexo,
+        COALESCE(COUNT(DISTINCT b.id_beneficiario), 0) AS numero_pessoas_atendidas
+    FROM faixas f
+    CROSS JOIN sexos s
+    LEFT JOIN registro_atendimento ra
+        ON DATE_FORMAT(ra.data_hora, '%Y-%m') = :mes
+    LEFT JOIN beneficiario b
+        ON ra.fk_beneficiario = b.id_beneficiario
+       AND (
+            (f.faixa_etaria = '0 a 5 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 0 AND 5) OR
+            (f.faixa_etaria = '6 a 11 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 6 AND 11) OR
+            (f.faixa_etaria = '12 a 14 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 12 AND 14) OR
+            (f.faixa_etaria = '15 a 17 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 15 AND 17) OR
+            (f.faixa_etaria = '18 a 29 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 18 AND 29) OR
+            (f.faixa_etaria = '30 a 59 anos' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) BETWEEN 30 AND 59) OR
+            (f.faixa_etaria = '60 anos ou mais' AND TIMESTAMPDIFF(YEAR, b.dt_nasc, CURDATE()) >= 60)
+        )
+       AND b.sexo = s.sexo
+    GROUP BY f.faixa_etaria, s.sexo
+    ORDER BY
+        FIELD(f.faixa_etaria,
+            '0 a 5 anos','6 a 11 anos','12 a 14 anos','15 a 17 anos',
+            '18 a 29 anos','30 a 59 anos','60 anos ou mais'),
+        FIELD(s.sexo, 'FEMININO','MASCULINO');
+""", nativeQuery = true)
+    List<AtendimentosPorFaixaEtaria> contarBeneficiariosPorFaixaEtaria(
+            @Param("mes") String mes
+    );
+
 
     @Query(value = """
-            WITH sexos AS (
-                SELECT 'FEMININO' AS sexo
-                UNION ALL SELECT 'MASCULINO'
-            ),
-            racas AS (
-                SELECT 'BRANCO' AS raca
-                UNION ALL SELECT 'PRETO'
-                UNION ALL SELECT 'PARDO'
-                UNION ALL SELECT 'AMARELA'
-                UNION ALL SELECT 'INDIGENA'
-                UNION ALL SELECT 'NAO_DECLARADO'
-            ),
-            atendimentos_mes AS (
-                SELECT DISTINCT ra.fk_beneficiario
-                FROM registro_atendimento ra
-                WHERE DATE_FORMAT(ra.data_hora, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
-            )
-            SELECT
-                s.sexo,
-                r.raca,
-                COALESCE(COUNT(DISTINCT b.id_beneficiario), 0) AS numero_pessoas_atendidas
-            FROM sexos s
-            CROSS JOIN racas r
-            LEFT JOIN atendimentos_mes am
-                ON 1 = 1
-            LEFT JOIN beneficiario b
-                ON b.id_beneficiario = am.fk_beneficiario
-               AND b.sexo = s.sexo
-               AND b.raca = r.raca
-            GROUP BY
-                s.sexo,
-                r.raca
-            ORDER BY
-                FIELD(s.sexo, 'FEMININO','MASCULINO'),
-                FIELD(r.raca,'BRANCO','PRETO','PARDO','AMARELA','INDIGENA','NAO_DECLARADO');
-        """, nativeQuery = true)
-    List<AtendimentosPorRacaSexo> contarBeneficiariosPorRacaSexo();
+    WITH sexos AS (
+        SELECT 'FEMININO' AS sexo
+        UNION ALL SELECT 'MASCULINO'
+    ),
+    racas AS (
+        SELECT 'BRANCO' AS raca
+        UNION ALL SELECT 'PRETO'
+        UNION ALL SELECT 'PARDO'
+        UNION ALL SELECT 'AMARELA'
+        UNION ALL SELECT 'INDIGENA'
+        UNION ALL SELECT 'NAO_DECLARADO'
+    ),
+    atendimentos_mes AS (
+        SELECT DISTINCT ra.fk_beneficiario
+        FROM registro_atendimento ra
+        WHERE DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia
+    )
+    SELECT
+        s.sexo,
+        r.raca,
+        COALESCE(COUNT(DISTINCT b.id_beneficiario), 0) AS numero_pessoas_atendidas
+    FROM sexos s
+    CROSS JOIN racas r
+    LEFT JOIN atendimentos_mes am
+        ON 1 = 1
+    LEFT JOIN beneficiario b
+        ON b.id_beneficiario = am.fk_beneficiario
+       AND b.sexo = s.sexo
+       AND b.raca = r.raca
+    GROUP BY
+        s.sexo,
+        r.raca
+    ORDER BY
+        FIELD(s.sexo, 'FEMININO','MASCULINO'),
+        FIELD(r.raca,'BRANCO','PRETO','PARDO','AMARELA','INDIGENA','NAO_DECLARADO');
+""", nativeQuery = true)
+    List<AtendimentosPorRacaSexo> contarBeneficiariosPorRacaSexo(
+            @Param("mesReferencia") String mesReferencia
+    );
+
 
 
     @Query(value = """
@@ -388,5 +396,16 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
             
         """, nativeQuery = true)
     List<Object[]> findMediaSegundaAtividadeMaisRequisitada();
+
+    @Query(value = """
+            SELECT DISTINCT\s
+                DATE_FORMAT(data_hora, '%Y-%m') AS mesReferencia,
+                DATE_FORMAT(data_hora, '%m/%Y') AS mesExibicao
+            FROM registro_atendimento
+            ORDER BY mesReferencia DESC
+            LIMIT 12;
+        """, nativeQuery = true)
+    List<MesDisponivelRelatorio> getMesesDisponiveisRelatorio();
+
 
 }

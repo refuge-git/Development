@@ -5,6 +5,7 @@
     import school.sptech.refuge.core.application.dto.registroAtendimento.*;
     import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
     import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorRacaSexo;
+    import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.MesDisponivelRelatorio;
     import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
     import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
@@ -60,8 +61,8 @@
         }
 
         @Override
-        public List<PresencaDia> contarPresencasPorDiaNoMes() {
-            return registroAtendimentoJpaRepository.countPresencasPorDiaNoMes();
+        public List<PresencaDia> contarPresencasPorDiaNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.countPresencasPorDiaNoMes(mesReferencia);
         }
 
         @Override
@@ -200,12 +201,17 @@
 
 
         @Override
-        public List<AtendimentosPorFaixaEtaria> contarAtendimentosPorFaixaEtaria() {
-            return registroAtendimentoJpaRepository.contarBeneficiariosPorFaixaEtaria();
+        public List<AtendimentosPorFaixaEtaria> contarAtendimentosPorFaixaEtaria(String mesReferencia) {
+            return registroAtendimentoJpaRepository.contarBeneficiariosPorFaixaEtaria(mesReferencia);
         }
 
         @Override
-        public List<AtendimentosPorRacaSexo> contarAtendimentosRacaSexoNoMes() {
-            return registroAtendimentoJpaRepository.contarBeneficiariosPorRacaSexo();
+        public List<AtendimentosPorRacaSexo> contarAtendimentosRacaSexoNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.contarBeneficiariosPorRacaSexo(mesReferencia);
+        }
+
+        @Override
+        public List<MesDisponivelRelatorio> getMesesDisponiveisRelatorio() {
+            return registroAtendimentoJpaRepository.getMesesDisponiveisRelatorio();
         }
     }
