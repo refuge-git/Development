@@ -16,7 +16,6 @@ public class RegistroAtendimentoEntity {
     private LocalDateTime dataHora;
 
 
-    // Relacionamentos da tabela auxiliar
     @ManyToOne
     @JoinColumn(name = "fk_tipo", referencedColumnName = "id_tipo_atendimento")
     private TipoAtendimentoEntity tipoAtendimento;

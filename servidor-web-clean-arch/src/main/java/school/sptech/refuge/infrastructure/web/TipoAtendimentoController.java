@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoRequestDto;
 import school.sptech.refuge.core.application.dto.tipoAtendimento.TipoAtendimentoResponseDto;
 import school.sptech.refuge.core.application.exception.TipoAtendimentoNaoEncotradoException;
-import school.sptech.refuge.core.application.usecase.tipoAtendimento.AtualizarTipoAtendimentoUseCase;
-import school.sptech.refuge.core.application.usecase.tipoAtendimento.CriarTipoAtendimentoUseCase;
-import school.sptech.refuge.core.application.usecase.tipoAtendimento.DeletarTipoAtendimentoUseCase;
-import school.sptech.refuge.core.application.usecase.tipoAtendimento.ListarTodosTipoAtendimentoUseCase;
+import school.sptech.refuge.core.application.usecase.tipoAtendimento.*;
 
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @RestController
@@ -29,12 +28,14 @@ public class TipoAtendimentoController {
     private final AtualizarTipoAtendimentoUseCase atualizarTipoAtendimentoUseCase;
     private final ListarTodosTipoAtendimentoUseCase listarTodosTipoAtendimentoUseCase;
     private final DeletarTipoAtendimentoUseCase deletarTipoAtendimentoUseCase;
+    private final BuscarAtividadesRealizadasHojeUseCase buscarAtividadesRealizadasHojeUseCase;
 
-    public TipoAtendimentoController(CriarTipoAtendimentoUseCase criarTipoAtendimentoUseCase, AtualizarTipoAtendimentoUseCase atualizarTipoAtendimentoUseCase, ListarTodosTipoAtendimentoUseCase listarTodosTipoAtendimentoUseCase, DeletarTipoAtendimentoUseCase deletarTipoAtendimentoUseCase) {
+    public TipoAtendimentoController(CriarTipoAtendimentoUseCase criarTipoAtendimentoUseCase, AtualizarTipoAtendimentoUseCase atualizarTipoAtendimentoUseCase, ListarTodosTipoAtendimentoUseCase listarTodosTipoAtendimentoUseCase, DeletarTipoAtendimentoUseCase deletarTipoAtendimentoUseCase, BuscarAtividadesRealizadasHojeUseCase buscarAtividadesRealizadasHojeUseCase) {
         this.criarTipoAtendimentoUseCase = criarTipoAtendimentoUseCase;
         this.atualizarTipoAtendimentoUseCase = atualizarTipoAtendimentoUseCase;
         this.listarTodosTipoAtendimentoUseCase = listarTodosTipoAtendimentoUseCase;
         this.deletarTipoAtendimentoUseCase = deletarTipoAtendimentoUseCase;
+        this.buscarAtividadesRealizadasHojeUseCase = buscarAtividadesRealizadasHojeUseCase;
     }
 
     @Operation(
@@ -124,4 +125,27 @@ public class TipoAtendimentoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+    @Operation(
+            summary = "IDs de atendimentos (atividades) realizados hoje por beneficiário",
+            description = "Retorna a lista de IDs de tipos de atendimento que o beneficiário já realizou na data informada (padrão: hoje)"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de IDs retornada",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Integer.class))),
+            @ApiResponse(responseCode = "204", description = "Nenhum atendimento realizado na data", content = @Content)
+    })
+    @GetMapping("/beneficiarios/{beneficiarioId}/realizados-hoje")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<Integer>> listarRealizadosHoje(
+            @PathVariable Integer beneficiarioId,
+            @RequestParam(required = false) String data // opcional: yyyy-MM-dd
+    ) {
+        LocalDate dia = (data != null) ? LocalDate.parse(data) : LocalDate.now(ZoneId.of("America/Sao_Paulo"));
+        List<Integer> ids = buscarAtividadesRealizadasHojeUseCase.execute(beneficiarioId, dia);
+        if (ids == null || ids.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ids);
+    }
+
 }

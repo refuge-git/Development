@@ -4,6 +4,9 @@ import org.springframework.stereotype.Service;
 import school.sptech.refuge.core.adapters.TipoAtendimentoGateway;
 import school.sptech.refuge.core.domain.tipoAtendimento.TipoAtendimento;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,9 +42,9 @@ public class TipoAtendimentoJpaAdapter implements TipoAtendimentoGateway {
 
     @Override
     public void deletar(Integer id) {
-    if (tipoAtendimentoJpaRepository.existsById(id)) {
-        tipoAtendimentoJpaRepository.deleteById(id);
-    }
+        if (tipoAtendimentoJpaRepository.existsById(id)) {
+            tipoAtendimentoJpaRepository.deleteById(id);
+        }
     }
 
     @Override
@@ -53,4 +56,14 @@ public class TipoAtendimentoJpaAdapter implements TipoAtendimentoGateway {
     public boolean existePorId(Integer id) {
         return tipoAtendimentoJpaRepository.existsById(id);
     }
+
+
+    @Override
+    public List<Integer> listarIdsRealizadosPorBeneficiarioNaData(Integer beneficiarioId, LocalDate data) {
+        LocalDate hojeSp = data != null ? data : LocalDate.now(ZoneId.of("America/Sao_Paulo"));
+        return tipoAtendimentoJpaRepository.findIdsRealizadosNaData(beneficiarioId, hojeSp);
+    }
+
+
+
 }
