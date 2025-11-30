@@ -4,10 +4,7 @@ import school.sptech.refuge.core.application.dto.registroAtendimento.Atendimento
 import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosSemanaDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.ServicosPorSemanaDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosMesDto;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorRacaSexo;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.MesDisponivelRelatorio;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.*;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
 import java.util.List;
@@ -23,6 +20,16 @@ public interface RegistroAtendimentoGateway {
     List<PresencaDia> contarPresencasPorDiaNoMes(String mesReferencia);
     List<AtendimentosPorFaixaEtaria> contarAtendimentosPorFaixaEtaria(String mesReferencia);
     List<AtendimentosPorRacaSexo> contarAtendimentosRacaSexoNoMes(String mesReferencia);
+    List<AtendimentosPorIdentidadeGenero> contarAtendimentosIdentidadeGeneroNoMes(String mesReferencia);
+    AtendimentosComDeficiencia contarAtendimentosComDeficienciaNoMes(String mesReferencia);
+    AtendimentosDeImigrantes contarAtendimentosDeImigrantesNoMes(String mesReferencia);
+    AtendimentosEgressoPrisional contarAtendimentosEgressoPrisionalNoMes(String mesReferencia);
+    AtendimentosEnderecoReferencia contarAtendimentosEnderecoReferenciaNoMes(String mesReferencia);
+    AtendimentosDeLgbt contarAtendimentosDeLgbtNoMes(String mesReferencia);
+    List<AtendimentosPorLocalDorme> contarAtendimentosPorLocalDormeNoMes(String mesReferencia);
+    AtendimentosDeBanho contarAtendimentosDeBanhoNoMes(String mesReferencia);
+    AtendimentosDeLavagemRoupa contarAtendimentosDeLavagemRoupaNoMes(String mesReferencia);
+    AtendimentosDeRefeicao contarAtendimentosDeRefeicaoNoMes(String mesReferencia);
     List<AtendimentosMesDto> buscarAtendimentosMes();
     List<ServicosPorSemanaDto> buscarServicosPorSemana();
     List<AtendimentosDiaDto> buscarAtendimentosDia();

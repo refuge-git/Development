@@ -21,7 +21,22 @@ public class GerarRelatorioCompletoUseCase {
         PresencaDiaResponse responsePresenca = new PresencaDiaResponse(email, resultadoPresenca);
         List<AtendimentosPorFaixaEtaria> resultadoIdades = gateway.contarAtendimentosPorFaixaEtaria(mesReferencia);
         List<AtendimentosPorRacaSexo> resultadoRacaSexo = gateway.contarAtendimentosRacaSexoNoMes(mesReferencia);
-        RelatorioCompleto relatorioCompleto = new RelatorioCompleto(responsePresenca, resultadoIdades, resultadoRacaSexo);
+        List<AtendimentosPorIdentidadeGenero> resultadoIdentidadeGenero = gateway.contarAtendimentosIdentidadeGeneroNoMes(mesReferencia);
+        AtendimentosComDeficiencia resultadoComDeficiencia = gateway.contarAtendimentosComDeficienciaNoMes(mesReferencia);
+        AtendimentosDeImigrantes resultadoDeImigrantes = gateway.contarAtendimentosDeImigrantesNoMes(mesReferencia);
+        AtendimentosEgressoPrisional resultadoEgressoPrisional = gateway.contarAtendimentosEgressoPrisionalNoMes(mesReferencia);
+        AtendimentosEnderecoReferencia resultadoEnderecoReferencia = gateway.contarAtendimentosEnderecoReferenciaNoMes(mesReferencia);
+        AtendimentosDeLgbt resultadoDeLgbt = gateway.contarAtendimentosDeLgbtNoMes(mesReferencia);
+        List<AtendimentosPorLocalDorme> resultadoPorLocalDorme = gateway.contarAtendimentosPorLocalDormeNoMes(mesReferencia);
+        AtendimentosDeBanho resultadoDeBanho = gateway.contarAtendimentosDeBanhoNoMes(mesReferencia);
+        AtendimentosDeLavagemRoupa resultadoDeLavagemRoupa = gateway.contarAtendimentosDeLavagemRoupaNoMes(mesReferencia);
+        AtendimentosDeRefeicao resultadoDeRefeicao = gateway.contarAtendimentosDeRefeicaoNoMes(mesReferencia);
+
+
+        RelatorioCompleto relatorioCompleto = new RelatorioCompleto(responsePresenca, resultadoIdades, resultadoRacaSexo,
+                resultadoIdentidadeGenero, resultadoComDeficiencia, resultadoDeImigrantes, resultadoEgressoPrisional, resultadoEnderecoReferencia,
+                resultadoDeLgbt, resultadoPorLocalDorme, resultadoDeBanho, resultadoDeLavagemRoupa,
+                resultadoDeRefeicao);
         publicarRelatorioGateway.publicarRelatorioCompleto(relatorioCompleto);
         return relatorioCompleto;
     }

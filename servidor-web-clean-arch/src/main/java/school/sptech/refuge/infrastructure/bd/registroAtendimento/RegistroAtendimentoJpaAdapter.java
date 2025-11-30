@@ -3,10 +3,7 @@
     import org.springframework.stereotype.Service;
     import school.sptech.refuge.core.adapters.RegistroAtendimentoGateway;
     import school.sptech.refuge.core.application.dto.registroAtendimento.*;
-    import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
-    import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorRacaSexo;
-    import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.MesDisponivelRelatorio;
-    import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
+    import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.*;
     import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
     import java.util.List;
@@ -213,5 +210,55 @@
         @Override
         public List<MesDisponivelRelatorio> getMesesDisponiveisRelatorio() {
             return registroAtendimentoJpaRepository.getMesesDisponiveisRelatorio();
+        }
+
+        @Override
+        public List<AtendimentosPorIdentidadeGenero> contarAtendimentosIdentidadeGeneroNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosIdentidadeGeneroNoMes(mesReferencia);
+        }
+
+        @Override
+        public AtendimentosComDeficiencia contarAtendimentosComDeficienciaNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosComDeficienciaNoMes(mesReferencia);
+        }
+
+        @Override
+        public AtendimentosDeImigrantes contarAtendimentosDeImigrantesNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosDeImigrantesNoMes(mesReferencia);
+        }
+
+        @Override
+        public AtendimentosEgressoPrisional contarAtendimentosEgressoPrisionalNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosEgressoPrisionalNoMes(mesReferencia);
+        }
+
+        @Override
+        public AtendimentosEnderecoReferencia contarAtendimentosEnderecoReferenciaNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosEnderecoReferenciaNoMes(mesReferencia);
+        }
+
+        @Override
+        public AtendimentosDeLgbt contarAtendimentosDeLgbtNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosDeLgbtNoMes(mesReferencia);
+        }
+
+        @Override
+        public List<AtendimentosPorLocalDorme> contarAtendimentosPorLocalDormeNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosPorLocalDormeNoMes(mesReferencia);
+        }
+
+        @Override
+        public AtendimentosDeBanho contarAtendimentosDeBanhoNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosDeBanhoNoMes(mesReferencia);
+        }
+
+        @Override
+        public AtendimentosDeLavagemRoupa contarAtendimentosDeLavagemRoupaNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosDeLavagemRoupaNoMes(mesReferencia);
+        }
+
+        @Override
+        public AtendimentosDeRefeicao contarAtendimentosDeRefeicaoNoMes(String mesReferencia) {
+            return registroAtendimentoJpaRepository.getAtendimentosDeRefeicaoNoMes(mesReferencia);
         }
     }

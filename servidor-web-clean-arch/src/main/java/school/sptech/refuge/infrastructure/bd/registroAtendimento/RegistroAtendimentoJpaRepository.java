@@ -3,10 +3,7 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorFaixaEtaria;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.AtendimentosPorRacaSexo;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.MesDisponivelRelatorio;
-import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.PresencaDia;
+import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.*;
 
 import java.util.List;
 
@@ -407,5 +404,115 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
         """, nativeQuery = true)
     List<MesDisponivelRelatorio> getMesesDisponiveisRelatorio();
 
+    @Query(value = """
+            SELECT\s
+                identidade_genero,
+                COUNT(DISTINCT fk_beneficiario) AS quantidade
+            FROM (
+                SELECT\s
+                    ra.fk_beneficiario,
+                    COALESCE(tg.nome, 'Não declarado') AS identidade_genero
+                FROM registro_atendimento ra
+                LEFT JOIN beneficiario b ON ra.fk_beneficiario = b.id_beneficiario
+                LEFT JOIN tipo_genero tg ON b.fk_genero = tg.id_genero
+                WHERE DATE_FORMAT(ra.data_hora, '%Y-%m') =  :mesReferencia
+            ) AS dados
+            GROUP BY identidade_genero
+            ORDER BY identidade_genero;
+            """, nativeQuery = true)
+    List<AtendimentosPorIdentidadeGenero> getAtendimentosIdentidadeGeneroNoMes(@Param("mesReferencia") String mesReferencia);
 
+    @Query(value = """
+            SELECT COUNT(DISTINCT cs.fk_beneficiario) AS qtd_pessoas_deficiencia
+            FROM condicao_saude cs
+            JOIN categoria c ON cs.fk_categoria = c.id_categoria
+            JOIN registro_atendimento ra ON cs.fk_beneficiario = ra.fk_beneficiario
+            WHERE c.nome = 'Deficiência'
+              AND DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia;
+            
+            """, nativeQuery = true)
+    AtendimentosComDeficiencia getAtendimentosComDeficienciaNoMes(@Param("mesReferencia") String mesReferencia);
+
+    @Query(value = """
+            SELECT COUNT(DISTINCT b.id_beneficiario) AS numero_refugiados_imigrantes
+            FROM beneficiario b
+            JOIN registro_atendimento ra ON b.id_beneficiario = ra.fk_beneficiario
+            WHERE b.estrangeiro = TRUE
+              AND DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia;
+            """, nativeQuery = true)
+    AtendimentosDeImigrantes getAtendimentosDeImigrantesNoMes(@Param("mesReferencia") String mesReferencia);
+
+
+    @Query(value = """
+            SELECT COUNT(DISTINCT b.id_beneficiario) AS numero_egressos_prisionais
+            FROM beneficiario b
+            JOIN registro_atendimento ra ON b.id_beneficiario = ra.fk_beneficiario
+            WHERE b.egresso_prisional = TRUE
+              AND DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia;
+            """, nativeQuery = true)
+    AtendimentosEgressoPrisional getAtendimentosEgressoPrisionalNoMes(@Param("mesReferencia") String mesReferencia);
+
+
+    @Query(value = """
+            SELECT COUNT(DISTINCT b.id_beneficiario) AS numero_pessoas_endereco_referencia
+            FROM beneficiario b
+            JOIN endereco e ON b.fk_endereco = e.id_endereco
+            JOIN registro_atendimento ra ON b.id_beneficiario = ra.fk_beneficiario
+            WHERE e.cep = '01327-000'
+              AND e.numero = 320
+              AND DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia;
+            """, nativeQuery = true)
+    AtendimentosEnderecoReferencia getAtendimentosEnderecoReferenciaNoMes(@Param("mesReferencia") String mesReferencia);
+
+
+    @Query(value = """
+            SELECT COUNT(DISTINCT b.id_beneficiario) AS numero_lgbtqia_atendidos
+            FROM beneficiario b
+            JOIN tipo_sexualidade ts ON b.fk_sexualidade = ts.id_sexualidade
+            JOIN registro_atendimento ra ON b.id_beneficiario = ra.fk_beneficiario
+            WHERE ts.nome NOT IN ('Heterossexual', 'Não declarado')
+              AND DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia;
+            """, nativeQuery = true)
+    AtendimentosDeLgbt getAtendimentosDeLgbtNoMes(@Param("mesReferencia") String mesReferencia);
+
+
+    @Query(value = """
+            SELECT\s
+              b.local_dorme,
+              COUNT(DISTINCT b.id_beneficiario) AS numero_usuarios
+            FROM beneficiario b
+            JOIN registro_atendimento ra ON b.id_beneficiario = ra.fk_beneficiario
+            WHERE DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia
+            GROUP BY b.local_dorme;
+            """, nativeQuery = true)
+    List<AtendimentosPorLocalDorme> getAtendimentosPorLocalDormeNoMes(@Param("mesReferencia") String mesReferencia);
+
+
+    @Query(value = """
+            SELECT COUNT(*) AS numero_banho
+            FROM registro_atendimento ra
+            JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+            WHERE ta.nome = 'Banho'
+              AND DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia;
+            """, nativeQuery = true)
+    AtendimentosDeBanho getAtendimentosDeBanhoNoMes(@Param("mesReferencia") String mesReferencia);
+
+
+    @Query(value = """
+              SELECT COUNT(*) AS numero_lavagem_roupa
+            FROM registro_atendimento ra
+            JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+            WHERE ta.nome = 'Lavagem de roupa'
+              AND DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia;
+            """, nativeQuery = true)
+    AtendimentosDeLavagemRoupa getAtendimentosDeLavagemRoupaNoMes(@Param("mesReferencia") String mesReferencia);
+
+    @Query(value = """
+            SELECT COUNT(*) AS numero_refeicao
+            FROM registro_atendimento ra
+            JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
+            WHERE ta.nome = 'Refeição'
+              AND DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia;
+            """, nativeQuery = true)
+    AtendimentosDeRefeicao getAtendimentosDeRefeicaoNoMes(@Param("mesReferencia") String mesReferencia);
 }
