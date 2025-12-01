@@ -8,8 +8,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.repository.FuncionarioRepository;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioEntity;
+import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaRepository;
+import school.sptech.refuge.infrastructure.config.AutenticacaoService;
 
 import java.util.Optional;
 
@@ -23,28 +25,28 @@ class AutenticacaoServiceTest {
     private AutenticacaoService autenticacaoService;
 
     @Mock
-    private FuncionarioRepository funcionarioRepository;
+    private FuncionarioJpaRepository funcionarioJpaRepository;
 
     @Test
     @DisplayName("Deve retornar UserDetails quando o e-mail for encontrado")
     void deveRetornarUserDetailsQuandoEmailEncontrado() {
 
-        Funcionario funcionario = new Funcionario(1, "Enzo", "12345678900", "11999999999", "enzo@email.com", "senha123");
-        when(funcionarioRepository.findByEmail("enzo@email.com"))
-                .thenReturn(Optional.of(funcionario));
+        FuncionarioEntity funcionario = new FuncionarioEntity(1, "Enzo", "12345678900", "11999999999", "enzo@email.com", "senha123");
+
+        when(funcionarioJpaRepository.findByEmail("enzo@email.com")).thenReturn(Optional.of(funcionario));
 
         UserDetails userDetails = autenticacaoService.loadUserByUsername("enzo@email.com");
 
         assertNotNull(userDetails);
         assertEquals("enzo@email.com", userDetails.getUsername());
-        verify(funcionarioRepository, times(1)).findByEmail("enzo@email.com");
+        verify(funcionarioJpaRepository, times(1)).findByEmail("enzo@email.com");
     }
 
     @Test
     @DisplayName("Deve lançar exceção quando o e-mail não for encontrado")
     void deveLancarExcecaoQuandoEmailNaoForEncontrado() {
 
-        when(funcionarioRepository.findByEmail("naoexiste@email.com"))
+        when(funcionarioJpaRepository.findByEmail("naoexiste@email.com"))
                 .thenReturn(Optional.empty());
 
         UsernameNotFoundException exception = assertThrows(
@@ -53,6 +55,6 @@ class AutenticacaoServiceTest {
         );
 
         assertEquals("usuario: naoexiste@email.com nao encontrado", exception.getMessage());
-        verify(funcionarioRepository, times(1)).findByEmail("naoexiste@email.com");
+        verify(funcionarioJpaRepository, times(1)).findByEmail("naoexiste@email.com");
     }
 }

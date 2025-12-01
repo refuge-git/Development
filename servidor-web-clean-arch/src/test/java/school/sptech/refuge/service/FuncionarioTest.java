@@ -10,14 +10,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import school.sptech.refuge.config.GerenciadorTokenJwt;
-import school.sptech.refuge.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.dto.funcionario.FuncionarioTokenDto;
-import school.sptech.refuge.entity.Funcionario;
-import school.sptech.refuge.exception.EntidadeNaoEncontradaException;
-import school.sptech.refuge.exception.FuncionarioNaoEncontradaException;
-import school.sptech.refuge.repository.FuncionarioRepository;
-import school.sptech.refuge.service.FuncionarioService;
+import school.sptech.refuge.core.adapters.FuncionarioGateway;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioAtualizacaoDto;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioRequestDto;
+import school.sptech.refuge.core.application.dto.funcionario.FuncionarioTokenDto;
+import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaException;
+import school.sptech.refuge.core.application.usecase.funcionario.*;
+import school.sptech.refuge.core.domain.funcionario.Funcionario;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,16 +31,30 @@ import static org.mockito.Mockito.*;
 class FuncionarioTest {
 
     @InjectMocks
-    private FuncionarioService funcionarioService;
+    private AtualizarFuncionarioUseCase atualizarFuncionarioUseCase;
+    @InjectMocks
+    private AutenticarFuncionarioUseCase autenticarFuncionarioUseCase;
+    @InjectMocks
+    private BuscarFuncionarioPorEmailUseCase buscarFuncionarioPorEmailUseCase;
+    @InjectMocks
+    private BuscarFuncionarioUseCase buscarFuncionarioUseCase;
+    @InjectMocks
+    private CriarFuncionarioUseCase criarFuncionarioUseCase;
+    @InjectMocks
+    private DeletarFuncionarioUseCase deletarFuncionarioUseCase;
+    @InjectMocks
+    private ListagemFuncionarioUseCase listagemFuncionarioUseCase;
+    @InjectMocks
+    private ListarTodosFuncionariosUseCase listarTodosFuncionariosUseCase;
 
     @Mock
-    private FuncionarioRepository funcionarioRepository;
+    private FuncionarioGateway funcionarioGateway;
 
     @Mock
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private GerenciadorTokenJwt gerenciadorTokenJwt;
+    private school.sptech.refuge.infrastructure.config.GerenciadorTokenJwt gerenciadorTokenJwt;
 
     @Mock
     private AuthenticationManager authenticationManager;
@@ -57,8 +71,8 @@ class FuncionarioTest {
                 new Funcionario(3, "Valeria Gomes", "32456712376", "(11)991235567", "valeria@gmail.com", "s123enha")
 
         );
-        when(funcionarioRepository.findAll()).thenReturn(funcionarios);
-        List<Funcionario> listaFuncionarios = funcionarioService.listar();
+        when(funcionarioGateway.listarTodos()).thenReturn(funcionarios);
+        List<FuncionarioListDto> listaFuncionarios = listarTodosFuncionariosUseCase.execute();
         assertEquals(3, listaFuncionarios.size());
 
     }
@@ -67,8 +81,8 @@ class FuncionarioTest {
     @DisplayName("Listar quando acionado e não houver funcionarios, deve retornar lista vazia")
     void listarQuandoAcionadoComTabelaVaziaDevRetornarUmaColecaoVaziaTeste() {
 
-        when(funcionarioRepository.findAll()).thenReturn(Collections.emptyList());
-        List<Funcionario> resultado = funcionarioService.listar();
+        when(funcionarioGateway.listarTodos()).thenReturn(Collections.emptyList());
+        List<FuncionarioListDto> resultado = listarTodosFuncionariosUseCase.execute();
         assertTrue(resultado.isEmpty());
     }
 
@@ -77,9 +91,9 @@ class FuncionarioTest {
     void buscarPorIdComIdExistenteDeveRetornarFuncionarioTeste() {
         Funcionario funcionario = new Funcionario(1, "João", "12345678901", "(11)999999999", "joao@gmail.com", "senha123");
 
-        when(funcionarioRepository.findById(1)).thenReturn(Optional.of(funcionario));
+        when(funcionarioGateway.buscarPorId(1)).thenReturn(Optional.of(funcionario));
 
-        Funcionario resultado = funcionarioService.buscarPorId(1);
+        FuncionarioListDto resultado = buscarFuncionarioUseCase.execute(1);
 
         assertNotNull(resultado);
         assertEquals("João", resultado.getNome());
@@ -88,38 +102,49 @@ class FuncionarioTest {
     @Test
     @DisplayName("Deve lançar exceção ao buscar funcionário com ID inexistente")
     void buscarPorIdComIdInexistenteDeveLancarExcecaoTeste() {
-        when(funcionarioRepository.findById(99)).thenReturn(Optional.empty());
+        when(funcionarioGateway.buscarPorId(99)).thenReturn(Optional.empty());
 
-        assertThrows(FuncionarioNaoEncontradaException.class, () -> funcionarioService.buscarPorId(99));
+        assertThrows(FuncionarioNaoEncontradaException.class, () -> buscarFuncionarioUseCase.execute(99));
     }
 
     @Test
     @DisplayName("Quando remover for acionado deve remover funcionário existente com sucesso")
     void removerFuncionarioExistenteDeveRemoverSemErrosTeste() {
-        when(funcionarioRepository.existsById(1)).thenReturn(true);
+        when(funcionarioGateway.existePorId(1)).thenReturn(true);
 
-        funcionarioService.removerPorId(1);
+        deletarFuncionarioUseCase.execute(1);
 
-        verify(funcionarioRepository, times(1)).deleteById(1);
+        verify(funcionarioGateway, times(1)).deletar(1);
     }
 
     @Test
     @DisplayName("Deve lançar exceção EntidadeNaoEncontradaException ao tentar remover funcionário inexistente")
     void removerFuncionarioInexistenteDeveLancarExcecaoEntidadeNaoEncontradaExceptionTeste() {
-        when(funcionarioRepository.existsById(99)).thenReturn(false);
+        when(funcionarioGateway.existePorId(99)).thenReturn(false);
 
-        assertThrows(FuncionarioNaoEncontradaException.class, () -> funcionarioService.removerPorId(99));
+        assertThrows(FuncionarioNaoEncontradaException.class, () -> deletarFuncionarioUseCase.execute(99));
     }
 
     @Test
     @DisplayName("Deve atualizar funcionário existente com sucesso")
     void atualizarFuncionarioExistenteComSucessoTeste() {
-        Funcionario funcionario = new Funcionario(1, "Ana", "11111111111", "11988888888", "ana@email.com", "senha123");
+        Funcionario funcionario = new Funcionario(1, "Ana",
+                "11111111111",
+                "11988888888",
+                "ana@email.com",
+                "senha123");
 
-        when(funcionarioRepository.existsById(funcionario.getId())).thenReturn(true);
-        when(funcionarioRepository.save(funcionario)).thenReturn(funcionario);
+        FuncionarioAtualizacaoDto atualizacaoDto = new FuncionarioAtualizacaoDto();
+        atualizacaoDto.setNome(funcionario.getNome());
+        atualizacaoDto.setCpf(funcionario.getCpf());
+        atualizacaoDto.setTelefone(funcionario.getTelefone());
+        atualizacaoDto.setEmail(funcionario.getEmail());
+        atualizacaoDto.setSenha(funcionario.getSenha());
 
-        Funcionario atualizado = funcionarioService.atualizar(funcionario);
+        when(funcionarioGateway.existePorId(funcionario.getId())).thenReturn(true);
+        when(funcionarioGateway.salvar(funcionario)).thenReturn(funcionario);
+
+        FuncionarioListDto atualizado = atualizarFuncionarioUseCase.execute(funcionario.getId(), atualizacaoDto);
 
         assertNotNull(atualizado);
         assertEquals("Ana", atualizado.getNome());
@@ -130,9 +155,17 @@ class FuncionarioTest {
     void atualizarFuncionarioInexistenteDeveRetornarEntidadeNaoEncontradaExceptionTeste() {
         Funcionario funcionario = new Funcionario(42, "Carlos", "00000000000", "11900000000", "carlos@email.com", "senha");
 
-        when(funcionarioRepository.existsById(funcionario.getId())).thenReturn(false);
+        when(funcionarioGateway.existePorId(funcionario.getId())).thenReturn(false);
 
-        assertThrows(EntidadeNaoEncontradaException.class, () -> funcionarioService.atualizar(funcionario));
+        FuncionarioAtualizacaoDto atualizacaoDto = new FuncionarioAtualizacaoDto();
+        atualizacaoDto.setNome(funcionario.getNome());
+        atualizacaoDto.setCpf(funcionario.getCpf());
+        atualizacaoDto.setTelefone(funcionario.getTelefone());
+        atualizacaoDto.setEmail(funcionario.getEmail());
+        atualizacaoDto.setSenha(funcionario.getSenha());
+
+
+        assertThrows(FuncionarioNaoEncontradaException.class, () -> atualizarFuncionarioUseCase.execute(funcionario.getId(), atualizacaoDto));
     }
 
     @Test
@@ -143,8 +176,8 @@ class FuncionarioTest {
                 new Funcionario(2, "Mario Silva", "67898714354", "(11)998765678", "mario@gmail.com", "123senha")
         );
 
-        when(funcionarioRepository.findAll()).thenReturn(funcionarios);
-        List<FuncionarioListDto> resultado = funcionarioService.listarTodos();
+        when(funcionarioGateway.listarTodos()).thenReturn(funcionarios);
+        List<FuncionarioListDto> resultado = listarTodosFuncionariosUseCase.execute();
 
         assertNotNull(resultado);
         assertEquals(2, resultado.size());
@@ -152,20 +185,20 @@ class FuncionarioTest {
         assertEquals("Rosa dos Santos", resultado.get(0).getNome());
         assertEquals("Mario Silva", resultado.get(1).getNome());
 
-        verify(funcionarioRepository, times(1)).findAll();
+        verify(funcionarioGateway, times(1)).listarTodos();
     }
 
     @Test
     @DisplayName("listarTodos deve retornar lista vazia quando não houver funcionários cadastrados")
     void listarTodosDeveRetornarListaVaziaQuandoNaoHouverFuncionarios() {
-        when(funcionarioRepository.findAll()).thenReturn(Collections.emptyList());
+        when(funcionarioGateway.listarTodos()).thenReturn(Collections.emptyList());
 
-        List<FuncionarioListDto> resultado = funcionarioService.listarTodos();
+        List<FuncionarioListDto> resultado = listarTodosFuncionariosUseCase.execute();
 
         assertNotNull(resultado);
         assertTrue(resultado.isEmpty());
 
-        verify(funcionarioRepository, times(1)).findAll();
+        verify(funcionarioGateway, times(1)).listarTodos();
     }
 
 
@@ -173,14 +206,27 @@ class FuncionarioTest {
     @DisplayName("Criar funcionário deve criptografar senha e salvar com sucesso")
     void criarFuncionarioDeveSalvarComSenhaCriptografadaTeste() {
 
-        Funcionario funcionario = new Funcionario(42, "Carlos", "00000000000", "11900000000", "carlos@email.com", "senha");
+        Funcionario funcionario = new Funcionario(
+                42,
+                "Carlos",
+                "00000000000",
+                "11900000000",
+                "carlos@email.com",
+                "senha");
         when(passwordEncoder.encode("senha")).thenReturn("senhaCriptografada");
 
-        funcionarioService.criar(funcionario);
+        FuncionarioRequestDto funcionarioRequestDto = new FuncionarioRequestDto();
+        funcionarioRequestDto.setNome(funcionario.getNome());
+        funcionarioRequestDto.setCpf(funcionario.getCpf());
+        funcionarioRequestDto.setTelefone(funcionario.getTelefone());
+        funcionarioRequestDto.setEmail(funcionario.getEmail());
+        funcionarioRequestDto.setSenha(funcionario.getSenha());
+
+        criarFuncionarioUseCase.execute(funcionarioRequestDto);
 
 
         verify(passwordEncoder).encode("senha");
-        verify(funcionarioRepository).save(argThat(f -> f.getSenha().equals("senhaCriptografada")));
+        verify(funcionarioGateway).salvar(argThat(f -> f.getSenha().equals("senhaCriptografada")));
     }
 
 
@@ -194,10 +240,10 @@ class FuncionarioTest {
 
         Authentication authenticationMock = mock(Authentication.class);
         when(authenticationManager.authenticate(token)).thenReturn(authenticationMock);
-        when(funcionarioRepository.findByEmail(funcionario.getEmail())).thenReturn(Optional.of(funcionario));
+        when(funcionarioGateway.buscarPorEmail(funcionario.getEmail())).thenReturn(Optional.of(funcionario));
         when(gerenciadorTokenJwt.generateToken(authenticationMock)).thenReturn("token.jwt.exemplo");
 
-        FuncionarioTokenDto resultado = funcionarioService.autenticar(funcionario);
+        FuncionarioTokenDto resultado = autenticarFuncionarioUseCase.autenticar(funcionario.getEmail(), funcionario.getSenha());
 
         assertNotNull(resultado);
         assertEquals("token.jwt.exemplo", resultado.getToken());

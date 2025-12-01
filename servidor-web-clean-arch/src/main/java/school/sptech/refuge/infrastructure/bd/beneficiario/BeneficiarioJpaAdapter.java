@@ -29,10 +29,22 @@ public class BeneficiarioJpaAdapter implements BeneficiarioGateway {
     }
 
     @Override
+    public List<Beneficiario> buscarPorSexualidade(String sexualidade) {
+        return List.of();
+    }
+
+    @Override
+    public List<Beneficiario> buscarPorNome(String nome) {
+        return List.of();
+    }
+
+    @Override
     public Beneficiario salvar(Beneficiario beneficiario) {
         BeneficiarioEntity beneficiarioEntity = beneficiarioJpaRepository.save(Objects.requireNonNull(BeneficiarioMapper.ofDomain(beneficiario)));
         return BeneficiarioMapper.ofEntity(beneficiarioEntity);
     }
+
+
 
     @Override
     public List<Beneficiario> listarTodos() {

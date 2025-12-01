@@ -22,6 +22,8 @@ public interface BeneficiarioGateway {
     void linkEndereco(Integer idBeneficiario, Integer id);
     Page<BeneficiarioFrequenciaProjection> listarPaginadoPorFrequencia(int page, int size, int diaSemana, String search);
     Page<Beneficiario> listarPaginadoPorStatus(int page, int size, String status, String search);
+    List<Beneficiario> buscarPorSexualidade(String sexualidade);
+    List<Beneficiario> buscarPorNome(String nome);
 
 
 }
