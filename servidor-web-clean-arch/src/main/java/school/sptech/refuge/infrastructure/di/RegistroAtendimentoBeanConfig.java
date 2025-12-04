@@ -6,6 +6,7 @@ import school.sptech.refuge.core.application.usecase.registroAtendimento.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.registroAtendimento.RabbitMqRelatorioAdapter;
 import school.sptech.refuge.infrastructure.bd.registroAtendimento.RegistroAtendimentoJpaAdapter;
+import school.sptech.refuge.infrastructure.bd.registroAtendimento.RegistroAtendimentoRepository;
 import school.sptech.refuge.infrastructure.bd.tipoAtendimento.TipoAtendimentoJpaAdapter;
 
 @Configuration
@@ -65,6 +66,13 @@ public class RegistroAtendimentoBeanConfig {
     @Bean
     public BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase(RegistroAtendimentoJpaAdapter adapter) {
         return new BuscarMesesDisponiveisRelatorioUseCase(adapter);
+    }
+
+    @Bean
+    public BuscarUltimoRegistroAtividadeUseCase buscarUltimoRegistroAtividadeUseCase(
+            RegistroAtendimentoRepository repository
+    ) {
+        return new BuscarUltimoRegistroAtividadeUseCase(repository);
     }
 
 }

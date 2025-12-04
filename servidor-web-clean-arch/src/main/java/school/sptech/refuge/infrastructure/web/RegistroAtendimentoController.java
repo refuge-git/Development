@@ -16,7 +16,10 @@ import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.P
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.RelatorioCompleto;
 import school.sptech.refuge.core.application.usecase.registroAtendimento.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/registros-atendimentos")
@@ -33,9 +36,9 @@ public class RegistroAtendimentoController {
     private final BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase;
     private final GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase;
     private final BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase;
+    private final BuscarUltimoRegistroAtividadeUseCase ultimoRegistroUseCase;
 
-
-    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase, BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase, GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase, BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase) {
+    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase, BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase, GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase, BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase, BuscarUltimoRegistroAtividadeUseCase ultimoRegistroUseCase) {
         this.atualizarRegistroAtendimentoUseCase = atualizarRegistroAtendimentoUseCase;
         this.criarRegistroAtendimentoUseCase = criarRegistroAtendimentoUseCase;
         this.deletarRegistroAtendimentoUseCase = deletarRegistroAtendimentoUseCase;
@@ -47,6 +50,7 @@ public class RegistroAtendimentoController {
         this.buscarIndicadoresDashboardUseCase = buscarIndicadoresDashboardUseCase;
         this.gerarRelatorioCompletoUseCase = gerarRelatorioCompletoUseCase;
         this.buscarMesesDisponiveisRelatorioUseCase = buscarMesesDisponiveisRelatorioUseCase;
+        this.ultimoRegistroUseCase = ultimoRegistroUseCase;
     }
 
     @Operation(
@@ -252,5 +256,27 @@ public class RegistroAtendimentoController {
         List<MesDisponivelRelatorio> mesDisponivelRelatorios = buscarMesesDisponiveisRelatorioUseCase.execute();
         return ResponseEntity.ok(mesDisponivelRelatorios);
     }
+
+    @GetMapping("/ultimo")
+    public ResponseEntity<?> getUltimoRegistro(
+            @RequestParam Integer idBeneficiario,
+            @RequestParam Integer idTipoAtendimento
+    ) {
+        Optional<LocalDateTime> dataHora =
+                ultimoRegistroUseCase.buscar(idBeneficiario, idTipoAtendimento);
+
+        if (dataHora.isEmpty()) {
+            return ResponseEntity.noContent().build(); // 204 sem body
+        }
+
+        Map<String, Object> response = Map.of("dataHora", dataHora.get());
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
+
+
 
 }
