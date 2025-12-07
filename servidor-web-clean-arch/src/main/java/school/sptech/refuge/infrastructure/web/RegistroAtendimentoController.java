@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.P
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.RelatorioCompleto;
 import school.sptech.refuge.core.application.usecase.registroAtendimento.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +39,9 @@ public class RegistroAtendimentoController {
     private final GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase;
     private final BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase;
     private final BuscarUltimoRegistroAtividadeUseCase ultimoRegistroUseCase;
+    private final BuscarAtendimentosPorDiaUseCase buscarAtendimentosPorDiaUseCase;
 
-    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase, BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase, GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase, BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase, BuscarUltimoRegistroAtividadeUseCase ultimoRegistroUseCase) {
+    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase, BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase, GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase, BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase, BuscarUltimoRegistroAtividadeUseCase ultimoRegistroUseCase, BuscarAtendimentosPorDiaUseCase buscarAtendimentosPorDiaUseCase) {
         this.atualizarRegistroAtendimentoUseCase = atualizarRegistroAtendimentoUseCase;
         this.criarRegistroAtendimentoUseCase = criarRegistroAtendimentoUseCase;
         this.deletarRegistroAtendimentoUseCase = deletarRegistroAtendimentoUseCase;
@@ -51,6 +54,7 @@ public class RegistroAtendimentoController {
         this.gerarRelatorioCompletoUseCase = gerarRelatorioCompletoUseCase;
         this.buscarMesesDisponiveisRelatorioUseCase = buscarMesesDisponiveisRelatorioUseCase;
         this.ultimoRegistroUseCase = ultimoRegistroUseCase;
+        this.buscarAtendimentosPorDiaUseCase = buscarAtendimentosPorDiaUseCase;
     }
 
     @Operation(
@@ -203,20 +207,21 @@ public class RegistroAtendimentoController {
     }
 
     @Operation(
-            summary = "Quantidade de atendimentos por hora no dia atual",
-            description = "Retorna a quantidade de atendimentos agrupados por hora, entre 07:00 e 20:00 do dia atual"
+            summary = "Quantidade de atendimentos por hora em um dia específico",
+            description = "Retorna a quantidade de atendimentos agrupados por hora, entre 07:00 e 20:00, do dia informado no parâmetro"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
     })
     @GetMapping("/dia")
-    @CrossOrigin(origins = "http://localhost:5173") // ajuste conforme sua porta do React
+    @CrossOrigin(origins = "http://localhost:5173")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<AtendimentosDiaDto>> getAtendimentosDia() {
-        List<AtendimentosDiaDto> atendimentos = buscarAtendimentosPorMesUseCase.obterAtendimentosDia();
-        return ResponseEntity.ok(atendimentos);
+    public ResponseEntity<List<AtendimentosDiaDto>> getAtendimentosDia(
+            @RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
+    ) {
+        return ResponseEntity.ok(buscarAtendimentosPorDiaUseCase.execute(data));
     }
-
+    
 
     @Operation(
             summary = "Quantidade de atendimentos por dia da semana",
@@ -266,7 +271,7 @@ public class RegistroAtendimentoController {
                 ultimoRegistroUseCase.buscar(idBeneficiario, idTipoAtendimento);
 
         if (dataHora.isEmpty()) {
-            return ResponseEntity.noContent().build(); // 204 sem body
+            return ResponseEntity.noContent().build();
         }
 
         Map<String, Object> response = Map.of("dataHora", dataHora.get());

@@ -2,6 +2,7 @@ package school.sptech.refuge.infrastructure.di;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import school.sptech.refuge.core.adapters.RegistroAtendimentoGateway;
 import school.sptech.refuge.core.application.usecase.registroAtendimento.*;
 import school.sptech.refuge.infrastructure.bd.beneficiario.BeneficiarioJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.registroAtendimento.RabbitMqRelatorioAdapter;
@@ -74,5 +75,13 @@ public class RegistroAtendimentoBeanConfig {
     ) {
         return new BuscarUltimoRegistroAtividadeUseCase(repository);
     }
+
+    @Bean
+    public BuscarAtendimentosPorDiaUseCase buscarAtendimentosPorDiaUseCase(
+            RegistroAtendimentoGateway gateway
+    ) {
+        return new BuscarAtendimentosPorDiaUseCase(gateway);
+    }
+
 
 }

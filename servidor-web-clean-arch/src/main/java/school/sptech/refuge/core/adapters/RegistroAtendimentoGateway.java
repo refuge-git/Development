@@ -7,6 +7,7 @@ import school.sptech.refuge.core.application.dto.registroAtendimento.Atendimento
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.*;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,4 +47,5 @@ public interface RegistroAtendimentoGateway {
     String getAtividadeMaisRequisitadaDia();
     String getSegundaAtividadeMaisRequisitadaMes();
     List<MesDisponivelRelatorio> getMesesDisponiveisRelatorio();
+    List<AtendimentosDiaDto> buscarAtendimentosPorDia(LocalDate dia);
 }

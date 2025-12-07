@@ -3,8 +3,10 @@ package school.sptech.refuge.infrastructure.bd.registroAtendimento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosDiaDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RegistroAtendimentoJpaRepository extends JpaRepository<RegistroAtendimentoEntity, Integer> {
@@ -515,4 +517,22 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
               AND DATE_FORMAT(ra.data_hora, '%Y-%m') = :mesReferencia;
             """, nativeQuery = true)
     AtendimentosDeRefeicao getAtendimentosDeRefeicaoNoMes(@Param("mesReferencia") String mesReferencia);
+
+    @Query(
+            value = """
+        SELECT 
+            DATE_FORMAT(r.data_hora, '%H:00') AS hora,
+            COUNT(*) AS quantidade
+        FROM registro_atendimento r
+        WHERE DATE(r.data_hora) = :data
+        GROUP BY DATE_FORMAT(r.data_hora, '%H:00')
+        ORDER BY hora
+        """,
+            nativeQuery = true
+    )
+    List<Object[]> buscarAtendimentosPorDia(@Param("data") LocalDate data);
+
+
+
+
 }

@@ -1,5 +1,6 @@
 package school.sptech.refuge.core.application.dto.registroAtendimento;
 
+
 public class AtendimentosDiaDto {
 
     private String hora;
@@ -10,13 +11,12 @@ public class AtendimentosDiaDto {
         this.quantidadeAtendimento = quantidadeAtendimento;
     }
 
-    public String gethora() {
+    public String getHora() { // <-- CORRIGIDO
         return hora;
     }
 
     public Long getQuantidadeAtendimento() {
         return quantidadeAtendimento;
     }
-
-
 }
+

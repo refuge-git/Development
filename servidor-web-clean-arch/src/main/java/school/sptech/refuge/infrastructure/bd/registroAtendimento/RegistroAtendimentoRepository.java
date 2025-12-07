@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface RegistroAtendimentoRepository extends JpaRepository<RegistroAtendimentoEntity, Integer> {
@@ -19,6 +22,9 @@ public interface RegistroAtendimentoRepository extends JpaRepository<RegistroAte
             Integer idBeneficiario,
             Integer idTipoAtendimento
     );
+
+
+
 
 
 

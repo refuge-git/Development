@@ -6,6 +6,7 @@
     import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.*;
     import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
+    import java.time.LocalDate;
     import java.util.List;
     import java.util.Optional;
     import java.util.stream.Collectors;
@@ -261,4 +262,17 @@
         public AtendimentosDeRefeicao contarAtendimentosDeRefeicaoNoMes(String mesReferencia) {
             return registroAtendimentoJpaRepository.getAtendimentosDeRefeicaoNoMes(mesReferencia);
         }
+
+        @Override
+        public List<AtendimentosDiaDto> buscarAtendimentosPorDia(LocalDate data) {
+            List<Object[]> resultados = registroAtendimentoJpaRepository.buscarAtendimentosPorDia(data);
+
+            return resultados.stream()
+                    .map(linha -> new AtendimentosDiaDto(
+                            linha[0].toString(),
+                            ((Number) linha[1]).longValue()
+                    ))
+                    .toList();
+        }
+
     }
