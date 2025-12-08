@@ -308,8 +308,7 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
         SELECT ta.nome AS atividade_mais_requisitada, COUNT(*) AS total
         FROM registro_atendimento ra
         JOIN tipo_atendimento ta ON ra.fk_tipo = ta.id_tipo_atendimento
-        WHERE MONTH(ra.data_hora) = MONTH(CURDATE())
-          AND YEAR(ra.data_hora) = YEAR(CURDATE())
+        WHERE DATE(ra.data_hora) = CURDATE()
         GROUP BY ta.nome
         ORDER BY total DESC
         LIMIT 1 OFFSET 1
