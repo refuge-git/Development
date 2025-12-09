@@ -1,9 +1,6 @@
 package school.sptech.refuge.core.adapters;
 
-import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosDiaDto;
-import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosSemanaDto;
-import school.sptech.refuge.core.application.dto.registroAtendimento.ServicosPorSemanaDto;
-import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosMesDto;
+import school.sptech.refuge.core.application.dto.registroAtendimento.*;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.*;
 import school.sptech.refuge.core.domain.registroAtendimento.RegistroAtendimento;
 
@@ -48,4 +45,6 @@ public interface RegistroAtendimentoGateway {
     String getSegundaAtividadeMaisRequisitadaMes();
     List<MesDisponivelRelatorio> getMesesDisponiveisRelatorio();
     List<AtendimentosDiaDto> buscarAtendimentosPorDia(LocalDate dia);
+    List<AtendimentosDiaIntervaloDto> buscarAtendimentosAgrupadoPorDia(LocalDate inicio, LocalDate fim);
+
 }
