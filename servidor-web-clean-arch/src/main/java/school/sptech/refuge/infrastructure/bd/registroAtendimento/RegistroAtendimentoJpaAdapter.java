@@ -264,6 +264,11 @@
         }
 
         @Override
+        public List<AtendimentosDiaIntervaloDto> buscarAtendimentosAgrupadoPorDia(LocalDate inicio, LocalDate fim) {
+            return registroAtendimentoJpaRepository.buscarAtendimentosAgrupadoPorDia(inicio, fim);
+        }
+
+        @Override
         public List<AtendimentosDiaDto> buscarAtendimentosPorDia(LocalDate data) {
             List<Object[]> resultados = registroAtendimentoJpaRepository.buscarAtendimentosPorDia(data);
 
@@ -274,5 +279,10 @@
                     ))
                     .toList();
         }
+
+
+
+
+
 
     }

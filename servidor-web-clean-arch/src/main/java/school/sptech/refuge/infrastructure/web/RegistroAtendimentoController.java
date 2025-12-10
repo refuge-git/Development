@@ -40,8 +40,9 @@ public class RegistroAtendimentoController {
     private final BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase;
     private final BuscarUltimoRegistroAtividadeUseCase ultimoRegistroUseCase;
     private final BuscarAtendimentosPorDiaUseCase buscarAtendimentosPorDiaUseCase;
+    private final BuscarAtendimentosPorDiaIntervaloUseCase buscarAtendimentosPorDiaIntervaloUseCase;
 
-    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase, BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase, GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase, BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase, BuscarUltimoRegistroAtividadeUseCase ultimoRegistroUseCase, BuscarAtendimentosPorDiaUseCase buscarAtendimentosPorDiaUseCase) {
+    public RegistroAtendimentoController(AtualizarRegistroAtendimentoUseCase atualizarRegistroAtendimentoUseCase, CriarRegistroAtendimentoUseCase criarRegistroAtendimentoUseCase, DeletarRegistroAtendimentoUseCase deletarRegistroAtendimentoUseCase, ListarTodosRegistroAtendimentoUseCase listarTodosRegistroAtendimentoUseCase, BuscarRegistroAtendimentoUseCase buscarRegistroAtendimentoUseCase, ContarBeneficiariosAtendidosNoMesUseCase contarBeneficiariosAtendidosNoMesUseCase, BuscarAtendimentosPorMesUseCase buscarAtendimentosPorMesUseCase, BuscarServicosPorSemanaUseCase buscarAtendimentosPorSemanaUseCase, BuscarIndicadoresDashboardUseCase buscarIndicadoresDashboardUseCase, GerarRelatorioCompletoUseCase gerarRelatorioCompletoUseCase, BuscarMesesDisponiveisRelatorioUseCase buscarMesesDisponiveisRelatorioUseCase, BuscarUltimoRegistroAtividadeUseCase ultimoRegistroUseCase, BuscarAtendimentosPorDiaUseCase buscarAtendimentosPorDiaUseCase, BuscarAtendimentosPorDiaIntervaloUseCase buscarAtendimentosPorDiaIntervaloUseCase) {
         this.atualizarRegistroAtendimentoUseCase = atualizarRegistroAtendimentoUseCase;
         this.criarRegistroAtendimentoUseCase = criarRegistroAtendimentoUseCase;
         this.deletarRegistroAtendimentoUseCase = deletarRegistroAtendimentoUseCase;
@@ -55,6 +56,7 @@ public class RegistroAtendimentoController {
         this.buscarMesesDisponiveisRelatorioUseCase = buscarMesesDisponiveisRelatorioUseCase;
         this.ultimoRegistroUseCase = ultimoRegistroUseCase;
         this.buscarAtendimentosPorDiaUseCase = buscarAtendimentosPorDiaUseCase;
+        this.buscarAtendimentosPorDiaIntervaloUseCase = buscarAtendimentosPorDiaIntervaloUseCase;
     }
 
     @Operation(
@@ -221,7 +223,7 @@ public class RegistroAtendimentoController {
     ) {
         return ResponseEntity.ok(buscarAtendimentosPorDiaUseCase.execute(data));
     }
-    
+
 
     @Operation(
             summary = "Quantidade de atendimentos por dia da semana",
@@ -276,6 +278,19 @@ public class RegistroAtendimentoController {
 
         Map<String, Object> response = Map.of("dataHora", dataHora.get());
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/intervalo-dia")
+    @CrossOrigin(origins = "http://localhost:5173")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<AtendimentosDiaIntervaloDto>> getAtendimentosAgrupadoPorDia(
+            @RequestParam LocalDate inicio,
+            @RequestParam LocalDate fim
+    ) {
+        List<AtendimentosDiaIntervaloDto> atendimentos =
+                buscarAtendimentosPorDiaIntervaloUseCase.execute(inicio, fim);
+
+        return ResponseEntity.ok(atendimentos);
     }
 
 

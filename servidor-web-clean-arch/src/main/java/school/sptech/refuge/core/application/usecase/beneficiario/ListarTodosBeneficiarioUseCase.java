@@ -10,15 +10,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ListarTodosBeneficiarioUseCase {
-    @Autowired
-    public RedisService redisService;
+    /*@Autowired
+    public RedisService redisService;*/
     private final BeneficiarioGateway beneficiarioGateway;
 
     public ListarTodosBeneficiarioUseCase(BeneficiarioGateway beneficiarioGateway) {
+
         this.beneficiarioGateway = beneficiarioGateway;
     }
 
-    public List<BeneficarioListDto> execute() {
+    /*public List<BeneficarioListDto> execute() {
         // 1. Tenta ler do cache
         List<BeneficarioListDto> cache = redisService.getBeneficiarios();
 
@@ -33,8 +34,15 @@ public class ListarTodosBeneficiarioUseCase {
 
         redisService.saveBeneficiarios(response);
         return response;
+
+        }*/
+
+    public List<BeneficarioListDto> execute() {
+        return beneficiarioGateway.listarTodos()
+                .stream()
+                .map(BeneficiarioMapper::fromDomain)
+                .collect(Collectors.toList());
+    }
     }
 
 
-
-}

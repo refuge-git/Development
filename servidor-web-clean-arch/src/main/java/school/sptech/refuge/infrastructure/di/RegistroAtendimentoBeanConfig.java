@@ -83,5 +83,11 @@ public class RegistroAtendimentoBeanConfig {
         return new BuscarAtendimentosPorDiaUseCase(gateway);
     }
 
+    @Bean
+    public BuscarAtendimentosPorDiaIntervaloUseCase buscarAtendimentosPorDiaIntervaloUseCase(
+            RegistroAtendimentoGateway gateway
+    ){
+        return new BuscarAtendimentosPorDiaIntervaloUseCase(gateway);
+    }
 
 }

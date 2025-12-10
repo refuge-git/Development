@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosDiaDto;
+import school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosDiaIntervaloDto;
 import school.sptech.refuge.core.application.dto.registroAtendimento.relatorio.*;
 
 import java.time.LocalDate;
@@ -530,6 +531,25 @@ public interface RegistroAtendimentoJpaRepository extends JpaRepository<Registro
             nativeQuery = true
     )
     List<Object[]> buscarAtendimentosPorDia(@Param("data") LocalDate data);
+
+    @Query("""
+    SELECT new school.sptech.refuge.core.application.dto.registroAtendimento.AtendimentosDiaIntervaloDto(
+        DATE(r.dataHora),
+        COUNT(r)
+    )
+    FROM RegistroAtendimentoEntity r
+    WHERE DATE(r.dataHora) BETWEEN :inicio AND :fim
+    GROUP BY DATE(r.dataHora)
+    ORDER BY DATE(r.dataHora)
+""")
+    List<AtendimentosDiaIntervaloDto> buscarAtendimentosAgrupadoPorDia(
+            @Param("inicio") LocalDate inicio,
+            @Param("fim") LocalDate fim
+    );
+
+
+
+
 
 
 
