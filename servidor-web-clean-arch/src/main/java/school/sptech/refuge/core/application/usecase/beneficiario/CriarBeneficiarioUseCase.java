@@ -1,6 +1,5 @@
 package school.sptech.refuge.core.application.usecase.beneficiario;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import school.sptech.refuge.core.adapters.BeneficiarioGateway;
 import school.sptech.refuge.core.adapters.EnderecoGateway;
 import school.sptech.refuge.core.adapters.FuncionarioGateway;
@@ -9,9 +8,6 @@ import school.sptech.refuge.core.adapters.TipoSexualidadeGateway;
 
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficiarioRequestDto;
 import school.sptech.refuge.core.application.dto.beneficiario.BeneficarioListDto;
-import school.sptech.refuge.core.application.dto.funcionario.FuncionarioListDto;
-import school.sptech.refuge.core.application.dto.tipogenero.TipoGeneroListDto;
-import school.sptech.refuge.core.application.dto.tiposexualidade.TipoSexualidadeListDto;
 import school.sptech.refuge.core.application.exception.EnderecoNaoEncontradoException;
 import school.sptech.refuge.core.application.exception.FuncionarioNaoEncontradaException;
 import school.sptech.refuge.core.application.exception.TipoGeneroNaoEncontradoException;
@@ -34,20 +30,21 @@ public class CriarBeneficiarioUseCase {
     private final EnderecoGateway enderecoGateway;
     private final TipoGeneroGateway tipoGeneroGateway;
     private final TipoSexualidadeGateway tipoSexualidadeGateway;
-    @Autowired
-    private S3UploadService s3UploadService;
-
+    private final S3UploadService s3UploadService;
 
     public CriarBeneficiarioUseCase(BeneficiarioGateway beneficiarioGateway,
                                     FuncionarioGateway funcionarioGateway,
                                     EnderecoGateway enderecoGateway,
                                     TipoGeneroGateway tipoGeneroGateway,
-                                    TipoSexualidadeGateway tipoSexualidadeGateway) {
+                                    TipoSexualidadeGateway tipoSexualidadeGateway,
+                                    S3UploadService s3UploadService) {
+
         this.beneficiarioGateway = beneficiarioGateway;
         this.funcionarioGateway = funcionarioGateway;
         this.enderecoGateway = enderecoGateway;
         this.tipoGeneroGateway = tipoGeneroGateway;
         this.tipoSexualidadeGateway = tipoSexualidadeGateway;
+        this.s3UploadService = s3UploadService;
     }
 
     public BeneficarioListDto execute(BeneficiarioRequestDto dto) {
@@ -67,20 +64,9 @@ public class CriarBeneficiarioUseCase {
         TipoSexualidade tipoSexualidade = tipoSexualidadeGateway.buscarPorId(dto.getIdTipoSexualidade())
                 .orElseThrow(() -> new TipoSexualidadeNaoEncontradoException("Tipo de sexualidade não encontrado"));
 
+        String urlPerfil;
 
-        // Geração de id único para imagem:
-        // String urlPerfil = s3UploadService.uploadFile(dto.getIdFuncionario() + "_" + System.currentTimeMillis() + ".jpg", dto.getImagem());
-
-
-        /* !!!!!!!!!!!!
-        * Lembrar de deixar imagem default no bucket,
-        * para fazer get padrão no bucket com benficiários com
-        * urlPerfil = "padrao";
-        */
-
-        String urlPerfil = null;
         try {
-
             if (dto.getImagem() == null || dto.getImagem().isBlank()) {
                 urlPerfil = "padrao";
             } else {
@@ -92,7 +78,7 @@ public class CriarBeneficiarioUseCase {
                             imagemConvertida
                     );
                 } else {
-                    System.out.println("\n\n\n\n\nImagem vazia, usando padrão.");
+                    System.out.println("Imagem vazia, usando padrão.");
                     urlPerfil = "padrao";
                 }
             }

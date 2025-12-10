@@ -9,6 +9,7 @@ import school.sptech.refuge.infrastructure.bd.endereco.EnderecoJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.funcionario.FuncionarioJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.tipogenero.TipoGeneroJpaAdapter;
 import school.sptech.refuge.infrastructure.bd.tiposexualidade.TipoSexualidadeJpaAdapter;
+import school.sptech.refuge.infrastructure.config.bucketS3.S3UploadService;
 
 @Configuration
 public class BeneficiarioBeanConfig {
@@ -25,8 +26,9 @@ public class BeneficiarioBeanConfig {
                                                              FuncionarioJpaAdapter funcionarioAdapter,
                                                              EnderecoJpaAdapter enderecoAdapter,
                                                              TipoGeneroJpaAdapter tipoGeneroAdapter,
-                                                             TipoSexualidadeJpaAdapter tipoSexualidadeAdapter) {
-        return new CriarBeneficiarioUseCase(adapter, funcionarioAdapter, enderecoAdapter, tipoGeneroAdapter, tipoSexualidadeAdapter);
+                                                             TipoSexualidadeJpaAdapter tipoSexualidadeAdapter,
+                                                             S3UploadService s3UploadService) {
+        return new CriarBeneficiarioUseCase(adapter, funcionarioAdapter, enderecoAdapter, tipoGeneroAdapter, tipoSexualidadeAdapter, s3UploadService);
     }
 
     @Bean
